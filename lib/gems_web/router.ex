@@ -50,6 +50,8 @@ defmodule GEMSWeb.Router do
   scope "/", GEMSWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    live "/battle/room", BattleLive.Room
+
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{GEMSWeb.CheckUserHook, :redirect_if_user_is_authenticated}] do
       live "/register", UserRegistrationLive, :new
