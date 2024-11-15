@@ -9,15 +9,15 @@ defmodule GEMS.Engine.Battler.Effect do
   end
 
   def commit_effect(%Actor{} = target, %Effect{type: :health_regen} = effect) do
-    Map.update!(target, :__health__, &min(&1 + effect.metadata.amount, &1.max_health))
+    Map.update!(target, :__health__, &min(&1 + effect.metadata.amount, target.max_health))
   end
 
   def commit_effect(%Actor{} = target, %Effect{type: :energy_regen} = effect) do
-    Map.update!(target, :__energy__, &min(&1 + effect.metadata.amount, &1.max_energy))
+    Map.update!(target, :__energy__, &min(&1 + effect.metadata.amount, target.max_energy))
   end
 
   def revert_effect(%Actor{} = target, %Effect{type: :damage} = effect) do
-    Map.update!(target, :__health__, &min(&1 + effect.metadata.amount, &1.max_health))
+    Map.update!(target, :__health__, &min(&1 + effect.metadata.amount, target.max_health))
   end
 
   def revert_effect(%Actor{} = target, %Effect{type: :health_regen} = effect) do

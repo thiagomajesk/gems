@@ -30,6 +30,7 @@ defmodule GEMS.Engine.Battler.Turn do
   def process(%Turn{} = turn) do
     turn
     |> perform_action()
+    |> trigger_regen()
     |> process_events()
   end
 
@@ -45,6 +46,19 @@ defmodule GEMS.Engine.Battler.Turn do
       event = Event.new(turn.action.source, target, effects)
       Map.update!(turn, :events, fn events -> [event | events] end)
     end)
+  end
+
+  defp trigger_regen(turn) do
+    health_regen = Math.health_regen(turn.leader)
+    energy_regen = Math.energy_regen(turn.leader)
+
+    event =
+      Event.new(turn.leader, turn.leader, [
+        %Effect{type: :health_regen, metadata: %{amount: health_regen}},
+        %Effect{type: :energy_regen, metadata: %{amount: energy_regen}}
+      ])
+
+    Map.update!(turn, :events, fn events -> [event | events] end)
   end
 
   defp process_events(turn) do
