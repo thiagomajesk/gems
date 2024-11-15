@@ -2,7 +2,6 @@ defmodule GEMS.Engine.Battler.Battle do
   alias __MODULE__
   alias GEMS.Engine.Battler.Turn
   alias GEMS.Engine.Battler.Actor
-  alias GEMS.Engine.Battler.Math
 
   defstruct status: nil, result: nil, actors: [], turns: []
 
@@ -72,7 +71,6 @@ defmodule GEMS.Engine.Battler.Battle do
   defp cleanup_phase(battle) do
     battle
     |> decrease_aggro()
-    |> trigger_regen()
   end
 
   defp decrease_aggro(battle) do
@@ -81,18 +79,6 @@ defmodule GEMS.Engine.Battler.Battle do
         Map.update!(actor, :__aggro__, fn aggro ->
           max(aggro - 1, 0)
         end)
-      end)
-    end)
-  end
-
-  defp trigger_regen(battle) do
-    Map.update!(battle, :actors, fn actors ->
-      Enum.map(actors, fn actor ->
-        health_regen = Math.health_regen(actor)
-        energy_regen = Math.energy_regen(actor)
-
-        Map.update!(actor, :__health__, &max(&1 + health_regen, actor.max_health))
-        Map.update!(actor, :__energy__, &max(&1 + energy_regen, actor.max_energy))
       end)
     end)
   end
