@@ -12,6 +12,12 @@ config :gems,
   ecto_repos: [GEMS.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :gems, GEMS.Repo,
+  migration_source: "__migrations__",
+  migration_primary_key: [type: :binary_id],
+  migration_foreign_key: [type: :binary_id],
+  migration_timestamps: [type: :timestamptz]
+
 # Configures the endpoint
 config :gems, GEMSWeb.Endpoint,
   url: [host: "localhost"],
