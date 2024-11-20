@@ -48,7 +48,7 @@ defmodule GEMS.Engine.Schema.Character do
     field :lehality, :integer
 
     belongs_to :faction, GEMS.Engine.Schema.Faction
-    belongs_to :user, GEMS.Accounts.User
+    belongs_to :user, GEMS.Accounts.Schema.User
 
     timestamps()
   end

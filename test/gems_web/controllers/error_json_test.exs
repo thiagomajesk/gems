@@ -2,7 +2,8 @@ defmodule GEMSWeb.ErrorJSONTest do
   use GEMSWeb.ConnCase, async: true
 
   test "renders 404" do
-    assert GEMSWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
+    assert GEMSWeb.ErrorJSON.render("404.json", %{}) ==
+             %{errors: %{detail: "Not Found"}}
   end
 
   test "renders 500" do

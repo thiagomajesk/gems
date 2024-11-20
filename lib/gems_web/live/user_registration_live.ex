@@ -2,7 +2,7 @@ defmodule GEMSWeb.UserRegistrationLive do
   use GEMSWeb, :live_view
 
   alias GEMS.Accounts
-  alias GEMS.Accounts.User
+  alias GEMS.Accounts.Schema.User
 
   def render(assigns) do
     ~H"""

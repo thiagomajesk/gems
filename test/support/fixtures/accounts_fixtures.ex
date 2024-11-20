@@ -4,28 +4,15 @@ defmodule GEMS.AccountsFixtures do
   entities via the `GEMS.Accounts` context.
   """
 
-  def unique_user_email, do: "user#{System.unique_integer()}@example.com"
-  def valid_user_password, do: "hello world!"
-
-  def valid_user_attributes(attrs \\ %{}) do
-    Enum.into(attrs, %{
-      email: unique_user_email(),
-      password: valid_user_password()
-    })
-  end
-
   def user_fixture(attrs \\ %{}) do
-    {:ok, user} =
-      attrs
-      |> valid_user_attributes()
-      |> GEMS.Accounts.register_user()
-
-    user
+    attrs = valid_user_attributes(attrs)
+    with {:ok, user} <- GEMS.Accounts.register_user(attrs), do: user
   end
 
-  def extract_user_token(fun) do
-    {:ok, captured_email} = fun.(&"[TOKEN]#{&1}[TOKEN]")
-    [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")
-    token
+  defp valid_user_attributes(attrs) do
+    Enum.into(attrs, %{
+      email: "user#{System.unique_integer()}@example.com",
+      password: "hello world!"
+    })
   end
 end

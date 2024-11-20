@@ -90,6 +90,9 @@ defmodule GEMSWeb do
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
 
+      # Alias UI component helpers
+      alias GEMSWeb.UIKIT, as: UI
+
       # Routes generation with the ~p sigil
       unquote(verified_routes())
     end

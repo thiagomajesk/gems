@@ -1,7 +1,7 @@
-defmodule GEMS.Accounts.UserToken do
+defmodule GEMS.Accounts.Schema.UserToken do
   use Ecto.Schema
   import Ecto.Query
-  alias GEMS.Accounts.UserToken
+  alias GEMS.Accounts.Schema.UserToken
 
   @hash_algorithm :sha256
   @rand_size 32
@@ -17,7 +17,7 @@ defmodule GEMS.Accounts.UserToken do
     field :token, :binary
     field :context, :string
     field :sent_to, :string
-    belongs_to :user, GEMS.Accounts.User
+    belongs_to :user, GEMS.Accounts.Schema.User
 
     timestamps(type: :utc_datetime, updated_at: false)
   end

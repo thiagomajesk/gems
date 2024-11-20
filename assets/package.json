@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "format": "prettier --trailing-comma es5 --write '{js,test,css}/**/*.{js,json,css,md}' --no-error-on-unmatched-pattern",
+    "format-check": "prettier --trailing-comma es5 --check '{js,test,css}/**/*.{js,json,css,md}' --no-error-on-unmatched-pattern"
+  },
+  "dependencies": {
+    "normalize-object": "^2.0.6",
+    "prettier": "^3.3.3",
+    "topbar": "^3.0.0"
+  }
+}
