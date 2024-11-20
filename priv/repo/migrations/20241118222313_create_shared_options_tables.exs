@@ -7,7 +7,6 @@ defmodule GEMS.Repo.Migrations.CreateSharedOptionsTables do
     ################################################################################
 
     create table(:activation_options) do
-      # Physical Attack, Magical Attack, Certain Hit
       add :hit_type, :string, null: false
       add :success_rate, :float, default: 1.0
       add :repeats, :integer, null: false, default: 1
@@ -18,7 +17,6 @@ defmodule GEMS.Repo.Migrations.CreateSharedOptionsTables do
     ################################################################################
 
     create table(:damage_options) do
-      # Health, Energy, Health Recover, Energy Recover, Health Drain, Energy Drain
       add :damage_type, :text, null: false
       add :element_id, references(:elements), null: false
       add :formula, :text, null: true
@@ -31,13 +29,14 @@ defmodule GEMS.Repo.Migrations.CreateSharedOptionsTables do
     ################################################################################
 
     create table(:scope_options) do
-      # Enemy, Ally, Both, Self
       add :target_side, :string, null: false
-      # Any, Alive, Dead
       add :target_status, :string, null: false
-      # One, All, Random
       add :target_number, :string, null: false
-      add :random_targets, :integer, default: 0
+      add :random_targets, :integer, null: true
     end
+
+    create constraint(:scope_options, :check_random_targets_filled,
+             check: "NOT (target_number = 'Random' AND random_targets IS NULL)"
+           )
   end
 end
