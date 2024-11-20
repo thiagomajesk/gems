@@ -43,21 +43,6 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
     end
 
     ################################################################################
-    # Creatures Rewards
-    ################################################################################
-
-    create table(:creatures_rewards, primary_key: false) do
-      add :creature_id, references(:creatures), null: false
-      add :item_id, references(:items), null: false
-      add :amount, :integer, null: false
-      add :chance, :float, default: 0.0
-    end
-
-    create constraint(:creatures_rewards, :check_one_of_create_or_item,
-             check: "num_nonnulls(creature_id, item_id) = 1"
-           )
-
-    ################################################################################
     # Creature Action Patterns
     ################################################################################
 

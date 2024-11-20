@@ -110,6 +110,8 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:zones_gathering_options, primary_key: false) do
       add :zone_id, references(:zones), null: false
       add :item_id, references(:items), null: false
+      add :required_profession_id, references(:professions), null: false
+      add :required_profession_level, :integer, null: false, default: 0
     end
 
     ################################################################################
@@ -119,6 +121,8 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:zones_crafting_options, primary_key: false) do
       add :zone_id, references(:zones), null: false
       add :item_id, references(:items), null: false
+      add :required_profession_id, references(:professions), null: false
+      add :required_profession_level, :integer, null: false, default: 0
     end
 
     ################################################################################
@@ -128,6 +132,8 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:zones_farming_options, primary_key: false) do
       add :zone_id, references(:zones), null: false
       add :item_id, references(:items), null: false
+      add :required_profession_id, references(:professions), null: false
+      add :required_profession_level, :integer, null: false, default: 0
     end
 
     ################################################################################
@@ -137,6 +143,8 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:zones_combat_options, primary_key: false) do
       add :zone_id, references(:zones), null: false
       add :creature_id, references(:creatures), null: false
+      add :required_profession_id, references(:professions), null: false
+      add :required_profession_level, :integer, null: false, default: 0
     end
   end
 end

@@ -49,8 +49,7 @@ defmodule GEMS.Engine.Schema.Creature do
 
     belongs_to :biome, GEMS.Engine.Schema.Biome
     many_to_many :traits, GEMS.Engine.Schema.Trait, join_through: "creatures_traits"
-    has_many :creatures_rewards, GEMS.Engine.Schema.CreatureReward
-    has_many :creature_action_patterns, GEMS.Engine.Schema.CreatureActionPattern
+    has_many :action_patterns, GEMS.Engine.Schema.CreatureActionPattern
   end
 
   @doc false

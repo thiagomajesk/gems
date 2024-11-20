@@ -21,7 +21,6 @@ defmodule GEMS.Engine.Schema.Equipment do
     :tier,
     :price,
     :hidden,
-    :sellable,
     :max_health,
     :max_energy,
     :physical_damage,
@@ -50,7 +49,6 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :tier, :integer
     field :price, :integer
     field :hidden, :boolean
-    field :sellable, :boolean
     field :max_health, :integer
     field :max_energy, :integer
     field :physical_damage, :integer

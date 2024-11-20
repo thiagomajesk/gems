@@ -13,9 +13,7 @@ defmodule GEMS.Repo.Migrations.CreateItemsTables do
       add :type_id, references(:item_types), null: false
       add :tier, :integer, null: false, default: 0
       add :price, :integer, null: true
-      add :consumable, :boolean, null: false, default: false
-      add :hidden, :boolean, null: false, default: false
-      add :sellable, :boolean, null: false, default: false
+      add :purpose, :string, null: false
       add :scope_option_id, references(:scope_options), null: true
       add :activation_option_id, references(:activation_options), null: false
       add :damage_option_id, references(:damage_options), null: true
@@ -30,6 +28,15 @@ defmodule GEMS.Repo.Migrations.CreateItemsTables do
     create table(:items_effects, primary_key: false) do
       add :item_id, references(:items), null: false, primary_key: true
       add :effect_id, references(:effects), null: false, primary_key: true
+    end
+
+    ################################################################################
+    # Items Ingredients
+    ################################################################################
+
+    create table(:items_ingredients, primary_key: false) do
+      add :item_id, references(:items), null: false, primary_key: true
+      add :ingredient_id, references(:items), null: false, primary_key: true
     end
   end
 end
