@@ -9,7 +9,6 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:professions) do
       add :name, :string, null: false
       add :description, :string, null: true
-      # Gathering, Crafting, Farming, Combat
       add :type, :string, null: false
       add :icon, :string, null: true
       add :max_level, :integer, default: 99
@@ -37,7 +36,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :icon, :string, null: true
       add :description, :string, null: true
-      add :duration, :utc_datetime, null: false
+      add :duration, :integer, null: false
     end
 
     create unique_index(:blessings, :name)

@@ -1,18 +1,20 @@
-defmodule GEMS.Engine.Schema.ItemType do
+defmodule GEMS.Engine.Schema.Pet do
   use Ecto.Schema
   import Ecto.Changeset
 
   @required_fields [:name]
-  @optional_fields [:description, :icon]
+  @optional_fields [:icon, :description]
 
-  schema "item_types" do
+  schema "pets" do
     field :name, :string
-    field :description, :string
     field :icon, :string
+    field :description, :string
+
+    many_to_many :blessings, GEMS.Engine.Schema.Blessing, join_through: "pets_blessings"
   end
 
-  def changeset(item_type, attrs) do
-    item_type
+  def changeset(pet, attrs) do
+    pet
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> unique_constraint(:name)

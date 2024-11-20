@@ -23,16 +23,18 @@ defmodule GEMS.Engine.Schema.TraitParameterRate do
     :lethality
   ]
 
+  @required_fields [:parameter]
+  @optional_fields [:modifier]
+
   schema "traits_parameter_rates" do
     field :parameter, Ecto.Enum, values: @parameters
-    field :modifier, :float, default: 1.0
+    field :modifier, :float
   end
 
-  @doc false
   def changeset(parameter_rate, attrs) do
     parameter_rate
-    |> cast(attrs, [:parameter, :modifier])
-    |> validate_required([:parameter])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> validate_number(:modifier, greater_than_or_equal_to: 0.0)
   end
 end

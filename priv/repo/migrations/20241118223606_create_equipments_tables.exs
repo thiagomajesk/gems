@@ -14,7 +14,6 @@ defmodule GEMS.Repo.Migrations.CreateEquipmentsTables do
       add :slot, :string, null: false
       add :tier, :integer, null: false, default: 0
       add :price, :integer, null: true
-      add :stackable, :boolean, null: false, default: false
       add :hidden, :boolean, null: false, default: false
       add :sellable, :boolean, null: false, default: false
 

@@ -2,6 +2,9 @@ defmodule GEMS.Engine.Schema.State do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @required_fields [:name]
+  @optional_fields [:description, :icon, :priority, :restriction]
+
   @restrictions [
     :attack_enemy,
     :attack_ally,
@@ -13,15 +16,14 @@ defmodule GEMS.Engine.Schema.State do
     field :name, :string
     field :description, :string
     field :icon, :string
-    field :priority, :integer, default: 100
+    field :priority, :integer
     field :restriction, Ecto.Enum, values: @restrictions
   end
 
-  @doc false
   def changeset(state, attrs) do
     state
-    |> cast(attrs, [:name, :description, :icon, :priority, :restriction])
-    |> validate_required([:name])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> validate_number(:priority, greater_than_or_equal_to: 0)
     |> unique_constraint(:name)
   end

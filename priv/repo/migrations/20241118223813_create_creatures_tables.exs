@@ -9,7 +9,7 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
     create table(:creatures) do
       add :name, :string, null: false
       add :description, :string, null: true
-      add :biome_affinity_id, references(:biomes), null: true
+      add :biome_id, references(:biomes), null: true
 
       add :max_health, :integer, null: false, default: 0
       add :max_energy, :integer, null: false, default: 0

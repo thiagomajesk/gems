@@ -2,6 +2,8 @@ defmodule GEMS.Engine.Schema.Element do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @required_fields [:name]
+
   schema "elements" do
     field :name, :string
     field :description, :string
@@ -11,8 +13,8 @@ defmodule GEMS.Engine.Schema.Element do
   @doc false
   def changeset(element, attrs) do
     element
-    |> cast(attrs, [:name, :description, :icon])
-    |> validate_required([:name])
+    |> cast(attrs, @required_fields ++ [:description, :icon])
+    |> validate_required(@required_fields)
     |> unique_constraint(:name)
   end
 end

@@ -2,21 +2,39 @@ defmodule GEMS.Engine.Schema.ScopeOption do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @required_fields [:target_side, :target_status, :target_number]
+  @optional_fields [:random_targets]
+
+  @target_side [
+    :enemy,
+    :ally,
+    :any,
+    :self
+  ]
+
+  @target_status [
+    :any,
+    :alive,
+    :dead
+  ]
+
+  @target_number [
+    :one,
+    :all,
+    :random
+  ]
+
   schema "scope_options" do
-    field :target_side, :string
-    field :target_status, :string
-    field :target_number, :string
-    field :random_targets, :integer, default: 0
+    field :target_side, Ecto.Enum, values: @target_side
+    field :target_status, Ecto.Enum, values: @target_status
+    field :target_number, Ecto.Enum, values: @target_number
+    field :random_targets, :integer
   end
 
-  @doc false
   def changeset(scope_option, attrs) do
     scope_option
-    |> cast(attrs, [:target_side, :target_status, :target_number, :random_targets])
-    |> validate_required([:target_side, :target_status, :target_number])
-    |> validate_inclusion(:target_side, ["Enemy", "Ally", "Both", "Self"])
-    |> validate_inclusion(:target_status, ["Any", "Alive", "Dead"])
-    |> validate_inclusion(:target_number, ["One", "All", "Random"])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> validate_number(:random_targets, greater_than_or_equal_to: 0)
   end
 end

@@ -7,19 +7,22 @@ defmodule GEMS.Engine.Schema.EffectRecoveryOption do
     :energy
   ]
 
+  @required_fields [:parameter]
+  @optional_fields [:percentage, :maximum, :fixed, :variance]
+
   schema "effects_recovery_options" do
     field :parameter, Ecto.Enum, values: @parameters
-    field :percentage, :float, default: 0.0
+    field :percentage, :float
     field :maximum, :integer
     field :fixed, :integer
-    field :variance, :float, default: 0.0
+    field :variance, :float
   end
 
   @doc false
   def changeset(recovery_option, attrs) do
     recovery_option
-    |> cast(attrs, [:parameter, :percentage, :maximum, :fixed, :variance])
-    |> validate_required([:parameter])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> validate_number(:percentage, greater_than_or_equal_to: 0.0, less_than_or_equal_to: 1.0)
     |> validate_number(:variance, greater_than_or_equal_to: 0.0)
   end
