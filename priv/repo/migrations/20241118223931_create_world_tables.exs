@@ -117,10 +117,10 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
            )
 
     ################################################################################
-    # Zones Gathering Options Profession Requirements
+    # Zones Gathering Options Requirements
     ################################################################################
 
-    create table(:zones_gathering_options_profession_requirements, primary_key: false) do
+    create table(:zones_gathering_options_requirements, primary_key: false) do
       add :zone_gathering_option_id, references(:zones_gathering_options),
         null: false,
         primary_key: true
@@ -146,7 +146,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     # Zones Crafting Options Requirements
     ################################################################################
 
-    create table(:zones_crafting_options_profession_requirements, primary_key: false) do
+    create table(:zones_crafting_options_requirements, primary_key: false) do
       add :zone_crafting_option_id, references(:zones_crafting_options),
         null: false,
         primary_key: true
@@ -169,10 +169,10 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
            )
 
     ################################################################################
-    # Zones Farming Options Profession Requirements
+    # Zones Farming Options Requirements
     ################################################################################
 
-    create table(:zones_farming_options_profession_requirements, primary_key: false) do
+    create table(:zones_farming_options_requirements, primary_key: false) do
       add :zone_farming_option_id, references(:zones_farming_options),
         null: false,
         primary_key: true
@@ -191,10 +191,10 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     end
 
     ################################################################################
-    # Zones Combat Options Profession Requirements
+    # Zones Combat Options Requirements
     ################################################################################
 
-    create table(:zones_combat_options_profession_requirements, primary_key: false) do
+    create table(:zones_combat_options_requirements, primary_key: false) do
       add :zone_combat_option_id, references(:zones_combat_options),
         null: false,
         primary_key: true
