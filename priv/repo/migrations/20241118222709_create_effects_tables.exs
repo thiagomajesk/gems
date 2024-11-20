@@ -7,7 +7,6 @@ defmodule GEMS.Repo.Migrations.CreateEffectsTables do
     ################################################################################
 
     create table(:effects_recovery_options) do
-      # Health, Energy
       add :parameter, :string, null: false
       add :percentage, :float, default: 0.0
       add :maximum, :integer, null: true
@@ -20,7 +19,6 @@ defmodule GEMS.Repo.Migrations.CreateEffectsTables do
     ################################################################################
 
     create table(:effects_state_options) do
-      # Add, Remove
       add :action, :string, null: false
       add :state_id, references(:states), null: false
       add :chance, :float, default: 0.0
@@ -31,7 +29,6 @@ defmodule GEMS.Repo.Migrations.CreateEffectsTables do
     ################################################################################
 
     create table(:effects_parameter_options) do
-      # Add, Remove
       add :change, :string, null: false
       add :parameter, :string, null: false
       add :turns, :integer, default: 0

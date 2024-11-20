@@ -11,8 +11,7 @@ defmodule GEMS.Repo.Migrations.CreateEquipmentsTables do
       add :description, :string, null: true
       add :icon, :string, null: true
       add :type_id, references(:equipment_types), null: false
-      # Trinket, Helmet, Cape, Main-Hand, Off-Hand, Armor, Ring, Boots, Amulet
-      add :slot_type, :string, null: false
+      add :slot, :string, null: false
       add :tier, :integer, null: false, default: 0
       add :price, :integer, null: true
       add :stackable, :boolean, null: false, default: false

@@ -15,6 +15,18 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
     create unique_index(:elements, :name)
 
     ################################################################################
+    # Biomes
+    ################################################################################
+
+    create table(:biomes) do
+      add :name, :string, null: false
+      add :description, :string, null: true
+      add :icon, :string, null: true
+    end
+
+    create unique_index(:biomes, :name)
+
+    ################################################################################
     # Ability Types
     ################################################################################
 

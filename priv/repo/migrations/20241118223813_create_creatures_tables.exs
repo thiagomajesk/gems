@@ -9,6 +9,7 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
     create table(:creatures) do
       add :name, :string, null: false
       add :description, :string, null: true
+      add :biome_affinity_id, references(:biomes), null: true
 
       add :max_health, :integer, null: false, default: 0
       add :max_energy, :integer, null: false, default: 0
@@ -52,16 +53,18 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
       add :chance, :float, default: 0.0
     end
 
+    create constraint(:creatures_rewards, :check_one_of_create_or_item,
+             check: "num_nonnulls(creature_id, item_id) = 1"
+           )
+
     ################################################################################
-    # Action Patterns
+    # Creature Action Patterns
     ################################################################################
 
-    create table(:action_patterns) do
-      add :name, :string, null: false
-      add :description, :string, null: true
+    create table(:creature_action_patterns, primary_key: false) do
+      add :creature_id, references(:creatures), null: false
       add :ability_id, references(:abilities), null: false
       add :priority, :integer, null: false, default: 0
-      # Always, Turn, Health, Energy, State
       add :condition, :string, null: false
       add :min_turn, :integer, null: true
       add :max_turn, :integer, null: true
@@ -70,15 +73,6 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
       add :min_energy, :integer, null: true
       add :max_energy, :integer, null: true
       add :state_id, references(:states), null: true
-    end
-
-    ################################################################################
-    # Creature Action Patterns
-    ################################################################################
-
-    create table(:creature_action_patterns, primary_key: false) do
-      add :creature_id, references(:creatures), null: false
-      add :action_pattern_id, references(:action_patterns), null: false
     end
   end
 end
