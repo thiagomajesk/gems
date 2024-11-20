@@ -2,15 +2,17 @@ defmodule GEMS.Engine.Schema.Item do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @purposes [
-    :to_gather,
-    :to_craft,
-    :to_farm,
-    :to_consume
-  ]
-
   @required_fields [:name, :type_id, :purpose, :activation_option_id]
-  @optional_fields [:description, :icon, :tier, :price]
+  @optional_fields [
+    :description,
+    :icon,
+    :tier,
+    :price,
+    :gatherable,
+    :craftable,
+    :farmable,
+    :consumable
+  ]
 
   schema "items" do
     field :name, :string
@@ -18,7 +20,10 @@ defmodule GEMS.Engine.Schema.Item do
     field :icon, :string
     field :tier, :integer
     field :price, :integer
-    field :purpose, Ecto.Enum, values: @purposes
+    field :gatherable, :boolean
+    field :craftable, :boolean
+    field :farmable, :boolean
+    field :consumable, :boolean
 
     belongs_to :type, GEMS.Engine.Schema.ItemType
     belongs_to :scope_option, GEMS.Engine.Schema.ScopeOption

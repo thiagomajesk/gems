@@ -114,6 +114,10 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :required_profession_level, :integer, null: false, default: 0
     end
 
+    create constraint(:zones_gathering_options, :check_item_purpose,
+             check: "check_fk_with_value('items', 'gatherable', true)"
+           )
+
     ################################################################################
     # Zones Crafting Options
     ################################################################################
@@ -125,6 +129,10 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :required_profession_level, :integer, null: false, default: 0
     end
 
+    create constraint(:zones_crafting_options, :check_item_purpose,
+             check: "check_fk_with_value('items', 'craftable', true)"
+           )
+
     ################################################################################
     # Zones Farming Options
     ################################################################################
@@ -135,6 +143,10 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :required_profession_id, references(:professions), null: false
       add :required_profession_level, :integer, null: false, default: 0
     end
+
+    create constraint(:zones_farming_options, :check_item_purpose,
+             check: "check_fk_with_value('items', 'farmable', true)"
+           )
 
     ################################################################################
     # Zones Combat Options
