@@ -14,7 +14,6 @@ defmodule GEMS.Repo.Migrations.CreateItemsTables do
       add :tier, :integer, null: false, default: 0
       add :price, :integer, null: true
       add :consumable, :boolean, null: false, default: false
-      add :stackable, :boolean, null: false, default: false
       add :hidden, :boolean, null: false, default: false
       add :sellable, :boolean, null: false, default: false
       add :scope_option_id, references(:scope_options), null: true

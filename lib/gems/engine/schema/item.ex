@@ -8,7 +8,6 @@ defmodule GEMS.Engine.Schema.Item do
     field :icon, :string
     field :tier, :integer, default: 0
     field :price, :integer
-    field :consumable, :boolean, default: false
     field :stackable, :boolean, default: false
     field :hidden, :boolean, default: false
     field :sellable, :boolean, default: false
@@ -29,7 +28,6 @@ defmodule GEMS.Engine.Schema.Item do
       :icon,
       :tier,
       :price,
-      :consumable,
       :stackable,
       :hidden,
       :sellable,
