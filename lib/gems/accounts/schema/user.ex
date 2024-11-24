@@ -1,6 +1,5 @@
 defmodule GEMS.Accounts.Schema.User do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, :default
 
   schema "users" do
     field :email, :string

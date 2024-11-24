@@ -1,0 +1,49 @@
+defmodule GEMS.Repo.Migrations.CreateItemsTables do
+  use Ecto.Migration
+
+  def change do
+    ################################################################################
+    # Items
+    ################################################################################
+
+    create table(:items) do
+      add :name, :string, null: false
+      add :description, :string, null: true
+      add :icon, :string, null: true
+      add :type_id, references(:item_types), null: false
+      add :price, :integer, null: true
+      add :purpose, :string, null: false
+
+      add :target_side, :string, null: true
+      add :target_status, :string, null: true
+      add :target_number, :integer, null: false, default: 1
+      add :random_targets, :integer, null: false, default: 0
+
+      add :hit_type, :string, null: true
+      add :success_rate, :float, default: 1.0
+      add :repeats, :integer, null: false, default: 1
+
+      add :damage_type, :string, null: true
+
+      add :damage_element_id, references(:elements, on_delete: {:nilify, [:damage_element_id]}),
+        null: true
+
+      add :damage_formula, :string, null: true
+      add :damage_variance, :float, null: true
+      add :critical_hits, :boolean, default: false
+
+      add :messages, :map, null: true
+    end
+
+    create unique_index(:items, :name)
+
+    ################################################################################
+    # Items Ingredients
+    ################################################################################
+
+    create table(:items_ingredients, primary_key: false) do
+      add :recipe_id, references(:items), null: false, primary_key: true
+      add :ingredient_id, references(:items), null: false, primary_key: true
+    end
+  end
+end

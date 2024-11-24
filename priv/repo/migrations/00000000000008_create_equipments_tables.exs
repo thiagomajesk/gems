@@ -12,10 +12,7 @@ defmodule GEMS.Repo.Migrations.CreateEquipmentsTables do
       add :icon, :string, null: true
       add :type_id, references(:equipment_types), null: false
       add :slot, :string, null: false
-      add :tier, :integer, null: false, default: 0
       add :price, :integer, null: true
-      add :hidden, :boolean, null: false, default: false
-      add :sellable, :boolean, null: false, default: false
 
       add :max_health, :integer, null: false, default: 0
       add :max_energy, :integer, null: false, default: 0
@@ -35,15 +32,6 @@ defmodule GEMS.Repo.Migrations.CreateEquipmentsTables do
       add :ability_power, :integer, null: false, default: 0
       add :resilience, :integer, null: false, default: 0
       add :lehality, :integer, null: false, default: 0
-    end
-
-    ################################################################################
-    # Equipments Traits
-    ################################################################################
-
-    create table(:equipments_traits, primary_key: false) do
-      add :equipment_id, references(:equipments), null: false, primary_key: true
-      add :trait_id, references(:traits), null: false, primary_key: true
     end
 
     ################################################################################

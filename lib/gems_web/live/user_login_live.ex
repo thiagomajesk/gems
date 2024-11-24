@@ -3,34 +3,39 @@ defmodule GEMSWeb.UserLoginLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        Log in to account
-        <:subtitle>
-          Don't have an account?
-          <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
-            Sign up
-          </.link>
-          for an account now.
-        </:subtitle>
-      </.header>
+    <div class="flex flex-col justify-center items-center size-full">
+      <div class="card w-96 bg-base-200 shadow">
+        <div class="card-body">
+          <header class="text-center">
+            <h2 class="text-2xl mb-4">Log in to account</h2>
+          </header>
+          <.form
+            for={@form}
+            id="login_form"
+            action={~p"/users/login"}
+            phx-update="ignore"
+            class="space-y-4"
+          >
+            <.input field={@form[:email]} type="email" label="Email" required />
+            <.input field={@form[:password]} type="password" label="Password" required />
+            <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
+            <button phx-disable-with="Logging in..." class="btn btn-primary w-full">Log in</button>
 
-      <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
-        <.input field={@form[:email]} type="email" label="Email" required />
-        <.input field={@form[:password]} type="password" label="Password" required />
+            <div class="text-center">
+              <.link href={~p"/users/reset-password"} class="text-sm link link-hover">
+                Forgot your password?
+              </.link>
 
-        <:actions>
-          <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
-          <.link href={~p"/users/reset_password"} class="text-sm font-semibold">
-            Forgot your password?
-          </.link>
-        </:actions>
-        <:actions>
-          <.button phx-disable-with="Logging in..." class="w-full">
-            Log in <span aria-hidden="true">→</span>
-          </.button>
-        </:actions>
-      </.simple_form>
+              <p class="text-sm">
+                Don't have an account yet?
+                <.link navigate={~p"/users/register"} class="link link-primary font-semibold">
+                  Sign up
+                </.link>
+              </p>
+            </div>
+          </.form>
+        </div>
+      </div>
     </div>
     """
   end

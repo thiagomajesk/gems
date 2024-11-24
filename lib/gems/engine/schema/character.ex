@@ -3,6 +3,7 @@ defmodule GEMS.Engine.Schema.Character do
   import Ecto.Changeset
 
   @required_fields [:name, :faction_id, :user_id]
+
   @optional_fields [
     :title,
     :max_health,

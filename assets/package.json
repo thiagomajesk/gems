@@ -4,8 +4,15 @@
     "format-check": "prettier --trailing-comma es5 --check '{js,test,css}/**/*.{js,json,css,md}' --no-error-on-unmatched-pattern"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.2",
+    "@tailwindcss/typography": "^0.5.15",
+    "iconify-icon": "^2.1.0",
     "normalize-object": "^2.0.6",
     "prettier": "^3.3.3",
+    "selector-observer": "^2.1.6",
     "topbar": "^3.0.0"
+  },
+  "devDependencies": {
+    "daisyui": "^4.12.14"
   }
 }

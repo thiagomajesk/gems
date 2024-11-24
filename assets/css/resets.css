@@ -1,0 +1,30 @@
+html,
+body,
+main {
+  height: 100dvh;
+}
+
+/* 
+* HACK: Disables browser autocomplete background color
+* Blatantly stolen from: https://stackoverflow.com/a/69364368 
+*/
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition-delay: 0s;
+  transition-duration: 600000s;
+  transition-property: background-color, color;
+}
+
+input[data-autocompleted] {
+  background-color: transparent !important;
+}
+
+/* 
+* Avoids layout shift for iconify icons
+* Reference: https://iconify.design/docs/iconify-icon/#layout-shift
+*/
+iconify-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}

@@ -81,11 +81,14 @@ defmodule GEMSWeb do
 
   defp html_helpers do
     quote do
+      use Gettext, backend: GEMSWeb.Gettext
+
       # HTML escaping functionality
       import Phoenix.HTML
+
       # Core UI components and translation
+      import GEMSWeb.ErrorHelpers
       import GEMSWeb.CoreComponents
-      import GEMSWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

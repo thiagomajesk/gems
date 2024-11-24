@@ -1,9 +1,9 @@
 defmodule GEMS.Engine.Schema.Profession do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, :resource
 
   @required_fields [:name, :type]
-  @optional_fields [:description, :icon, :max_level]
+
+  @optional_fields [:description, :icon]
 
   @types [
     :gathering,
@@ -17,7 +17,6 @@ defmodule GEMS.Engine.Schema.Profession do
     field :description, :string
     field :type, Ecto.Enum, values: @types
     field :icon, :string
-    field :max_level, :integer
   end
 
   def changeset(profession, attrs) do

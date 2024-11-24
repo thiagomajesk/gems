@@ -9,7 +9,8 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
     create table(:creatures) do
       add :name, :string, null: false
       add :description, :string, null: true
-      add :biome_id, references(:biomes), null: true
+      add :type_id, references(:creature_types), null: false
+      add :biome_id, references(:biomes), null: false
 
       add :max_health, :integer, null: false, default: 0
       add :max_energy, :integer, null: false, default: 0
@@ -32,15 +33,6 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
     end
 
     create unique_index(:creatures, :name)
-
-    ################################################################################
-    # Creatures Traits
-    ################################################################################
-
-    create table(:creatures_traits, primary_key: false) do
-      add :creature_id, references(:creatures), null: false, primary_key: true
-      add :trait_id, references(:traits), null: false, primary_key: true
-    end
 
     ################################################################################
     # Creature Action Patterns

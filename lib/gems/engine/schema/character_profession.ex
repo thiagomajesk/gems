@@ -3,6 +3,7 @@ defmodule GEMS.Engine.Schema.CharacterProfession do
   import Ecto.Changeset
 
   @required_fields [:character_id, :profession_id]
+
   @optional_fields [:level, :exp]
 
   @primary_key false

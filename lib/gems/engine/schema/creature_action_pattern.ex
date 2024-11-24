@@ -10,6 +10,7 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
   ]
 
   @required_fields [:name, :ability_id, :condition]
+
   @optional_fields [
     :description,
     :priority,

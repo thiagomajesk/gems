@@ -11,7 +11,6 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :description, :string, null: true
       add :type, :string, null: false
       add :icon, :string, null: true
-      add :max_level, :integer, default: 99
     end
 
     create unique_index(:professions, :name)
@@ -40,15 +39,6 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     end
 
     create unique_index(:blessings, :name)
-
-    ################################################################################
-    # Blessings Traits
-    ################################################################################
-
-    create table(:blessings_traits, primary_key: false) do
-      add :blessing_id, references(:blessings), null: false, primary_key: true
-      add :trait_id, references(:traits), null: false, primary_key: true
-    end
 
     ################################################################################
     # Pets
@@ -112,9 +102,9 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :item_id, references(:items), null: false
     end
 
-    create constraint(:zones_gathering_options, :check_item_purpose,
-             check: "check_fk_with_value('items', 'gatherable', true)"
-           )
+    # create constraint(:zones_gathering_options, :check_item_purpose,
+    #          check: "check_reference_column_matches('items', 'purpose', 'gatherable')"
+    #        )
 
     ################################################################################
     # Zones Gathering Options Requirements
@@ -138,9 +128,9 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :item_id, references(:items), null: false
     end
 
-    create constraint(:zones_crafting_options, :check_item_purpose,
-             check: "check_fk_with_value('items', 'craftable', true)"
-           )
+    # create constraint(:zones_crafting_options, :check_item_purpose,
+    #          check: "check_reference_column_matches('items', 'purpose', 'craftable')"
+    #        )
 
     ################################################################################
     # Zones Crafting Options Requirements
@@ -164,9 +154,9 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :item_id, references(:items), null: false
     end
 
-    create constraint(:zones_farming_options, :check_item_purpose,
-             check: "check_fk_with_value('items', 'farmable', true)"
-           )
+    # create constraint(:zones_farming_options, :check_item_purpose,
+    #          check: "check_reference_column_matches('items', 'purpose', 'farmable')"
+    #        )
 
     ################################################################################
     # Zones Farming Options Requirements

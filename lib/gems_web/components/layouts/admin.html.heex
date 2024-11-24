@@ -1,0 +1,119 @@
+<.flash_group flash={@flash} />
+
+<div class="flex min-h-full bg-[var(--content-background)]" data-theme="elegant">
+  <div class="drawer lg:drawer-open">
+    <input type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content">
+      <div class="navbar bg-base-300/50 w-full"></div>
+      <main class="container mx-auto p-4 my-4">
+        {@inner_content}
+      </main>
+    </div>
+    <div class="drawer-side">
+      <ul class="menu bg-base-300/40 text-base-content min-h-full w-80 p-4">
+        <li>
+          <details open>
+            <summary>
+              <UI.Media.icon name="database" />
+              <strong>Database</strong>
+            </summary>
+            <div class="flex flex-col space-y-2">
+              <ul>
+                <li>
+                  <.link href={~p"/admin/database/abilities"}>
+                    Abilities
+                  </.link>
+                </li>
+                <li>
+                  <.link class="link-neutral pointer-events-none">
+                    Blessings
+                  </.link>
+                </li>
+                <li>
+                  <.link href={~p"/admin/database/equipments"}>
+                    Equipments
+                  </.link>
+                </li>
+                <li>
+                  <.link href={~p"/admin/database/items"}>
+                    Items
+                  </.link>
+                </li>
+                <li>
+                  <.link class="link-neutral pointer-events-none">
+                    Pets
+                  </.link>
+                </li>
+                <li>
+                  <.link href={~p"/admin/database/professions"}>
+                    Professions
+                  </.link>
+                </li>
+                <li>
+                  <.link href={~p"/admin/database/states"}>
+                    States
+                  </.link>
+                </li>
+              </ul>
+              <div>
+                <span class="menu-title">World</span>
+                <ul>
+                  <li>
+                    <.link href={~p"/admin/database/creatures"}>
+                      Creatures
+                    </.link>
+                  </li>
+                  <li>
+                    <.link class="link-neutral pointer-events-none">
+                      Factions
+                    </.link>
+                  </li>
+                  <li>
+                    <.link class="link-neutral pointer-events-none">
+                      Zones
+                    </.link>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <span class="menu-title">Types</span>
+                <ul>
+                  <li>
+                    <.link href={~p"/admin/database/elements"}>
+                      Elements
+                    </.link>
+                  </li>
+                  <li>
+                    <.link href={~p"/admin/database/biomes"}>
+                      Biomes
+                    </.link>
+                  </li>
+                  <li>
+                    <.link href={~p"/admin/database/ability-types"}>
+                      Ability Types
+                    </.link>
+                  </li>
+                  <li>
+                    <.link href={~p"/admin/database/item-types"}>
+                      Item Types
+                    </.link>
+                  </li>
+                  <li>
+                    <.link href={~p"/admin/database/equipment-types"}>
+                      Equipment Types
+                    </.link>
+                  </li>
+                  <li>
+                    <.link href={~p"/admin/database/creature-types"}>
+                      Creature Types
+                    </.link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </details>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

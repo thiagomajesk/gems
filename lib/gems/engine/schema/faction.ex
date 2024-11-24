@@ -1,8 +1,8 @@
 defmodule GEMS.Engine.Schema.Faction do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, :resource
 
   @required_fields [:name]
+
   @optional_fields [:description, :icon]
 
   schema "factions" do

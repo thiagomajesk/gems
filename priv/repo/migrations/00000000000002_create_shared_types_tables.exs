@@ -22,6 +22,9 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
       add :name, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
+
+      add :affinity_id, references(:elements), null: true
+      add :aversion_id, references(:elements), null: true
     end
 
     create unique_index(:biomes, :name)
@@ -61,5 +64,17 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
     end
 
     create unique_index(:equipment_types, :name)
+
+    ################################################################################
+    # Creature Types
+    ################################################################################
+
+    create table(:creature_types) do
+      add :name, :string, null: false
+      add :description, :string, null: true
+      add :icon, :string, null: true
+    end
+
+    create unique_index(:creature_types, :name)
   end
 end

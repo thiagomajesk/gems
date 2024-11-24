@@ -1,8 +1,8 @@
 defmodule GEMS.Engine.Schema.Blessing do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, :resource
 
   @required_fields [:name, :duration]
+
   @optional_fields [:icon, :description]
 
   schema "blessings" do

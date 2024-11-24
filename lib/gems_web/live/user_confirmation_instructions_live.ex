@@ -5,25 +5,26 @@ defmodule GEMSWeb.UserConfirmationInstructionsLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        No confirmation instructions received?
-        <:subtitle>We'll send a new confirmation link to your inbox</:subtitle>
-      </.header>
-
-      <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
-        <.input field={@form[:email]} type="email" placeholder="Email" required />
-        <:actions>
-          <.button phx-disable-with="Sending..." class="w-full">
-            Resend confirmation instructions
-          </.button>
-        </:actions>
-      </.simple_form>
-
-      <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
+    <div class="flex flex-col justify-center items-center size-full">
+      <div class="card w-96 bg-base-200 shadow">
+        <div class="card-body">
+          <header class="text-center">
+            <h2 class="text-2xl mb-4">Reset Password</h2>
+          </header>
+          <.form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
+            <.input
+              label="Registered email"
+              field={@form[:email]}
+              type="email"
+              placeholder="Email"
+              required
+            />
+            <button phx-disable-with="Sending..." class="btn btn-primary w-full">
+              Resend confirmation instructions
+            </button>
+          </.form>
+        </div>
+      </div>
     </div>
     """
   end

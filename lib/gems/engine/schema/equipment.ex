@@ -1,6 +1,5 @@
 defmodule GEMS.Engine.Schema.Equipment do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, :resource
 
   @slots [
     :trinket,
@@ -15,12 +14,11 @@ defmodule GEMS.Engine.Schema.Equipment do
   ]
 
   @required_fields [:name, :slot, :type_id]
+
   @optional_fields [
     :description,
     :icon,
-    :tier,
     :price,
-    :hidden,
     :max_health,
     :max_energy,
     :physical_damage,
@@ -46,9 +44,8 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :description, :string
     field :icon, :string
     field :slot, Ecto.Enum, values: @slots
-    field :tier, :integer
     field :price, :integer
-    field :hidden, :boolean
+
     field :max_health, :integer
     field :max_energy, :integer
     field :physical_damage, :integer
@@ -68,7 +65,7 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :resilience, :integer
     field :lehality, :integer
 
-    many_to_many :traits, GEMS.Engine.Schema.Trait, join_through: "equipments_traits"
+    has_many :traits, GEMS.Engine.Schema.Trait
     many_to_many :abilities, GEMS.Engine.Schema.Ability, join_through: "equipments_abilities"
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
   end
@@ -77,6 +74,7 @@ defmodule GEMS.Engine.Schema.Equipment do
   def changeset(equipment, attrs) do
     equipment
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
     |> validate_required(@required_fields)
     |> assoc_constraint(:type)
   end

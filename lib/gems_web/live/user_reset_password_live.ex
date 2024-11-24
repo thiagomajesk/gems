@@ -5,35 +5,41 @@ defmodule GEMSWeb.UserResetPasswordLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">Reset Password</.header>
+    <div class="flex flex-col justify-center items-center size-full">
+      <div class="card w-96 bg-base-200 shadow">
+        <div class="card-body">
+          <header class="text-center">
+            <h2 class="text-2xl mb-4">Reset Password</h2>
+          </header>
+          <.form
+            for={@form}
+            id="reset_password_form"
+            phx-submit="reset_password"
+            phx-change="validate"
+            class="space-y-4"
+          >
+            <.input field={@form[:password]} type="password" label="New password" required />
+            <.input
+              field={@form[:password_confirmation]}
+              type="password"
+              label="Confirm new password"
+              required
+            />
+            <button phx-disable-with="Creating account..." class="btn btn-primary w-full">
+              Create account
+            </button>
 
-      <.simple_form
-        for={@form}
-        id="reset_password_form"
-        phx-submit="reset_password"
-        phx-change="validate"
-      >
-        <.error :if={@form.errors != []}>
-          Oops, something went wrong! Please check the errors below.
-        </.error>
-
-        <.input field={@form[:password]} type="password" label="New password" required />
-        <.input
-          field={@form[:password_confirmation]}
-          type="password"
-          label="Confirm new password"
-          required
-        />
-        <:actions>
-          <.button phx-disable-with="Resetting..." class="w-full">Reset Password</.button>
-        </:actions>
-      </.simple_form>
-
-      <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
+            <div class="text-center">
+              <p class="text-sm">
+                Already registered?
+                <.link navigate={~p"/users/login"} class="link link-primary font-semibold">
+                  Log in
+                </.link>
+              </p>
+            </div>
+          </.form>
+        </div>
+      </div>
     </div>
     """
   end
@@ -61,7 +67,7 @@ defmodule GEMSWeb.UserResetPasswordLive do
         {:noreply,
          socket
          |> put_flash(:info, "Password reset successfully.")
-         |> redirect(to: ~p"/users/log_in")}
+         |> redirect(to: ~p"/users/login")}
 
       {:error, changeset} ->
         {:noreply, assign_form(socket, Map.put(changeset, :action, :insert))}

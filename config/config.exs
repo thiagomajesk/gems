@@ -50,7 +50,7 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.4.3",
+  version: "3.4.13",
   gems: [
     args: ~w(
       --config=tailwind.config.js

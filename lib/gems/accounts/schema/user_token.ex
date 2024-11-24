@@ -1,6 +1,6 @@
 defmodule GEMS.Accounts.Schema.UserToken do
-  use Ecto.Schema
-  import Ecto.Query
+  use GEMS.Database.Schema, :default
+
   alias GEMS.Accounts.Schema.UserToken
 
   @hash_algorithm :sha256

@@ -1,6 +1,5 @@
 defmodule GEMS.Engine.Schema.Element do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, :resource
 
   @required_fields [:name]
 

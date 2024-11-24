@@ -53,12 +53,12 @@ defmodule GEMSWeb.Router do
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{GEMSWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/users/register", UserRegistrationLive, :new
-      live "/users/log_in", UserLoginLive, :new
-      live "/users/reset_password", UserForgotPasswordLive, :new
-      live "/users/reset_password/:token", UserResetPasswordLive, :edit
+      live "/users/login", UserLoginLive, :new
+      live "/users/reset-password", UserForgotPasswordLive, :new
+      live "/users/reset-password/:token", UserResetPasswordLive, :edit
     end
 
-    post "/users/log_in", UserSessionController, :create
+    post "/users/login", UserSessionController, :create
   end
 
   scope "/", GEMSWeb do
@@ -67,19 +67,32 @@ defmodule GEMSWeb.Router do
     live_session :require_authenticated_user,
       on_mount: [{GEMSWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/users/settings/confirm-email/:token", UserSettingsLive, :confirm_email
     end
   end
 
   scope "/", GEMSWeb do
     pipe_through [:browser]
 
-    delete "/users/log_out", UserSessionController, :delete
+    delete "/users/logout", UserSessionController, :delete
 
     live_session :current_user,
       on_mount: [{GEMSWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
+    end
+  end
+
+  scope "/admin", GEMSWeb.Admin do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :admin,
+      layout: {GEMSWeb.Layouts, :admin},
+      on_mount: [{GEMSWeb.UserAuth, :ensure_authenticated}] do
+      live "/database", Database.DashboardLive
+      live "/database/:resource", Database.ResourceLive.Index
+      live "/database/:resource/new", Database.ResourceLive.Show, :new
+      live "/database/:resource/:id/edit", Database.ResourceLive.Show, :edit
     end
   end
 end

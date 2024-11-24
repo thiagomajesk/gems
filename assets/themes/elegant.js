@@ -1,0 +1,16 @@
+export default {
+  "--content-background": "#0A0A0A",
+  primary: "#BB86FC",
+  secondary: "#03DAC6",
+  accent: "#FF4081",
+  neutral: "#424242",
+  "base-100": "#121212",
+  "base-200": "#1E1E1E",
+  "base-300": "#2E2E2E",
+  info: "#2196F3",
+  success: "#4CAF50",
+  warning: "#FF9800",
+  error: "#F44336",
+  "text-primary": "#FFFFFF",
+  "text-secondary": "#B0B0B0",
+};

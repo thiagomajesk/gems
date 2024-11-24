@@ -1,8 +1,12 @@
 defmodule GEMS.Engine.Schema.Creature do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, :resource
 
-  @required_fields [:name]
+  @required_fields [
+    :name,
+    :type_id,
+    :biome_id
+  ]
+
   @optional_fields [
     :description,
     :max_health,
@@ -48,7 +52,8 @@ defmodule GEMS.Engine.Schema.Creature do
     field :lehality, :integer
 
     belongs_to :biome, GEMS.Engine.Schema.Biome
-    many_to_many :traits, GEMS.Engine.Schema.Trait, join_through: "creatures_traits"
+    belongs_to :type, GEMS.Engine.Schema.CreatureType
+    has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
     has_many :action_patterns, GEMS.Engine.Schema.CreatureActionPattern
   end
 
@@ -56,6 +61,7 @@ defmodule GEMS.Engine.Schema.Creature do
   def changeset(creature, attrs) do
     creature
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
     |> validate_required(@required_fields)
     |> unique_constraint(:name)
   end
