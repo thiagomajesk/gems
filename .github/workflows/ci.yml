@@ -1,0 +1,94 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Restore node cache
+        uses: actions/cache@v3
+        env:
+          cache-name: node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('assets/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Install node deps
+        run: npm install --prefix assets
+
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: test
+
+    strategy:
+      matrix:
+        otp: ["27"]
+        elixir: ["1.17"]
+
+    services:
+      db:
+        image: postgres:17
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
+
+      - name: Restore elixir cache
+        uses: actions/cache@v3
+        env:
+          cache-name: elixir-deps
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-
+
+      - name: Install elixir deps
+        run: mix deps.get
+
+      - name: Check unused deps
+        run: mix deps.unlock --check-unused
+
+      - name: Compiles without warnings
+        run: mix compile --warnings-as-errors
+
+      - name: Check elixir formatting
+        run: mix format --check-formatted
+
+      - name: Run elixir tests
+        run: mix test
