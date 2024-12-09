@@ -8,12 +8,13 @@ A Persistent Browser-Based Game (PBBG) is an online game you can play in your we
 
 ## Development
 
-To start your Phoenix server:
+This project is an [Elixir](https://elixir-lang.org/) application, built using the [Phoenix](https://www.phoenixframework.org/) framework. It uses [Node.js](https://nodejs.org/en/) for static asset management and [PostgreSQL](https://www.postgresql.org/) for persistence.
+
+To start the application:
 
   * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
-
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+  * Start the server with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+  * Visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Contributing
 
