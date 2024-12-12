@@ -1,0 +1,22 @@
+[
+  {
+    "id": "f954b393-04e9-49b9-a74e-f19ec3958c1f",
+    "name": "Health Potion",
+    "code": "item_health_potion",
+    "price": 5,
+    "purpose": "consumable",
+    "type_id": "d8c1c8a8-6c7d-4f1a-9c8e-ff1c7a9f9e55",
+    "target_side": "self",
+    "target_status": "alive"
+  },
+  {
+    "id": "8a245967-d7dc-47e7-8c2d-971423eb8fea",
+    "name": "Energy Potion",
+    "code": "item_energy_potion",
+    "price": 5,
+    "purpose": "consumable",
+    "type_id": "d8c1c8a8-6c7d-4f1a-9c8e-ff1c7a9f9e55",
+    "target_side": "self",
+    "target_status": "alive"
+  }
+]

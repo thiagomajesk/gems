@@ -10,6 +10,7 @@ defmodule GEMS.Engine.Schema.Item do
 
   @required_fields [
     :name,
+    :code,
     :type_id,
     :purpose
   ]
@@ -58,6 +59,7 @@ defmodule GEMS.Engine.Schema.Item do
 
   schema "items" do
     field :name, :string
+    field :code, :string
     field :description, :string
     field :icon, :string
     field :price, :integer
@@ -84,12 +86,31 @@ defmodule GEMS.Engine.Schema.Item do
     many_to_many :ingredients, GEMS.Engine.Schema.Item, join_through: "items_ingredients"
   end
 
+  @doc false
   def changeset(item, attrs) do
+    build_changeset(item, attrs,
+      required_fields: @required_fields,
+      optional_fields: @optional_fields
+    )
+  end
+
+  @doc false
+  def seed_changeset(item, attrs) do
+    build_changeset(
+      item,
+      attrs,
+      required_fields: [:id | @required_fields],
+      optional_fields: @optional_fields
+    )
+  end
+
+  defp build_changeset(item, attrs, opts) do
+    required_fields = Keyword.fetch!(opts, :required_fields)
+    optional_fields = Keyword.get(opts, :optional_fields, [])
+
     item
-    |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_assoc(:effects, sort_param: :effects_sort, drop_param: :effects_drop)
-    |> validate_required(@required_fields)
+    |> cast(attrs, required_fields ++ optional_fields)
+    |> validate_required(required_fields)
     |> unique_constraint(:name)
-    |> assoc_constraint(:type)
   end
 end

@@ -8,11 +8,13 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
 
     create table(:elements) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
     end
 
     create unique_index(:elements, :name)
+    create unique_index(:elements, :code)
 
     ################################################################################
     # Biomes
@@ -20,6 +22,7 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
 
     create table(:biomes) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
 
@@ -28,6 +31,7 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
     end
 
     create unique_index(:biomes, :name)
+    create unique_index(:biomes, :code)
 
     ################################################################################
     # Ability Types
@@ -35,11 +39,13 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
 
     create table(:ability_types) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
     end
 
     create unique_index(:ability_types, :name)
+    create unique_index(:ability_types, :code)
 
     ################################################################################
     # Item Types
@@ -47,11 +53,13 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
 
     create table(:item_types) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
     end
 
     create unique_index(:item_types, :name)
+    create unique_index(:item_types, :code)
 
     ################################################################################
     # Equipment Types
@@ -59,11 +67,13 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
 
     create table(:equipment_types) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
     end
 
     create unique_index(:equipment_types, :name)
+    create unique_index(:equipment_types, :code)
 
     ################################################################################
     # Creature Types
@@ -71,10 +81,12 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
 
     create table(:creature_types) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
     end
 
     create unique_index(:creature_types, :name)
+    create unique_index(:creature_types, :code)
   end
 end

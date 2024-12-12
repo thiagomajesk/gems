@@ -8,12 +8,14 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
 
     create table(:professions) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :type, :string, null: false
       add :icon, :string, null: true
     end
 
     create unique_index(:professions, :name)
+    create unique_index(:professions, :code)
 
     ################################################################################
     # Guilds
@@ -33,12 +35,13 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
 
     create table(:blessings) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :icon, :string, null: true
       add :description, :string, null: true
       add :duration, :integer, null: false
     end
 
-    create unique_index(:blessings, :name)
+    create unique_index(:blessings, :code)
 
     ################################################################################
     # Pets
@@ -46,11 +49,12 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
 
     create table(:pets) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :icon, :string, null: true
       add :description, :string, null: true
     end
 
-    create unique_index(:pets, :name)
+    create unique_index(:pets, :code)
 
     ################################################################################
     # Pets Blessings
@@ -79,6 +83,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
 
     create table(:zones) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :skull, :string, null: false
       add :danger, :integer, null: false, default: 1
@@ -92,6 +97,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     end
 
     create unique_index(:zones, :name)
+    create unique_index(:zones, :code)
 
     ################################################################################
     # Zones Gathering Options

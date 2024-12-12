@@ -1,7 +1,7 @@
 defmodule GEMS.Engine.Schema.State do
   use GEMS.Database.Schema, :resource
 
-  @required_fields [:name]
+  @required_fields [:name, :code]
 
   @optional_fields [:description, :icon, :priority, :restriction]
 
@@ -14,6 +14,7 @@ defmodule GEMS.Engine.Schema.State do
 
   schema "states" do
     field :name, :string
+    field :code, :string
     field :description, :string
     field :icon, :string
     field :priority, :integer
@@ -24,9 +25,26 @@ defmodule GEMS.Engine.Schema.State do
   def changeset(state, attrs) do
     state
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
     |> validate_required(@required_fields)
-    |> validate_number(:priority, greater_than_or_equal_to: 0)
+    |> unique_constraint(:name)
+  end
+
+  def seed_changeset(state, attrs) do
+    build_changeset(
+      state,
+      attrs,
+      required_fields: [:id | @required_fields],
+      optional_fields: @optional_fields
+    )
+  end
+
+  defp build_changeset(state, attrs, opts) do
+    required_fields = Keyword.fetch!(opts, :required_fields)
+    optional_fields = Keyword.get(opts, :optional_fields, [])
+
+    state
+    |> cast(attrs, required_fields ++ optional_fields)
+    |> validate_required(required_fields)
     |> unique_constraint(:name)
   end
 end

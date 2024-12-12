@@ -8,6 +8,7 @@ defmodule GEMS.Repo.Migrations.CreateItemsTables do
 
     create table(:items) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
       add :type_id, references(:item_types), null: false
@@ -35,7 +36,7 @@ defmodule GEMS.Repo.Migrations.CreateItemsTables do
       add :messages, :map, null: true
     end
 
-    create unique_index(:items, :name)
+    create unique_index(:items, :code)
 
     ################################################################################
     # Items Ingredients

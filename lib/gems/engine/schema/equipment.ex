@@ -13,7 +13,7 @@ defmodule GEMS.Engine.Schema.Equipment do
     :amulet
   ]
 
-  @required_fields [:name, :slot, :type_id]
+  @required_fields [:name, :code, :slot, :type_id]
 
   @optional_fields [
     :description,
@@ -41,6 +41,7 @@ defmodule GEMS.Engine.Schema.Equipment do
 
   schema "equipments" do
     field :name, :string
+    field :code, :string
     field :description, :string
     field :icon, :string
     field :slot, Ecto.Enum, values: @slots
@@ -72,10 +73,31 @@ defmodule GEMS.Engine.Schema.Equipment do
 
   @doc false
   def changeset(equipment, attrs) do
+    build_changeset(equipment, attrs,
+      required_fields: @required_fields,
+      optional_fields: @optional_fields
+    )
+  end
+
+  @doc false
+  def seed_changeset(equipment, attrs) do
+    build_changeset(
+      equipment,
+      attrs,
+      required_fields: [:id | @required_fields],
+      optional_fields: @optional_fields
+    )
+  end
+
+  defp build_changeset(equipment, attrs, opts) do
+    required_fields = Keyword.fetch!(opts, :required_fields)
+    optional_fields = Keyword.get(opts, :optional_fields, [])
+
     equipment
-    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast(attrs, required_fields ++ optional_fields)
     |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
-    |> validate_required(@required_fields)
-    |> assoc_constraint(:type)
+    |> cast_assoc(:abilities, sort_param: :abilities_sort, drop_param: :abilities_drop)
+    |> validate_required(required_fields)
+    |> unique_constraint(:name)
   end
 end

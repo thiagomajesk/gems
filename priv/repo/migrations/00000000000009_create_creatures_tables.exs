@@ -8,6 +8,7 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
 
     create table(:creatures) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :type_id, references(:creature_types), null: false
       add :biome_id, references(:biomes), null: false
@@ -32,7 +33,7 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
       add :lehality, :integer, null: false, default: 0
     end
 
-    create unique_index(:creatures, :name)
+    create unique_index(:creatures, :code)
 
     ################################################################################
     # Creature Action Patterns

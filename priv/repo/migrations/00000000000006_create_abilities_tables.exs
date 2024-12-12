@@ -8,6 +8,7 @@ defmodule GEMS.Repo.Migrations.CreateAbilitiesTables do
 
     create table(:abilities) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
       add :type_id, references(:ability_types), null: false
@@ -35,6 +36,6 @@ defmodule GEMS.Repo.Migrations.CreateAbilitiesTables do
       add :messages, :map, null: true
     end
 
-    create unique_index(:abilities, :name)
+    create unique_index(:abilities, :code)
   end
 end

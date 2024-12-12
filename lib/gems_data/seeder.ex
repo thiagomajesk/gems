@@ -6,8 +6,9 @@ defmodule GEMSData.Seeder do
 
   def create_entities(module, entries) do
     Enum.map(entries, fn entry ->
-      Logger.debug("Seeding #{module} #{entry["id"]}")
-      upsert_entity!(module.change(struct!(module), entry))
+      module_name = List.last(Module.split(module))
+      Logger.debug("Seeding #{module_name} (#{entry["id"]})")
+      upsert_entity!(module.seed_changeset(struct!(module), entry))
     end)
   end
 

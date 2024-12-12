@@ -3,6 +3,7 @@ defmodule GEMS.Engine.Schema.Creature do
 
   @required_fields [
     :name,
+    :code,
     :type_id,
     :biome_id
   ]
@@ -31,6 +32,7 @@ defmodule GEMS.Engine.Schema.Creature do
 
   schema "creatures" do
     field :name, :string
+    field :code, :string
     field :description, :string
     field :max_health, :integer
     field :max_energy, :integer
@@ -59,10 +61,30 @@ defmodule GEMS.Engine.Schema.Creature do
 
   @doc false
   def changeset(creature, attrs) do
+    build_changeset(creature, attrs,
+      required_fields: @required_fields,
+      optional_fields: @optional_fields
+    )
+  end
+
+  @doc false
+  def seed_changeset(creature, attrs) do
+    build_changeset(
+      creature,
+      attrs,
+      required_fields: [:id | @required_fields],
+      optional_fields: @optional_fields
+    )
+  end
+
+  defp build_changeset(creature, attrs, opts) do
+    required_fields = Keyword.fetch!(opts, :required_fields)
+    optional_fields = Keyword.get(opts, :optional_fields, [])
+
     creature
-    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast(attrs, required_fields ++ optional_fields)
     |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
-    |> validate_required(@required_fields)
+    |> validate_required(required_fields)
     |> unique_constraint(:name)
   end
 end
