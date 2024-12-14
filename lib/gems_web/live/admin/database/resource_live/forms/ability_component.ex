@@ -10,7 +10,10 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.AbilityComponent do
       <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/abilities"}>
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
           <div class="space-y-6">
-            <Forms.field_input type="text" field={f[:name]} label="Name" />
+            <div class="grid grid-cols-2 gap-6">
+              <Forms.field_input type="text" field={f[:name]} label="Name" />
+              <Forms.field_input type="text" field={f[:code]} label="Code" />
+            </div>
             <Forms.field_input type="textarea" field={f[:description]} label="Description" />
             <Forms.field_input type="text" field={f[:icon]} label="Icon" />
 

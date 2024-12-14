@@ -1,25 +1,25 @@
 defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ProfessionComponent do
   use GEMSWeb, :live_component
 
+  alias UI.Admin.Forms
+
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-wrapper"}>
-      <UI.Admin.Forms.base_form
-        :let={f}
-        id={@id}
-        for={@form}
-        return_to={~p"/admin/database/professions"}
-      >
-        <UI.Admin.Forms.field_input type="text" field={f[:name]} label="Name" />
-        <UI.Admin.Forms.field_input type="textarea" field={f[:description]} label="Description" />
-        <UI.Admin.Forms.field_input type="text" field={f[:icon]} label="Icon" />
-        <UI.Admin.Forms.field_input
+      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/professions"}>
+        <div class="grid grid-cols-2 gap-6">
+          <Forms.field_input type="text" field={f[:name]} label="Name" />
+          <Forms.field_input type="text" field={f[:code]} label="Code" />
+        </div>
+        <Forms.field_input type="textarea" field={f[:description]} label="Description" />
+        <Forms.field_input type="text" field={f[:icon]} label="Icon" />
+        <Forms.field_input
           type="select"
           field={f[:type]}
           label="Type"
           options={@profession_type_options}
         />
-      </UI.Admin.Forms.base_form>
+      </Forms.base_form>
     </div>
     """
   end

@@ -53,6 +53,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   attr :placeholder, :string, default: nil
   attr :type, :string, required: true, values: ~w(text number textarea select percentage)
   attr :options, :list, default: nil
+  attr :rest, :global
 
   def field_input(%{field: %{} = field} = assigns) do
     assigns
@@ -78,6 +79,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
         value={@value}
         placeholder={@placeholder}
         class={["textarea textarea-bordered w-full", @errors != [] && "textarea-error"]}
+        {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
       <.error_message :for={msg <- @errors}>{msg}</.error_message>
     </label>
@@ -96,6 +98,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
         id={@id}
         name={@name}
         class={["select select-bordered", @errors != [] && "select-error"]}
+        {@rest}
       >
         <option value="">Select an option</option>
         {Phoenix.HTML.Form.options_for_select(@options, @value)}
@@ -123,6 +126,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
           placeholder={@placeholder}
           step="0.01"
           class={["w-full", @errors != [] && "input-error"]}
+          {@rest}
         />
         <.error_message :for={msg <- @errors}>{msg}</.error_message>
       </div>
@@ -147,6 +151,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
         type={@type}
         placeholder={@placeholder}
         class={["input input-bordered w-full", @errors != [] && "input-error"]}
+        {@rest}
       />
       <.error_message :for={msg <- @errors}>{msg}</.error_message>
     </label>
