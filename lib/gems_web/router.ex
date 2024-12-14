@@ -90,9 +90,9 @@ defmodule GEMSWeb.Router do
       layout: {GEMSWeb.Layouts, :admin},
       on_mount: [{GEMSWeb.UserAuth, :ensure_authenticated}] do
       live "/database", Database.DashboardLive
-      live "/database/:resource", Database.ResourceLive.Index
-      live "/database/:resource/new", Database.ResourceLive.Show, :new
-      live "/database/:resource/:id/edit", Database.ResourceLive.Show, :edit
+      live "/database/:collection", Database.ResourceLive.Index
+      live "/database/:collection/new", Database.ResourceLive.Show, :new
+      live "/database/:collection/:id/edit", Database.ResourceLive.Show, :edit
     end
   end
 end

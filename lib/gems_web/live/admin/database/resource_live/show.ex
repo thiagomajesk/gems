@@ -17,6 +17,120 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
 
   alias GEMSWeb.Admin.Database.ResourceLive.Forms
 
+  @collections %{
+    "abilities" => %{
+      module: Ability,
+      component: Forms.AbilityComponent,
+      preloads: [
+        effects: [
+          :recovery,
+          :state_change,
+          :parameter_change
+        ]
+      ]
+    },
+    "ability-types" => %{
+      module: AbilityType,
+      component: Forms.AbilityTypeComponent,
+      preloads: []
+    },
+    "biomes" => %{
+      module: Biome,
+      component: Forms.BiomeComponent,
+      preloads: []
+    },
+    "creature-types" => %{
+      module: CreatureType,
+      component: Forms.CreatureTypeComponent,
+      preloads: []
+    },
+    "creatures" => %{
+      module: Creature,
+      component: Forms.CreatureComponent,
+      preloads: [
+        traits: [
+          :ability_seal,
+          :attack_ability,
+          :attack_element,
+          :attack_state,
+          :element_rate,
+          :equipment_seal,
+          :item_seal,
+          :parameter_change,
+          :parameter_rate,
+          :state_rate
+        ]
+      ]
+    },
+    "elements" => %{
+      module: Element,
+      component: Forms.ElementComponent,
+      preloads: []
+    },
+    "equipment-types" => %{
+      module: EquipmentType,
+      component: Forms.EquipmentTypeComponent,
+      preloads: []
+    },
+    "equipments" => %{
+      module: Equipment,
+      component: Forms.EquipmentComponent,
+      preloads: [
+        traits: [
+          :ability_seal,
+          :attack_ability,
+          :attack_element,
+          :attack_state,
+          :element_rate,
+          :equipment_seal,
+          :item_seal,
+          :parameter_change,
+          :parameter_rate,
+          :state_rate
+        ]
+      ]
+    },
+    "items" => %{
+      module: Item,
+      component: Forms.ItemComponent,
+      preloads: [
+        effects: [
+          :recovery,
+          :state_change,
+          :parameter_change
+        ]
+      ]
+    },
+    "item-types" => %{
+      module: ItemType,
+      component: Forms.ItemTypeComponent,
+      preloads: []
+    },
+    "professions" => %{
+      module: Profession,
+      component: Forms.ProfessionComponent,
+      preloads: []
+    },
+    "states" => %{
+      module: State,
+      component: Forms.StateComponent,
+      preloads: [
+        traits: [
+          :ability_seal,
+          :attack_ability,
+          :attack_element,
+          :attack_state,
+          :element_rate,
+          :equipment_seal,
+          :item_seal,
+          :parameter_change,
+          :parameter_rate,
+          :state_rate
+        ]
+      ]
+    }
+  }
+
   def render(assigns) do
     ~H"""
     <section class="space-y-8">
@@ -30,50 +144,65 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
     """
   end
 
-  def mount(%{"resource" => resource}, _session, socket) do
+  def mount(%{"collection" => collection}, _session, socket) do
+    %{
+      module: module,
+      preloads: preloads,
+      component: component
+    } = Map.fetch!(@collections, collection)
+
     {:ok,
-     socket
-     |> assign(:assocs, %{})
-     |> assign(:resource, resource)
-     |> assign(:component, form_module(resource))}
+     assign(socket,
+       module: module,
+       preloads: preloads,
+       component: component,
+       collection: collection
+     )}
   end
 
   def handle_params(%{"id" => id}, _uri, socket) do
     %{
+      module: module,
+      preloads: preloads,
       live_action: action,
-      resource: resource
+      collection: collection
     } = socket.assigns
 
-    entity = entity(resource, id)
-    changeset = changeset(resource, entity)
+    entity = get_entity!(module, id, preloads)
+    changeset = change_entity(module, entity)
 
     {:noreply,
-     socket
-     |> assign(:form, to_form(changeset))
-     |> assign(:title, page_title(resource, action))}
+     assign(
+       socket,
+       form: to_form(changeset),
+       title: page_title(collection, action)
+     )}
   end
 
   def handle_params(_params, _uri, socket) do
     %{
+      module: module,
       live_action: action,
-      resource: resource
+      collection: collection
     } = socket.assigns
 
-    changeset = changeset(resource)
+    changeset = change_entity(module)
 
     {:noreply,
-     socket
-     |> assign(:form, to_form(changeset))
-     |> assign(:title, page_title(resource, action))}
+     assign(
+       socket,
+       form: to_form(changeset),
+       title: page_title(collection, action)
+     )}
   end
 
   def handle_event("validate", %{"entity" => params}, socket) do
     %{
-      form: %{data: entity},
-      resource: resource
+      module: module,
+      form: %{data: entity}
     } = socket.assigns
 
-    changeset = changeset(resource, entity, params)
+    changeset = change_entity(module, entity, params)
 
     {:noreply, assign(socket, :form, to_form(changeset, action: :validate))}
   end
@@ -83,168 +212,38 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
     {:noreply, save_entity(socket, action, params)}
   end
 
-  defp page_title(resource, :new), do: "New • #{title(resource)}"
-  defp page_title(resource, :edit), do: "Update • #{title(resource)}"
+  defp page_title(collection, :new), do: "New • #{title(collection)}"
+  defp page_title(collection, :edit), do: "Update • #{title(collection)}"
 
-  defp title(resource) do
-    resource
+  defp title(collection) do
+    collection
     |> Recase.to_sentence()
     |> Exflect.singularize()
     |> String.capitalize()
   end
 
-  defp entity("abilities", id),
-    do:
-      Ability.get!(id,
-        effects: [
-          :recovery,
-          :state_change,
-          :parameter_change
-        ]
-      )
+  defp get_entity!(module, id, preloads), do: apply(module, :get!, [id, preloads])
 
-  defp entity("ability-types", id), do: AbilityType.get!(id)
-  defp entity("biomes", id), do: Biome.get!(id)
-  defp entity("creature-types", id), do: CreatureType.get!(id)
+  defp change_entity(module, entity \\ nil, attrs \\ %{}),
+    do: apply(module, :change, [entity, attrs])
 
-  defp entity("creatures", id),
-    do:
-      Creature.get!(id,
-        traits: [
-          :ability_seal,
-          :attack_ability,
-          :attack_element,
-          :attack_state,
-          :element_rate,
-          :equipment_seal,
-          :item_seal,
-          :parameter_change,
-          :parameter_rate,
-          :state_rate
-        ]
-      )
-
-  defp entity("elements", id), do: Element.get!(id)
-  defp entity("equipment-types", id), do: EquipmentType.get!(id)
-
-  defp entity("equipments", id),
-    do:
-      Equipment.get!(id,
-        traits: [
-          :ability_seal,
-          :attack_ability,
-          :attack_element,
-          :attack_state,
-          :element_rate,
-          :equipment_seal,
-          :item_seal,
-          :parameter_change,
-          :parameter_rate,
-          :state_rate
-        ]
-      )
-
-  defp entity("item-types", id), do: ItemType.get!(id)
-
-  defp entity("items", id),
-    do:
-      Item.get!(id,
-        effects: [
-          :recovery,
-          :state_change,
-          :parameter_change
-        ]
-      )
-
-  defp entity("professions", id), do: Profession.get!(id)
-
-  defp entity("states", id),
-    do:
-      State.get!(id,
-        traits: [
-          :ability_seal,
-          :attack_ability,
-          :attack_element,
-          :attack_state,
-          :element_rate,
-          :equipment_seal,
-          :item_seal,
-          :parameter_change,
-          :parameter_rate,
-          :state_rate
-        ]
-      )
-
-  defp changeset(resource, entity \\ nil, attrs \\ %{})
-
-  defp changeset("abilities", entity, attrs), do: Ability.change(entity, attrs)
-  defp changeset("ability-types", entity, attrs), do: AbilityType.change(entity, attrs)
-  defp changeset("biomes", entity, attrs), do: Biome.change(entity, attrs)
-  defp changeset("creature-types", entity, attrs), do: CreatureType.change(entity, attrs)
-  defp changeset("creatures", entity, attrs), do: Creature.change(entity, attrs)
-  defp changeset("elements", entity, attrs), do: Element.change(entity, attrs)
-  defp changeset("equipment-types", entity, attrs), do: EquipmentType.change(entity, attrs)
-  defp changeset("equipments", entity, attrs), do: Equipment.change(entity, attrs)
-  defp changeset("item-types", entity, attrs), do: ItemType.change(entity, attrs)
-  defp changeset("items", entity, attrs), do: Item.change(entity, attrs)
-  defp changeset("professions", entity, attrs), do: Profession.change(entity, attrs)
-  defp changeset("states", entity, attrs), do: State.change(entity, attrs)
-
-  defp create_resource("abilities", attrs), do: Ability.create(attrs)
-  defp create_resource("ability-types", attrs), do: AbilityType.create(attrs)
-  defp create_resource("biomes", attrs), do: Biome.create(attrs)
-  defp create_resource("creature-types", attrs), do: CreatureType.create(attrs)
-  defp create_resource("creatures", attrs), do: Creature.create(attrs)
-  defp create_resource("elements", attrs), do: Element.create(attrs)
-  defp create_resource("equipment-types", attrs), do: EquipmentType.create(attrs)
-  defp create_resource("equipments", attrs), do: Equipment.create(attrs)
-  defp create_resource("item-types", attrs), do: ItemType.create(attrs)
-  defp create_resource("items", attrs), do: Item.create(attrs)
-  defp create_resource("professions", attrs), do: Profession.create(attrs)
-  defp create_resource("states", attrs), do: State.create(attrs)
-
-  defp update_resource("abilities", entity, attrs), do: Ability.update(entity, attrs)
-  defp update_resource("ability-types", entity, attrs), do: AbilityType.update(entity, attrs)
-  defp update_resource("biomes", entity, attrs), do: Biome.update(entity, attrs)
-  defp update_resource("creature-types", entity, attrs), do: CreatureType.update(entity, attrs)
-  defp update_resource("creatures", entity, attrs), do: Creature.update(entity, attrs)
-  defp update_resource("elements", entity, attrs), do: Element.update(entity, attrs)
-  defp update_resource("equipment-types", entity, attrs), do: EquipmentType.update(entity, attrs)
-  defp update_resource("equipments", entity, attrs), do: Equipment.update(entity, attrs)
-  defp update_resource("item-types", entity, attrs), do: ItemType.update(entity, attrs)
-  defp update_resource("items", entity, attrs), do: Item.update(entity, attrs)
-  defp update_resource("professions", entity, attrs), do: Profession.update(entity, attrs)
-  defp update_resource("states", entity, attrs), do: State.update(entity, attrs)
-
-  defp form_module("abilities"), do: Forms.AbilityComponent
-  defp form_module("ability-types"), do: Forms.AbilityTypeComponent
-  defp form_module("biomes"), do: Forms.BiomeComponent
-  defp form_module("creature-types"), do: Forms.CreatureTypeComponent
-  defp form_module("creatures"), do: Forms.CreatureComponent
-  defp form_module("elements"), do: Forms.ElementComponent
-  defp form_module("equipment-types"), do: Forms.EquipmentTypeComponent
-  defp form_module("equipments"), do: Forms.EquipmentComponent
-  defp form_module("item-types"), do: Forms.ItemTypeComponent
-  defp form_module("items"), do: Forms.ItemComponent
-  defp form_module("professions"), do: Forms.ProfessionComponent
-  defp form_module("states"), do: Forms.StateComponent
+  defp create_entity(module, attrs), do: apply(module, :create, [attrs])
+  defp update_entity(module, entity, attrs), do: apply(module, :update, [entity, attrs])
 
   defp save_entity(socket, :new, params) do
-    %{resource: resource} = socket.assigns
+    %{module: module, collection: collection} = socket.assigns
 
-    case create_resource(resource, params) do
+    case create_entity(module, params) do
       {:ok, entity} ->
-        changeset = changeset(resource, entity)
+        changeset = change_entity(module, entity)
 
         socket
         |> assign(:entity, entity)
         |> assign(:form, to_form(changeset))
         |> put_flash(:success, "Entity created successfully.")
-        |> push_patch(to: ~p"/admin/database/#{resource}/#{entity}/edit")
+        |> push_patch(to: ~p"/admin/database/#{collection}/#{entity}/edit")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        dbg(changeset)
-
         socket
         |> assign(:form, to_form(changeset))
         |> put_flash(:error, "Failed to create entity.")
@@ -253,18 +252,19 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
 
   defp save_entity(socket, :edit, params) do
     %{
+      module: module,
       form: %{data: entity},
-      resource: resource
+      collection: collection
     } = socket.assigns
 
-    case update_resource(resource, entity, params) do
+    case update_entity(module, entity, params) do
       {:ok, entity} ->
-        changeset = changeset(resource, entity)
+        changeset = change_entity(module, entity)
 
         socket
         |> assign(:form, to_form(changeset))
         |> put_flash(:success, "Entity updated successfully.")
-        |> push_patch(to: ~p"/admin/database/#{resource}/#{entity}/edit")
+        |> push_patch(to: ~p"/admin/database/#{collection}/#{entity}/edit")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         socket
