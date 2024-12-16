@@ -138,7 +138,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
         <h1 class="text-2xl font-bold uppercase">{@title}</h1>
       </header>
       <div class="card card-bordered p-4 bg-base-100">
-        <.live_component module={@component} id="entity-form" form={@form} />
+        <.live_component module={@component} id="entity-form" form={@form} live_action={@live_action} />
       </div>
     </section>
     """
@@ -164,7 +164,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
     %{
       module: module,
       preloads: preloads,
-      live_action: action,
+      live_action: live_action,
       collection: collection
     } = socket.assigns
 
@@ -175,14 +175,14 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
      assign(
        socket,
        form: to_form(changeset),
-       title: page_title(collection, action)
+       title: page_title(collection, live_action)
      )}
   end
 
   def handle_params(_params, _uri, socket) do
     %{
       module: module,
-      live_action: action,
+      live_action: live_action,
       collection: collection
     } = socket.assigns
 
@@ -192,7 +192,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
      assign(
        socket,
        form: to_form(changeset),
-       title: page_title(collection, action)
+       title: page_title(collection, live_action)
      )}
   end
 

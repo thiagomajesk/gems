@@ -12,7 +12,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.EquipmentComponent do
           <div class="space-y-6">
             <div class="grid grid-cols-2 gap-6">
               <Forms.field_input type="text" field={f[:name]} label="Name" />
-              <Forms.field_input type="text" field={f[:code]} label="Code" />
+              <Forms.field_input type="text" field={f[:code]} label="Code" disabled={@live_action == :edit} />
             </div>
             <Forms.field_input type="textarea" field={f[:description]} label="Description" />
             <Forms.field_input type="text" field={f[:icon]} label="Icon" />
