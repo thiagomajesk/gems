@@ -212,6 +212,14 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
     {:noreply, save_entity(socket, action, params)}
   end
 
+  def handle_event("code-hint", %{"prefix" => prefix, "value" => name}, socket) do
+    %{form: %{source: changeset}} = socket.assigns
+
+    code = Recase.to_snake("#{prefix}-#{name}")
+    changeset = Ecto.Changeset.put_change(changeset, :code, code)
+    {:noreply, assign(socket, :form, to_form(changeset, action: :validate))}
+  end
+
   defp page_title(collection, :new), do: "New • #{title(collection)}"
   defp page_title(collection, :edit), do: "Update • #{title(collection)}"
 

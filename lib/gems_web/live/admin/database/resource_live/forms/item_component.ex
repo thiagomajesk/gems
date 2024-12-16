@@ -11,8 +11,19 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ItemComponent do
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
           <div class="space-y-6">
             <div class="grid grid-cols-2 gap-6">
-              <Forms.field_input type="text" field={f[:name]} label="Name" />
-              <Forms.field_input type="text" field={f[:code]} label="Code" disabled={@live_action == :edit} />
+              <Forms.field_input
+                type="text"
+                field={f[:name]}
+                label="Name"
+                phx-keyup={@live_action == :new && "code-hint"}
+                phx-value-prefix={@live_action == :new && "item"}
+              />
+              <Forms.field_input
+                type="text"
+                field={f[:code]}
+                label="Code"
+                disabled={@live_action == :edit}
+              />
             </div>
             <Forms.field_input type="textarea" field={f[:description]} label="Description" />
             <Forms.field_input type="text" field={f[:icon]} label="Icon" />

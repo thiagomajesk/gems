@@ -8,8 +8,19 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.CreatureTypeComponent do
     <div id={"#{@id}-wrapper"}>
       <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/creature-types"}>
         <div class="grid grid-cols-2 gap-6">
-          <Forms.field_input type="text" field={f[:name]} label="Name" />
-          <Forms.field_input type="text" field={f[:code]} label="Code" disabled={@live_action == :edit} />
+          <Forms.field_input
+            type="text"
+            field={f[:name]}
+            label="Name"
+            phx-keyup={@live_action == :new && "code-hint"}
+            phx-value-prefix="creature-type"
+          />
+          <Forms.field_input
+            type="text"
+            field={f[:code]}
+            label="Code"
+            disabled={@live_action == :edit}
+          />
         </div>
         <Forms.field_input type="textarea" field={f[:description]} label="Description" />
       </Forms.base_form>

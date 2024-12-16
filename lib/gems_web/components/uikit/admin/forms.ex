@@ -53,7 +53,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   attr :placeholder, :string, default: nil
   attr :type, :string, required: true, values: ~w(text number textarea select percentage)
   attr :options, :list, default: nil
-  attr :rest, :global
+  attr :rest, :global, include: ~w(disabled)
 
   def field_input(%{field: %{} = field} = assigns) do
     assigns
