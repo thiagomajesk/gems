@@ -6,12 +6,42 @@ defmodule GEMS.Characters do
   import Ecto.Query, warn: false
   alias GEMS.Repo
 
+  alias GEMS.Accounts.Schema.User
   alias GEMS.Engine.Schema.Character
+
+  @doc """
+  Returns the list of characters.
+  """
+  def list_characters(%User{id: user_id}) do
+    Repo.all(from c in Character, where: c.user_id == ^user_id)
+  end
+
+  @doc """
+  Gets a single character.
+  """
+  def get_character!(id), do: Repo.get!(Character, id)
+
+  @doc """
+  Creates a character.
+  """
+  def create_character(%User{} = user, attrs \\ %{}) do
+    %Character{}
+    |> Character.changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
+    |> Repo.insert()
+  end
 
   @doc """
   Returns the number of active charactes.
   """
   def count_active_characters() do
     Repo.aggregate(Character, :count, :id)
+  end
+
+  @doc """
+  Returns a changeset for tracking character changes.
+  """
+  def change_character(%Character{} = character, attrs \\ %{}) do
+    Character.changeset(character, attrs)
   end
 end

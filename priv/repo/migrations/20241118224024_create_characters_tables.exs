@@ -29,6 +29,7 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
       add :resilience, :integer, null: false, default: 0
       add :lehality, :integer, null: false, default: 0
 
+      add :avatar_id, references(:avatars), null: false
       add :faction_id, references(:factions), null: false
       add :user_id, references(:users), null: false
 

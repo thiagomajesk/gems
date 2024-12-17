@@ -1,8 +1,7 @@
 defmodule GEMS.Engine.Schema.Character do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, :default
 
-  @required_fields [:name, :faction_id, :user_id]
+  @required_fields [:name, :avatar_id, :faction_id]
 
   @optional_fields [
     :title,
@@ -49,6 +48,7 @@ defmodule GEMS.Engine.Schema.Character do
     field :lehality, :integer
 
     belongs_to :faction, GEMS.Engine.Schema.Faction
+    belongs_to :avatar, GEMS.World.Schema.Avatar
     belongs_to :user, GEMS.Accounts.Schema.User
 
     timestamps()

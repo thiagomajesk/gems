@@ -1,7 +1,7 @@
 # Default admin user
-GEMSData.seed_admin("0987654321")
+GEMSData.seed_admin("123123123")
 
-# Entity game data
+# Engine data
 
 GEMSData.seed_elements()
 GEMSData.seed_biomes()
@@ -16,3 +16,8 @@ GEMSData.seed_equipments()
 GEMSData.seed_items()
 GEMSData.seed_professions()
 GEMSData.seed_states()
+
+# World data
+
+GEMSData.seed_avatars()
+GEMSData.seed_factions()

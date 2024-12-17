@@ -25,6 +25,12 @@ defmodule GEMSWeb.Endpoint do
     gzip: false,
     only: GEMSWeb.static_paths()
 
+  plug Plug.Static,
+    at: "/game/assets",
+    from: GEMSData.GameInfo.asset_path(),
+    gzip: false,
+    only: ~w(avatars)
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do

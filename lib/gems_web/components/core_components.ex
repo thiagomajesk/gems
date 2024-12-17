@@ -56,10 +56,11 @@ defmodule GEMSWeb.CoreComponents do
 
   attr :type, :string,
     default: "text",
-    values: ~w(checkbox email file number password text)
+    values: ~w(checkbox email file number password text select)
 
   attr :field, Phoenix.HTML.FormField
   attr :errors, :list, default: []
+  attr :options, :list, default: []
 
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
@@ -92,6 +93,27 @@ defmodule GEMSWeb.CoreComponents do
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
+    """
+  end
+
+  def input(%{type: "select"} = assigns) do
+    ~H"""
+    <label class="form-control w-full">
+      <div class="label font-medium">
+        <span class="label-text">
+          {@label}
+        </span>
+      </div>
+      <select
+        id={@id}
+        name={@name}
+        class={["select select-bordered", @errors != [] && "select-error"]}
+      >
+        <option value="">Select an option</option>
+        {Phoenix.HTML.Form.options_for_select(@options, @value)}
+      </select>
+      <.error :for={msg <- @errors}>{msg}</.error>
+    </label>
     """
   end
 

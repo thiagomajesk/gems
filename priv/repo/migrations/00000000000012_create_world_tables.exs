@@ -3,6 +3,20 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
 
   def change do
     ################################################################################
+    # Avatars
+    ################################################################################
+
+    create table(:avatars) do
+      add :name, :string, null: false
+      add :code, :string, null: false
+      add :description, :string, null: true
+      add :icon, :string, null: true
+    end
+
+    create unique_index(:avatars, :name)
+    create unique_index(:avatars, :code)
+
+    ################################################################################
     # Professions
     ################################################################################
 
@@ -71,11 +85,13 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
 
     create table(:factions) do
       add :name, :string, null: false
+      add :code, :string, null: false
       add :description, :string, null: true
       add :icon, :string, null: true
     end
 
     create unique_index(:factions, :name)
+    create unique_index(:factions, :code)
 
     ################################################################################
     # Zones

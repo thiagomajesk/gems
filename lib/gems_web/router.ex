@@ -68,6 +68,8 @@ defmodule GEMSWeb.Router do
       on_mount: [{GEMSWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm-email/:token", UserSettingsLive, :confirm_email
+      live "/accounts/characters", CharacterLive.Index
+      live "/accounts/characters/new", CharacterLive.New
     end
   end
 

@@ -17,6 +17,8 @@ defmodule GEMSData do
   alias GEMS.Engine.Schema.ItemType
   alias GEMS.Engine.Schema.Profession
   alias GEMS.Engine.Schema.State
+  alias GEMS.World.Schema.Avatar
+  alias GEMS.World.Schema.Faction
   alias GEMSData.Lookup
   alias GEMSData.Seeder
 
@@ -84,6 +86,16 @@ defmodule GEMSData do
   def seed_states do
     states = Lookup.list(:states)
     seed_entities(State, states)
+  end
+
+  def seed_avatars do
+    avatars = Lookup.list(:avatars)
+    seed_entities(Avatar, avatars)
+  end
+
+  def seed_factions do
+    factions = Lookup.list(:factions)
+    seed_entities(Faction, factions)
   end
 
   def seed_entities(_module, nil), do: nil

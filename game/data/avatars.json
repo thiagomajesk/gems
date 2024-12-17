@@ -1,0 +1,98 @@
+[
+  {
+    "id": "d0812d20-36cb-408f-a630-c89a5e631910",
+    "code": "avatars_man_1",
+    "name": "man_1",
+    "icon": "man_1.png"
+  },
+  {
+    "id": "c86befa6-491a-4eed-a3d2-25e0df174198",
+    "code": "avatars_man_2",
+    "name": "man_2",
+    "icon": "man_2.png"
+  },
+  {
+    "id": "ba7df717-2a95-4fed-9d13-4358b661bc3d",
+    "code": "avatars_man_3",
+    "name": "man_3",
+    "icon": "man_3.png"
+  },
+  {
+    "id": "087aa1d9-7d94-4fa5-82cd-bebc59c90d07",
+    "code": "avatars_man_4",
+    "name": "man_4",
+    "icon": "man_4.png"
+  },
+  {
+    "id": "1929e3bc-bfcb-44d9-a256-1b9b2bf48609",
+    "code": "avatars_man_5",
+    "name": "man_5",
+    "icon": "man_5.png"
+  },
+  {
+    "id": "9105e0fe-f4aa-4eba-9c67-7b26e0409f52",
+    "code": "avatars_man_6",
+    "name": "man_6",
+    "icon": "man_6.png"
+  },
+  {
+    "id": "d6b758e1-91be-45cb-96b2-a02624a157e1",
+    "code": "avatars_man_7",
+    "name": "man_7",
+    "icon": "man_7.png"
+  },
+  {
+    "id": "2934dec8-46a2-46d1-adb8-e6d7eddc41f7",
+    "code": "avatars_man_8",
+    "name": "man_8",
+    "icon": "man_8.png"
+  },
+  {
+    "id": "3ea6fd2e-2aac-4772-97bb-bf0a231f0df9",
+    "code": "avatars_woman_1",
+    "name": "woman_1",
+    "icon": "woman_1.png"
+  },
+  {
+    "id": "246cb375-4caa-4853-8865-80539917310d",
+    "code": "avatars_woman_2",
+    "name": "woman_2",
+    "icon": "woman_2.png"
+  },
+  {
+    "id": "40f0531b-8cd0-42d6-a69a-52d6b0451d57",
+    "code": "avatars_woman_3",
+    "name": "woman_3",
+    "icon": "woman_3.png"
+  },
+  {
+    "id": "524a078f-606b-4115-bef2-9cbe94e2f255",
+    "code": "avatars_woman_4",
+    "name": "woman_4",
+    "icon": "woman_4.png"
+  },
+  {
+    "id": "bc314aaf-60df-4ee9-a6c6-5e291620eabd",
+    "code": "avatars_woman_5",
+    "name": "woman_5",
+    "icon": "woman_5.png"
+  },
+  {
+    "id": "c67eb50f-6cba-4520-b6a3-7749f48b39de",
+    "code": "avatars_woman_6",
+    "name": "woman_6",
+    "icon": "woman_6.png"
+  },
+  {
+    "id": "25890b25-20cd-4d00-903b-abcfb9329d76",
+    "code": "avatars_woman_7",
+    "name": "woman_7",
+    "icon": "woman_7.png"
+  },
+  {
+    "id": "de1dd1aa-c79a-41b1-ba9e-7f7118671023",
+    "code": "avatars_woman_8",
+    "name": "woman_8",
+    "icon": "woman_8.png"
+  }
+]
