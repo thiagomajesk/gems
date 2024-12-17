@@ -26,8 +26,7 @@ defmodule GEMS.Repo.Migrations.CreateItemsTables do
 
       add :damage_type, :string, null: true
 
-      add :damage_element_id, references(:elements, on_delete: {:nilify, [:damage_element_id]}),
-        null: true
+      add :damage_element_id, references(:elements, on_delete: :nilify_all), null: true
 
       add :damage_formula, :string, null: true
       add :damage_variance, :float, null: true
