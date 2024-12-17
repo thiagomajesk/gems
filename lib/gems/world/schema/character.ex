@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.Schema.Character do
+defmodule GEMS.World.Schema.Character do
   use GEMS.Database.Schema, :default
 
   @required_fields [:name, :avatar_id, :faction_id]

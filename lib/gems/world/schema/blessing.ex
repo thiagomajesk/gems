@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.Schema.Blessing do
+defmodule GEMS.World.Schema.Blessing do
   use GEMS.Database.Schema, :resource
 
   @required_fields [:name, :duration]

@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.Schema.Guild do
+defmodule GEMS.World.Schema.Guild do
   use GEMS.Database.Schema, :resource
 
   @required_fields [:name]

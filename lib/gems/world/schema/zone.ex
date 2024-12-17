@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.Schema.Zone do
+defmodule GEMS.World.Schema.Zone do
   use GEMS.Database.Schema, :resource
 
   @skulls [:blue, :yellow, :red, :black]

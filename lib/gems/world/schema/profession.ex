@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.Schema.Profession do
+defmodule GEMS.World.Schema.Profession do
   use GEMS.Database.Schema, :resource
 
   @required_fields [:name, :code, :type]

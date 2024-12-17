@@ -40,7 +40,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ProfessionComponent do
   end
 
   defp profession_type_options() do
-    GEMS.Engine.Schema.Profession
+    GEMS.World.Schema.Profession
     |> Ecto.Enum.mappings(:type)
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end

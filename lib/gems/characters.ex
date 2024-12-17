@@ -7,7 +7,7 @@ defmodule GEMS.Characters do
   alias GEMS.Repo
 
   alias GEMS.Accounts.Schema.User
-  alias GEMS.Engine.Schema.Character
+  alias GEMS.World.Schema.Character
 
   @doc """
   Returns the list of characters.

@@ -15,7 +15,7 @@ defmodule GEMSData do
   alias GEMS.Engine.Schema.EquipmentType
   alias GEMS.Engine.Schema.Item
   alias GEMS.Engine.Schema.ItemType
-  alias GEMS.Engine.Schema.Profession
+  alias GEMS.World.Schema.Profession
   alias GEMS.Engine.Schema.State
   alias GEMS.World.Schema.Avatar
   alias GEMS.World.Schema.Faction

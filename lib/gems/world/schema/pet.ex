@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.Schema.Pet do
+defmodule GEMS.World.Schema.Pet do
   use GEMS.Database.Schema, :resource
 
   @required_fields [:name]
@@ -10,7 +10,7 @@ defmodule GEMS.Engine.Schema.Pet do
     field :icon, :string
     field :description, :string
 
-    many_to_many :blessings, GEMS.Engine.Schema.Blessing, join_through: "pets_blessings"
+    many_to_many :blessings, GEMS.World.Schema.Blessing, join_through: "pets_blessings"
   end
 
   @doc false

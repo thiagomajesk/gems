@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.Schema.CharacterProfession do
+defmodule GEMS.World.Schema.CharacterProfession do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,8 +11,8 @@ defmodule GEMS.Engine.Schema.CharacterProfession do
     field :level, :integer
     field :exp, :integer
 
-    belongs_to :character, GEMS.Engine.Schema.Character, primary_key: true
-    belongs_to :profession, GEMS.Engine.Schema.Profession, primary_key: true
+    belongs_to :character, GEMS.World.Schema.Character, primary_key: true
+    belongs_to :profession, GEMS.World.Schema.Profession, primary_key: true
   end
 
   @doc false

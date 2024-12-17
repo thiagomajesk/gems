@@ -2,7 +2,7 @@ defmodule GEMSWeb.CharacterLive.New do
   use GEMSWeb, :live_view
 
   alias GEMS.Characters
-  alias GEMS.Engine.Schema.Character
+  alias GEMS.World.Schema.Character
 
   def mount(_params, _session, socket) do
     avatars = GEMS.World.list_avatars()
