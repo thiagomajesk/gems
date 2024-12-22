@@ -18,7 +18,7 @@ defmodule GEMSWeb.UserRegistrationLive do
             phx-submit="save"
             phx-change="validate"
             phx-trigger-action={@trigger_submit}
-            action={~p"/users/login?_action=registered"}
+            action={~p"/login?_action=registered"}
             method="post"
             class="space-y-4"
           >
@@ -31,7 +31,7 @@ defmodule GEMSWeb.UserRegistrationLive do
             <div class="text-center">
               <p class="text-sm">
                 Already registered?
-                <.link navigate={~p"/users/login"} class="link link-primary font-semibold">
+                <.link navigate={~p"/login"} class="link link-primary font-semibold">
                   Log in
                 </.link>
               </p>
@@ -60,7 +60,7 @@ defmodule GEMSWeb.UserRegistrationLive do
         {:ok, _} =
           Accounts.deliver_user_confirmation_instructions(
             user,
-            &url(~p"/users/confirm/#{&1}")
+            &url(~p"/confirm/#{&1}")
           )
 
         changeset = Accounts.change_user_registration(user)

@@ -32,7 +32,7 @@ defmodule GEMSWeb.UserResetPasswordLive do
             <div class="text-center">
               <p class="text-sm">
                 Already registered?
-                <.link navigate={~p"/users/login"} class="link link-primary font-semibold">
+                <.link navigate={~p"/login"} class="link link-primary font-semibold">
                   Log in
                 </.link>
               </p>
@@ -67,7 +67,7 @@ defmodule GEMSWeb.UserResetPasswordLive do
         {:noreply,
          socket
          |> put_flash(:info, "Password reset successfully.")
-         |> redirect(to: ~p"/users/login")}
+         |> redirect(to: ~p"/login")}
 
       {:error, changeset} ->
         {:noreply, assign_form(socket, Map.put(changeset, :action, :insert))}

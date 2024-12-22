@@ -52,13 +52,13 @@ defmodule GEMSWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{GEMSWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/users/register", UserRegistrationLive, :new
-      live "/users/login", UserLoginLive, :new
-      live "/users/reset-password", UserForgotPasswordLive, :new
-      live "/users/reset-password/:token", UserResetPasswordLive, :edit
+      live "/register", UserRegistrationLive, :new
+      live "/login", UserLoginLive, :new
+      live "/reset-password", UserForgotPasswordLive, :new
+      live "/reset-password/:token", UserResetPasswordLive, :edit
     end
 
-    post "/users/login", UserSessionController, :create
+    post "/login", UserSessionController, :create
   end
 
   scope "/", GEMSWeb do
@@ -66,8 +66,8 @@ defmodule GEMSWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{GEMSWeb.UserAuth, :ensure_authenticated}] do
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm-email/:token", UserSettingsLive, :confirm_email
+      live "/settings", UserSettingsLive, :edit
+      live "/settings/confirm-email/:token", UserSettingsLive, :confirm_email
       live "/accounts/characters", CharacterLive.Index
       live "/accounts/characters/new", CharacterLive.New
     end
@@ -80,8 +80,8 @@ defmodule GEMSWeb.Router do
 
     live_session :current_user,
       on_mount: [{GEMSWeb.UserAuth, :mount_current_user}] do
-      live "/users/confirm/:token", UserConfirmationLive, :edit
-      live "/users/confirm", UserConfirmationInstructionsLive, :new
+      live "/confirm/:token", UserConfirmationLive, :edit
+      live "/confirm", UserConfirmationInstructionsLive, :new
     end
   end
 

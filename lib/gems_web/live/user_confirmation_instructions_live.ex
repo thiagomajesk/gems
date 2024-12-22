@@ -37,7 +37,7 @@ defmodule GEMSWeb.UserConfirmationInstructionsLive do
     if user = Accounts.get_user_by_email(email) do
       Accounts.deliver_user_confirmation_instructions(
         user,
-        &url(~p"/users/confirm/#{&1}")
+        &url(~p"/confirm/#{&1}")
       )
     end
 

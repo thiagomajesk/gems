@@ -12,7 +12,7 @@ defmodule GEMSWeb.UserLoginLive do
           <.form
             for={@form}
             id="login_form"
-            action={~p"/users/login"}
+            action={~p"/login"}
             phx-update="ignore"
             class="space-y-4"
           >
@@ -22,13 +22,13 @@ defmodule GEMSWeb.UserLoginLive do
             <button phx-disable-with="Logging in..." class="btn btn-primary w-full">Log in</button>
 
             <div class="text-center">
-              <.link href={~p"/users/reset-password"} class="text-sm link link-hover">
+              <.link href={~p"/reset-password"} class="text-sm link link-hover">
                 Forgot your password?
               </.link>
 
               <p class="text-sm">
                 Don't have an account yet?
-                <.link navigate={~p"/users/register"} class="link link-primary font-semibold">
+                <.link navigate={~p"/register"} class="link link-primary font-semibold">
                   Sign up
                 </.link>
               </p>
