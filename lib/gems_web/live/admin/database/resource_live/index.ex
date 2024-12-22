@@ -2,7 +2,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Index do
   @moduledoc false
   use GEMSWeb, :live_view
 
-  import GemsWeb.UIKIT.Admin.DataTable
+  import GEMSWeb.UIKIT.Admin.DataTable
 
   alias GEMS.Engine.Schema.Ability
   alias GEMS.Engine.Schema.AbilityType

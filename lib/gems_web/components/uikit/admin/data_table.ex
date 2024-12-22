@@ -1,4 +1,4 @@
-defmodule GemsWeb.UIKIT.Admin.DataTable do
+defmodule GEMSWeb.UIKIT.Admin.DataTable do
   use GEMSWeb, :html
 
   attr :id, :string, required: true
