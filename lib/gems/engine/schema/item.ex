@@ -1,25 +1,16 @@
 defmodule GEMS.Engine.Schema.Item do
   use GEMS.Database.Schema, :resource
 
-  @purposes [
-    :consumable,
-    :craftable,
-    :farmable,
-    :gatherable
-  ]
-
   @required_fields [
     :name,
     :code,
-    :type_id,
-    :purpose
+    :type_id
   ]
 
   @optional_fields [
     :description,
     :icon,
     :price,
-    :purpose,
     :target_side,
     :target_status,
     :target_number,
@@ -63,7 +54,6 @@ defmodule GEMS.Engine.Schema.Item do
     field :description, :string
     field :icon, :string
     field :price, :integer
-    field :purpose, Ecto.Enum, values: @purposes
     field :messages, :map
 
     field :target_side, Ecto.Enum, values: @target_sides

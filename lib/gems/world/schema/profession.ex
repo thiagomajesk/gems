@@ -1,22 +1,14 @@
 defmodule GEMS.World.Schema.Profession do
   use GEMS.Database.Schema, :resource
 
-  @required_fields [:name, :code, :type]
+  @required_fields [:name, :code]
 
   @optional_fields [:description, :icon]
-
-  @types [
-    :gathering,
-    :crafting,
-    :farming,
-    :combat
-  ]
 
   schema "professions" do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :type, Ecto.Enum, values: @types
     field :icon, :string
   end
 

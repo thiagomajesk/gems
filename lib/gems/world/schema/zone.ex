@@ -4,19 +4,22 @@ defmodule GEMS.World.Schema.Zone do
   @skulls [:blue, :yellow, :red, :black]
 
   @required_fields [:name, :biome, :skull, :biome_id]
-  @optional_fields [:description, :danger, :gathering_boost, :farming_boost, :crafting_boost]
+  @optional_fields [:description, :danger]
 
   schema "zones" do
     field :name, :string
     field :description, :string
-    belongs_to :biome, GEMS.Engine.Schema.Biome
     field :skull, Ecto.Enum, values: @skulls
     field :danger, :integer
-    field :gathering_boost, :float
-    field :farming_boost, :float
-    field :crafting_boost, :float
 
+    belongs_to :biome, GEMS.Engine.Schema.Biome
     belongs_to :faction, GEMS.Engine.Schema.Faction
+
+    has_many :activities, GEMS.World.Schema.Activity
+
+    many_to_many :creatures, GEMS.Engine.Schema.Creature,
+      join_through: "zones_creatures",
+      on_replace: :delete
   end
 
   @doc false
@@ -43,6 +46,7 @@ defmodule GEMS.World.Schema.Zone do
 
     zone
     |> cast(attrs, required_fields ++ optional_fields)
+    |> cast_assoc(:creatures, sort_param: :creatures_sort, drop_param: :creatures_drop)
     |> validate_required(required_fields)
     |> unique_constraint(:name)
   end

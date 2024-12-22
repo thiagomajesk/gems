@@ -24,7 +24,6 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :type, :string, null: false
       add :icon, :string, null: true
     end
 
@@ -104,10 +103,6 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :skull, :string, null: false
       add :danger, :integer, null: false, default: 1
 
-      add :gathering_boost, :float, null: false, default: 0.0
-      add :farming_boost, :float, null: false, default: 0.0
-      add :crafting_boost, :float, null: false, default: 0.0
-
       add :biome_id, references(:biomes), null: false
       add :faction_id, references(:factions), null: true
     end
@@ -116,102 +111,23 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create unique_index(:zones, :code)
 
     ################################################################################
-    # Zones Gathering Options
+    # Zones Creatures
     ################################################################################
 
-    create table(:zones_gathering_options) do
-      add :zone_id, references(:zones), null: false
-      add :item_id, references(:items), null: false
-    end
-
-    # create constraint(:zones_gathering_options, :check_item_purpose,
-    #          check: "check_reference_column_matches('items', 'purpose', 'gatherable')"
-    #        )
-
-    ################################################################################
-    # Zones Gathering Options Requirements
-    ################################################################################
-
-    create table(:zones_gathering_options_requirements, primary_key: false) do
-      add :zone_gathering_option_id, references(:zones_gathering_options),
-        null: false,
-        primary_key: true
-
-      add :profession_id, references(:professions), null: false, primary_key: true
-      add :required_level, :integer, null: false
-    end
-
-    ################################################################################
-    # Zones Crafting Options
-    ################################################################################
-
-    create table(:zones_crafting_options) do
-      add :zone_id, references(:zones), null: false
-      add :item_id, references(:items), null: false
-    end
-
-    # create constraint(:zones_crafting_options, :check_item_purpose,
-    #          check: "check_reference_column_matches('items', 'purpose', 'craftable')"
-    #        )
-
-    ################################################################################
-    # Zones Crafting Options Requirements
-    ################################################################################
-
-    create table(:zones_crafting_options_requirements, primary_key: false) do
-      add :zone_crafting_option_id, references(:zones_crafting_options),
-        null: false,
-        primary_key: true
-
-      add :profession_id, references(:professions), null: false, primary_key: true
-      add :required_level, :integer, null: false
-    end
-
-    ################################################################################
-    # Zones Farming Options
-    ################################################################################
-
-    create table(:zones_farming_options) do
-      add :zone_id, references(:zones), null: false
-      add :item_id, references(:items), null: false
-    end
-
-    # create constraint(:zones_farming_options, :check_item_purpose,
-    #          check: "check_reference_column_matches('items', 'purpose', 'farmable')"
-    #        )
-
-    ################################################################################
-    # Zones Farming Options Requirements
-    ################################################################################
-
-    create table(:zones_farming_options_requirements, primary_key: false) do
-      add :zone_farming_option_id, references(:zones_farming_options),
-        null: false,
-        primary_key: true
-
-      add :profession_id, references(:professions), null: false, primary_key: true
-      add :required_level, :integer, null: false
-    end
-
-    ################################################################################
-    # Zones Combat Options
-    ################################################################################
-
-    create table(:zones_combat_options) do
-      add :zone_id, references(:zones), null: false
+    create table(:zones_creatures, primary_key: false) do
+      add :zone_id, references(:zones), null: false, primary_key: true
       add :creature_id, references(:creatures), null: false
     end
 
     ################################################################################
-    # Zones Combat Options Requirements
+    # Activities
     ################################################################################
 
-    create table(:zones_combat_options_requirements, primary_key: false) do
-      add :zone_combat_option_id, references(:zones_combat_options),
-        null: false,
-        primary_key: true
-
-      add :profession_id, references(:professions), null: false, primary_key: true
+    create table(:activities) do
+      add :action, :string, null: false
+      add :zone_id, references(:zones), null: false
+      add :item_id, references(:items), null: true
+      add :profession_id, references(:professions), null: false
       add :required_level, :integer, null: false
     end
   end

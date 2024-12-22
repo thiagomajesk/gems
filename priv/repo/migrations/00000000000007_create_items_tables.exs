@@ -13,7 +13,6 @@ defmodule GEMS.Repo.Migrations.CreateItemsTables do
       add :icon, :string, null: true
       add :type_id, references(:item_types), null: false
       add :price, :integer, null: true
-      add :purpose, :string, null: false
 
       add :target_side, :string, null: true
       add :target_status, :string, null: true

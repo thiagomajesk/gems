@@ -28,18 +28,12 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ItemComponent do
             <Forms.field_input type="textarea" field={f[:description]} label="Description" />
             <Forms.field_input type="text" field={f[:icon]} label="Icon" />
 
-            <div class="grid grid-cols-3 gap-6">
+            <div class="grid grid-cols-2 gap-6">
               <Forms.field_input
                 type="select"
                 field={f[:type_id]}
                 label="Type"
                 options={@item_type_options}
-              />
-              <Forms.field_input
-                type="select"
-                field={f[:purpose]}
-                label="Purpose"
-                options={@purpose_options}
               />
               <Forms.field_input type="number" field={f[:price]} label="Price" />
             </div>
@@ -125,7 +119,6 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ItemComponent do
     {:ok,
      assign(socket,
        item_type_options: item_type_options,
-       purpose_options: purpose_options(),
        ability_types_options: ability_types_options,
        element_options: element_options,
        hit_type_options: hit_type_options(),
@@ -133,12 +126,6 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ItemComponent do
        target_status_options: target_status_options(),
        damage_type_options: damage_type_options()
      )}
-  end
-
-  defp purpose_options() do
-    GEMS.Engine.Schema.Item
-    |> Ecto.Enum.mappings(:purpose)
-    |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 
   defp hit_type_options() do
