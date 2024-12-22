@@ -102,6 +102,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :description, :string, null: true
       add :skull, :string, null: false
       add :danger, :integer, null: false, default: 1
+      add :starting, :boolean, null: false, default: false
 
       add :biome_id, references(:biomes), null: false
       add :faction_id, references(:factions), null: true

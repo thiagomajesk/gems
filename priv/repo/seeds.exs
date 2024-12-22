@@ -21,3 +21,4 @@ GEMSData.seed_states()
 
 GEMSData.seed_avatars()
 GEMSData.seed_factions()
+GEMSData.seed_zones()

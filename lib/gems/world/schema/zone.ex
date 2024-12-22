@@ -3,17 +3,19 @@ defmodule GEMS.World.Schema.Zone do
 
   @skulls [:blue, :yellow, :red, :black]
 
-  @required_fields [:name, :biome, :skull, :biome_id]
-  @optional_fields [:description, :danger]
+  @required_fields [:name, :code, :skull, :biome_id]
+  @optional_fields [:description, :danger, :starting]
 
   schema "zones" do
     field :name, :string
+    field :code, :string
     field :description, :string
     field :skull, Ecto.Enum, values: @skulls
     field :danger, :integer
+    field :starting, :boolean
 
     belongs_to :biome, GEMS.Engine.Schema.Biome
-    belongs_to :faction, GEMS.Engine.Schema.Faction
+    belongs_to :faction, GEMS.World.Schema.Faction
 
     has_many :activities, GEMS.World.Schema.Activity
 

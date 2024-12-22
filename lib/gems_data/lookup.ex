@@ -19,4 +19,5 @@ defmodule GEMSData.Lookup do
 
   embed_data(:avatars, data_path("avatars.json"))
   embed_data(:factions, data_path("factions.json"))
+  embed_data(:zones, data_path("zones.json"))
 end
