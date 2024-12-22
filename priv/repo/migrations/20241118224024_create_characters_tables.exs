@@ -31,6 +31,7 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
 
       add :avatar_id, references(:avatars), null: false
       add :faction_id, references(:factions), null: false
+      add :zone_id, references(:zones), null: false
       add :user_id, references(:users), null: false
 
       timestamps()

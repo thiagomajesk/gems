@@ -25,9 +25,12 @@ defmodule GEMS.Characters do
   Creates a character.
   """
   def create_character(%User{} = user, attrs \\ %{}) do
+    %{id: zone_id} = GEMS.World.get_starting_zone()
+
     %Character{}
     |> Character.changeset(attrs)
     |> Ecto.Changeset.put_change(:user_id, user.id)
+    |> Ecto.Changeset.put_change(:zone_id, zone_id)
     |> Repo.insert()
   end
 

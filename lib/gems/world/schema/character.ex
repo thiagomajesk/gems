@@ -1,7 +1,11 @@
 defmodule GEMS.World.Schema.Character do
   use GEMS.Database.Schema, :default
 
-  @required_fields [:name, :avatar_id, :faction_id]
+  @required_fields [
+    :name,
+    :avatar_id,
+    :faction_id
+  ]
 
   @optional_fields [
     :title,
@@ -50,6 +54,7 @@ defmodule GEMS.World.Schema.Character do
     belongs_to :faction, GEMS.Engine.Schema.Faction
     belongs_to :avatar, GEMS.World.Schema.Avatar
     belongs_to :user, GEMS.Accounts.Schema.User
+    belongs_to :zone, GEMS.World.Schema.Zone
 
     timestamps()
   end
