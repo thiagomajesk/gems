@@ -51,7 +51,7 @@ defmodule GEMSWeb.Router do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     live_session :redirect_if_user_is_authenticated,
-      on_mount: [{GEMSWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      on_mount: [{GEMSWeb.CheckUserHook, :redirect_if_user_is_authenticated}] do
       live "/register", UserRegistrationLive, :new
       live "/login", UserLoginLive, :new
       live "/reset-password", UserForgotPasswordLive, :new
@@ -65,7 +65,7 @@ defmodule GEMSWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{GEMSWeb.UserAuth, :ensure_authenticated}] do
+      on_mount: [{GEMSWeb.CheckUserHook, :ensure_authenticated}] do
       live "/settings", UserSettingsLive, :edit
       live "/settings/confirm-email/:token", UserSettingsLive, :confirm_email
       live "/accounts/characters", CharacterLive.Index
@@ -79,7 +79,7 @@ defmodule GEMSWeb.Router do
     delete "/users/logout", UserSessionController, :delete
 
     live_session :current_user,
-      on_mount: [{GEMSWeb.UserAuth, :mount_current_user}] do
+      on_mount: [{GEMSWeb.CheckUserHook, :mount_current_user}] do
       live "/confirm/:token", UserConfirmationLive, :edit
       live "/confirm", UserConfirmationInstructionsLive, :new
     end
@@ -90,7 +90,7 @@ defmodule GEMSWeb.Router do
 
     live_session :admin,
       layout: {GEMSWeb.Layouts, :admin},
-      on_mount: [{GEMSWeb.UserAuth, :ensure_authenticated}] do
+      on_mount: [{GEMSWeb.CheckUserHook, :ensure_authenticated}] do
       live "/database", Database.DashboardLive
       live "/database/:collection", Database.ResourceLive.Index
       live "/database/:collection/new", Database.ResourceLive.Show, :new
