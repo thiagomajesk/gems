@@ -27,10 +27,15 @@ defmodule GEMS.Characters do
   def create_character(%User{} = user, attrs \\ %{}) do
     %{id: zone_id} = GEMS.World.get_starting_zone()
 
+    professions = GEMS.World.Schema.Profession.list()
+
     %Character{}
     |> Character.changeset(attrs)
+    |> Ecto.Changeset.put_change(:max_health, 100)
+    |> Ecto.Changeset.put_change(:max_energy, 100)
     |> Ecto.Changeset.put_change(:user_id, user.id)
     |> Ecto.Changeset.put_change(:zone_id, zone_id)
+    |> Ecto.Changeset.put_assoc(:professions, professions)
     |> Repo.insert()
   end
 
