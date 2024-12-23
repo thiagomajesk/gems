@@ -9,6 +9,7 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
     create table(:characters) do
       add :name, :string, null: false
       add :title, :string, null: true
+      add :bio, :string, null: true
 
       add :max_health, :integer, null: false
       add :max_energy, :integer, null: false

@@ -16,7 +16,7 @@ defmodule GEMSWeb.UIKIT.Menus do
       class="flex items-center overflow-hidden scroll-smooth h-[100px] my-1"
     >
       <ul class={[
-        "menu menu-horizontal bg-base-200 rounded-box",
+        "menu menu-horizontal bg-base-200 rounded-box grow",
         "flex-nowrap min-w-min snap-x snap-mandatory"
       ]}>
         <li :for={link <- @link} class="snap-center snap-always">

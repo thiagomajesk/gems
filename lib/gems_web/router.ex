@@ -109,6 +109,7 @@ defmodule GEMSWeb.Router do
         {GEMSWeb.CheckUserHook, :ensure_authenticated},
         {GEMSWeb.CheckCharacterHook, :ensure_selected_character}
       ] do
+      live "/character", CharacterLive, :show
       live "/home", HomeLive
     end
   end

@@ -1,8 +1,8 @@
-<main class="flex flex-col h-screen overflow-y-hidden px-2 container mx-auto">
+<main class="flex flex-col h-screen overflow-y-hidden px-2 xl:container mx-auto">
   <header class="items-center">
     <UI.Menus.global>
       <:link href="/home" icon="house" label="Home" />
-      <:link href="/character" icon="skills" label="Character" />
+      <:link href={~p"/game/character"} icon="skills" label="Character" />
       <:link href="/progress" icon="progression" label="Progress" />
       <:link href="/storage" icon="locked-chest" label="Storage" />
       <:link href="/world" icon="world" label="World" />
@@ -18,7 +18,7 @@
       <:link href="/calendar" icon="calendar" label="Calendar" />
     </UI.Menus.global>
   </header>
-  <div class="h-full overflow-y-auto">
+  <div class="h-full overflow-y-auto mt-6">
     {@inner_content}
   </div>
 </main>

@@ -7,11 +7,12 @@ defmodule GEMS.World.Schema.Character do
     :faction_id
   ]
 
-  @optional_fields [:title]
+  @optional_fields [:title, :bio]
 
   schema "characters" do
     field :name, :string
     field :title, :string
+    field :bio, :string
     field :max_health, :integer
     field :max_energy, :integer
 
@@ -19,6 +20,9 @@ defmodule GEMS.World.Schema.Character do
     belongs_to :avatar, GEMS.World.Schema.Avatar
     belongs_to :user, GEMS.Accounts.Schema.User
     belongs_to :zone, GEMS.World.Schema.Zone
+
+    has_one :guild_membership, GEMS.World.Schema.GuildMembership
+    has_one :guild, through: [:guild_membership, :guild]
 
     has_many :character_professions, GEMS.World.Schema.CharacterProfession
 

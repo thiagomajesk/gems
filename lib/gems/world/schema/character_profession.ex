@@ -7,6 +7,7 @@ defmodule GEMS.World.Schema.CharacterProfession do
   @optional_fields [:level, :exp]
 
   @primary_key false
+  @foreign_key_type Ecto.UUID
   schema "characters_professions" do
     field :level, :integer
     field :exp, :integer

@@ -4,6 +4,7 @@ defmodule GEMS.Characters do
   """
 
   import Ecto.Query, warn: false
+  alias GEMS.World.Schema.CharacterProfession
   alias GEMS.Repo
 
   alias GEMS.Accounts.Schema.User
@@ -17,10 +18,33 @@ defmodule GEMS.Characters do
   end
 
   @doc """
+  Returns the list of professions for a character.
+  """
+  def list_character_professions(%Character{id: character_id}) do
+    Repo.all(
+      from cp in CharacterProfession,
+        where: cp.character_id == ^character_id,
+        preload: [:profession]
+    )
+  end
+
+  @doc """
   Gets a single character.
   """
   def get_character(%User{id: user_id}, id),
     do: Repo.get_by(Character, id: id, user_id: user_id)
+
+  @doc """
+  Gets the guild of a character.
+  """
+  def get_character_guild(%Character{id: character_id}) do
+    Repo.one(
+      from g in GEMS.World.Schema.Guild,
+        join: m in assoc(g, :memberships),
+        where: m.character_id == ^character_id,
+        preload: [:memberships]
+    )
+  end
 
   @doc """
   Creates a character.

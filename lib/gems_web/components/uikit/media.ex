@@ -12,7 +12,7 @@ defmodule GEMSWeb.UIKIT.Media do
 
   def icon(assigns) do
     ~H"""
-    <.iconify icon={"game-icons:#{@name}"} {@rest} />
+    <.iconify icon={"lucide:#{@name}"} {@rest} />
     """
   end
 
