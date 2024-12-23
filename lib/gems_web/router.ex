@@ -64,6 +64,8 @@ defmodule GEMSWeb.Router do
   scope "/", GEMSWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    post "/character/:id/select", CharacterSelectionController, :create
+
     live_session :require_authenticated_user,
       on_mount: [{GEMSWeb.CheckUserHook, :ensure_authenticated}] do
       live "/settings", UserSettingsLive, :edit
@@ -95,6 +97,19 @@ defmodule GEMSWeb.Router do
       live "/database/:collection", Database.ResourceLive.Index
       live "/database/:collection/new", Database.ResourceLive.Show, :new
       live "/database/:collection/:id/edit", Database.ResourceLive.Show, :edit
+    end
+  end
+
+  scope "/game", GEMSWeb.Game do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :selected_character,
+      layout: {GEMSWeb.Layouts, :game},
+      on_mount: [
+        {GEMSWeb.CheckUserHook, :ensure_authenticated},
+        {GEMSWeb.CheckCharacterHook, :ensure_selected_character}
+      ] do
+      live "/home", HomeLive
     end
   end
 end

@@ -25,9 +25,13 @@ defmodule GEMSWeb.CharacterLive.Index do
           class="rounded-box flex flex-col bg-base-content/5 p-4 space-y-4"
         >
           <span class="mt-4 text-center font-medium text-neutral-500">{character.name}</span>
-          <button type="button" class="btn btn-sm btn-accent mt-auto">
+          <.link
+            href={~p"/character/#{character}/select"}
+            method="post"
+            class="btn btn-sm btn-accent mt-auto"
+          >
             <UI.Media.icon name="play" /> Play
-          </button>
+          </.link>
         </div>
       </div>
     </section>

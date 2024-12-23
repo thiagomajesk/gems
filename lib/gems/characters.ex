@@ -19,7 +19,8 @@ defmodule GEMS.Characters do
   @doc """
   Gets a single character.
   """
-  def get_character!(id), do: Repo.get!(Character, id)
+  def get_character(%User{id: user_id}, id),
+    do: Repo.get_by(Character, id: id, user_id: user_id)
 
   @doc """
   Creates a character.
