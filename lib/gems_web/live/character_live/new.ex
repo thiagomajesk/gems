@@ -75,7 +75,15 @@ defmodule GEMSWeb.CharacterLive.New do
     ~H"""
     <div :for={{avatar, idx} <- Enum.with_index(@avatars)}>
       <label phx-click={JS.dispatch("change")} for={"#{@field.id}_#{idx}"}>
-        <.avatar avatar={avatar} selected={@field.value == avatar.id} />
+        <UI.Media.avatar
+          avatar={avatar}
+          data-selected={@field.value == avatar.id}
+          class={[
+            "rounded-btn overflow-hidden border-2",
+            "border-transparent hover:border-primary cursor-pointer",
+            "data-[selected]:border-primary"
+          ]}
+        />
         <input
           type="radio"
           name={@field.name}
@@ -86,30 +94,6 @@ defmodule GEMSWeb.CharacterLive.New do
         />
       </label>
     </div>
-    """
-  end
-
-  attr :avatar, :map, required: true
-  attr :selected, :boolean, default: false
-
-  defp avatar(assigns) do
-    assigns =
-      assign_new(assigns, :src, fn %{avatar: avatar} ->
-        avatar_path = ["avatars", avatar.icon]
-        system_path = GEMSData.GameInfo.asset_path(avatar_path)
-        Path.join(GEMSWeb.Endpoint.url(), system_path)
-      end)
-
-    ~H"""
-    <img
-      src={@src}
-      data-selected={@selected}
-      class={[
-        "rounded-btn overflow-hidden border-2",
-        "border-transparent hover:border-primary cursor-pointer",
-        "data-[selected]:border-primary"
-      ]}
-    />
     """
   end
 end

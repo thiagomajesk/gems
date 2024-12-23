@@ -16,22 +16,28 @@ defmodule GEMSWeb.CharacterLive.Index do
       <header class="flex items-center justify-between">
         <h1 class="mb-4 text-3xl font-semibold">Character Creation</h1>
         <a href={~p"/accounts/characters/new"} class="btn btn-primary">
-          <UI.Media.icon name="plus-circle" /> Create character
+          <UI.Icons.page name="plus-circle" /> Create character
         </a>
       </header>
-      <div class="grid grid-cols-3 gap-4">
-        <div
-          :for={character <- @characters}
-          class="rounded-box flex flex-col bg-base-content/5 p-4 space-y-4"
-        >
-          <span class="mt-4 text-center font-medium text-neutral-500">{character.name}</span>
-          <.link
-            href={~p"/character/#{character}/select"}
-            method="post"
-            class="btn btn-sm btn-accent mt-auto"
-          >
-            <UI.Media.icon name="play" /> Play
-          </.link>
+      <div class="grid grid-cols-3 gap-4 mt-8">
+        <div :for={character <- @characters} class="card bg-base-content/5 p-4 shadow">
+          <div class="flex justify-between gap-4">
+            <UI.Media.avatar avatar={character.avatar} class="size-24 rounded-lg" />
+            <div class="flex flex-col items-center grow space-y-2">
+              <span class="text-center font-medium">{character.name}</span>
+              <span :if={character.title} class="text-xs text-center">{character.title}</span>
+              <span class="badge badge-neutral font-medium gap-2">
+                <UI.Icons.page name="zap" /> 1200 power
+              </span>
+              <.link
+                href={~p"/character/#{character}/select"}
+                method="post"
+                class="btn btn-sm btn-accent w-full"
+              >
+                <UI.Icons.page name="play" /> Play
+              </.link>
+            </div>
+          </div>
         </div>
       </div>
     </section>

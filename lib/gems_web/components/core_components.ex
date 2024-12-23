@@ -4,7 +4,7 @@ defmodule GEMSWeb.CoreComponents do
 
   import GEMSWeb.ErrorHelpers
 
-  alias GEMSWeb.UIKIT.Media
+  alias GEMSWeb.UIKIT.Icons
 
   attr :id, :string, default: nil
   attr :flash, :map, default: %{}
@@ -26,7 +26,7 @@ defmodule GEMSWeb.CoreComponents do
       {@rest}
     >
       <div class="flex gap-2">
-        <Media.icon name={@icon || flash_icon(@kind)} />
+        <Icons.page name={@icon || flash_icon(@kind)} />
         <div class="flex flex-col">
           <strong class="text-sm">{@title}</strong>
           <p class="text-xs">{content}</p>
@@ -142,7 +142,7 @@ defmodule GEMSWeb.CoreComponents do
   def error(assigns) do
     ~H"""
     <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600">
-      <Media.icon name="circle-alert" class="mt-0.5 h-5 w-5 flex-none" />
+      <Icons.page name="circle-alert" class="mt-0.5 h-5 w-5 flex-none" />
       {render_slot(@inner_block)}
     </p>
     """

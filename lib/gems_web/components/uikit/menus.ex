@@ -21,7 +21,7 @@ defmodule GEMSWeb.UIKIT.Menus do
       ]}>
         <li :for={link <- @link} class="snap-center snap-always">
           <.link href={link.href} class={["flex flex-col gap-0.5", "min-w-[60px]"]}>
-            <UI.Media.gicon name={link.icon} size={26} noobserver />
+            <UI.Icons.game name={link.icon} size={26} noobserver />
             <span>{link.label}</span>
           </.link>
         </li>

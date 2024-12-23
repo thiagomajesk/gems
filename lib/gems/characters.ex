@@ -14,7 +14,7 @@ defmodule GEMS.Characters do
   Returns the list of characters.
   """
   def list_characters(%User{id: user_id}) do
-    Repo.all(from c in Character, where: c.user_id == ^user_id)
+    Repo.all(from c in Character, where: c.user_id == ^user_id, preload: [:avatar])
   end
 
   @doc """
