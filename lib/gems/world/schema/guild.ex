@@ -9,6 +9,9 @@ defmodule GEMS.World.Schema.Guild do
     field :name, :string
     field :description, :string
     field :icon, :string
+
+    has_many :memberships, GEMS.World.Schema.GuildMembership
+    has_many :members, through: [:memberships, :character]
   end
 
   def changeset(guild, attrs) do

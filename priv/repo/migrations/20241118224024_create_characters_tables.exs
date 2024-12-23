@@ -91,17 +91,6 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
     create unique_index(:characters_loadouts, [:character_id, :active])
 
     ################################################################################
-    # Characters Guilds
-    ################################################################################
-
-    create table(:characters_guilds, primary_key: false) do
-      add :character_id, references(:characters), null: false, primary_key: true
-      add :guild_id, references(:guilds), null: false, primary_key: true
-    end
-
-    create unique_index(:characters_guilds, [:character_id, :guild_id])
-
-    ################################################################################
     # Characters Blessings
     ################################################################################
 

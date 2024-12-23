@@ -31,18 +31,6 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create unique_index(:professions, :code)
 
     ################################################################################
-    # Guilds
-    ################################################################################
-
-    create table(:guilds) do
-      add :name, :string, null: false
-      add :description, :string, null: true
-      add :icon, :string, null: true
-    end
-
-    create unique_index(:guilds, :name)
-
-    ################################################################################
     # Blessings
     ################################################################################
 
