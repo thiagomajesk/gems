@@ -5,21 +5,23 @@ defmodule GEMSWeb.UIKIT.Media do
   """
   use GEMSWeb, :html
 
-  attr(:name, :string, required: true)
-  attr(:size, :integer, default: 18)
-  attr(:class, :string, default: nil)
-  attr(:rest, :global, include: ~w(rotate inline flip))
+  @global_attrs ~w(size rotate inline flip noobserver)
+
+  attr :name, :string, required: true
+  attr :rest, :global, include: @global_attrs
 
   def icon(assigns) do
     ~H"""
-    <iconify-icon
-      icon={"lucide:#{@name}"}
-      width={@size}
-      height={@size}
-      class={["size-min", @class]}
-      {@rest}
-    >
-    </iconify-icon>
+    <.iconify icon={"game-icons:#{@name}"} {@rest} />
+    """
+  end
+
+  attr :name, :string, required: true
+  attr :rest, :global, include: @global_attrs
+
+  def gicon(assigns) do
+    ~H"""
+    <.iconify icon={"game-icons:#{@name}"} {@rest} />
     """
   end
 
@@ -31,29 +33,23 @@ defmodule GEMSWeb.UIKIT.Media do
   ## Examples
 
   ```heex
-  <.gicon name="3d-glasses" />
-  <.gicon name="3d-glasses" size="64" />
-  <.gicon name="3d-glasses" inline />
-  <.gicon name="3d-glasses" rotate="90deg" />
-  <.gicon name="3d-glasses" flip="vertical" />
-  <.gicon name="3d-glasses" class="text-red-100 bg-red-500" />
+  <.iconify icon="3d-glasses" />
+  <.iconify icon="3d-glasses" size="64" />
+  <.iconify icon="3d-glasses" inline />
+  <.iconify icon="3d-glasses" rotate="90deg" />
+  <.iconify icon="3d-glasses" flip="vertical" />
+  <.iconify icon="3d-glasses" class="text-red-100 bg-red-500" />
   ```
   """
 
-  attr(:name, :string, required: true)
-  attr(:size, :integer, default: 18)
-  attr(:class, :string, default: nil)
-  attr(:rest, :global, include: ~w(rotate inline flip))
+  attr :icon, :string, required: true
+  attr :size, :integer, default: 18
+  attr :class, :string, default: nil
+  attr :rest, :global, include: @global_attrs
 
-  def gicon(assigns) do
+  def iconify(assigns) do
     ~H"""
-    <iconify-icon
-      icon={"game-icons:#{@name}"}
-      width={@size}
-      height={@size}
-      class={["size-min", @class]}
-      {@rest}
-    >
+    <iconify-icon icon={@icon} width={@size} height={@size} class={["size-min", @class]} {@rest}>
     </iconify-icon>
     """
   end
