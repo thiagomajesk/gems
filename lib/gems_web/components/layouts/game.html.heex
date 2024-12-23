@@ -1,0 +1,24 @@
+<main class="flex flex-col h-screen overflow-y-hidden px-2 container mx-auto">
+  <header class="items-center">
+    <UI.Menus.global>
+      <:link href="/home" icon="house" label="Home" />
+      <:link href="/character" icon="skills" label="Character" />
+      <:link href="/progress" icon="progression" label="Progress" />
+      <:link href="/storage" icon="locked-chest" label="Storage" />
+      <:link href="/world" icon="world" label="World" />
+      <:link href="/activities" icon="run" label="Activities" />
+      <:link href="/combat" icon="fishing-net" label="Hunt" />
+      <:link href="/square" icon="hanging-sign" label="Square" />
+      <:link href="/journal" icon="notebook" label="Journal" />
+      <:link href="/guild" icon="vertical-banner" label="Guild" />
+      <:link href="/dungeons" icon="torch" label="Dungeons" />
+      <:link href="/bosses" icon="crowned-skull" label="Bosses" />
+      <:link href="/ranks" icon="achievement" label="Ranks" />
+      <:link href="/challenges" icon="trophy-cup" label="Challenges" />
+      <:link href="/calendar" icon="calendar" label="Calendar" />
+    </UI.Menus.global>
+  </header>
+  <div class="h-full overflow-y-auto">
+    {@inner_content}
+  </div>
+</main>
