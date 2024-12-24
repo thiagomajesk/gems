@@ -8,10 +8,10 @@ defmodule GEMSData.Compiler do
   @doc """
   Reads a data from JSON files and compiles into the module.
   """
-  defmacro embed_data(scope, pattern) do
+  defmacro embed_data(scope, pattern, opts \\ []) do
     quote location: :keep, bind_quoted: binding() do
       for path <- Path.wildcard(pattern) do
-        Module.put_attribute(__MODULE__, :embeds, {scope, path})
+        Module.put_attribute(__MODULE__, :embeds, {scope, path, opts})
         Module.put_attribute(__MODULE__, :external_resource, path)
       end
     end

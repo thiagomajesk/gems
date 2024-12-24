@@ -1,27 +1,31 @@
 defmodule GEMSData.DataHook do
   @moduledoc false
 
+  alias GEMSData.DataFile
+
   defmacro __before_compile__(_) do
     quote location: :keep, bind_quoted: binding() do
       import GEMSData.DataHook
 
-      scope_lookup = load_data(@embeds)
+      data_files = load_data(@embeds)
 
-      Module.put_attribute(__MODULE__, :lookup, scope_lookup)
+      Module.put_attribute(__MODULE__, :lookup, data_files)
 
-      for {scope, entries} <- scope_lookup do
+      for %{scope: scope, entries: entries, opts: opts} <- data_files do
         # Generate a zero-arity function to list entities per scope
         generate_scope_list_function(scope, entries)
 
-        # Generate a one-arity function to lookup entities per scope
-        generate_scope_refs_function(scope, to_lookup(entries))
+        if key = Keyword.fetch!(opts, :lookup) do
+          # Generate a one-arity function to lookup entities per scope
+          generate_scope_lookup_function(scope, to_lookup(entries, key))
+        end
       end
 
       # Generate fallback function to list entities per scope
       def list(_unknown_scope), do: nil
 
       # Generate fallback function to lookup entities per scope
-      def refs(_unknown_scope), do: nil
+      def lookup(_unknown_scope), do: nil
     end
   end
 
@@ -34,12 +38,12 @@ defmodule GEMSData.DataHook do
     end
   end
 
-  defmacro generate_scope_refs_function(scope, entries) do
+  defmacro generate_scope_lookup_function(scope, entries) do
     quote location: :keep, bind_quoted: binding() do
       @doc """
       Returns a map of entities grouped by their code in the #{scope} scope.
       """
-      def refs(unquote(scope)), do: unquote(Macro.escape(entries))
+      def lookup(unquote(scope)), do: unquote(Macro.escape(entries))
     end
   end
 
@@ -48,30 +52,12 @@ defmodule GEMSData.DataHook do
     opts = [max_concurrency: 10, ordered: false]
 
     embeds
-    |> Task.async_stream(&parse_file/1, opts)
+    |> Task.async_stream(&DataFile.new/1, opts)
     |> Stream.map(fn {:ok, res} -> res end)
-    |> Stream.map(fn {scope, data} ->
-      {scope, Enum.map(data, &hash_entry/1)}
-    end)
   end
 
   @doc false
-  def parse_file({scope, path}) do
-    contents = File.read!(path)
-    {scope, Jason.decode!(contents)}
-  end
-
-  @doc false
-  def to_lookup(entries) do
-    Map.new(entries, &{Map.fetch!(&1, "code"), &1})
-  end
-
-  @doc false
-  def hash_entry(entry) do
-    entry
-    |> :erlang.term_to_binary()
-    |> then(&:crypto.hash(:md5, &1))
-    |> Base.encode16(case: :lower)
-    |> then(&Map.put(entry, "__hash__", &1))
+  def to_lookup(entries, key) do
+    Map.new(entries, &{Map.fetch!(&1, key), &1})
   end
 end
