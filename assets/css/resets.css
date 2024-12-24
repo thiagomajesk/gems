@@ -28,24 +28,3 @@ iconify-icon {
   width: 1em;
   height: 1em;
 }
-
-/*
-* Scrollbar style
-*/
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--fallback-s, oklch(var(--b)))
-    var(--fallback-b2, oklch(var(--b2))) !important;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--fallback-b2, oklch(var(--b2)));
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--fallback-s, oklch(var(--s)));
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--fallback-p, oklch(var(--p)));
-}
