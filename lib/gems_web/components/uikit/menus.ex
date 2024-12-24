@@ -18,14 +18,14 @@ defmodule GEMSWeb.UIKIT.Menus do
       class="flex items-center overflow-hidden scroll-smooth h-[100px] my-1"
     >
       <ul class={[
-        "menu menu-horizontal bg-base-200 rounded-box grow",
+        "menu menu-horizontal bg-base-200 rounded-box grow gap-1",
         "flex-nowrap min-w-min snap-x snap-mandatory"
       ]}>
         <li :for={link <- @link} class="snap-center snap-always">
           <.link
             navigate={link.href}
             class={[
-              "flex flex-col gap-0.5 min-w-[60px]",
+              "flex flex-col gap-0.5 min-w-[80px]",
               link.href == @current_path && "active"
             ]}
           >
