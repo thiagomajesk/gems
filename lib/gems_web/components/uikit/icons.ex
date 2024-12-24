@@ -43,7 +43,7 @@ defmodule GEMSWeb.UIKIT.Icons do
   """
 
   attr :icon, :string, required: true
-  attr :size, :integer, default: 18
+  attr :size, :integer, default: nil
   attr :class, :string, default: nil
   attr :rest, :global, include: @global_attrs
 
