@@ -1,0 +1,32 @@
+[
+  {
+    "id": "c879161d-9cc0-4de7-8575-aa1256409074",
+    "action": "Chop",
+    "zone_id": "4a199584-a52e-4371-bf85-afa7d7202e2e",
+    "duration": 10,
+    "experience": 10,
+    "profession_id": "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
+    "required_level": 0,
+    "item_id": "2dc1d79d-77de-4a1f-b695-17cb81200612"
+  },
+  {
+    "id": "21be1b0b-f100-4a39-ac61-ec3b8e2822f7",
+    "action": "Mine",
+    "zone_id": "4a199584-a52e-4371-bf85-afa7d7202e2e",
+    "duration": 10,
+    "experience": 10,
+    "profession_id": "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
+    "required_level": 0,
+    "item_id": "f615fd8f-194f-4537-b0c0-06842972f1e1"
+  },
+  {
+    "id": "d94c8421-a41d-4694-9aa2-728c5440999f",
+    "action": "Collect",
+    "zone_id": "4a199584-a52e-4371-bf85-afa7d7202e2e",
+    "duration": 10,
+    "experience": 10,
+    "profession_id": "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
+    "required_level": 0,
+    "item_id": "4fa40ff7-f740-4392-a368-045cec0b7d1b"
+  }
+]

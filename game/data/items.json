@@ -1,5 +1,23 @@
 [
   {
+    "id": "2dc1d79d-77de-4a1f-b695-17cb81200612",
+    "name": "Wood",
+    "code": "item_wood",
+    "type_id": "7471df3c-8da8-4565-a44b-67f953230cd6"
+  },
+  {
+    "id": "4fa40ff7-f740-4392-a368-045cec0b7d1b",
+    "name": "Herbs",
+    "code": "item_herbs",
+    "type_id": "7471df3c-8da8-4565-a44b-67f953230cd6"
+  },
+  {
+    "id": "f615fd8f-194f-4537-b0c0-06842972f1e1",
+    "name": "Ore",
+    "code": "item_ore",
+    "type_id": "7471df3c-8da8-4565-a44b-67f953230cd6"
+  },
+  {
     "id": "f954b393-04e9-49b9-a74e-f19ec3958c1f",
     "name": "Health Potion",
     "code": "item_health_potion",

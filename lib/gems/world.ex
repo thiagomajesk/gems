@@ -1,6 +1,8 @@
 defmodule GEMS.World do
   alias GEMS.Repo
   alias GEMS.World.Schema.Avatar
+  alias GEMS.World.Schema.Character
+  alias GEMS.World.Schema.Activity
 
   import Ecto.Query
 
@@ -14,6 +16,16 @@ defmodule GEMS.World do
         where: z.starting == true,
         order_by: fragment("RANDOM()"),
         limit: 1
+    )
+  end
+
+  def list_activities_for(%Character{} = character) do
+    %{zone_id: zone_id} = character
+
+    Repo.all(
+      from a in Activity,
+        where: a.zone_id == ^zone_id,
+        preload: [:item, :profession]
     )
   end
 end

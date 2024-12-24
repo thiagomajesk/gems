@@ -111,6 +111,7 @@ defmodule GEMSWeb.Router do
         {GEMSWeb.PageHook, :current_path}
       ] do
       live "/character", CharacterLive, :show
+      live "/activities", ActivitiesLive, :show
       live "/home", HomeLive
     end
   end
