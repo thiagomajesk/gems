@@ -32,7 +32,7 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
       add :character_id, references(:characters), null: false, primary_key: true
       add :profession_id, references(:professions), null: false, primary_key: true
       add :level, :integer, default: 0
-      add :exp, :integer, default: 0
+      add :experience, :integer, default: 0
     end
 
     ################################################################################

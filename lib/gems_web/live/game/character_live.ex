@@ -34,7 +34,7 @@ defmodule GEMSWeb.Game.CharacterLive do
               icon={character_profession.profession.icon}
               name={character_profession.profession.name}
               level={character_profession.level}
-              exp={character_profession.exp}
+              experience={character_profession.experience}
             />
           </div>
         </section>
@@ -194,7 +194,7 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   attr :name, :string, required: true
   attr :level, :integer, required: true
-  attr :exp, :integer, required: true
+  attr :experience, :integer, required: true
   attr :icon, :string, default: nil
 
   defp profession_card(assigns) do
@@ -209,7 +209,7 @@ defmodule GEMSWeb.Game.CharacterLive do
           </div>
           <progress class="progress progress-primary" value="70" max="100"></progress>
           <div class="flex items-center justify-between mt-1">
-            <div class="badge badge-neutral font-medium">EXP {@exp} of 100</div>
+            <div class="badge badge-neutral font-medium">EXP {@experience} of 100</div>
             <div class="badge badge-neutral font-medium gap-1">
               <UI.Icons.page name="loader" /> 70%
             </div>
