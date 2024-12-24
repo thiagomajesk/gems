@@ -23,13 +23,13 @@ defmodule GEMSWeb.Game.ActivitiesLive do
     ~H"""
     <div class="card bg-base-200 p-4">
       <div class="flex items-center gap-2">
-        <img src="https://placehold.co/80" class="size-16 rounded-xl" />
+        <img src="https://placehold.co/80" class="size-18 rounded-xl" />
         <div class="flex flex-col justify-between space-y-2 grow">
           <div class="flex items-center">
             <span class="font-semibold w-1/2">{@activity.item.name}</span>
-            <div class="flex items-center w-1/2 gap-2">
+            <div class="flex items-center justify-end w-1/2 gap-2">
               <span class="badge badge-accent font-medium">{@activity.profession.name}</span>
-              <button class="btn btn-neutral btn-sm grow">{@activity.action}</button>
+              <button class="btn btn-neutral btn-sm grow max-w-32">{@activity.action}</button>
             </div>
           </div>
           <div class="flex items-center justify-between mt-1">
