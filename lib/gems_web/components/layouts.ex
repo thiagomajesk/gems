@@ -11,4 +11,16 @@ defmodule GEMSWeb.Layouts do
   use GEMSWeb, :html
 
   embed_templates "layouts/*"
+
+  defp annoucement_banner(assigns) do
+    ~H"""
+    <div role="alert" class="alert alert-info shadow-xl rounded-none sticky">
+      <UI.Icons.page name="info" />
+      <div class="text-sm">
+        <h3 class="font-bold">Attention!</h3>
+        <p>You are currently using a beta version of this software</p>
+      </div>
+    </div>
+    """
+  end
 end
