@@ -1,6 +1,8 @@
 defmodule GEMSWeb.UIKIT.Menus do
   use GEMSWeb, :html
 
+  attr :current_path, :string, required: true
+
   slot :link, required: true do
     attr :href, :string, required: true
     attr :icon, :string, required: true
@@ -20,7 +22,13 @@ defmodule GEMSWeb.UIKIT.Menus do
         "flex-nowrap min-w-min snap-x snap-mandatory"
       ]}>
         <li :for={link <- @link} class="snap-center snap-always">
-          <.link href={link.href} class={["flex flex-col gap-0.5", "min-w-[60px]"]}>
+          <.link
+            navigate={link.href}
+            class={[
+              "flex flex-col gap-0.5 min-w-[60px]",
+              link.href == @current_path && "active"
+            ]}
+          >
             <UI.Icons.game name={link.icon} size={26} noobserver />
             <span>{link.label}</span>
           </.link>

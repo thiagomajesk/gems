@@ -107,7 +107,8 @@ defmodule GEMSWeb.Router do
       layout: {GEMSWeb.Layouts, :game},
       on_mount: [
         {GEMSWeb.CheckUserHook, :ensure_authenticated},
-        {GEMSWeb.CheckCharacterHook, :ensure_selected_character}
+        {GEMSWeb.CheckCharacterHook, :ensure_selected_character},
+        {GEMSWeb.PageHook, :current_path}
       ] do
       live "/character", CharacterLive, :show
       live "/home", HomeLive
