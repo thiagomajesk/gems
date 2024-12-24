@@ -55,41 +55,25 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
     end
 
     ################################################################################
-    # Character Satchels
+    # Characters Satchels
     ################################################################################
 
     create table(:characters_satchels, primary_key: false) do
       add :character_id, references(:characters), null: false, primary_key: true
-      add :item_a_id, references(:items), null: false, primary_key: true
-      add :item_b_id, references(:items), null: false, primary_key: true
-      add :item_c_id, references(:items), null: false, primary_key: true
-      add :item_d_id, references(:items), null: false, primary_key: true
-      add :item_e_id, references(:items), null: false, primary_key: true
-      add :item_f_id, references(:items), null: false, primary_key: true
+      add :item_id, references(:items), null: false, primary_key: true
+      add :slot, :integer, null: false, primary_key: true
+      add :amount, :integer, null: false, default: 1
     end
 
     ################################################################################
-    # Loadouts
+    # Characters Apparels
     ################################################################################
 
-    create table(:characters_loadouts, primary_key: false) do
+    create table(:characters_apparels, primary_key: false) do
       add :character_id, references(:characters), null: false, primary_key: true
-      add :name, :string, null: false
-      add :icon, :string, null: false
-      add :active, :boolean, null: false
-      add :trinket, references(:equipments), null: true
-      add :helmet, references(:equipments), null: true
-      add :cape, references(:equipments), null: true
-      add :main_hand, references(:equipments), null: true
-      add :armor, references(:equipments), null: true
-      add :ofF_hand, references(:equipments), null: true
-      add :ring, references(:equipments), null: true
-      add :boots, references(:equipments), null: true
-      add :amulet, references(:equipments), null: true
+      add :equipment_id, references(:equipments), null: false, primary_key: true
+      add :slot, :integer, null: false, primary_key: true
     end
-
-    create unique_index(:characters_loadouts, [:character_id, :name])
-    create unique_index(:characters_loadouts, [:character_id, :active])
 
     ################################################################################
     # Characters Blessings
