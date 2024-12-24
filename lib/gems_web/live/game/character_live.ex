@@ -38,6 +38,110 @@ defmodule GEMSWeb.Game.CharacterLive do
             />
           </div>
         </section>
+        <section>
+          <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Apparel</h1>
+          <div class="card bg-base-200 p-4">
+            <div class="grid grid-cols-3 gap-2">
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="gem-chain" size={24} />
+                </div>
+                <span class="font-medium">Trinket</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="crested-helmet" size={24} />
+                </div>
+                <span class="font-medium">Helmet</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="cloak" size={24} />
+                </div>
+                <span class="font-medium">Cape</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="hand" size={24} />
+                </div>
+                <span class="font-medium">Main-Hand</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="chest-armor" size={24} />
+                </div>
+                <span class="font-medium">Armor</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="hand" size={24} />
+                </div>
+                <span class="font-medium">Off-Hand</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="ring" size={24} />
+                </div>
+                <span class="font-medium">Ring</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="boots" size={24} />
+                </div>
+                <span class="font-medium">Boots</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="necklace" size={24} />
+                </div>
+                <span class="font-medium">Amulet</span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Satchel</h1>
+          <div class="card bg-base-200 p-4">
+            <div class="grid grid-cols-3 gap-2">
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="potion-ball" size={24} />
+                </div>
+                <span class="font-medium">Consumable</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="drink-me" size={24} />
+                </div>
+                <span class="font-medium">Consumable</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="shiny-apple" size={24} />
+                </div>
+                <span class="font-medium">Consumable</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="pear" size={24} />
+                </div>
+                <span class="font-medium">Consumable</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="waterskin" size={24} />
+                </div>
+                <span class="font-medium">Consumable</span>
+              </div>
+              <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
+                <div class="flex items-center bg-base-200 rounded-lg p-2">
+                  <UI.Icons.game name="card-joker" size={24} />
+                </div>
+                <span class="font-medium">Consumable</span>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
     """
@@ -45,7 +149,7 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   attr :text, :string, default: nil
 
-  def bio_card(assigns) do
+  defp bio_card(assigns) do
     ~H"""
     <div class="card bg-base-200 p-4">
       <p :if={@text} class="line-clamp-6"></p>
@@ -63,7 +167,7 @@ defmodule GEMSWeb.Game.CharacterLive do
     """
   end
 
-  def guild_card(assigns) do
+  defp guild_card(assigns) do
     ~H"""
     <div class="card bg-base-200 p-4">
       <div class="flex gap-2">
