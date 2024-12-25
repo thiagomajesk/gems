@@ -19,7 +19,7 @@ defmodule GEMS.World do
     )
   end
 
-  def list_activities_for(%Character{} = character) do
+  def list_available_activities(%Character{} = character) do
     %{zone_id: zone_id} = character
 
     Repo.all(

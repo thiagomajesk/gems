@@ -17,7 +17,8 @@ defmodule GEMS.Application do
       # Start a worker by calling: GEMS.Worker.start_link(arg)
       # {GEMS.Worker, arg},
       # Start to serve requests, typically the last entry
-      GEMSWeb.Endpoint
+      GEMSWeb.Endpoint,
+      GEMS.ActivityManager
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
