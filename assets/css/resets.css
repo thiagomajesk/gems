@@ -28,3 +28,14 @@ iconify-icon {
   width: 1em;
   height: 1em;
 }
+
+/*
+* Make progress a lit less choppy
+*/
+progress::-webkit-progress-value {
+  transition: width 0.5s ease-in-out;
+}
+
+progress::-moz-progress-bar {
+  transition: width 0.5s ease-in-out;
+}
