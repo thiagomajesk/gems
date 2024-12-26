@@ -9,14 +9,15 @@ defmodule GEMSWeb.Game.ActivitiesLive do
     activities = GEMS.World.list_available_activities(character)
     activity_lookup = Map.new(activities, &{&1.id, &1})
 
+    activity_metadata = GEMS.ActivityManager.fetch_state(character)
+
     if connected?(socket), do: GEMS.ActivityManager.subscribe(character)
 
     {:ok,
-     assign(socket,
-       activities: activities,
-       activity_lookup: activity_lookup,
-       selected_activity: nil
-     )}
+     socket
+     |> assign(:activities, activities)
+     |> assign(:activity_lookup, activity_lookup)
+     |> assign_current_activity_state(activity_metadata)}
   end
 
   @impl true
@@ -26,14 +27,17 @@ defmodule GEMSWeb.Game.ActivitiesLive do
       <.activity_card
         :for={activity <- @activities}
         activity={activity}
-        active={activity.id == get_in(@selected_activity.id)}
+        running_timer={
+          if activity.id == @current_activity_id,
+            do: @current_activity_timer
+        }
       />
     </div>
     """
   end
 
   attr :activity, :any, required: true
-  attr :active, :boolean, default: false
+  attr :running_timer, :any, default: nil
 
   defp activity_card(assigns) do
     ~H"""
@@ -46,7 +50,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
             <div class="flex items-center justify-end w-1/2 gap-2">
               <span class="badge badge-accent font-medium">{@activity.profession.name}</span>
               <button
-                :if={!@active}
+                :if={!@running_timer}
                 class="btn btn-neutral btn-sm grow max-w-32"
                 phx-click="start"
                 phx-value-id={@activity.id}
@@ -54,7 +58,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 {@activity.action}
               </button>
               <button
-                :if={@active}
+                :if={@running_timer}
                 class="btn btn-neutral btn-sm grow max-w-32"
                 phx-click="stop"
                 phx-value-id={@activity.id}
@@ -79,7 +83,11 @@ defmodule GEMSWeb.Game.ActivitiesLive do
               </span>
             </div>
           </div>
-          <progress class="progress" value="40" max="100"></progress>
+          <.activity_progress
+            id={"#{@activity.id}-progress"}
+            remaining={@running_timer && Process.read_timer(@running_timer)}
+            duration={@activity.duration}
+          />
         </div>
       </div>
     </div>
@@ -96,18 +104,66 @@ defmodule GEMSWeb.Game.ActivitiesLive do
     GEMS.ActivityManager.start_activity(character, activity)
 
     # Optimistic update the assign before we get notified by the server
-    {:noreply, assign(socket, selected_activity: activity)}
+    {:noreply, assign(socket, current_activity_id: activity_id)}
   end
 
   @impl true
-  def handle_info({:activity_started, activity}, socket) do
-    Logger.debug("STARTED ACTIVITY: #{activity.id}, #{inspect(self())}")
-    {:noreply, assign(socket, selected_activity: activity)}
+  def handle_event("stop", %{"id" => activity_id}, socket) do
+    character = socket.assigns.selected_character
+
+    activity_lookup = socket.assigns.activity_lookup
+    activity = Map.fetch!(activity_lookup, activity_id)
+
+    GEMS.ActivityManager.stop_activity(character, activity)
+
+    # Optimistic update the assign before we get notified by the server
+    {:noreply, assign(socket, current_activity_id: nil)}
   end
 
   @impl true
-  def handle_info({:activity_stopped, activity}, socket) do
-    Logger.debug("STOPPED ACTIVITY: #{activity.id}, #{inspect(self())}")
-    {:noreply, assign(socket, selected_activity: nil)}
+  def handle_info({:activity_started, activity_metadata}, socket) do
+    %{activity_id: activity_id} = activity_metadata
+    Logger.debug("STARTED ACTIVITY: #{activity_id}, #{inspect(self())}")
+    {:noreply, assign_current_activity_state(socket, activity_metadata)}
+  end
+
+  @impl true
+  def handle_info({:activity_stopped, activity_metadata}, socket) do
+    %{activity_id: activity_id} = activity_metadata
+    Logger.debug("STOPPED ACTIVITY: #{activity_id}, #{inspect(self())}")
+    {:noreply, assign_current_activity_state(socket, nil)}
+  end
+
+  attr :id, :string, required: true
+  attr :duration, :integer, required: true
+  attr :remaining, :integer, default: 0
+
+  defp activity_progress(assigns) do
+    assigns =
+      assign_props(assigns, fn assigns ->
+        %{
+          duration: :timer.seconds(assigns.duration),
+          remaining: assigns.remaining
+        }
+      end)
+
+    ~H"""
+    <progress
+      id={@id}
+      max="100"
+      value="0"
+      data-props={@props}
+      phx-hook="ActivityProgress"
+      class="progress"
+    >
+    </progress>
+    """
+  end
+
+  defp assign_current_activity_state(socket, metadata) do
+    assign(socket,
+      current_activity_id: get_in(metadata.activity_id),
+      current_activity_timer: get_in(metadata.timer)
+    )
   end
 end

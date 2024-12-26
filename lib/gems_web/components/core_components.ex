@@ -148,6 +148,22 @@ defmodule GEMSWeb.CoreComponents do
     """
   end
 
+  @doc """
+  Takes the given assigns and converts them into a props attribute.
+  """
+  def assign_props(socket_or_assigns, fun_or_props)
+
+  def assign_props(%Phoenix.Socket{} = socket, fun) when is_function(fun, 1),
+    do: assign_props(socket, fun.(socket.assigns))
+
+  def assign_props(assigns, fun) when is_function(fun, 1),
+    do: assign_props(assigns, fun.(assigns))
+
+  def assign_props(socket_or_assigns, props) when is_map(props),
+    do: assign(socket_or_assigns, :props, Jason.encode!(props))
+
+  def assign_props(_assigns, props), do: raise("Expected a map, got #{inspect(props)}")
+
   defp flash_icon(:success), do: "circle-check"
   defp flash_icon(:info), do: "info"
   defp flash_icon(:warning), do: "circle-alert"

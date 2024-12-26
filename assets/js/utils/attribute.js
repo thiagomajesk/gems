@@ -5,13 +5,13 @@
 import normalize from "normalize-object";
 const HOOK_PROPS_ATTR = "data-props";
 
-export function parseHookProps(el, names = []) {
+export function parseHookProps(el, required = []) {
   const message = `Missing attribute "${HOOK_PROPS_ATTR}" on element ${el.tagName}#${el.id}`;
   if (!el.hasAttribute(HOOK_PROPS_ATTR)) throw new Error(message);
 
   const props = normalize(JSON.parse(el.getAttribute(HOOK_PROPS_ATTR)));
 
-  for (const name of names) {
+  for (const name of required) {
     const message = `Required prop ${name} not found on element ${el.tagName}#${el.id}`;
     if (!props.hasOwnProperty(name)) throw new Error(message);
   }

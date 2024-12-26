@@ -21,6 +21,10 @@ defmodule GEMS.ActivityManager do
     Phoenix.PubSub.unsubscribe(GEMS.PubSub, topic)
   end
 
+  def fetch_state(%Character{} = character) do
+    GenServer.call(__MODULE__, {:fetch_state, character})
+  end
+
   def start_activity(character, activity) do
     GenServer.cast(__MODULE__, {:start_activity, character, activity})
   end
@@ -47,6 +51,11 @@ defmodule GEMS.ActivityManager do
   end
 
   @impl true
+  def handle_call({:fetch_state, character}, _from, state) do
+    {:reply, Map.get(state.activity_lookup, character.id), state}
+  end
+
+  @impl true
   def handle_info({:start_activity, character, activity}, state) do
     %{activity_lookup: activity_lookup} = state
 
@@ -55,20 +64,20 @@ defmodule GEMS.ActivityManager do
         time = :timer.seconds(activity.duration)
 
         message = {:stop_activity, character, activity}
-        ref = Process.send_after(self(), message, time)
+        timer = Process.send_after(self(), message, time)
+
+        metadata = %{
+          timer: timer,
+          activity_id: activity.id,
+          character_id: character.id
+        }
 
         Phoenix.PubSub.broadcast_from(
           GEMS.PubSub,
           self(),
           build_topic(character),
-          {:activity_started, activity}
+          {:activity_started, metadata}
         )
-
-        metadata = %{
-          timer: ref,
-          activity: activity,
-          character: character
-        }
 
         activity_lookup = Map.put(activity_lookup, character.id, metadata)
         {:noreply, Map.put(state, :activity_lookup, activity_lookup)}
@@ -102,14 +111,14 @@ defmodule GEMS.ActivityManager do
 
         {:noreply, state}
 
-      %{timer: running_timer} ->
-        Process.cancel_timer(running_timer)
+      %{timer: timer} = metadata ->
+        Process.cancel_timer(timer)
 
         Phoenix.PubSub.broadcast_from(
           GEMS.PubSub,
           self(),
           build_topic(character),
-          {:activity_stopped, activity}
+          {:activity_stopped, metadata}
         )
 
         activity_lookup = Map.delete(activity_lookup, character.id)
