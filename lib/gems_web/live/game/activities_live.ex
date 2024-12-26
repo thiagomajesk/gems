@@ -85,8 +85,13 @@ defmodule GEMSWeb.Game.ActivitiesLive do
           </div>
           <.activity_progress
             id={"#{@activity.id}-progress"}
-            remaining={@running_timer && Process.read_timer(@running_timer)}
-            duration={@activity.duration}
+            animate={@running_timer != nil}
+            duration={:timer.seconds(@activity.duration)}
+            remaining={
+              if @running_timer,
+                do: Process.read_timer(@running_timer) || 0,
+                else: :timer.seconds(@activity.duration)
+            }
           />
         </div>
       </div>
@@ -122,39 +127,37 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
   @impl true
   def handle_info({:activity_started, activity_metadata}, socket) do
-    %{activity_id: activity_id} = activity_metadata
+    %{activity: %{id: activity_id}} = activity_metadata
     Logger.debug("STARTED ACTIVITY: #{activity_id}, #{inspect(self())}")
     {:noreply, assign_current_activity_state(socket, activity_metadata)}
   end
 
   @impl true
   def handle_info({:activity_stopped, activity_metadata}, socket) do
-    %{activity_id: activity_id} = activity_metadata
+    %{activity: %{id: activity_id}} = activity_metadata
     Logger.debug("STOPPED ACTIVITY: #{activity_id}, #{inspect(self())}")
     {:noreply, assign_current_activity_state(socket, nil)}
   end
 
   attr :id, :string, required: true
+  attr :animate, :boolean, default: false
   attr :duration, :integer, required: true
-  attr :remaining, :integer, default: 0
+  attr :remaining, :integer, required: true
 
   defp activity_progress(assigns) do
     assigns =
-      assign_props(assigns, fn assigns ->
-        %{
-          duration: :timer.seconds(assigns.duration),
-          remaining: assigns.remaining
-        }
-      end)
+      assigns
+      |> assign_new(:value, &(&1.duration - &1.remaining))
+      |> assign_props(&%{animate: &1.animate})
 
     ~H"""
     <progress
       id={@id}
-      max="100"
-      value="0"
-      data-props={@props}
-      phx-hook="ActivityProgress"
+      max={@duration}
+      value={@value}
       class="progress"
+      phx-hook="ActivityProgress"
+      data-props={@props}
     >
     </progress>
     """
@@ -162,7 +165,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
   defp assign_current_activity_state(socket, metadata) do
     assign(socket,
-      current_activity_id: get_in(metadata.activity_id),
+      current_activity_id: get_in(metadata.activity.id),
       current_activity_timer: get_in(metadata.timer)
     )
   end

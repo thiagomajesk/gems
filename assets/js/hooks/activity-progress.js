@@ -1,18 +1,13 @@
 import { parseHookProps } from "../utils/attribute";
 
 const UPDATE_INTERVAL = 1000;
-const REQUIRED_PROPS = ["duration", "remaining"];
+const REQUIRED_PROPS = ["animate"];
 
 export default {
   interval: null,
 
   initialize() {
-    const { remaining, duration } = parseHookProps(this.el, REQUIRED_PROPS);
-    const progress = 100 - ((remaining ?? duration) / duration) * 100;
-
-    this.animate = remaining != null;
-    this.el.value = Math.floor(progress);
-    this.increment = duration / UPDATE_INTERVAL;
+    this.props = parseHookProps(this.el, REQUIRED_PROPS);
   },
 
   mounted() {
@@ -31,11 +26,10 @@ export default {
 
   updateDOM() {
     clearInterval(this.interval);
-
-    if (!this.animate) return;
+    if (!this.props.animate) return;
 
     this.interval = setInterval(() => {
-      this.el.value += this.increment;
+      this.el.value += UPDATE_INTERVAL;
     }, UPDATE_INTERVAL);
   },
 };

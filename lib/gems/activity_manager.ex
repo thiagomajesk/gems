@@ -66,20 +66,20 @@ defmodule GEMS.ActivityManager do
         message = {:stop_activity, character, activity}
         timer = Process.send_after(self(), message, time)
 
-        metadata = %{
+        activity_metadata = %{
           timer: timer,
-          activity_id: activity.id,
-          character_id: character.id
+          activity: activity,
+          character: character
         }
 
         Phoenix.PubSub.broadcast_from(
           GEMS.PubSub,
           self(),
           build_topic(character),
-          {:activity_started, metadata}
+          {:activity_started, activity_metadata}
         )
 
-        activity_lookup = Map.put(activity_lookup, character.id, metadata)
+        activity_lookup = Map.put(activity_lookup, character.id, activity_metadata)
         {:noreply, Map.put(state, :activity_lookup, activity_lookup)}
 
       %{activity: ^activity} ->
@@ -111,14 +111,14 @@ defmodule GEMS.ActivityManager do
 
         {:noreply, state}
 
-      %{timer: timer} = metadata ->
+      %{timer: timer} = activity_metadata ->
         Process.cancel_timer(timer)
 
         Phoenix.PubSub.broadcast_from(
           GEMS.PubSub,
           self(),
           build_topic(character),
-          {:activity_stopped, metadata}
+          {:activity_stopped, activity_metadata}
         )
 
         activity_lookup = Map.delete(activity_lookup, character.id)
@@ -126,7 +126,7 @@ defmodule GEMS.ActivityManager do
     end
   end
 
-  def build_topic(character) do
+  defp build_topic(character) do
     %{id: id, zone_id: zone_id} = character
     "#{@topic_prefix}:zone:#{zone_id}:character:#{id}"
   end
