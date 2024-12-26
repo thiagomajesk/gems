@@ -66,9 +66,11 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :resilience, :integer
     field :lehality, :integer
 
-    has_many :traits, GEMS.Engine.Schema.Trait
-    many_to_many :abilities, GEMS.Engine.Schema.Ability, join_through: "equipments_abilities"
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
+    has_many :traits, GEMS.Engine.Schema.Trait
+    has_many :equipment_materials, GEMS.Engine.Schema.EquipmentMaterial
+    many_to_many :materials, GEMS.Engine.Schema.Item, join_through: "equipments_materials"
+    many_to_many :abilities, GEMS.Engine.Schema.Ability, join_through: "equipments_abilities"
   end
 
   @doc false

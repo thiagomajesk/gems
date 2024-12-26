@@ -45,5 +45,15 @@ defmodule GEMS.Repo.Migrations.CreateEquipmentsTables do
       add :equipment_id, references(:equipments), null: false, primary_key: true
       add :ability_id, references(:abilities), null: false, primary_key: true
     end
+
+    ################################################################################
+    # Equipments Materials
+    ################################################################################
+
+    create table(:equipments_materials, primary_key: false) do
+      add :equipment_id, references(:equipments), null: false, primary_key: true
+      add :material_id, references(:items), null: false, primary_key: true
+      add :amount, :integer, null: false, default: 1
+    end
   end
 end

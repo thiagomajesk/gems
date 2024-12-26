@@ -73,6 +73,7 @@ defmodule GEMS.Engine.Schema.Item do
     belongs_to :type, GEMS.Engine.Schema.ItemType
     belongs_to :damage_element, GEMS.Engine.Schema.Element
     has_many :effects, GEMS.Engine.Schema.Effect, on_replace: :delete
+    has_many :item_ingredients, GEMS.Engine.Schema.ItemIngredient
     many_to_many :ingredients, GEMS.Engine.Schema.Item, join_through: "items_ingredients"
   end
 

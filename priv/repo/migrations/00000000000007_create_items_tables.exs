@@ -41,8 +41,9 @@ defmodule GEMS.Repo.Migrations.CreateItemsTables do
     ################################################################################
 
     create table(:items_ingredients, primary_key: false) do
-      add :recipe_id, references(:items), null: false, primary_key: true
+      add :item_id, references(:items), null: false, primary_key: true
       add :ingredient_id, references(:items), null: false, primary_key: true
+      add :amount, :integer, null: false, default: 1
     end
   end
 end
