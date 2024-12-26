@@ -79,7 +79,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 <span>{"#{@activity.duration}s"}</span>
               </span>
               <span class="badge badge-neutral font-medium gap-1">
-                {"#{@activity.experience} EXP"}
+                {"#{@activity.experience} XP"}
               </span>
             </div>
           </div>

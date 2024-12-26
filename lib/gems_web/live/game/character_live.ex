@@ -209,7 +209,7 @@ defmodule GEMSWeb.Game.CharacterLive do
           </div>
           <progress class="progress progress-primary" value="70" max="100"></progress>
           <div class="flex items-center justify-between mt-1">
-            <div class="badge badge-neutral font-medium">EXP {@experience} of 100</div>
+            <div class="badge badge-neutral font-medium">XP {@experience} of 100</div>
             <div class="badge badge-neutral font-medium gap-1">
               <UI.Icons.page name="loader" /> 70%
             </div>
