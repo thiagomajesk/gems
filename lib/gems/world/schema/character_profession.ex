@@ -1,13 +1,11 @@
 defmodule GEMS.World.Schema.CharacterProfession do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, preset: :default
 
   @required_fields [:character_id, :profession_id]
 
   @optional_fields [:level, :experience]
 
   @primary_key false
-  @foreign_key_type Ecto.UUID
   schema "characters_professions" do
     field :level, :integer
     field :experience, :integer

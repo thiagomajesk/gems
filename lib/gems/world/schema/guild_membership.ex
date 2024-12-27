@@ -1,13 +1,11 @@
 defmodule GEMS.World.Schema.GuildMembership do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, preset: :default
 
   @roles [:leader, :officer, :member]
 
   @required_fields [:role, :guild_id, :character_id]
 
   @primary_key false
-  @foreign_key_type Ecto.UUID
   schema "guilds_memberships" do
     field :role, Ecto.Enum, values: @roles
 

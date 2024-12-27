@@ -1,6 +1,5 @@
 defmodule GEMS.Engine.Schema.CreatureActionPattern do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, preset: :default
 
   @conditions [
     :always,

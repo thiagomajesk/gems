@@ -1,9 +1,9 @@
 defmodule GEMS.Engine.Schema.EquipmentMaterial do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, preset: :default
 
   @required_fields [:amount, :equipment_id, :material_id]
 
+  @primary_key false
   schema "equipments_materials" do
     field :amount, :integer
 
