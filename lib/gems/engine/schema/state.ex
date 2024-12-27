@@ -1,9 +1,8 @@
 defmodule GEMS.Engine.Schema.State do
-  use GEMS.Database.Schema, :resource
-
-  @required_fields [:name, :code]
-
-  @optional_fields [:description, :icon, :priority, :restriction]
+  use GEMS.Database.Schema,
+    preset: :resource,
+    required_fields: [:name, :code],
+    optional_fields: [:description, :icon, :priority, :restriction]
 
   @restrictions [
     :attack_enemy,
@@ -22,29 +21,11 @@ defmodule GEMS.Engine.Schema.State do
     has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
   end
 
-  def changeset(state, attrs) do
-    state
-    |> cast(attrs, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+  def build_changeset(state, attrs, opts) do
+    changeset = super(state, attrs, opts)
+
+    changeset
     |> unique_constraint(:name)
-  end
-
-  def seed_changeset(state, attrs) do
-    build_changeset(
-      state,
-      attrs,
-      required_fields: [:id | @required_fields],
-      optional_fields: @optional_fields
-    )
-  end
-
-  defp build_changeset(state, attrs, opts) do
-    required_fields = Keyword.fetch!(opts, :required_fields)
-    optional_fields = Keyword.get(opts, :optional_fields, [])
-
-    state
-    |> cast(attrs, required_fields ++ optional_fields)
-    |> validate_required(required_fields)
-    |> unique_constraint(:name)
+    |> unique_constraint(:code)
   end
 end

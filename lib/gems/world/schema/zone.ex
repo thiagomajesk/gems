@@ -1,10 +1,10 @@
 defmodule GEMS.World.Schema.Zone do
-  use GEMS.Database.Schema, :resource
+  use GEMS.Database.Schema,
+    preset: :resource,
+    required_fields: [:name, :code, :skull, :biome_id],
+    optional_fields: [:description, :danger, :starting]
 
   @skulls [:blue, :yellow, :red, :black]
-
-  @required_fields [:name, :code, :skull, :biome_id]
-  @optional_fields [:description, :danger, :starting]
 
   schema "zones" do
     field :name, :string
@@ -24,32 +24,12 @@ defmodule GEMS.World.Schema.Zone do
       on_replace: :delete
   end
 
-  @doc false
-  def changeset(zone, attrs) do
-    build_changeset(zone, attrs,
-      required_fields: @required_fields,
-      optional_fields: @optional_fields
-    )
-  end
+  def build_changeset(zone, attrs, opts) do
+    changeset = super(zone, attrs, opts)
 
-  @doc false
-  def seed_changeset(zone, attrs) do
-    build_changeset(
-      zone,
-      attrs,
-      required_fields: [:id | @required_fields],
-      optional_fields: @optional_fields
-    )
-  end
-
-  defp build_changeset(zone, attrs, opts) do
-    required_fields = Keyword.fetch!(opts, :required_fields)
-    optional_fields = Keyword.get(opts, :optional_fields, [])
-
-    zone
-    |> cast(attrs, required_fields ++ optional_fields)
+    changeset
     |> cast_assoc(:creatures, sort_param: :creatures_sort, drop_param: :creatures_drop)
-    |> validate_required(required_fields)
     |> unique_constraint(:name)
+    |> unique_constraint(:code)
   end
 end

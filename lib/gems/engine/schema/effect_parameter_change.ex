@@ -1,5 +1,5 @@
 defmodule GEMS.Engine.Schema.EffectParameterChange do
-  use GEMS.Database.Schema, :default
+  use GEMS.Database.Schema, preset: :default
 
   @parameters GEMS.Engine.Constants.stats()
 

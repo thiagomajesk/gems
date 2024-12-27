@@ -1,17 +1,23 @@
 defmodule GEMS.Database.Schema do
-  defmacro __using__(preset) do
-    apply(__MODULE__, preset, [])
+  defmacro __using__(opts) do
+    {preset, opts} = Keyword.pop!(opts, :preset)
+    apply(__MODULE__, preset, [opts])
   end
 
-  def resource do
-    quote do
-      unquote(default())
+  def resource(opts) do
+    {required_fields, opts} = Keyword.pop(opts, :required_fields, [])
+    {optional_fields, opts} = Keyword.pop(opts, :optional_fields, [])
 
-      use GEMS.Database.Resource
+    quote do
+      unquote(default(opts))
+
+      use GEMS.Database.Resource,
+        required_fields: unquote(required_fields),
+        optional_fields: unquote(optional_fields)
     end
   end
 
-  def default do
+  def default(_opts) do
     quote do
       use Ecto.Schema
       import Ecto.Changeset, warn: false

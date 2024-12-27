@@ -1,5 +1,5 @@
 defmodule GEMS.Engine.Schema.Effect do
-  use GEMS.Database.Schema, :default
+  use GEMS.Database.Schema, preset: :default
 
   @kinds [
     :recovery,

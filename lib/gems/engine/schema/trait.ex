@@ -1,5 +1,5 @@
 defmodule GEMS.Engine.Schema.Trait do
-  use GEMS.Database.Schema, :default
+  use GEMS.Database.Schema, preset: :default
 
   @kinds [
     :ability_seal,

@@ -1,5 +1,5 @@
 defmodule GEMS.World.Schema.Activity do
-  use GEMS.Database.Schema, :default
+  use GEMS.Database.Schema, preset: :default
 
   @required_fields [:action, :zone_id, :item_id]
   @optional_fields [:duration, :experience, :profession_id, :required_level]
@@ -31,7 +31,7 @@ defmodule GEMS.World.Schema.Activity do
     )
   end
 
-  defp build_changeset(zone_activity, attrs, opts) do
+  def build_changeset(zone_activity, attrs, opts) do
     required_fields = Keyword.fetch!(opts, :required_fields)
     optional_fields = Keyword.get(opts, :optional_fields, [])
 

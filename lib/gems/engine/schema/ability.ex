@@ -1,27 +1,26 @@
 defmodule GEMS.Engine.Schema.Ability do
-  use GEMS.Database.Schema, :resource
-
-  @required_fields [:name, :code, :type_id]
-
-  @optional_fields [
-    :description,
-    :icon,
-    :health_cost,
-    :energy_cost,
-    :target_side,
-    :target_status,
-    :target_number,
-    :random_targets,
-    :hit_type,
-    :success_rate,
-    :repeats,
-    :damage_type,
-    :damage_formula,
-    :damage_variance,
-    :critical_hits,
-    :messages,
-    :damage_element_id
-  ]
+  use GEMS.Database.Schema,
+    preset: :resource,
+    required_fields: [:name, :code, :type_id],
+    optional_fields: [
+      :description,
+      :icon,
+      :health_cost,
+      :energy_cost,
+      :target_side,
+      :target_status,
+      :target_number,
+      :random_targets,
+      :hit_type,
+      :success_rate,
+      :repeats,
+      :damage_type,
+      :damage_formula,
+      :damage_variance,
+      :critical_hits,
+      :messages,
+      :damage_element_id
+    ]
 
   @target_sides [
     :self,
@@ -73,32 +72,12 @@ defmodule GEMS.Engine.Schema.Ability do
     has_many :effects, GEMS.Engine.Schema.Effect, on_replace: :delete
   end
 
-  @doc false
-  def changeset(ability, attrs) do
-    build_changeset(ability, attrs,
-      required_fields: @required_fields,
-      optional_fields: @optional_fields
-    )
-  end
+  def build_changeset(ability, attrs, opts) do
+    changeset = super(ability, attrs, opts)
 
-  @doc false
-  def seed_changeset(ability, attrs) do
-    build_changeset(
-      ability,
-      attrs,
-      required_fields: [:id | @required_fields],
-      optional_fields: @optional_fields
-    )
-  end
-
-  defp build_changeset(ability, attrs, opts) do
-    required_fields = Keyword.fetch!(opts, :required_fields)
-    optional_fields = Keyword.get(opts, :optional_fields, [])
-
-    ability
-    |> cast(attrs, required_fields ++ optional_fields)
+    changeset
     |> cast_assoc(:effects, sort_param: :effects_sort, drop_param: :effects_drop)
-    |> validate_required(required_fields)
     |> unique_constraint(:name)
+    |> unique_constraint(:code)
   end
 end

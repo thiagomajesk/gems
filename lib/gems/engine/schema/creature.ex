@@ -1,34 +1,33 @@
 defmodule GEMS.Engine.Schema.Creature do
-  use GEMS.Database.Schema, :resource
-
-  @required_fields [
-    :name,
-    :code,
-    :type_id,
-    :biome_id
-  ]
-
-  @optional_fields [
-    :description,
-    :max_health,
-    :max_energy,
-    :physical_damage,
-    :magical_damage,
-    :physical_defense,
-    :magical_defense,
-    :health_regen,
-    :energy_regen,
-    :accuracy,
-    :evasion,
-    :attack_speed,
-    :break_power,
-    :critical_rating,
-    :critical_power,
-    :weapon_power,
-    :ability_power,
-    :resilience,
-    :lehality
-  ]
+  use GEMS.Database.Schema,
+    preset: :resource,
+    required_fields: [
+      :name,
+      :code,
+      :type_id,
+      :biome_id
+    ],
+    optional_fields: [
+      :description,
+      :max_health,
+      :max_energy,
+      :physical_damage,
+      :magical_damage,
+      :physical_defense,
+      :magical_defense,
+      :health_regen,
+      :energy_regen,
+      :accuracy,
+      :evasion,
+      :attack_speed,
+      :break_power,
+      :critical_rating,
+      :critical_power,
+      :weapon_power,
+      :ability_power,
+      :resilience,
+      :lehality
+    ]
 
   schema "creatures" do
     field :name, :string
@@ -59,32 +58,12 @@ defmodule GEMS.Engine.Schema.Creature do
     has_many :action_patterns, GEMS.Engine.Schema.CreatureActionPattern
   end
 
-  @doc false
-  def changeset(creature, attrs) do
-    build_changeset(creature, attrs,
-      required_fields: @required_fields,
-      optional_fields: @optional_fields
-    )
-  end
+  def build_changeset(creature, attrs, opts) do
+    changeset = super(creature, attrs, opts)
 
-  @doc false
-  def seed_changeset(creature, attrs) do
-    build_changeset(
-      creature,
-      attrs,
-      required_fields: [:id | @required_fields],
-      optional_fields: @optional_fields
-    )
-  end
-
-  defp build_changeset(creature, attrs, opts) do
-    required_fields = Keyword.fetch!(opts, :required_fields)
-    optional_fields = Keyword.get(opts, :optional_fields, [])
-
-    creature
-    |> cast(attrs, required_fields ++ optional_fields)
+    changeset
     |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
-    |> validate_required(required_fields)
     |> unique_constraint(:name)
+    |> unique_constraint(:code)
   end
 end

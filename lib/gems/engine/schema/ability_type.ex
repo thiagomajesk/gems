@@ -1,9 +1,8 @@
 defmodule GEMS.Engine.Schema.AbilityType do
-  use GEMS.Database.Schema, :resource
-
-  @required_fields [:name, :code]
-
-  @optional_fields [:description, :icon]
+  use GEMS.Database.Schema,
+    preset: :resource,
+    required_fields: [:name, :code],
+    optional_fields: [:description, :icon]
 
   schema "ability_types" do
     field :name, :string
@@ -12,31 +11,11 @@ defmodule GEMS.Engine.Schema.AbilityType do
     field :icon, :string
   end
 
-  @doc false
-  def changeset(ability_type, attrs) do
-    build_changeset(ability_type, attrs,
-      required_fields: @required_fields,
-      optional_fields: @optional_fields
-    )
-  end
+  def build_changeset(ability_type, attrs, opts) do
+    changeset = super(ability_type, attrs, opts)
 
-  @doc false
-  def seed_changeset(ability_type, attrs) do
-    build_changeset(
-      ability_type,
-      attrs,
-      required_fields: [:id | @required_fields],
-      optional_fields: @optional_fields
-    )
-  end
-
-  defp build_changeset(ability_type, attrs, opts) do
-    required_fields = Keyword.fetch!(opts, :required_fields)
-    optional_fields = Keyword.get(opts, :optional_fields, [])
-
-    ability_type
-    |> cast(attrs, required_fields ++ optional_fields)
-    |> validate_required(required_fields)
+    changeset
     |> unique_constraint(:name)
+    |> unique_constraint(:code)
   end
 end

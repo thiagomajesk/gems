@@ -1,30 +1,29 @@
 defmodule GEMS.Engine.Schema.Item do
-  use GEMS.Database.Schema, :resource
-
-  @required_fields [
-    :name,
-    :code,
-    :type_id
-  ]
-
-  @optional_fields [
-    :description,
-    :icon,
-    :price,
-    :target_side,
-    :target_status,
-    :target_number,
-    :random_targets,
-    :hit_type,
-    :success_rate,
-    :repeats,
-    :damage_type,
-    :damage_formula,
-    :damage_variance,
-    :critical_hits,
-    :messages,
-    :damage_element_id
-  ]
+  use GEMS.Database.Schema,
+    preset: :resource,
+    required_fields: [
+      :name,
+      :code,
+      :type_id
+    ],
+    optional_fields: [
+      :description,
+      :icon,
+      :price,
+      :target_side,
+      :target_status,
+      :target_number,
+      :random_targets,
+      :hit_type,
+      :success_rate,
+      :repeats,
+      :damage_type,
+      :damage_formula,
+      :damage_variance,
+      :critical_hits,
+      :messages,
+      :damage_element_id
+    ]
 
   @target_sides [
     :self,
@@ -77,31 +76,11 @@ defmodule GEMS.Engine.Schema.Item do
     many_to_many :ingredients, GEMS.Engine.Schema.Item, join_through: "items_ingredients"
   end
 
-  @doc false
-  def changeset(item, attrs) do
-    build_changeset(item, attrs,
-      required_fields: @required_fields,
-      optional_fields: @optional_fields
-    )
-  end
+  def build_changeset(item, attrs, opts) do
+    changeset = super(item, attrs, opts)
 
-  @doc false
-  def seed_changeset(item, attrs) do
-    build_changeset(
-      item,
-      attrs,
-      required_fields: [:id | @required_fields],
-      optional_fields: @optional_fields
-    )
-  end
-
-  defp build_changeset(item, attrs, opts) do
-    required_fields = Keyword.fetch!(opts, :required_fields)
-    optional_fields = Keyword.get(opts, :optional_fields, [])
-
-    item
-    |> cast(attrs, required_fields ++ optional_fields)
-    |> validate_required(required_fields)
+    changeset
     |> unique_constraint(:name)
+    |> unique_constraint(:code)
   end
 end

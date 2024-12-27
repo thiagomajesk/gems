@@ -1,5 +1,5 @@
 defmodule GEMS.World.Schema.Avatar do
-  use GEMS.Database.Schema, :default
+  use GEMS.Database.Schema, preset: :default
 
   @required_fields [:name, :code, :icon]
   @optional_fields [:description]
@@ -29,7 +29,7 @@ defmodule GEMS.World.Schema.Avatar do
     )
   end
 
-  defp build_changeset(avatar, attrs, opts) do
+  def build_changeset(avatar, attrs, opts) do
     required_fields = Keyword.fetch!(opts, :required_fields)
     optional_fields = Keyword.get(opts, :optional_fields, [])
 

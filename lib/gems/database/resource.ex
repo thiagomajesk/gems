@@ -1,99 +1,104 @@
-# In the future, take a look at the following package for
-# for inspiration: https://github.com/kamaroly/ecto_entity
-
 defmodule GEMS.Database.Resource do
-  alias __MODULE__
+  @callback changeset(entity :: struct, attrs :: map) :: Ecto.Changeset.t()
 
-  import Ecto.Query
+  @callback seed_changeset(entity :: struct, attrs :: map) :: Ecto.Changeset.t()
 
-  defmacro __using__(_opts) do
-    quote do
+  @callback build_changeset(entity :: struct, attrs :: map, opts :: keyword) ::
+              Ecto.Changeset.t()
+
+  defmacro __using__(opts) do
+    required_fields = Keyword.fetch!(opts, :required_fields)
+    optional_fields = Keyword.fetch!(opts, :optional_fields)
+
+    quote location: :keep do
+      @behaviour GEMS.Database.Resource
+
       @doc """
       Returns the #{__MODULE__} with the given id.
       """
-      def get!(id, preloads \\ []), do: Resource.get!(__MODULE__, id, preloads)
+      def get!(id, preloads \\ []) do
+        __MODULE__
+        |> GEMS.Repo.get!(id)
+        |> GEMS.Repo.preload(preloads)
+      end
 
       @doc """
       Returns a list of all #{__MODULE__}.
       """
-      def list(preloads \\ []), do: Resource.list(__MODULE__, preloads)
+      def list(preloads \\ []) do
+        __MODULE__
+        |> GEMS.Repo.all()
+        |> GEMS.Repo.preload(preloads)
+      end
 
       @doc """
       Returns a list of options for #{__MODULE__}.
       """
-      def options(), do: Resource.options(__MODULE__)
+      def options() do
+        __MODULE__
+        |> GEMS.Repo.all()
+        |> Enum.map(&{&1.name, &1.id})
+      end
+
+      def change(entity \\ nil, attrs \\ %{}) do
+        changeset(entity || struct(__MODULE__), attrs)
+      end
 
       @doc """
       Creates a new #{__MODULE__}.
       """
-      def create(attrs \\ %{}), do: Resource.create(__MODULE__, attrs)
+      def create(attrs \\ %{}) do
+        __MODULE__
+        |> struct()
+        |> changeset(attrs)
+        |> GEMS.Repo.insert()
+      end
 
       @doc """
       Updates a #{__MODULE__}.
       """
-      def update(entity, attrs), do: Resource.update(__MODULE__, entity, attrs)
+      def update(entity, attrs) do
+        entity
+        |> changeset(attrs)
+        |> GEMS.Repo.update()
+      end
 
       @doc """
       Deletes a #{__MODULE__}.
       """
-      def delete(entity), do: Resource.delete(__MODULE__, entity)
+      def delete(entity) do
+        GEMS.Repo.delete(entity)
+      end
 
-      @doc """
-      Returns an `%Ecto.Changeset{}` for tracking #{__MODULE__} changes.
-      """
-      def change(entity \\ nil, attrs \\ %{}),
-        do: Resource.change(__MODULE__, entity || struct!(__MODULE__), attrs)
+      @doc false
+      def changeset(entity, attrs) do
+        build_changeset(entity, attrs,
+          required_fields: unquote(required_fields),
+          optional_fields: unquote(optional_fields)
+        )
+      end
+
+      @doc false
+      def seed_changeset(entity, attrs) do
+        build_changeset(
+          entity,
+          attrs,
+          required_fields: [:id | unquote(required_fields)],
+          optional_fields: unquote(optional_fields)
+        )
+      end
+
+      @doc false
+      def build_changeset(entity, attrs, opts) do
+        required_fields = Keyword.fetch!(opts, :required_fields)
+        optional_fields = Keyword.get(opts, :optional_fields, [])
+
+        entity
+        |> cast(attrs, required_fields ++ optional_fields)
+        |> validate_required(required_fields)
+      end
+
+      defoverridable changeset: 2, seed_changeset: 2, build_changeset: 3
     end
-  end
-
-  @doc false
-  def get!(module, id, []), do: GEMS.Repo.get!(module, id)
-
-  @doc false
-  def get!(module, id, preloads) do
-    query = from q in module, where: q.id == ^id
-    GEMS.Repo.one!(preload(query, ^preloads))
-  end
-
-  @doc false
-  def list(module, []), do: GEMS.Repo.all(module)
-
-  @doc false
-  def list(module, preloads) do
-    module
-    |> GEMS.Repo.all()
-    |> GEMS.Repo.preload(preloads)
-  end
-
-  @doc false
-  def options(module) do
-    module
-    |> list([])
-    |> Enum.map(&{&1.name, &1.id})
-  end
-
-  @doc false
-  def create(module, attrs \\ %{}) do
-    module
-    |> struct()
-    |> module.changeset(attrs)
-    |> GEMS.Repo.insert()
-  end
-
-  @doc false
-  def update(module, %module{} = entity, attrs) do
-    entity
-    |> module.changeset(attrs)
-    |> GEMS.Repo.update()
-  end
-
-  @doc false
-  def delete(module, %module{} = entity) do
-    GEMS.Repo.delete(entity)
-  end
-
-  @doc false
-  def change(module, %module{} = entity, attrs \\ %{}) do
-    module.changeset(entity, attrs)
   end
 end

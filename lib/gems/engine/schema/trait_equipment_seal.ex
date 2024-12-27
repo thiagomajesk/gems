@@ -1,5 +1,5 @@
 defmodule GEMS.Engine.Schema.TraitEquipmentSeal do
-  use GEMS.Database.Schema, :default
+  use GEMS.Database.Schema, preset: :default
 
   @required_fields [:equipment_id]
 

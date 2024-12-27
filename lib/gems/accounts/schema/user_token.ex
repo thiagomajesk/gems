@@ -1,5 +1,5 @@
 defmodule GEMS.Accounts.Schema.UserToken do
-  use GEMS.Database.Schema, :default
+  use GEMS.Database.Schema, preset: :default
 
   alias GEMS.Accounts.Schema.UserToken
 

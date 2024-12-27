@@ -1,5 +1,35 @@
 defmodule GEMS.Engine.Schema.Equipment do
-  use GEMS.Database.Schema, :resource
+  use GEMS.Database.Schema,
+    preset: :resource,
+    required_fields: [
+      :name,
+      :code,
+      :slot,
+      :type_id
+    ],
+    optional_fields: [
+      :description,
+      :icon,
+      :price,
+      :max_health,
+      :max_energy,
+      :physical_damage,
+      :magical_damage,
+      :physical_defense,
+      :magical_defense,
+      :health_regen,
+      :energy_regen,
+      :accuracy,
+      :evasion,
+      :attack_speed,
+      :break_power,
+      :critical_rating,
+      :critical_power,
+      :weapon_power,
+      :ability_power,
+      :resilience,
+      :lehality
+    ]
 
   @slots [
     :trinket,
@@ -11,32 +41,6 @@ defmodule GEMS.Engine.Schema.Equipment do
     :ring,
     :boots,
     :amulet
-  ]
-
-  @required_fields [:name, :code, :slot, :type_id]
-
-  @optional_fields [
-    :description,
-    :icon,
-    :price,
-    :max_health,
-    :max_energy,
-    :physical_damage,
-    :magical_damage,
-    :physical_defense,
-    :magical_defense,
-    :health_regen,
-    :energy_regen,
-    :accuracy,
-    :evasion,
-    :attack_speed,
-    :break_power,
-    :critical_rating,
-    :critical_power,
-    :weapon_power,
-    :ability_power,
-    :resilience,
-    :lehality
   ]
 
   schema "equipments" do
@@ -73,33 +77,13 @@ defmodule GEMS.Engine.Schema.Equipment do
     many_to_many :abilities, GEMS.Engine.Schema.Ability, join_through: "equipments_abilities"
   end
 
-  @doc false
-  def changeset(equipment, attrs) do
-    build_changeset(equipment, attrs,
-      required_fields: @required_fields,
-      optional_fields: @optional_fields
-    )
-  end
+  def build_changeset(equipment, attrs, opts) do
+    changeset = super(equipment, attrs, opts)
 
-  @doc false
-  def seed_changeset(equipment, attrs) do
-    build_changeset(
-      equipment,
-      attrs,
-      required_fields: [:id | @required_fields],
-      optional_fields: @optional_fields
-    )
-  end
-
-  defp build_changeset(equipment, attrs, opts) do
-    required_fields = Keyword.fetch!(opts, :required_fields)
-    optional_fields = Keyword.get(opts, :optional_fields, [])
-
-    equipment
-    |> cast(attrs, required_fields ++ optional_fields)
+    changeset
     |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
     |> cast_assoc(:abilities, sort_param: :abilities_sort, drop_param: :abilities_drop)
-    |> validate_required(required_fields)
     |> unique_constraint(:name)
+    |> unique_constraint(:code)
   end
 end

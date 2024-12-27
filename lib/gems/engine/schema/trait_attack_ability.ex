@@ -1,5 +1,5 @@
 defmodule GEMS.Engine.Schema.TraitAttackAbility do
-  use GEMS.Database.Schema, :default
+  use GEMS.Database.Schema, preset: :default
 
   @required_fields [:ability_id]
 
