@@ -80,6 +80,10 @@ defmodule GEMS.Engine.Schema.Item do
     changeset = super(item, attrs, opts)
 
     changeset
+    |> cast_assoc(:item_ingredients,
+      sort_param: :item_ingredients_sort,
+      drop_param: :item_ingredients_drop
+    )
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

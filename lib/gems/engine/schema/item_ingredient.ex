@@ -1,8 +1,8 @@
 defmodule GEMS.Engine.Schema.ItemIngredient do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use GEMS.Database.Schema, preset: :default
 
-  @required_fields [:amount, :item_id, :ingredient_id]
+  # Item fk ommited so we can cast the assoc from item
+  @required_fields [:amount, :ingredient_id]
 
   @primary_key false
   schema "items_ingredients" do
