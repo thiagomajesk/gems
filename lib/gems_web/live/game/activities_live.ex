@@ -23,7 +23,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <.activity_card
         :for={activity <- @activities}
         activity={activity}
@@ -67,19 +67,25 @@ defmodule GEMSWeb.Game.ActivitiesLive do
               </button>
             </div>
           </div>
-          <div class="flex items-center justify-between mt-1">
+          <div class="flex items-center justify-between flex-wrap gap-1 mt-1">
             <div class="flex items-center gap-2">
               <span class="badge badge-neutral font-medium">
                 {"LV #{@activity.required_level}"}
               </span>
-            </div>
-            <div class="flex items-center gap-2">
               <span class="badge badge-neutral font-medium gap-1">
                 <UI.Icons.page name="clock" />
                 <span>{"#{@activity.duration}s"}</span>
               </span>
               <span class="badge badge-neutral font-medium gap-1">
                 {"#{@activity.experience} XP"}
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span
+                :for={ingredient <- @activity.item.item_ingredients}
+                class="badge badge-neutral font-medium gap-1"
+              >
+                {"#{ingredient.amount}x #{ingredient.ingredient.name}"}
               </span>
             </div>
           </div>

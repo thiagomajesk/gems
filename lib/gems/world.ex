@@ -25,7 +25,7 @@ defmodule GEMS.World do
     Repo.all(
       from a in Activity,
         where: a.zone_id == ^zone_id,
-        preload: [:item, :profession]
+        preload: [:profession, item: [item_ingredients: :ingredient]]
     )
   end
 end
