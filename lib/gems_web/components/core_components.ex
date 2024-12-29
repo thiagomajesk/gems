@@ -148,6 +148,18 @@ defmodule GEMSWeb.CoreComponents do
     """
   end
 
+  def assign_required(socket_or_assigns, keyword_or_map, list)
+
+  def assign_required(%Phoenix.Socket{} = socket, keyword_or_map, list),
+    do: assign_required(socket, keyword_or_map, list)
+
+  def assign_required(socket_or_assigns, keyword_or_map, list)
+      when is_map(keyword_or_map) or is_list(keyword_or_map) do
+    Enum.reduce(list, socket_or_assigns, fn key, socket_or_assigns ->
+      assign(socket_or_assigns, key, Access.fetch!(keyword_or_map, key))
+    end)
+  end
+
   @doc """
   Takes the given assigns and converts them into a props attribute.
   """
