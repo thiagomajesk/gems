@@ -4,6 +4,8 @@ defmodule GEMS.Characters do
   """
 
   import Ecto.Query, warn: false
+
+  alias GEMS.World.Schema.CharacterItem
   alias GEMS.World.Schema.CharacterProfession
   alias GEMS.Repo
 
@@ -25,6 +27,14 @@ defmodule GEMS.Characters do
       from cp in CharacterProfession,
         where: cp.character_id == ^character_id,
         preload: [:profession]
+    )
+  end
+
+  def list_character_items(%Character{id: character_id}) do
+    Repo.all(
+      from ci in CharacterItem,
+        where: ci.character_id == ^character_id,
+        preload: [:item]
     )
   end
 

@@ -25,9 +25,14 @@ defmodule GEMS.World.Schema.Character do
     has_one :guild, through: [:guild_membership, :guild]
 
     has_many :character_professions, GEMS.World.Schema.CharacterProfession
+    has_many :character_items, GEMS.World.Schema.CharacterItem
 
     many_to_many :professions, GEMS.World.Schema.Profession,
       join_through: "characters_professions",
+      on_replace: :delete
+
+    many_to_many :items, GEMS.Engine.Schema.Item,
+      join_through: "characters_items",
       on_replace: :delete
 
     timestamps()
