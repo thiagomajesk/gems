@@ -10,14 +10,14 @@ defmodule GEMS.World.Schema.Activity do
       :duration,
       :experience,
       :profession_id,
-      :required_level
+      :level_required
     ]
 
   schema "activities" do
     field :action, :string
     field :duration, :integer
     field :experience, :integer
-    field :required_level, :integer
+    field :level_required, :integer
 
     belongs_to :zone, GEMS.World.Schema.Zone
     belongs_to :item, GEMS.Engine.Schema.Item

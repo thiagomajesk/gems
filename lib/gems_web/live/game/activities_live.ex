@@ -70,7 +70,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
           <div class="flex items-center justify-between flex-wrap gap-1 mt-1">
             <div class="flex items-center gap-2">
               <span class="badge badge-neutral font-medium">
-                {"LV #{@activity.required_level}"}
+                {"LV #{@activity.level_required}"}
               </span>
               <span class="badge badge-neutral font-medium gap-1">
                 <UI.Icons.page name="clock" />
