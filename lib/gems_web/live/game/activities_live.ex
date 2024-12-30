@@ -13,22 +13,13 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
     if connected?(socket), do: GEMS.ActivityManager.subscribe(character)
 
-    character_items_lookup =
-      character
-      |> GEMS.Characters.list_character_items()
-      |> Map.new(&{&1.item_id, &1.amount})
-
-    character_professions_lookup =
-      character
-      |> GEMS.Characters.list_character_professions()
-      |> Map.new(&{&1.profession_id, &1.level})
+    activities_requirements = activities_requirements_lookup(activities, character)
 
     {:ok,
      socket
      |> assign(:activities, activities)
      |> assign(:activity_lookup, activity_lookup)
-     |> assign(:character_items_lookup, character_items_lookup)
-     |> assign(:character_professions_lookup, character_professions_lookup)
+     |> assign(:activities_requirements, activities_requirements)
      |> assign_current_activity_state(activity_metadata)}
   end
 
@@ -39,8 +30,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
       <.activity_card
         :for={activity <- @activities}
         activity={activity}
-        satisfies_level={satisfies_level?(activity, @character_professions_lookup)}
-        satisfied_ingredients={satisfied_ingredients(activity, @character_items_lookup)}
+        requirements={@activities_requirements[activity.id]}
         running_timer={
           if activity.id == @current_activity_id,
             do: @current_activity_timer
@@ -91,8 +81,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
   end
 
   attr :activity, :any, required: true
-  attr :satisfies_level, :boolean, default: false
-  attr :satisfied_ingredients, :map, default: %{}
+  attr :requirements, :map, default: %{}
   attr :running_timer, :any, default: nil
 
   defp activity_card(assigns) do
@@ -108,8 +97,9 @@ defmodule GEMSWeb.Game.ActivitiesLive do
               <button
                 :if={!@running_timer}
                 class="btn btn-neutral btn-sm grow max-w-32"
-                phx-click="start"
-                phx-value-id={@activity.id}
+                phx-click={@requirements.satisfied_all? && "start"}
+                phx-value-id={@requirements.satisfied_all? && @activity.id}
+                disabled={!@requirements.satisfied_all?}
               >
                 {@activity.action}
               </button>
@@ -127,7 +117,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
             <div class="flex items-center gap-2">
               <span class={[
                 "badge font-medium",
-                (@satisfies_level && "badge-neutral") || "badge-error"
+                (@requirements.profession.satisfied? && "badge-neutral") || "badge-error"
               ]}>
                 {"LV #{@activity.required_level}"}
               </span>
@@ -140,16 +130,15 @@ defmodule GEMSWeb.Game.ActivitiesLive do
               </span>
             </div>
             <div class="flex items-center gap-2">
-              <span
-                :for={ingredient <- @activity.item.item_ingredients}
-                class={[
+              <%= for item_ingredient <- @activity.item.item_ingredients do %>
+                {requirement = @requirements.ingredients[item_ingredient.ingredient.id]}
+                <span class={[
                   "badge font-medium gap-1",
-                  (@satisfied_ingredients[ingredient.ingredient.id] && "badge-neutral") ||
-                    "badge-error"
-                ]}
-              >
-                {"#{ingredient.amount}x #{ingredient.ingredient.name}"}
-              </span>
+                  (get_in(requirement.satisfied?) && "badge-neutral") || "badge-error"
+                ]}>
+                  {"#{item_ingredient.amount}x #{item_ingredient.ingredient.name}"}
+                </span>
+              <% end %>
             </div>
           </div>
           <.activity_progress
@@ -199,15 +188,57 @@ defmodule GEMSWeb.Game.ActivitiesLive do
     )
   end
 
-  defp satisfies_level?(activity, lookup) do
-    current_level = Map.get(lookup, activity.profession.id, 0)
-    current_level >= activity.required_level
+  defp activities_requirements_lookup(activities, character) do
+    character_items_lookup = character_items_lookup(character)
+    character_professions_lookup = character_professions_lookup(character)
+
+    Map.new(activities, fn activity ->
+      ingredient_requirements = ingredient_requirements(activity, character_items_lookup)
+      profession_requirements = profession_requirements(activity, character_professions_lookup)
+
+      {activity.id,
+       %{
+         satisfied_all?:
+           profession_requirements.satisfied? &&
+             Enum.all?(Map.values(ingredient_requirements), & &1.satisfied?),
+         profession: profession_requirements,
+         ingredients: ingredient_requirements
+       }}
+    end)
   end
 
-  defp satisfied_ingredients(activity, lookup) do
+  defp character_items_lookup(character) do
+    character
+    |> GEMS.Characters.list_character_items()
+    |> Map.new(&{&1.item_id, &1.amount})
+  end
+
+  defp character_professions_lookup(character) do
+    character
+    |> GEMS.Characters.list_character_professions()
+    |> Map.new(&{&1.profession_id, &1.level})
+  end
+
+  def profession_requirements(activity, lookup) do
+    current_level = Map.get(lookup, activity.profession.id, 0)
+
+    %{
+      current_level: current_level,
+      required_level: activity.required_level,
+      satisfied?: current_level >= activity.required_level
+    }
+  end
+
+  defp ingredient_requirements(activity, lookup) do
     Map.new(activity.item.item_ingredients, fn ingredient ->
       current_amount = Map.get(lookup, ingredient.ingredient.id, 0)
-      {ingredient.item_id, current_amount >= ingredient.amount}
+
+      {ingredient.item_id,
+       %{
+         current_amount: current_amount,
+         amount: ingredient.amount,
+         satisfied?: current_amount >= ingredient.amount
+       }}
     end)
   end
 end

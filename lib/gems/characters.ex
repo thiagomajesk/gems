@@ -22,19 +22,22 @@ defmodule GEMS.Characters do
   @doc """
   Returns the list of professions for a character.
   """
-  def list_character_professions(%Character{id: character_id}) do
+  def list_character_professions(%Character{id: character_id}, preloads \\ []) do
     Repo.all(
       from cp in CharacterProfession,
         where: cp.character_id == ^character_id,
-        preload: [:profession]
+        preload: ^preloads
     )
   end
 
-  def list_character_items(%Character{id: character_id}) do
+  @doc """
+  Returns the list of items for a character.
+  """
+  def list_character_items(%Character{id: character_id}, preloads \\ []) do
     Repo.all(
       from ci in CharacterItem,
         where: ci.character_id == ^character_id,
-        preload: [:item]
+        preload: ^preloads
     )
   end
 
