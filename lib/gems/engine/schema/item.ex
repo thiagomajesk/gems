@@ -80,6 +80,7 @@ defmodule GEMS.Engine.Schema.Item do
     changeset = super(item, attrs, opts)
 
     changeset
+    |> cast_assoc(:effects, sort_param: :effects_sort, drop_param: :effects_drop)
     |> cast_assoc(:item_ingredients,
       sort_param: :item_ingredients_sort,
       drop_param: :item_ingredients_drop
