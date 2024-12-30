@@ -24,6 +24,12 @@
     "type_id": "7471df3c-8da8-4565-a44b-67f953230cd6"
   },
   {
+    "id": "54aa78b8-f8c2-455d-9738-d0f3b45ea0e1",
+    "name": "Empty Bottle",
+    "code": "item_empty_bottle",
+    "type_id": "7471df3c-8da8-4565-a44b-67f953230cd6"
+  },
+  {
     "id": "f954b393-04e9-49b9-a74e-f19ec3958c1f",
     "name": "Health Potion",
     "code": "item_health_potion",
@@ -32,6 +38,10 @@
     "target_side": "self",
     "target_status": "alive",
     "item_ingredients": [
+      {
+        "amount": 1,
+        "ingredient_id": "54aa78b8-f8c2-455d-9738-d0f3b45ea0e1"
+      },
       {
         "amount": 2,
         "ingredient_id": "4fa40ff7-f740-4392-a368-045cec0b7d1b"
@@ -47,6 +57,10 @@
     "target_side": "self",
     "target_status": "alive",
     "item_ingredients": [
+      {
+        "amount": 1,
+        "ingredient_id": "54aa78b8-f8c2-455d-9738-d0f3b45ea0e1"
+      },
       {
         "amount": 2,
         "ingredient_id": "6356bb96-4db3-40a4-8a3b-c3cd2486ab92"
