@@ -1,9 +1,3 @@
-html,
-body,
-main {
-  height: 100dvh;
-}
-
 /* 
 * HACK: Disables browser autocomplete background color
 * Blatantly stolen from: https://stackoverflow.com/a/69364368 
