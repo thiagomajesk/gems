@@ -131,10 +131,10 @@ defmodule GEMSWeb.Game.ActivitiesLive do
             </div>
             <div class="flex items-center gap-2">
               <%= for item_ingredient <- @activity.item.item_ingredients do %>
-                {requirement = @requirements.ingredients[item_ingredient.ingredient.id]}
+                <% requirement = @requirements.ingredients[item_ingredient.ingredient.id] %>
                 <span class={[
                   "badge font-medium gap-1",
-                  (get_in(requirement.satisfied?) && "badge-neutral") || "badge-error"
+                  (requirement.satisfied? && "badge-neutral") || "badge-error"
                 ]}>
                   {"#{item_ingredient.amount}x #{item_ingredient.ingredient.name}"}
                 </span>
@@ -233,7 +233,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
     Map.new(activity.item.item_ingredients, fn ingredient ->
       current_amount = Map.get(lookup, ingredient.ingredient.id, 0)
 
-      {ingredient.item_id,
+      {ingredient.ingredient_id,
        %{
          current_amount: current_amount,
          amount: ingredient.amount,
