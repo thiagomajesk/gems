@@ -129,7 +129,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 "badge font-medium",
                 (@satisfies_level && "badge-neutral") || "badge-error"
               ]}>
-                {"LV #{@activity.level_required}"}
+                {"LV #{@activity.required_level}"}
               </span>
               <span class="badge badge-neutral font-medium gap-1">
                 <UI.Icons.page name="clock" />
@@ -201,7 +201,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
   defp satisfies_level?(activity, lookup) do
     current_level = Map.get(lookup, activity.profession.id, 0)
-    current_level >= activity.level_required
+    current_level >= activity.required_level
   end
 
   defp satisfied_ingredients(activity, lookup) do

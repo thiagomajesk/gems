@@ -119,7 +119,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :duration, :integer, null: false, default: 0
       add :experience, :integer, null: false, default: 0
       add :profession_id, references(:professions), null: false
-      add :level_required, :integer, null: false, default: 0
+      add :required_level, :integer, null: false, default: 0
     end
   end
 end

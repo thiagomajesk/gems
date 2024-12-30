@@ -6,7 +6,7 @@
     "duration": 10,
     "experience": 10,
     "profession_id": "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
-    "level_required": 0,
+    "required_level": 0,
     "item_id": "2dc1d79d-77de-4a1f-b695-17cb81200612"
   },
   {
@@ -16,7 +16,7 @@
     "duration": 10,
     "experience": 10,
     "profession_id": "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
-    "level_required": 0,
+    "required_level": 0,
     "item_id": "f615fd8f-194f-4537-b0c0-06842972f1e1"
   },
   {
@@ -26,7 +26,7 @@
     "duration": 10,
     "experience": 10,
     "profession_id": "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
-    "level_required": 0,
+    "required_level": 0,
     "item_id": "4fa40ff7-f740-4392-a368-045cec0b7d1b"
   },
   {
@@ -36,7 +36,7 @@
     "duration": 50,
     "experience": 10,
     "profession_id": "88091c58-143a-4ce6-a74d-9725ba45a331",
-    "level_required": 0,
+    "required_level": 0,
     "item_id": "f954b393-04e9-49b9-a74e-f19ec3958c1f"
   },
   {
@@ -46,7 +46,7 @@
     "duration": 50,
     "experience": 10,
     "profession_id": "88091c58-143a-4ce6-a74d-9725ba45a331",
-    "level_required": 0,
+    "required_level": 0,
     "item_id": "8a245967-d7dc-47e7-8c2d-971423eb8fea"
   }
 ]
