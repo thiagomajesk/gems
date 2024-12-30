@@ -6,7 +6,7 @@ defmodule GEMSWeb.Game.CharacterLive do
     character = socket.assigns.selected_character
 
     guild = GEMS.Characters.get_character_guild(character)
-    character_professions = GEMS.Characters.list_character_professions(character)
+    character_professions = GEMS.Characters.list_character_professions(character, [:profession])
 
     {:ok, assign(socket, guild: guild, character_professions: character_professions)}
   end
