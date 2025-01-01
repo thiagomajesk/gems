@@ -13,8 +13,31 @@ defmodule GEMS.World.Schema.Character do
     field :name, :string
     field :title, :string
     field :bio, :string
-    field :max_health, :integer
-    field :max_energy, :integer
+
+    field :strength, :integer
+    field :dexterity, :integer
+    field :intelligence, :integer
+
+    # STR
+    field :armor_rating, :integer, virtual: true
+    field :max_health, :integer, virtual: true
+    field :health_regen, :integer, virtual: true
+    field :attack_damage, :integer, virtual: true
+    field :weapon_power, :integer, virtual: true
+
+    # DEX
+    field :evasion_rating, :integer, virtual: true
+    field :attack_speed, :integer, virtual: true
+    field :critical_rating, :integer, virtual: true
+    field :accuracy_rating, :integer, virtual: true
+    field :critical_power, :integer, virtual: true
+
+    # INT
+    field :magic_resist, :integer, virtual: true
+    field :max_energy, :integer, virtual: true
+    field :energy_regen, :integer, virtual: true
+    field :magic_damage, :integer, virtual: true
+    field :ability_power, :integer, virtual: true
 
     belongs_to :faction, GEMS.World.Schema.Faction
     belongs_to :avatar, GEMS.World.Schema.Avatar

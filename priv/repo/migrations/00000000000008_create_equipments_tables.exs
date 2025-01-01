@@ -15,24 +15,26 @@ defmodule GEMS.Repo.Migrations.CreateEquipmentsTables do
       add :slot, :string, null: false
       add :price, :integer, null: true
 
-      add :max_health, :integer, null: false, default: 0
-      add :max_energy, :integer, null: false, default: 0
-      add :physical_damage, :integer, null: false, default: 0
-      add :magical_damage, :integer, null: false, default: 0
-      add :physical_defense, :integer, null: false, default: 0
-      add :magical_defense, :integer, null: false, default: 0
-      add :health_regen, :integer, null: false, default: 0
-      add :energy_regen, :integer, null: false, default: 0
-      add :accuracy, :integer, null: false, default: 0
-      add :evasion, :integer, null: false, default: 0
-      add :attack_speed, :integer, null: false, default: 0
-      add :break_power, :integer, null: false, default: 0
-      add :critical_rating, :integer, null: false, default: 0
-      add :critical_power, :integer, null: false, default: 0
-      add :weapon_power, :integer, null: false, default: 0
-      add :ability_power, :integer, null: false, default: 0
-      add :resilience, :integer, null: false, default: 0
-      add :lehality, :integer, null: false, default: 0
+      # STR
+      add :armor_rating, :integer, default: 0
+      add :max_health, :integer, default: 0
+      add :health_regen, :integer, default: 0
+      add :attack_damage, :integer, default: 0
+      add :weapon_power, :integer, default: 0
+
+      # DEX
+      add :evasion_rating, :integer, default: 0
+      add :attack_speed, :integer, default: 0
+      add :critical_rating, :integer, default: 0
+      add :accuracy_rating, :integer, default: 0
+      add :critical_power, :integer, default: 0
+
+      # INT
+      add :magic_resist, :integer, default: 0
+      add :max_energy, :integer, default: 0
+      add :energy_regen, :integer, default: 0
+      add :magic_damage, :integer, default: 0
+      add :ability_power, :integer, default: 0
     end
 
     create unique_index(:equipments, :code)

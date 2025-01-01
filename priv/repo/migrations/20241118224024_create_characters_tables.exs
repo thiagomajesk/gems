@@ -11,9 +11,6 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
       add :title, :string, null: true
       add :bio, :string, null: true
 
-      add :max_health, :integer, null: false
-      add :max_energy, :integer, null: false
-
       add :avatar_id, references(:avatars), null: false
       add :faction_id, references(:factions), null: false
       add :zone_id, references(:zones), null: false

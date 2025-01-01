@@ -57,6 +57,32 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.SharedInputs do
     """
   end
 
+  attr :form, :any, required: true
+
+  def stats_fieldset(assigns) do
+    ~H"""
+    <Forms.fieldset legend="Stats">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <Forms.field_input type="number" field={@form[:armor_rating]} label="Armor Rating" />
+        <Forms.field_input type="number" field={@form[:evasion_rating]} label="Evasion Rating" />
+        <Forms.field_input type="number" field={@form[:magic_resist]} label="Magic Resist" />
+        <Forms.field_input type="number" field={@form[:max_health]} label="Max Health" />
+        <Forms.field_input type="number" field={@form[:attack_speed]} label="Attack Speed" />
+        <Forms.field_input type="number" field={@form[:max_energy]} label="Max Energy" />
+        <Forms.field_input type="number" field={@form[:health_regen]} label="Health Regen" />
+        <Forms.field_input type="number" field={@form[:critical_rating]} label="Critical Rating" />
+        <Forms.field_input type="number" field={@form[:attack_damage]} label="Physical Damage" />
+        <Forms.field_input type="number" field={@form[:accuracy_rating]} label="Accuracy Rating" />
+        <Forms.field_input type="number" field={@form[:energy_regen]} label="Energy Regen" />
+        <Forms.field_input type="number" field={@form[:magic_damage]} label="Magical Damage" />
+        <Forms.field_input type="number" field={@form[:weapon_power]} label="Weapon Power" />
+        <Forms.field_input type="number" field={@form[:critical_power]} label="Critical Power" />
+        <Forms.field_input type="number" field={@form[:ability_power]} label="Ability Power" />
+      </div>
+    </Forms.fieldset>
+    """
+  end
+
   attr :errors, :list, required: true
 
   defp error_indicator(assigns) do

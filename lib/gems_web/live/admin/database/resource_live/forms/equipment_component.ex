@@ -3,6 +3,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.EquipmentComponent do
 
   alias UI.Admin.Forms
   alias GEMSWeb.Admin.Database.ResourceLive.Forms.TraitsAssocInput
+  alias GEMSWeb.Admin.Database.ResourceLive.Forms.SharedInputs
 
   def render(assigns) do
     ~H"""
@@ -39,32 +40,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.EquipmentComponent do
               <Forms.field_input type="number" field={f[:price]} label="Price" />
             </div>
 
-            <Forms.fieldset legend="Stats">
-              <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-                <Forms.field_input type="number" field={f[:max_health]} label="Max Health" />
-                <Forms.field_input type="number" field={f[:max_energy]} label="Max Energy" />
-                <Forms.field_input type="number" field={f[:physical_damage]} label="Physical Damage" />
-                <Forms.field_input type="number" field={f[:magical_damage]} label="Magical Damage" />
-                <Forms.field_input
-                  type="number"
-                  field={f[:physical_defense]}
-                  label="Physical Defense"
-                />
-                <Forms.field_input type="number" field={f[:magical_defense]} label="Magical Defense" />
-                <Forms.field_input type="number" field={f[:health_regen]} label="Health Regen" />
-                <Forms.field_input type="number" field={f[:energy_regen]} label="Energy Regen" />
-                <Forms.field_input type="number" field={f[:accuracy]} label="Accuracy" />
-                <Forms.field_input type="number" field={f[:evasion]} label="Evasion" />
-                <Forms.field_input type="number" field={f[:attack_speed]} label="Attack Speed" />
-                <Forms.field_input type="number" field={f[:break_power]} label="Break Power" />
-                <Forms.field_input type="number" field={f[:critical_rating]} label="Critical Rating" />
-                <Forms.field_input type="number" field={f[:critical_power]} label="Critical Power" />
-                <Forms.field_input type="number" field={f[:weapon_power]} label="Weapon Power" />
-                <Forms.field_input type="number" field={f[:ability_power]} label="Ability Power" />
-                <Forms.field_input type="number" field={f[:resilience]} label="Resilience" />
-                <Forms.field_input type="number" field={f[:lehality]} label="Lehality" />
-              </div>
-            </Forms.fieldset>
+            <SharedInputs.stats_fieldset form={f} />
           </div>
 
           <Forms.fieldset legend="Traits">

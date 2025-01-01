@@ -9,48 +9,48 @@ defmodule GEMS.Engine.Schema.Creature do
     ],
     optional_fields: [
       :description,
+      :armor_rating,
       :max_health,
-      :max_energy,
-      :physical_damage,
-      :magical_damage,
-      :physical_defense,
-      :magical_defense,
       :health_regen,
-      :energy_regen,
-      :accuracy,
-      :evasion,
-      :attack_speed,
-      :break_power,
-      :critical_rating,
-      :critical_power,
+      :attack_damage,
       :weapon_power,
-      :ability_power,
-      :resilience,
-      :lehality
+      :evasion_rating,
+      :attack_speed,
+      :critical_rating,
+      :accuracy_rating,
+      :critical_power,
+      :magic_resist,
+      :max_energy,
+      :energy_regen,
+      :magic_damage,
+      :ability_power
     ]
 
   schema "creatures" do
     field :name, :string
     field :code, :string
     field :description, :string
+
+    # STR
+    field :armor_rating, :integer
     field :max_health, :integer
-    field :max_energy, :integer
-    field :physical_damage, :integer
-    field :magical_damage, :integer
-    field :physical_defense, :integer
-    field :magical_defense, :integer
     field :health_regen, :integer
-    field :energy_regen, :integer
-    field :accuracy, :integer
-    field :evasion, :integer
-    field :attack_speed, :integer
-    field :break_power, :integer
-    field :critical_rating, :integer
-    field :critical_power, :integer
+    field :attack_damage, :integer
     field :weapon_power, :integer
+
+    # DEX
+    field :evasion_rating, :integer
+    field :attack_speed, :integer
+    field :critical_rating, :integer
+    field :accuracy_rating, :integer
+    field :critical_power, :integer
+
+    # INT
+    field :magic_resist, :integer
+    field :max_energy, :integer
+    field :energy_regen, :integer
+    field :magic_damage, :integer
     field :ability_power, :integer
-    field :resilience, :integer
-    field :lehality, :integer
 
     belongs_to :biome, GEMS.Engine.Schema.Biome
     belongs_to :type, GEMS.Engine.Schema.CreatureType
