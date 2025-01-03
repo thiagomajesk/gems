@@ -3,6 +3,7 @@ defmodule GEMSWeb.CharacterLive.New do
 
   alias GEMS.Characters
   alias GEMS.World.Schema.Character
+  alias GEMSWeb.CharacterLive.AttributeAllocatorComponent
 
   def mount(_params, _session, socket) do
     avatars = GEMS.World.list_avatars()
@@ -23,6 +24,7 @@ defmodule GEMSWeb.CharacterLive.New do
       <h1 class="text-3xl font-semibold mb-4">New character</h1>
       <.form
         :let={f}
+        id="character-creation-form"
         for={@form}
         phx-submit="save"
         phx-change="validate"
@@ -39,11 +41,7 @@ defmodule GEMSWeb.CharacterLive.New do
 
         <fieldset class="flex flex-col">
           <legend class="text-lg text-center font-semibold mb-4">Attributes</legend>
-          <.live_component
-            form={f}
-            id="attribute-allocator"
-            module={GEMSWeb.CharacterLive.AttributeAllocatorComponent}
-          />
+          <.live_component form={f} id="attribute-allocator" module={AttributeAllocatorComponent} />
         </fieldset>
 
         <fieldset class="flex flex-col">
@@ -76,6 +74,12 @@ defmodule GEMSWeb.CharacterLive.New do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
+  end
+
+  def handle_info({AttributeAllocatorComponent, :validate, attributes}, socket) do
+    %{form: %{data: character, params: params}} = socket.assigns
+    changeset = Characters.change_character(character, Map.merge(params, attributes))
+    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
   attr :field, Phoenix.HTML.FormField, required: true

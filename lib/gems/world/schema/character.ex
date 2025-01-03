@@ -4,7 +4,10 @@ defmodule GEMS.World.Schema.Character do
   @required_fields [
     :name,
     :avatar_id,
-    :faction_id
+    :faction_id,
+    :strength,
+    :dexterity,
+    :intelligence
   ]
 
   @optional_fields [:title, :bio]
@@ -14,9 +17,9 @@ defmodule GEMS.World.Schema.Character do
     field :title, :string
     field :bio, :string
 
-    field :strength, :integer
-    field :dexterity, :integer
-    field :intelligence, :integer
+    field :strength, :integer, default: 0
+    field :dexterity, :integer, default: 0
+    field :intelligence, :integer, default: 0
 
     # STR
     field :armor_rating, :integer, virtual: true
@@ -70,7 +73,8 @@ defmodule GEMS.World.Schema.Character do
     |> validate_attribute_values()
   end
 
-  defp validate_attribute_values(changeset) do
+  @doc false
+  def validate_attribute_values(changeset) do
     max_points = GEMSData.GameInfo.starting_character_points()
 
     strength = Ecto.Changeset.get_change(changeset, :strength, 0)
@@ -79,18 +83,21 @@ defmodule GEMS.World.Schema.Character do
 
     case strength + dexterity + intelligence do
       total when total > max_points ->
-        Ecto.Changeset.add_error(
+        GEMSWeb.ErrorHelpers.add_new_error(
           changeset,
           :attributes,
           "The maximum amount of points is #{max_points}, you have distributed #{total}"
         )
 
       total when total < max_points ->
-        Ecto.Changeset.add_error(
+        GEMSWeb.ErrorHelpers.add_new_error(
           changeset,
           :attributes,
           "The minimum amount of points is #{max_points}, you have distributed #{total}"
         )
+
+      ^max_points ->
+        changeset
     end
   end
 end

@@ -6,7 +6,13 @@ defmodule GEMSWeb.ErrorHelpers do
   end
 
   def get_errors(%Ecto.Changeset{errors: errors}, key) do
-    with {msg, opts} <- Keyword.get(errors, key), do: translate_error({msg, opts})
+    with {msg, opts} <- Keyword.get(errors, key, []), do: translate_error({msg, opts})
+  end
+
+  def add_new_error(%Ecto.Changeset{} = changeset, key, message) do
+    if not Enum.any?(changeset.errors, &(elem(&1, 0) == key)),
+      do: Ecto.Changeset.add_error(changeset, key, message),
+      else: changeset
   end
 
   @doc """

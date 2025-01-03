@@ -7,66 +7,60 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
     ~H"""
     <div class="flex flex-col gap-4 bg-base-content/5 rounded-btn p-4">
       <div role="alert" class="alert">
-        <UI.Icons.page
-          :if={@total < @max_points && @errors == []}
-          name="circle-alert"
-          class="text-info"
-          size={18}
-        />
-        <UI.Icons.page
-          :if={@total == @max_points && @errors == []}
-          name="thumbs-up"
-          class="text-success"
-          size={18}
-        />
+        <UI.Icons.page :if={@total < @max_points} name="circle-alert" class="text-info" size={18} />
+        <UI.Icons.page :if={@total == @max_points} name="thumbs-up" class="text-success" size={18} />
         <div>
-          <h3 class="font-bold">Distribute your attributes!</h3>
-          <p :if={@errors == []}>You have distributed {@total} of {@max_points}</p>
+          <h3 class="font-bold">Time to distribute your attributes</h3>
+          <p :if={@errors == []}>You have distributed {@total} of {@max_points} points</p>
           <p :if={@errors != []} class="text-error">{@errors}</p>
         </div>
       </div>
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2 w-32">
-          <UI.Icons.game name="biceps" size={24} class="text-rose-500" />
-          <span class="font-medium text-lg">Strength</span>
+      <div class="flex flex-col">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2 w-32">
+            <UI.Icons.game name="biceps" size={24} class="text-rose-500" />
+            <span class="font-medium text-lg">Strength</span>
+          </div>
+          <.range_input field={@form[:strength]} target={@myself} attribute="strength" />
         </div>
-        <.range_input
-          field={@form[:strength]}
-          target={@myself}
-          value={@strength}
-          attribute="strength"
-        />
+        <p class="text-base-content/30">
+          The raw power behind heavy blows and unmatched resilience in the heat of battle.
+        </p>
       </div>
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2 w-32">
-          <UI.Icons.game name="sprint" size={24} class="text-emerald-500" />
-          <span class="font-medium text-lg">Dexterity</span>
+      <div class="flex flex-col">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2 w-32">
+            <UI.Icons.game name="sprint" size={24} class="text-emerald-500" />
+            <span class="font-medium text-lg">Dexterity</span>
+          </div>
+          <.range_input field={@form[:dexterity]} target={@myself} attribute="dexterity" />
         </div>
-        <.range_input
-          field={@form[:dexterity]}
-          target={@myself}
-          value={@dexterity}
-          attribute="dexterity"
-        />
+        <p class="text-base-content/30">
+          The speed, precision, and finesse that define a master of agility and control.
+        </p>
       </div>
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2 w-32">
-          <UI.Icons.game name="brain" size={24} class="text-indigo-500" />
-          <span class="font-medium text-lg">Intelligence</span>
+      <div class="flex flex-col">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2 w-32">
+            <UI.Icons.game name="brain" size={24} class="text-indigo-500" />
+            <span class="font-medium text-lg">Intelligence</span>
+          </div>
+          <.range_input field={@form[:intelligence]} target={@myself} attribute="intelligence" />
         </div>
-        <.range_input
-          field={@form[:intelligence]}
-          target={@myself}
-          value={@intelligence}
-          attribute="intelligence"
-        />
+        <p class="text-base-content/30">
+          The sharp mind capable of unraveling mysteries and wielding arcane knowledge.
+        </p>
       </div>
     </div>
     """
   end
 
   def handle_event("change-attribute", %{"character" => attr_and_value}, socket) do
-    %{strength: str, dexterity: dex, intelligence: int} = socket.assigns
+    %{form: %{source: changeset}} = socket.assigns
+
+    str = Ecto.Changeset.get_field(changeset, :strength)
+    dex = Ecto.Changeset.get_field(changeset, :dexterity)
+    int = Ecto.Changeset.get_field(changeset, :intelligence)
 
     case Map.to_list(attr_and_value) do
       [{"strength", value}] ->
@@ -87,10 +81,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
   end
 
   def mount(socket) do
-    {:ok,
-     socket
-     |> update_attributes(0, 0, 0)
-     |> assign(max_points: @max_points)}
+    {:ok, assign(socket, max_points: @max_points, total: 0)}
   end
 
   def update(assigns, socket) do
@@ -100,26 +91,29 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
      |> assign_attribute_errors()}
   end
 
-  defp update_attributes(socket, strength, dexterity, intelligence) do
-    assign(socket,
-      strength: strength,
-      dexterity: dexterity,
-      intelligence: intelligence,
-      total: strength + dexterity + intelligence
-    )
+  defp update_attributes(socket, str, dex, int) do
+    attributes = %{
+      "strength" => str,
+      "dexterity" => dex,
+      "intelligence" => int
+    }
+
+    send(self(), {__MODULE__, :validate, attributes})
+
+    assign(socket, total: str + dex + int)
   end
 
   defp assign_attribute_errors(socket) do
     %{form: %{source: changeset} = form} = socket.assigns
 
-    if used_any_input?(form, [:strength, :dexterity, :intelligence]),
-      do: assign(socket, :errors, get_errors(changeset, :attributes)),
-      else: assign(socket, :errors, [])
+    if changeset.action == :insert and
+         used_any_input?(form, [:strength, :dexterity, :intelligence]),
+       do: assign(socket, :errors, get_errors(changeset, :attributes)),
+       else: assign(socket, :errors, [])
   end
 
   attr :target, :any, required: true
   attr :field, Phoenix.HTML.FormField, required: true
-  attr :value, :integer, required: true
   attr :attribute, :string, required: true, values: ~w(strength dexterity intelligence)
 
   defp range_input(assigns) do
@@ -131,8 +125,9 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
         type="range"
         min="0"
         max="100"
-        value={@value}
         name={@name}
+        id={@id}
+        value={@value}
         class="range range-xs range-primary"
         phx-target={@target}
         phx-change="change-attribute"
