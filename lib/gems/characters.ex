@@ -78,13 +78,6 @@ defmodule GEMS.Characters do
   end
 
   @doc """
-  Returns the number of active charactes.
-  """
-  def count_active_characters() do
-    Repo.aggregate(Character, :count, :id)
-  end
-
-  @doc """
   Returns a changeset for tracking character changes.
   """
   def change_character(%Character{} = character, attrs \\ %{}) do

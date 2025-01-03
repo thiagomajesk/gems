@@ -11,13 +11,6 @@ defmodule GEMS.Accounts do
   alias GEMS.Accounts.Schema.User
 
   @doc """
-  Returns the number of active accounts.
-  """
-  def count_active_accounts() do
-    Repo.aggregate(User, :count, :id)
-  end
-
-  @doc """
   Gets a user by email.
   """
   def get_user_by_email(email) when is_binary(email) do
