@@ -5,7 +5,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col gap-4 bg-base-content/5 rounded-btn p-4">
+    <div class="flex flex-col gap-4 card bg-base-300 p-4">
       <div role="alert" class="alert">
         <UI.Icons.page :if={@total < @max_points} name="circle-alert" class="text-info" size={18} />
         <UI.Icons.page :if={@total == @max_points} name="thumbs-up" class="text-success" size={18} />
@@ -23,7 +23,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
           </div>
           <.range_input field={@form[:strength]} target={@myself} attribute="strength" />
         </div>
-        <p class="text-base-content/30">
+        <p class="text-base-content/50">
           The raw power behind heavy blows and unmatched resilience in the heat of battle.
         </p>
       </div>
@@ -35,7 +35,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
           </div>
           <.range_input field={@form[:dexterity]} target={@myself} attribute="dexterity" />
         </div>
-        <p class="text-base-content/30">
+        <p class="text-base-content/50">
           The speed, precision, and finesse that define a master of agility and control.
         </p>
       </div>
@@ -47,7 +47,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
           </div>
           <.range_input field={@form[:intelligence]} target={@myself} attribute="intelligence" />
         </div>
-        <p class="text-base-content/30">
+        <p class="text-base-content/50">
           The sharp mind capable of unraveling mysteries and wielding arcane knowledge.
         </p>
       </div>
@@ -132,7 +132,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
         phx-target={@target}
         phx-change="change-attribute"
       />
-      <output class="tabular-nums bg-base-200 px-2 py-1 rounded-btn shadow text-primary w-10 flex items-center justify-center">
+      <output class="tabular-nums bg-base-content/5 px-2 py-1 rounded-btn w-10 flex items-center justify-center">
         {@value}
       </output>
     </div>

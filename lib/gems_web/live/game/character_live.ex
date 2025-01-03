@@ -25,28 +25,28 @@ defmodule GEMSWeb.Game.CharacterLive do
           <div class="grid grid-cols-3 gap-2">
             <div class="rounded-box flex flex-col items-center justify-center bg-gradient-to-br from-base-300 h-24 to-rose-500/10 gap-2 p-2 relative">
               <UI.Icons.game name="biceps" class="h-full w-full absolute inset-0 text-rose-500" />
-              <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow text-rose-100 size-12 flex items-center justify-center">
+              <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow size-12 flex items-center justify-center">
                 {@selected_character.strength}
               </span>
-              <small class="absolute bottom-2 right-2 font-semibold text-rose-100 uppercase">
+              <small class="absolute bottom-2 right-2 font-semibold uppercase">
                 STR
               </small>
             </div>
             <div class="rounded-box flex flex-col items-center justify-center bg-gradient-to-br from-base-300 h-24 to-emerald-500/10 gap-2 p-2 relative">
               <UI.Icons.game name="sprint" class="h-full w-full absolute inset-0 text-emerald-500" />
-              <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow text-emerald-100 size-12 flex items-center justify-center">
+              <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow size-12 flex items-center justify-center">
                 {@selected_character.dexterity}
               </span>
-              <small class="absolute bottom-2 right-2 font-semibold text-emerald-100 uppercase">
+              <small class="absolute bottom-2 right-2 font-semibold uppercase">
                 DEX
               </small>
             </div>
             <div class="rounded-box flex flex-col items-center justify-center bg-gradient-to-br from-base-300 h-24 to-indigo-500/10 gap-2 p-2 relative">
               <UI.Icons.game name="brain" class="h-full w-full absolute inset-0 text-indigo-500" />
-              <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow text-indigo-100 size-12 flex items-center justify-center">
+              <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow size-12 flex items-center justify-center">
                 {@selected_character.intelligence}
               </span>
-              <small class="absolute bottom-2 right-2 font-semibold text-indigo-100 uppercase">
+              <small class="absolute bottom-2 right-2 font-semibold uppercase">
                 INT
               </small>
             </div>
