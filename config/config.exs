@@ -74,7 +74,8 @@ config :phoenix, :json_library, Jason
 
 config :gems, :game,
   directory: "game",
-  load_data: true
+  load_data: true,
+  starting_character_points: 100
 
 ################################################################################
 

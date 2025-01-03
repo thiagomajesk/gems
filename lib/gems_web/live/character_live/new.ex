@@ -36,12 +36,22 @@ defmodule GEMSWeb.CharacterLive.New do
           options={@faction_options}
           required
         />
-        <section class="flex flex-col">
-          <h2 class="text-lg text-center font-semibold mb-4">Avatars</h2>
+
+        <fieldset class="flex flex-col">
+          <legend class="text-lg text-center font-semibold mb-4">Attributes</legend>
+          <.live_component
+            form={f}
+            id="attribute-allocator"
+            module={GEMSWeb.CharacterLive.AttributeAllocatorComponent}
+          />
+        </fieldset>
+
+        <fieldset class="flex flex-col">
+          <legend class="text-lg text-center font-semibold mb-4">Avatars</legend>
           <div class="grid grid-cols-4 md:grid-cols-8 gap-4">
             <.inputs_for_avatar avatars={@avatars} field={f[:avatar_id]} />
           </div>
-        </section>
+        </fieldset>
         <div>
           <button type="submit" class="btn btn-primary">Create character</button>
         </div>

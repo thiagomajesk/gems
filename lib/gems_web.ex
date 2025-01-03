@@ -88,6 +88,7 @@ defmodule GEMSWeb do
 
       # Core UI components and translation
       import GEMSWeb.ErrorHelpers
+      import GEMSWeb.FormHelpers
       import GEMSWeb.CoreComponents
 
       # Shortcut for generating JS commands

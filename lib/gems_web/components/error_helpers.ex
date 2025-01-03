@@ -5,6 +5,10 @@ defmodule GEMSWeb.ErrorHelpers do
       else: []
   end
 
+  def get_errors(%Ecto.Changeset{errors: errors}, key) do
+    with {msg, opts} <- Keyword.get(errors, key), do: translate_error({msg, opts})
+  end
+
   @doc """
   Translates an error message using gettext.
   """
