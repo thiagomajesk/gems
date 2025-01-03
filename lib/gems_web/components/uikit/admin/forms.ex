@@ -22,10 +22,10 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
       </div>
       <div class="flex items-center justify-between">
         <.link navigate={@return_to} class="btn btn-neutral">
-          <UI.Icons.page name="arrow-left" /> Return
+          <UI.Icons.page name="arrow-left" size={18} /> Return
         </.link>
         <button type="submit" class="btn btn-primary">
-          <UI.Icons.page name="save" /> Save
+          <UI.Icons.page name="save" size={18} /> Save
         </button>
       </div>
     </.form>
@@ -117,7 +117,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
         </span>
       </div>
       <div class="flex items-center input input-bordered gap-2">
-        <UI.Icons.page name="percent" />
+        <UI.Icons.page name="percent" size={18} />
         <input
           id={@id}
           name={@name}
@@ -163,7 +163,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   def error_message(assigns) do
     ~H"""
     <p class="mt-2 flex items-center gap-2 text-sm leading-6 text-error">
-      <UI.Icons.page name="circle-alert" />
+      <UI.Icons.page name="circle-alert" size={18} />
       {render_slot(@inner_block)}
     </p>
     """

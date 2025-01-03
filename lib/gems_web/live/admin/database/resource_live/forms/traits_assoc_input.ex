@@ -33,7 +33,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.TraitsAssocInput do
               value={f.index}
               phx-click={JS.dispatch("change")}
             >
-              <UI.Icons.page name="minus-circle" size={14} />
+              <UI.Icons.page name="minus-circle" size={18} />
             </button>
           </header>
           <div>
@@ -97,7 +97,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.TraitsAssocInput do
         phx-click={JS.dispatch("change")}
         class="btn btn-neutral btn-sm w-full mt-auto"
       >
-        <UI.Icons.page name="plus-circle" /> Add
+        <UI.Icons.page name="plus-circle" size={18} /> Add
       </button>
     </div>
     """

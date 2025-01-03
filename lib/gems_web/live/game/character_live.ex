@@ -186,14 +186,14 @@ defmodule GEMSWeb.Game.CharacterLive do
     <div class="card bg-base-200 p-4">
       <p :if={@text} class="line-clamp-6"></p>
       <div role="alert" class="alert bg-base-100 text-xs">
-        <UI.Icons.page name="info" />
+        <UI.Icons.page name="info" size={18} />
         <p>This character hasn't written their bio yet</p>
       </div>
       <button :if={!@text} class="btn btn-sm btn-neutral mt-4">
-        <UI.Icons.page name="pencil" /> Edit bio
+        <UI.Icons.page name="pencil" size={18} /> Edit bio
       </button>
       <button :if={@text} class="btn btn-sm btn-neutral mt-4">
-        <UI.Icons.page name="arrow-right" /> Read more
+        <UI.Icons.page name="arrow-right" size={18} /> Read more
       </button>
     </div>
     """
@@ -212,10 +212,10 @@ defmodule GEMSWeb.Game.CharacterLive do
           <progress class="progress" value="40" max="100"></progress>
           <div class="flex items-center justify-between mt-1">
             <span class="badge badge-neutral gap-1">
-              <UI.Icons.page name="user-round-cog" /> Leader
+              <UI.Icons.page name="user-round-cog" size={18} /> Leader
             </span>
             <span class="badge badge-neutral gap-1">
-              <UI.Icons.page name="users" /> 299 members
+              <UI.Icons.page name="users" size={18} /> 299 members
             </span>
           </div>
         </div>
@@ -243,7 +243,7 @@ defmodule GEMSWeb.Game.CharacterLive do
           <div class="flex items-center justify-between mt-1">
             <div class="badge badge-neutral font-medium">XP {@experience} of 100</div>
             <div class="badge badge-neutral font-medium gap-1">
-              <UI.Icons.page name="loader" /> 70%
+              <UI.Icons.page name="loader" size={18} /> 70%
             </div>
           </div>
         </div>
