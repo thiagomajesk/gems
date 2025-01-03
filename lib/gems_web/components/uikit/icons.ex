@@ -48,6 +48,10 @@ defmodule GEMSWeb.UIKIT.Icons do
   attr :rest, :global, include: @global_attrs
 
   def iconify(assigns) do
+    # If not specific size is defined, we expect to style the icon through CSS.
+    # See: https://iconify.design/docs/iconify-icon/dimensions.html#unset
+    assigns = assign(assigns, :size, assigns.size || "unset")
+
     ~H"""
     <iconify-icon icon={@icon} width={@size} height={@size} class={["size-min", @class]} {@rest}>
     </iconify-icon>
