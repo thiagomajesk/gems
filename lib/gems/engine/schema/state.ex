@@ -25,6 +25,7 @@ defmodule GEMS.Engine.Schema.State do
     changeset = super(state, attrs, opts)
 
     changeset
+    |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end
