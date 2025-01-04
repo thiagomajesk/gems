@@ -109,7 +109,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 phx-click="stop"
                 phx-value-id={@activity.id}
               >
-                <UI.Icons.page name="circle-stop"  /> Stop
+                <UI.Icons.page name="circle-stop" /> Stop
               </button>
             </div>
           </div>

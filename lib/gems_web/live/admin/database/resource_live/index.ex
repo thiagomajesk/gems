@@ -147,7 +147,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Index do
       <header class="flex items-center justify-between w-full mb-4">
         <h1 class="text-2xl font-bold uppercase">{@title}</h1>
         <.link navigate={~p"/admin/database/#{@collection}/new"} class="btn btn-neutral">
-          <UI.Icons.page name="circle-plus"  /> New
+          <UI.Icons.page name="circle-plus" /> New
         </.link>
       </header>
       <div class="card card-bordered bg-base-100">

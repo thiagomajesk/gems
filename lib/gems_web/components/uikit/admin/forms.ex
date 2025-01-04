@@ -22,10 +22,10 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
       </div>
       <div class="flex items-center justify-between">
         <.link navigate={@return_to} class="btn btn-neutral">
-          <UI.Icons.page name="arrow-left"  /> Return
+          <UI.Icons.page name="arrow-left" /> Return
         </.link>
         <button type="submit" class="btn btn-primary">
-          <UI.Icons.page name="save"  /> Save
+          <UI.Icons.page name="save" /> Save
         </button>
       </div>
     </.form>
@@ -163,7 +163,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   def error_message(assigns) do
     ~H"""
     <p class="mt-2 flex items-center gap-2 text-sm leading-6 text-error">
-      <UI.Icons.page name="circle-alert"  />
+      <UI.Icons.page name="circle-alert" />
       {render_slot(@inner_block)}
     </p>
     """

@@ -15,7 +15,7 @@ defmodule GEMSWeb.Layouts do
   defp annoucement_banner(assigns) do
     ~H"""
     <div role="alert" class="alert alert-info shadow-xl rounded-none sticky">
-      <UI.Icons.page name="info"  />
+      <UI.Icons.page name="info" />
       <div class="text-sm">
         <h3 class="font-bold">Attention!</h3>
         <p>You are currently using a beta version of this software</p>

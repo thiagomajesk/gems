@@ -92,7 +92,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.SharedInputs do
       class="flex items-center tooltip tooltip-error"
       data-tip={Enum.join(@errors, ",")}
     >
-      <UI.Icons.page name="circle-alert" class="text-error"  />
+      <UI.Icons.page name="circle-alert" class="text-error" />
     </div>
     """
   end
