@@ -6,6 +6,7 @@ defmodule GEMS.Characters do
   import Ecto.Query, warn: false
 
   alias GEMS.World.Schema.CharacterItem
+  alias GEMS.World.Schema.CharacterEquipment
   alias GEMS.World.Schema.CharacterProfession
   alias GEMS.Repo
 
@@ -36,6 +37,17 @@ defmodule GEMS.Characters do
   def list_character_items(%Character{id: character_id}, preloads \\ []) do
     Repo.all(
       from ci in CharacterItem,
+        where: ci.character_id == ^character_id,
+        preload: ^preloads
+    )
+  end
+
+  @doc """
+  Returns the list of equipments for a character.
+  """
+  def list_character_equipments(%Character{id: character_id}, preloads \\ []) do
+    Repo.all(
+      from ci in CharacterEquipment,
         where: ci.character_id == ^character_id,
         preload: ^preloads
     )
