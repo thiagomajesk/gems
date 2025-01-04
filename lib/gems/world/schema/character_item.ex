@@ -1,9 +1,7 @@
 defmodule GEMS.World.Schema.CharacterItem do
   use GEMS.Database.Schema, preset: :default
 
-  @required_fields [:character_id, :equipment_id]
-
-  @optional_fields [:level, :experience]
+  @required_fields [:character_id, :item_id]
 
   @primary_key false
   schema "characters_items" do
@@ -16,7 +14,7 @@ defmodule GEMS.World.Schema.CharacterItem do
   @doc false
   def changeset(character_item, attrs) do
     character_item
-    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
   end
 end

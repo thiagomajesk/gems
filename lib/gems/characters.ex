@@ -78,6 +78,30 @@ defmodule GEMS.Characters do
   end
 
   @doc """
+  Delivers a given amount of a specific item to a character.
+  When the character already has the item, it increments the stack.
+  """
+  def give_item!(character_id, item_id, amount) do
+    attrs = %{character_id: character_id, item_id: item_id, amount: amount}
+    changeset = CharacterItem.changeset(%CharacterItem{}, attrs)
+
+    Repo.insert!(changeset,
+      conflict_target: [:character_id, :item_id],
+      on_conflict: [inc: [amount: amount]]
+    )
+  end
+
+  def give_experience!(character_id, profession_id, amount) do
+    attrs = %{character_id: character_id, profession_id: profession_id, experience: amount}
+    changeset = CharacterProfession.changeset(%CharacterProfession{}, attrs)
+
+    Repo.insert!(changeset,
+      conflict_target: [:character_id, :profession_id],
+      on_conflict: [inc: [experience: amount]]
+    )
+  end
+
+  @doc """
   Returns a changeset for tracking character changes.
   """
   def change_character(%Character{} = character, attrs \\ %{}) do

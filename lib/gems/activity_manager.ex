@@ -112,7 +112,12 @@ defmodule GEMS.ActivityManager do
         {:noreply, state}
 
       %{timer: timer} = activity_metadata ->
-        Process.cancel_timer(timer)
+        # When read timer returns false, the activity has stopped on on its own.
+        # When read timer returns the remaining time, the activity has been forced to stop.
+        # Then, we either want to yield the activity gains or cancel the running activity timer.
+        if Process.read_timer(timer),
+          do: Process.cancel_timer(timer),
+          else: send(self(), {:complete_activity, character, activity})
 
         Phoenix.PubSub.broadcast_from(
           GEMS.PubSub,
@@ -124,6 +129,22 @@ defmodule GEMS.ActivityManager do
         activity_lookup = Map.delete(activity_lookup, character.id)
         {:noreply, Map.put(state, :activity_lookup, activity_lookup)}
     end
+  end
+
+  def handle_info({:complete_activity, character, activity}, state) do
+    GEMS.Repo.transaction(fn ->
+      GEMS.Characters.give_item!(character.id, activity.item_id, activity.amount)
+      GEMS.Characters.give_experience!(character.id, activity.profession_id, activity.experience)
+    end)
+
+    Phoenix.PubSub.broadcast_from(
+      GEMS.PubSub,
+      self(),
+      build_topic(character),
+      {:activity_completed, activity}
+    )
+
+    {:noreply, state}
   end
 
   defp build_topic(character) do

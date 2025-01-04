@@ -15,6 +15,7 @@ defmodule GEMS.World.Schema.Activity do
 
   schema "activities" do
     field :action, :string
+    field :amount, :integer
     field :duration, :integer
     field :experience, :integer
     field :required_level, :integer

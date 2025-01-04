@@ -62,7 +62,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
     GEMS.ActivityManager.stop_activity(character, activity)
 
-    # Optimistic update the assign before we get notified by the server
+    # Optimistically update the assign before we get notified by the server
     {:noreply, assign(socket, current_activity_id: nil)}
   end
 
@@ -78,6 +78,20 @@ defmodule GEMSWeb.Game.ActivitiesLive do
     %{activity: %{id: activity_id}} = activity_metadata
     Logger.debug("STOPPED ACTIVITY: #{activity_id}, #{inspect(self())}")
     {:noreply, assign_current_activity_state(socket, nil)}
+  end
+
+  @impl true
+  def handle_info({:activity_completed, activity}, socket) do
+    %{id: activity_id, item: item, profession: profession, amount: amount} = activity
+    Logger.debug("COMPLETED ACTIVITY: #{activity_id}, #{inspect(self())}")
+
+    message =
+      """
+      Gained #{amount} #{item.name} and
+      #{activity.experience} XP in #{profession.name}
+      """
+
+    {:noreply, put_flash(socket, :info, message)}
   end
 
   attr :activity, :any, required: true
@@ -113,7 +127,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
               </button>
             </div>
           </div>
-          <div class="flex items-center justify-between flex-wrap gap-1 mt-1">
+          <div class="flex items-center justify-between flex-wrap gap-2 mt-1">
             <div class="flex items-center gap-2">
               <span class={[
                 "badge font-medium",
@@ -122,11 +136,16 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 {"LV #{@activity.required_level}"}
               </span>
               <span class="badge badge-neutral font-medium gap-1">
+                <UI.Icons.page name="hand-coins" />
+                <span>{@activity.amount}</span>
+              </span>
+              <span class="badge badge-neutral font-medium gap-1">
                 <UI.Icons.page name="clock" />
                 <span>{"#{@activity.duration}s"}</span>
               </span>
               <span class="badge badge-neutral font-medium gap-1">
-                {"#{@activity.experience} XP"}
+                <UI.Icons.page name="arrow-big-up-dash" />
+                <span>{"#{@activity.experience} XP"}</span>
               </span>
             </div>
             <div class="flex items-center gap-2">

@@ -113,12 +113,13 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     ################################################################################
 
     create table(:activities) do
-      add :action, :string, null: false
       add :zone_id, references(:zones), null: false
-      add :item_id, references(:items), null: true
+      add :action, :string, null: false
       add :duration, :integer, null: false, default: 0
-      add :experience, :integer, null: false, default: 0
+      add :item_id, references(:items), null: true
+      add :amount, :integer, null: false, default: 1
       add :profession_id, references(:professions), null: false
+      add :experience, :integer, null: false, default: 0
       add :required_level, :integer, null: false, default: 0
     end
   end
