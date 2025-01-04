@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.CreatureTypeComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.CreatureTypeComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms

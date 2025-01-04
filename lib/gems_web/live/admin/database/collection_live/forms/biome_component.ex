@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.BiomeComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.BiomeComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms

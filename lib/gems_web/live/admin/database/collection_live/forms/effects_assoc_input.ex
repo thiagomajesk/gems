@@ -1,7 +1,7 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.EffectsAssocInput do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EffectsAssocInput do
   use GEMSWeb, :html
 
-  alias GEMSWeb.Admin.Database.ResourceLive.Forms.SharedInputs
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs
 
   attr :field, Phoenix.HTML.FormField, required: true
 

@@ -1,8 +1,8 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.StateComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.StateComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
-  alias GEMSWeb.Admin.Database.ResourceLive.Forms.TraitsAssocInput
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput
 
   def render(assigns) do
     ~H"""

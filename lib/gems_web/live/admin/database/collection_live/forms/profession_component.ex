@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.AbilityTypeComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ProfessionComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
@@ -6,14 +6,14 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.AbilityTypeComponent do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-wrapper"}>
-      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/ability-types"}>
+      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/professions"}>
         <div class="grid grid-cols-2 gap-6">
           <Forms.field_input
             type="text"
             field={f[:name]}
             label="Name"
             phx-keyup={@live_action == :new && "code-hint"}
-            phx-value-prefix="ability-type"
+            phx-value-prefix={@live_action == :new && "profession"}
           />
           <Forms.field_input
             type="text"
@@ -23,8 +23,13 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.AbilityTypeComponent do
           />
         </div>
         <Forms.field_input type="textarea" field={f[:description]} label="Description" />
+        <Forms.field_input type="text" field={f[:icon]} label="Icon" />
       </Forms.base_form>
     </div>
     """
+  end
+
+  def mount(socket) do
+    {:ok, socket}
   end
 end

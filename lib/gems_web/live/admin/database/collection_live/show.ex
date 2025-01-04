@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   @moduledoc false
   use GEMSWeb, :live_view
 
@@ -15,7 +15,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Show do
   alias GEMS.World.Schema.Profession
   alias GEMS.Engine.Schema.State
 
-  alias GEMSWeb.Admin.Database.ResourceLive.Forms
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms
 
   @collections %{
     "abilities" => %{

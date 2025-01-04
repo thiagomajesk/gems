@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ElementComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemTypeComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
@@ -6,14 +6,14 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ElementComponent do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-wrapper"}>
-      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/elements"}>
+      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/item-types"}>
         <div class="grid grid-cols-2 gap-6">
           <Forms.field_input
             type="text"
             field={f[:name]}
             label="Name"
             phx-keyup={@live_action == :new && "code-hint"}
-            phx-value-prefix={@live_action == :new && "element"}
+            phx-value-prefix="item-type"
           />
           <Forms.field_input
             type="text"

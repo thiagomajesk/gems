@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Index do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
   @moduledoc false
   use GEMSWeb, :live_view
 

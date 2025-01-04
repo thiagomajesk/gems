@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.SharedInputs do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
   use GEMSWeb, :html
 
   alias GEMSWeb.UIKIT.Admin.Forms

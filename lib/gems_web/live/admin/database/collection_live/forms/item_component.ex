@@ -1,8 +1,8 @@
-defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.ItemComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
-  alias GEMSWeb.Admin.Database.ResourceLive.Forms.EffectsAssocInput
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.EffectsAssocInput
 
   def render(assigns) do
     ~H"""
