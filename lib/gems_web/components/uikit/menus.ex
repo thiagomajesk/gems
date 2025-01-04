@@ -29,7 +29,7 @@ defmodule GEMSWeb.UIKIT.Menus do
               link.href == @current_path && "active"
             ]}
           >
-            <UI.Icons.game name={link.icon} size={26} noobserver />
+            <UI.Icons.game name={link.icon} size="26" noobserver />
             <span>{link.label}</span>
           </.link>
         </li>

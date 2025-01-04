@@ -7,8 +7,8 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
     ~H"""
     <div class="flex flex-col gap-4 card bg-base-300 p-4">
       <div role="alert" class="alert">
-        <UI.Icons.page :if={@total < @max_points} name="circle-alert" class="text-info" size={18} />
-        <UI.Icons.page :if={@total == @max_points} name="thumbs-up" class="text-success" size={18} />
+        <UI.Icons.page :if={@total < @max_points} name="circle-alert" class="text-info" />
+        <UI.Icons.page :if={@total == @max_points} name="thumbs-up" class="text-success" />
         <div>
           <h3 class="font-bold">Time to distribute your attributes</h3>
           <p :if={@errors == []}>You have distributed {@total} of {@max_points} points</p>
@@ -18,7 +18,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
       <div class="flex flex-col">
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-2 w-32">
-            <UI.Icons.game name="biceps" size={24} class="text-rose-500" />
+            <UI.Icons.game name="biceps" size="24" class="text-rose-500" />
             <span class="font-medium text-lg">Strength</span>
           </div>
           <.range_input field={@form[:strength]} target={@myself} attribute="strength" />
@@ -30,7 +30,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
       <div class="flex flex-col">
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-2 w-32">
-            <UI.Icons.game name="sprint" size={24} class="text-emerald-500" />
+            <UI.Icons.game name="sprint" size="24" class="text-emerald-500" />
             <span class="font-medium text-lg">Dexterity</span>
           </div>
           <.range_input field={@form[:dexterity]} target={@myself} attribute="dexterity" />
@@ -42,7 +42,7 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
       <div class="flex flex-col">
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-2 w-32">
-            <UI.Icons.game name="brain" size={24} class="text-indigo-500" />
+            <UI.Icons.game name="brain" size="24" class="text-indigo-500" />
             <span class="font-medium text-lg">Intelligence</span>
           </div>
           <.range_input field={@form[:intelligence]} target={@myself} attribute="intelligence" />

@@ -40,20 +40,26 @@ defmodule GEMSWeb.UIKIT.Icons do
   <.iconify icon="3d-glasses" flip="vertical" />
   <.iconify icon="3d-glasses" class="text-red-100 bg-red-500" />
   ```
+
+  Sizing the icons might be a bit tricky in some scenarios, sometimes you want to specify the size through
+  the component, other times you might want to specify the size through CSS, see the official documentation
+  for guidance on the available options: https://iconify.design/docs/iconify-icon/dimensions.html.
   """
 
   attr :icon, :string, required: true
-  attr :size, :integer, default: nil
+  attr :size, :string, default: nil
   attr :class, :string, default: nil
   attr :rest, :global, include: @global_attrs
 
   def iconify(assigns) do
-    # If not specific size is defined, we expect to style the icon through CSS.
-    # See: https://iconify.design/docs/iconify-icon/dimensions.html#unset
-    assigns = assign(assigns, :size, assigns.size || "unset")
-
     ~H"""
-    <iconify-icon icon={@icon} width={@size} height={@size} class={["size-min", @class]} {@rest}>
+    <iconify-icon
+      icon={@icon}
+      width={@size}
+      height={@size}
+      class={[@size != nil && "size-min", @class]}
+      {@rest}
+    >
     </iconify-icon>
     """
   end

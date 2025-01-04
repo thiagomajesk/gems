@@ -109,7 +109,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 phx-click="stop"
                 phx-value-id={@activity.id}
               >
-                <UI.Icons.page name="circle-stop" size={18} /> Stop
+                <UI.Icons.page name="circle-stop"  /> Stop
               </button>
             </div>
           </div>
@@ -122,7 +122,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 {"LV #{@activity.required_level}"}
               </span>
               <span class="badge badge-neutral font-medium gap-1">
-                <UI.Icons.page name="clock" size={18} />
+                <UI.Icons.page name="clock" />
                 <span>{"#{@activity.duration}s"}</span>
               </span>
               <span class="badge badge-neutral font-medium gap-1">

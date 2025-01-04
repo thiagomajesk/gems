@@ -24,7 +24,11 @@ defmodule GEMSWeb.Game.CharacterLive do
           <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Attributes</h1>
           <div class="grid grid-cols-3 gap-2">
             <div class="rounded-box flex flex-col items-center justify-center bg-gradient-to-br from-base-300 h-24 to-rose-500/10 gap-2 p-2 relative">
-              <UI.Icons.game name="biceps" class="h-full w-full absolute inset-0 text-rose-500" />
+              <UI.Icons.game
+                name="biceps"
+                size="unset"
+                class="h-full w-full absolute inset-0 text-rose-500"
+              />
               <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow size-12 flex items-center justify-center">
                 {@selected_character.strength}
               </span>
@@ -33,7 +37,11 @@ defmodule GEMSWeb.Game.CharacterLive do
               </small>
             </div>
             <div class="rounded-box flex flex-col items-center justify-center bg-gradient-to-br from-base-300 h-24 to-emerald-500/10 gap-2 p-2 relative">
-              <UI.Icons.game name="sprint" class="h-full w-full absolute inset-0 text-emerald-500" />
+              <UI.Icons.game
+                name="sprint"
+                size="unset"
+                class="h-full w-full absolute inset-0 text-emerald-500"
+              />
               <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow size-12 flex items-center justify-center">
                 {@selected_character.dexterity}
               </span>
@@ -42,7 +50,11 @@ defmodule GEMSWeb.Game.CharacterLive do
               </small>
             </div>
             <div class="rounded-box flex flex-col items-center justify-center bg-gradient-to-br from-base-300 h-24 to-indigo-500/10 gap-2 p-2 relative">
-              <UI.Icons.game name="brain" class="h-full w-full absolute inset-0 text-indigo-500" />
+              <UI.Icons.game
+                name="brain"
+                size="unset"
+                class="h-full w-full absolute inset-0 text-indigo-500"
+              />
               <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow size-12 flex items-center justify-center">
                 {@selected_character.intelligence}
               </span>
@@ -76,55 +88,55 @@ defmodule GEMSWeb.Game.CharacterLive do
             <div class="grid grid-cols-3 gap-2">
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="gem-chain" size={24} />
+                  <UI.Icons.game name="gem-chain" size="24" />
                 </div>
                 <span class="font-medium">Trinket</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="crested-helmet" size={24} />
+                  <UI.Icons.game name="crested-helmet" size="24" />
                 </div>
                 <span class="font-medium">Helmet</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="cloak" size={24} />
+                  <UI.Icons.game name="cloak" size="24" />
                 </div>
                 <span class="font-medium">Cape</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="hand" size={24} />
+                  <UI.Icons.game name="hand" size="24" />
                 </div>
                 <span class="font-medium">Main-Hand</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="chest-armor" size={24} />
+                  <UI.Icons.game name="chest-armor" size="24" />
                 </div>
                 <span class="font-medium">Armor</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="hand" size={24} />
+                  <UI.Icons.game name="hand" size="24" />
                 </div>
                 <span class="font-medium">Off-Hand</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="ring" size={24} />
+                  <UI.Icons.game name="ring" size="24" />
                 </div>
                 <span class="font-medium">Ring</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="boots" size={24} />
+                  <UI.Icons.game name="boots" size="24" />
                 </div>
                 <span class="font-medium">Boots</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="necklace" size={24} />
+                  <UI.Icons.game name="necklace" size="24" />
                 </div>
                 <span class="font-medium">Amulet</span>
               </div>
@@ -137,37 +149,37 @@ defmodule GEMSWeb.Game.CharacterLive do
             <div class="grid grid-cols-3 gap-2">
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="potion-ball" size={24} />
+                  <UI.Icons.game name="potion-ball" size="24" />
                 </div>
                 <span class="font-medium">Consumable</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="drink-me" size={24} />
+                  <UI.Icons.game name="drink-me" size="24" />
                 </div>
                 <span class="font-medium">Consumable</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="shiny-apple" size={24} />
+                  <UI.Icons.game name="shiny-apple" size="24" />
                 </div>
                 <span class="font-medium">Consumable</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="pear" size={24} />
+                  <UI.Icons.game name="pear" size="24" />
                 </div>
                 <span class="font-medium">Consumable</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="waterskin" size={24} />
+                  <UI.Icons.game name="waterskin" size="24" />
                 </div>
                 <span class="font-medium">Consumable</span>
               </div>
               <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
                 <div class="flex items-center bg-base-200 rounded-lg p-2">
-                  <UI.Icons.game name="card-joker" size={24} />
+                  <UI.Icons.game name="card-joker" size="24" />
                 </div>
                 <span class="font-medium">Consumable</span>
               </div>
@@ -186,14 +198,14 @@ defmodule GEMSWeb.Game.CharacterLive do
     <div class="card bg-base-200 p-4">
       <p :if={@text} class="line-clamp-6"></p>
       <div role="alert" class="alert bg-base-100 text-xs">
-        <UI.Icons.page name="info" size={18} />
+        <UI.Icons.page name="info" />
         <p>This character hasn't written their bio yet</p>
       </div>
       <button :if={!@text} class="btn btn-sm btn-neutral mt-4">
-        <UI.Icons.page name="pencil" size={18} /> Edit bio
+        <UI.Icons.page name="pencil" /> Edit bio
       </button>
       <button :if={@text} class="btn btn-sm btn-neutral mt-4">
-        <UI.Icons.page name="arrow-right" size={18} /> Read more
+        <UI.Icons.page name="arrow-right" /> Read more
       </button>
     </div>
     """
@@ -212,10 +224,10 @@ defmodule GEMSWeb.Game.CharacterLive do
           <progress class="progress" value="40" max="100"></progress>
           <div class="flex items-center justify-between mt-1">
             <span class="badge badge-neutral gap-1">
-              <UI.Icons.page name="user-round-cog" size={18} /> Leader
+              <UI.Icons.page name="user-round-cog" /> Leader
             </span>
             <span class="badge badge-neutral gap-1">
-              <UI.Icons.page name="users" size={18} /> 299 members
+              <UI.Icons.page name="users" /> 299 members
             </span>
           </div>
         </div>
@@ -243,7 +255,7 @@ defmodule GEMSWeb.Game.CharacterLive do
           <div class="flex items-center justify-between mt-1">
             <div class="badge badge-neutral font-medium">XP {@experience} of 100</div>
             <div class="badge badge-neutral font-medium gap-1">
-              <UI.Icons.page name="loader" size={18} /> 70%
+              <UI.Icons.page name="loader" /> 70%
             </div>
           </div>
         </div>

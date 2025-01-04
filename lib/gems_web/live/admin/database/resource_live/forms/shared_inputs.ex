@@ -43,7 +43,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.SharedInputs do
     <div id={"#{@id}-wrapper"} class="flex flex-col items-start gap-0.5 grow">
       <small :if={@label} class="text-base-content/30 text-[10px] uppercase">{@label}</small>
       <label class="flex items-center gap-1 w-full input input-sm">
-        <UI.Icons.page :if={@icon} name={@icon} size={12} />
+        <UI.Icons.page :if={@icon} name={@icon} />
         <input
           type={@type}
           name={@name}
@@ -92,7 +92,7 @@ defmodule GEMSWeb.Admin.Database.ResourceLive.Forms.SharedInputs do
       class="flex items-center tooltip tooltip-error"
       data-tip={Enum.join(@errors, ",")}
     >
-      <UI.Icons.page name="circle-alert" class="text-error" size={18} />
+      <UI.Icons.page name="circle-alert" class="text-error"  />
     </div>
     """
   end

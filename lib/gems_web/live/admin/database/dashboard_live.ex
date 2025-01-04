@@ -68,7 +68,7 @@ defmodule GEMSWeb.Admin.Database.DashboardLive do
       <header class="flex flex-items justify-between">
         <span class="font-semibold text-sm uppercase">{@title}</span>
         <span class="flex items-center justify-center rounded-btn p-2 bg-base-300">
-          <UI.Icons.page name={@icon} size={18} />
+          <UI.Icons.page name={@icon} />
         </span>
       </header>
       <span class="text-3xl font-bold text-white">
