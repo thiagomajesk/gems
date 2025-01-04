@@ -7,7 +7,6 @@ defmodule GEMSWeb.UIKIT.Menus do
     attr :href, :string, required: true
     attr :icon, :string, required: true
     attr :label, :string, required: true
-    attr :active, :boolean, required: false
   end
 
   def global(assigns) do
