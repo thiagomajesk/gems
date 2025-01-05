@@ -40,7 +40,7 @@ defmodule GEMSWeb.Game.StorageLive do
           <:loading>Loading equipments...</:loading>
           <.equipment_card
             :for={character_equipment <- character_equipments}
-            item={character_equipment.equipment}
+            equipment={character_equipment.equipment}
           />
         </.async_result>
       </div>
@@ -76,22 +76,44 @@ defmodule GEMSWeb.Game.StorageLive do
 
   defp item_card(assigns) do
     ~H"""
-    <div class="card items-center bg-base-200 p-2 shadow" title={@item.name}>
+    <div
+      class={[
+        "card items-center bg-base-200 p-2",
+        tier_style_classes(@item.tier)
+      ]}
+      title={@item.name}
+    >
       <img src="https://placehold.co/100" class="rounded-xl" />
       <span class="badge badge-neutral mt-2">{@amount}</span>
     </div>
     """
   end
 
-  attr :item, :any, required: true
+  attr :equipment, :any, required: true
   attr :grade, :integer, default: 1
 
   defp equipment_card(assigns) do
     ~H"""
-    <div class="card items-center bg-base-200 p-2 shadow" title={@item.name}>
+    <div
+      class={[
+        "card items-center bg-base-200 p-2",
+        tier_style_classes(@equipment.tier)
+      ]}
+      title={@equipment.name}
+    >
       <img src="https://placehold.co/100" class="rounded-xl" />
       <span class="badge badge-neutral mt-2">{@grade}</span>
     </div>
     """
   end
+
+  defp tier_style_classes(:t1), do: "border border-gray-500"
+  defp tier_style_classes(:t2), do: "border border-stone-500"
+  defp tier_style_classes(:t3), do: "border border-green-500 shadow-lg shadow-green-500/50"
+  defp tier_style_classes(:t4), do: "border border-blue-500 shadow-lg shadow-blue-500/50"
+  defp tier_style_classes(:t5), do: "border border-red-500 shadow-lg shadow-red-500/50"
+  defp tier_style_classes(:t6), do: "border border-orange-500 shadow-lg shadow-orange-500/50"
+  defp tier_style_classes(:t7), do: "border border-yellow-500 shadow-lg shadow-yellow-500/50"
+  defp tier_style_classes(:t8), do: "border border-purple-500 shadow-lg shadow-purple-500/50"
+  defp tier_style_classes(:t9), do: "border border-pink-500 shadow-lg shadow-pink-500/50"
 end
