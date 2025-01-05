@@ -28,13 +28,14 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemComponent do
             <Forms.field_input type="textarea" field={f[:description]} label="Description" />
             <Forms.field_input type="text" field={f[:icon]} label="Icon" />
 
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-3 gap-6">
               <Forms.field_input
                 type="select"
                 field={f[:type_id]}
                 label="Type"
                 options={@item_type_options}
               />
+              <Forms.field_input type="select" field={f[:tier]} label="Tier" options={@tier_options} />
               <Forms.field_input type="number" field={f[:price]} label="Price" />
             </div>
 
@@ -118,6 +119,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemComponent do
 
     {:ok,
      assign(socket,
+       tier_options: tier_options(),
        item_type_options: item_type_options,
        ability_types_options: ability_types_options,
        element_options: element_options,
@@ -126,6 +128,12 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemComponent do
        target_status_options: target_status_options(),
        damage_type_options: damage_type_options()
      )}
+  end
+
+  def tier_options() do
+    GEMS.Engine.Schema.Item
+    |> Ecto.Enum.mappings(:tier)
+    |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 
   defp hit_type_options() do

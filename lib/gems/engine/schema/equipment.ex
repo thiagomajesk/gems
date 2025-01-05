@@ -5,7 +5,8 @@ defmodule GEMS.Engine.Schema.Equipment do
       :name,
       :code,
       :slot,
-      :type_id
+      :type_id,
+      :tier
     ],
     optional_fields: [
       :description,
@@ -28,6 +29,8 @@ defmodule GEMS.Engine.Schema.Equipment do
       :ability_power
     ]
 
+  @tiers GEMS.Engine.Constants.tiers()
+
   @slots [
     :trinket,
     :helmet,
@@ -46,6 +49,7 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :description, :string
     field :icon, :string
     field :slot, Ecto.Enum, values: @slots
+    field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
 
     # STR

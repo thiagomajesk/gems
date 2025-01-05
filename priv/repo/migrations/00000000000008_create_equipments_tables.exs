@@ -13,6 +13,7 @@ defmodule GEMS.Repo.Migrations.CreateEquipmentsTables do
       add :icon, :string, null: true
       add :type_id, references(:equipment_types), null: false
       add :slot, :string, null: false
+      add :tier, :string, null: false
       add :price, :integer, null: true
 
       # STR

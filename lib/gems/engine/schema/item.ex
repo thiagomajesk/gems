@@ -4,7 +4,8 @@ defmodule GEMS.Engine.Schema.Item do
     required_fields: [
       :name,
       :code,
-      :type_id
+      :type_id,
+      :tier
     ],
     optional_fields: [
       :description,
@@ -24,6 +25,8 @@ defmodule GEMS.Engine.Schema.Item do
       :messages,
       :damage_element_id
     ]
+
+  @tiers GEMS.Engine.Constants.tiers()
 
   @target_sides [
     :self,
@@ -52,6 +55,7 @@ defmodule GEMS.Engine.Schema.Item do
     field :code, :string
     field :description, :string
     field :icon, :string
+    field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
     field :messages, :map
 

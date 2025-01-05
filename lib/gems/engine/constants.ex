@@ -17,4 +17,17 @@ defmodule GEMS.Engine.Constants do
       :magic_damage,
       :ability_power
     ]
+
+  def tiers,
+    do: [
+      :t1,
+      :t2,
+      :t3,
+      :t4,
+      :t5,
+      :t6,
+      :t7,
+      :t8,
+      :t9
+    ]
 end
