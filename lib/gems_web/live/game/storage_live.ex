@@ -78,12 +78,16 @@ defmodule GEMSWeb.Game.StorageLive do
     ~H"""
     <div
       class={[
-        "card items-center bg-base-200 p-2",
+        "card items-center p-2 relative",
         tier_style_classes(@item.tier)
       ]}
       title={@item.name}
     >
       <img src="https://placehold.co/100" class="rounded-xl" />
+      <span class="badge font-medium badge-ghost shadow-sm absolute top-1 gap-1">
+        <UI.Icons.page name="star" class="fill-red-500" />
+        <span>{format_tier_name(@item.tier)}</span>
+      </span>
       <span class="badge badge-neutral mt-2">{@amount}</span>
     </div>
     """
@@ -96,7 +100,7 @@ defmodule GEMSWeb.Game.StorageLive do
     ~H"""
     <div
       class={[
-        "card items-center bg-base-200 p-2",
+        "card items-center p-2",
         tier_style_classes(@equipment.tier)
       ]}
       title={@equipment.name}
@@ -107,13 +111,67 @@ defmodule GEMSWeb.Game.StorageLive do
     """
   end
 
-  defp tier_style_classes(:t1), do: "border border-gray-500"
-  defp tier_style_classes(:t2), do: "border border-stone-500"
-  defp tier_style_classes(:t3), do: "border border-green-500 shadow-lg shadow-green-500/50"
-  defp tier_style_classes(:t4), do: "border border-blue-500 shadow-lg shadow-blue-500/50"
-  defp tier_style_classes(:t5), do: "border border-red-500 shadow-lg shadow-red-500/50"
-  defp tier_style_classes(:t6), do: "border border-orange-500 shadow-lg shadow-orange-500/50"
-  defp tier_style_classes(:t7), do: "border border-yellow-500 shadow-lg shadow-yellow-500/50"
-  defp tier_style_classes(:t8), do: "border border-purple-500 shadow-lg shadow-purple-500/50"
-  defp tier_style_classes(:t9), do: "border border-pink-500 shadow-lg shadow-pink-500/50"
+  defp format_tier_name(:t1), do: "I"
+  defp format_tier_name(:t2), do: "II"
+  defp format_tier_name(:t3), do: "III"
+  defp format_tier_name(:t4), do: "IV"
+  defp format_tier_name(:t5), do: "V"
+  defp format_tier_name(:t6), do: "VI"
+  defp format_tier_name(:t7), do: "VII"
+  defp format_tier_name(:t8), do: "VIII"
+  defp format_tier_name(:t9), do: "IX"
+
+  defp tier_style_classes(:t1),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-gray-500/10 border border-gray-500/40"
+    ]
+
+  defp tier_style_classes(:t2),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-stone-500/10 border border-stone-500/40"
+    ]
+
+  defp tier_style_classes(:t3),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-green-500/10 border border-green-500/40 shadow-sm shadow-green-500/50"
+    ]
+
+  defp tier_style_classes(:t4),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-blue-500/10 border border-blue-500/40 shadow-sm shadow-blue-500/50"
+    ]
+
+  defp tier_style_classes(:t5),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-red-500/10 border border-red-500/40 shadow-sm shadow-red-500/50"
+    ]
+
+  defp tier_style_classes(:t6),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-orange-500/10 border border-orange-500/40 shadow-sm shadow-orange-500/50"
+    ]
+
+  defp tier_style_classes(:t7),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-yellow-500/10 border border-yellow-500/40 shadow-sm shadow-yellow-500/50"
+    ]
+
+  defp tier_style_classes(:t8),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-purple-500/10 border border-purple-500/40 shadow-sm shadow-purple-500/50"
+    ]
+
+  defp tier_style_classes(:t9),
+    do: [
+      "bg-gradient-to-t from-base-300",
+      "to-pink-500/10 border border-pink-500/40 shadow-sm shadow-pink-500/50"
+    ]
 end
