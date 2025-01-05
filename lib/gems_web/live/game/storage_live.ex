@@ -86,7 +86,7 @@ defmodule GEMSWeb.Game.StorageLive do
       title={@item.name}
     >
       <img src="https://placehold.co/100" class="rounded-xl" />
-      <span class="badge font-medium badge-ghost shadow-sm absolute top-1 gap-1">
+      <span class="flex items-center rounded-btn px-2 font-medium bg-base-300/50 backdrop-blur shadow-sm absolute top-1 gap-1">
         <UI.Icons.page name="star" class="fill-red-500" />
         <span>{format_tier_name(@item.tier)}</span>
       </span>
@@ -109,7 +109,7 @@ defmodule GEMSWeb.Game.StorageLive do
       title={@equipment.name}
     >
       <img src="https://placehold.co/100" class="rounded-xl" />
-      <span class="badge font-medium badge-ghost shadow-sm absolute top-1 gap-1">
+      <span class="flex items-center rounded-btn px-2 font-medium bg-base-300/50 backdrop-blur shadow-sm absolute top-1 gap-1">
         <UI.Icons.page name="star" class="fill-red-500" />
         <span>{format_tier_name(@equipment.tier)}</span>
       </span>
