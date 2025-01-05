@@ -57,6 +57,8 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
     create table(:characters_equipments, primary_key: false) do
       add :character_id, references(:characters), null: false, primary_key: true
       add :equipment_id, references(:equipments), null: false, primary_key: true
+      add :level, :integer, null: false, default: 1
+      add :experience, :integer, null: false, default: 0
     end
 
     ################################################################################

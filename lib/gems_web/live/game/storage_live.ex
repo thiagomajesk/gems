@@ -41,6 +41,8 @@ defmodule GEMSWeb.Game.StorageLive do
           <.equipment_card
             :for={character_equipment <- character_equipments}
             equipment={character_equipment.equipment}
+            level={character_equipment.level}
+            experience={character_equipment.experience}
           />
         </.async_result>
       </div>
@@ -94,19 +96,27 @@ defmodule GEMSWeb.Game.StorageLive do
   end
 
   attr :equipment, :any, required: true
-  attr :grade, :integer, default: 1
+  attr :level, :integer, required: true
+  attr :experience, :integer, required: true
 
   defp equipment_card(assigns) do
     ~H"""
     <div
       class={[
-        "card items-center p-2",
+        "card items-center p-2 relative",
         tier_style_classes(@equipment.tier)
       ]}
       title={@equipment.name}
     >
       <img src="https://placehold.co/100" class="rounded-xl" />
-      <span class="badge badge-neutral mt-2">{@grade}</span>
+      <span class="badge font-medium badge-ghost shadow-sm absolute top-1 gap-1">
+        <UI.Icons.page name="star" class="fill-red-500" />
+        <span>{format_tier_name(@equipment.tier)}</span>
+      </span>
+      <div class="flex items-center w-full gap-2 mt-2">
+        <span class="badge badge-neutral">{@level}</span>
+        <progress class="progress" value={@experience} max="100"></progress>
+      </div>
     </div>
     """
   end
