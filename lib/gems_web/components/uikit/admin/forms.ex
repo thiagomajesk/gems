@@ -108,7 +108,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
     """
   end
 
-  def render_field_input(%{type: "percentage"} = assigns = assigns) do
+  def render_field_input(%{type: "percentage"} = assigns) do
     ~H"""
     <label class="form-control w-full">
       <div class="label font-medium">
