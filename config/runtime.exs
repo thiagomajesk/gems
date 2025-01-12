@@ -20,6 +20,11 @@ if System.get_env("PHX_SERVER") do
   config :gems, GEMSWeb.Endpoint, server: true
 end
 
+if game_path = System.get_env("GEMS_GAME_PATH") do
+  dbg(game_path)
+  config :gems, :game_path, game_path
+end
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
