@@ -1,7 +1,7 @@
 defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
   use GEMSWeb, :live_component
 
-  @max_points GEMSData.GameInfo.starting_character_points()
+  @max_points 100
 
   def render(assigns) do
     ~H"""

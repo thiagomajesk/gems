@@ -8,7 +8,7 @@ defmodule GEMSWeb.UIKIT.Media do
     assigns =
       assign_new(assigns, :src, fn %{avatar: avatar} ->
         avatar_path = ["avatars", avatar.icon]
-        system_path = GEMSData.GameInfo.asset_path(avatar_path)
+        system_path = avatar_path
         Path.join(GEMSWeb.Endpoint.url(), system_path)
       end)
 

@@ -1,8 +1,15 @@
-defmodule GEMSData.Seeder do
+defmodule GEMS.Seeder do
   @moduledoc false
   alias GEMS.Repo
+  alias GEMS.Accounts.Schema.User
 
   require Logger
+
+  def create_admin(password) do
+    hash = Bcrypt.hash_pwd_salt(password)
+    user = %User{email: "mail@domain.com", hashed_password: hash}
+    Repo.insert!(user, on_conflict: :replace_all, conflict_target: :email)
+  end
 
   def create_entities(module, entries) do
     Enum.map(entries, fn entry ->

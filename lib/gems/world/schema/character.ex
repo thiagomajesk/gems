@@ -75,7 +75,7 @@ defmodule GEMS.World.Schema.Character do
 
   @doc false
   def validate_attribute_values(changeset) do
-    max_points = GEMSData.GameInfo.starting_character_points()
+    max_points = 100
 
     strength = Ecto.Changeset.get_change(changeset, :strength, 0)
     dexterity = Ecto.Changeset.get_change(changeset, :dexterity, 0)
