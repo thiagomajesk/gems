@@ -18,7 +18,8 @@ defmodule GEMS.Application do
       # {GEMS.Worker, arg},
       # Start to serve requests, typically the last entry
       GEMSWeb.Endpoint,
-      GEMS.ActivityManager
+      GEMS.ActivityManager,
+      {Cachex, [:gems]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

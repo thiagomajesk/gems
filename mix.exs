@@ -53,7 +53,8 @@ defmodule GEMS.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:exflect, "~> 1.0"},
-      {:recase, "~> 0.5"}
+      {:recase, "~> 0.5"},
+      {:cachex, "~> 4.0"}
     ]
   end
 
