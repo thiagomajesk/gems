@@ -1,10 +1,3 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Config module.
-#
-# This configuration file is loaded before any dependency and
-# is restricted to this project.
-
-# General application configuration
 import Config
 
 config :gems,
@@ -12,6 +5,7 @@ config :gems,
   ecto_repos: [GEMS.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+# Configures ecto's repository
 config :gems, GEMS.Repo,
   migration_source: "__migrations__",
   migration_primary_key: [type: :binary_id],
@@ -33,9 +27,6 @@ config :gems, GEMSWeb.Endpoint,
 #
 # By default it uses the "Local" adapter which stores the emails
 # locally. You can see the emails in your browser, at "/dev/mailbox".
-#
-# For production it's recommended to configure a different adapter
-# at the `config/runtime.exs`.
 config :gems, GEMS.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
