@@ -1,0 +1,52 @@
+return {
+  {
+    id = "c879161d-9cc0-4de7-8575-aa1256409074",
+    action = "Chop",
+    zone_id = "4a199584-a52e-4371-bf85-afa7d7202e2e",
+    duration = 10,
+    experience = 10,
+    profession_id = "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
+    required_level = 0,
+    item_id = "2dc1d79d-77de-4a1f-b695-17cb81200612"
+  },
+  {
+    id = "21be1b0b-f100-4a39-ac61-ec3b8e2822f7",
+    action = "Mine",
+    zone_id = "4a199584-a52e-4371-bf85-afa7d7202e2e",
+    duration = 10,
+    experience = 10,
+    profession_id = "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
+    required_level = 0,
+    item_id = "f615fd8f-194f-4537-b0c0-06842972f1e1"
+  },
+  {
+    id = "d94c8421-a41d-4694-9aa2-728c5440999f",
+    action = "Collect",
+    zone_id = "4a199584-a52e-4371-bf85-afa7d7202e2e",
+    duration = 10,
+    experience = 10,
+    profession_id = "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
+    required_level = 0,
+    item_id = "4fa40ff7-f740-4392-a368-045cec0b7d1b"
+  },
+  {
+    id = "90549fe8-af68-46e6-8282-85a8fff255cd",
+    action = "Brew",
+    zone_id = "4a199584-a52e-4371-bf85-afa7d7202e2e",
+    duration = 50,
+    experience = 10,
+    profession_id = "88091c58-143a-4ce6-a74d-9725ba45a331",
+    required_level = 0,
+    item_id = "f954b393-04e9-49b9-a74e-f19ec3958c1f"
+  },
+  {
+    id = "fad3b64d-a271-45f9-8586-9add60bfed09",
+    action = "Brew",
+    zone_id = "4a199584-a52e-4371-bf85-afa7d7202e2e",
+    duration = 50,
+    experience = 10,
+    profession_id = "88091c58-143a-4ce6-a74d-9725ba45a331",
+    required_level = 0,
+    item_id = "8a245967-d7dc-47e7-8c2d-971423eb8fea"
+  }
+}

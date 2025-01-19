@@ -19,6 +19,7 @@ defmodule GEMS.Application do
       # Start to serve requests, typically the last entry
       GEMSWeb.Endpoint,
       GEMS.ActivityManager,
+      GEMSLua.Manager,
       {Cachex, [:gems]}
     ]
 

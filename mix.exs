@@ -54,7 +54,8 @@ defmodule GEMS.MixProject do
       {:bandit, "~> 1.5"},
       {:exflect, "~> 1.0"},
       {:recase, "~> 0.5"},
-      {:cachex, "~> 4.0"}
+      {:cachex, "~> 4.0"},
+      {:lua, "0.0.22"}
     ]
   end
 

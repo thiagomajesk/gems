@@ -1,8 +1,8 @@
 defmodule GEMS.World.Schema.Avatar do
   use GEMS.Database.Schema,
     preset: :resource,
-    required_fields: [:name, :code, :icon],
-    optional_fields: [:description]
+    required_fields: [:name, :code],
+    optional_fields: [:description, :icon]
 
   schema "avatars" do
     field :name, :string

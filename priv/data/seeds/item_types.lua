@@ -1,0 +1,12 @@
+return {
+  resource = {
+    id = "7471df3c-8da8-4565-a44b-67f953230cd6",
+    name = "Resource",
+    code = "item_type_resource"
+  },
+  potion = {
+    id = "d8c1c8a8-6c7d-4f1a-9c8e-ff1c7a9f9e55",
+    name = "Potion",
+    code = "item_type_healing_potion"
+  }
+}

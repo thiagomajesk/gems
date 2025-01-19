@@ -1,0 +1,20 @@
+return {
+  gatherer = {
+    id = "93ca47fa-0c08-4342-95d4-58c8845d6a7e",
+    name = "Gatherer",
+    code = "profession_gatherer",
+    type = "gathering"
+  },
+  craftsman = {
+    id = "88091c58-143a-4ce6-a74d-9725ba45a331",
+    name = "Craftsman",
+    code = "profession_craftsman",
+    type = "crafting"
+  },
+  warrior = {
+    id = "f8c6c49f-6a7e-4ed5-9b7e-82e2c95de9d2",
+    name = "Warrior",
+    code = "profession_warrior",
+    type = "combat"
+  }
+}
