@@ -12,9 +12,9 @@ defmodule GEMS.Seeder do
   end
 
   def create_entities(module, entries) do
-    Enum.map(entries, fn entry ->
+    Enum.each(entries, fn entry ->
       module_name = List.last(Module.split(module))
-      Logger.debug("Seeding #{module_name} (#{entry["id"]})")
+      Logger.debug("Seeding #{module_name} code=#{entry["code"]} id=#{entry["id"]}")
       upsert_entity!(module.seed_changeset(struct!(module), entry))
     end)
   end
