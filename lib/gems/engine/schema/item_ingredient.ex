@@ -17,5 +17,7 @@ defmodule GEMS.Engine.Schema.ItemIngredient do
     item_ingredient
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> foreign_key_constraint(:ingredient_id)
+    |> unique_constraint([:item_id, :ingredient_id], name: :items_ingredients_pkey)
   end
 end
