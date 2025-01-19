@@ -19,8 +19,11 @@ defmodule GEMS.Seeder do
     end)
   end
 
-  def upsert_entity!(changeset, opts \\ []) do
-    conflict_target = Keyword.get(opts, :conflict_target, :id)
+  defp upsert_entity!(changeset, opts \\ []) do
+    %{data: %{__struct__: module}} = changeset
+    primary_keys = module.__schema__(:primary_key)
+
+    conflict_target = Keyword.get(opts, :conflict_target, primary_keys)
     replace_except = Keyword.get(opts, :replace_except, [:id, :code, :hash])
 
     Repo.insert!(changeset,
