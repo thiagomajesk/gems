@@ -1,3 +1,6 @@
+local biomes = require("seeds/biomes")
+local types = require("seeds/creature_types")
+
 return {
   goblin = {
     id = "f43f67c9-f508-43ed-bd9e-ed797fa8a564",
@@ -21,8 +24,8 @@ return {
     ability_power = 10,
     resilience = 10,
     lehality = 10,
-    type_id = "bb6f2dd4-3a0a-4392-99b2-c06cf1a4a5ea",
-    biome_id = "b6cc614e-2840-44fc-9752-b4dd5df25999"
+    type_id = types.mamal.id,
+    biome_id = biomes.jungle.id
   },
   worg = {
     id = "a25d246c-c7b4-4714-b4c4-fa3281d1fe50",
@@ -46,8 +49,8 @@ return {
     ability_power = 10,
     resilience = 10,
     lehality = 10,
-    type_id = "bb6f2dd4-3a0a-4392-99b2-c06cf1a4a5ea",
-    biome_id = "b6cc614e-2840-44fc-9752-b4dd5df25999"
+    type_id = types.beast.id,
+    biome_id = biomes.savana.id
   },
   snake = {
     id = "67eee4bf-51c2-41d7-998f-f05bb51eca88",
@@ -72,8 +75,8 @@ return {
     ability_power = 15,
     resilience = 15,
     lehality = 15,
-    type_id = "68571044-645f-46fd-a86f-6d96c0ecb912",
-    biome_id = "88729112-c02e-4985-aa05-e7578c8930ef"
+    type_id = types.reptile.id,
+    biome_id = biomes.desert.id
   },
   giant_spider = {
     id = "f62c689b-5cba-4e32-988a-76dd0501d25a",
@@ -98,7 +101,7 @@ return {
     ability_power = 10,
     resilience = 10,
     lehality = 10,
-    type_id = "bb6f2dd4-3a0a-4392-99b2-c06cf1a4a5ea",
-    biome_id = "41ee70e4-36d3-4ca0-babf-b64c9751e1f8"
+    type_id = types.beast.id,
+    biome_id = biomes.jungle.id
   }
 }

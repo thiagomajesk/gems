@@ -1,10 +1,12 @@
+local types = require("seeds/equipment_types")
+
 return {
   old_tunic = {
     id = "ef3ddd2f-ca10-4fa4-9cc6-bb643bea082e",
     code = "equipment_old_tunic",
     name = "Old Tunic",
     slot = "armor",
-    type_id = "0837ebb6-5f0d-40ba-b97a-32c70711adda",
+    type_id = types.general_armor.id,
     tier = "t1",
     price = 10,
     max_health = 10,
@@ -31,7 +33,7 @@ return {
     code = "equipment_rusty_dagger",
     name = "Rusty Dagger",
     slot = "main_hand",
-    type_id = "3b4d9571-4ce8-44fa-be8e-c5a64aaf91f9",
+    type_id = types.dagger.id,
     tier = "t1",
     price = 5,
     max_health = 0,
@@ -58,7 +60,7 @@ return {
     code = "equipment_short_sword",
     name = "Short Sword",
     slot = "main_hand",
-    type_id = "69e37e93-da5d-483a-9f0e-77c1578724ab",
+    type_id = types.sword.id,
     tier = "t1",
     price = 10,
     max_health = 0,
@@ -85,7 +87,7 @@ return {
     code = "equipment_worn_boots",
     name = "Worn Boots",
     slot = "boots",
-    type_id = "0837ebb6-5f0d-40ba-b97a-32c70711adda",
+    type_id = types.general_armor.id,
     tier = "t1",
     price = 10,
     max_health = 0,
