@@ -3,6 +3,8 @@ defmodule GEMS.Seeder do
   alias GEMS.Repo
   alias GEMS.Accounts.Schema.User
 
+  import Ecto.Query
+
   require Logger
 
   def create_admin(password) do
@@ -12,23 +14,40 @@ defmodule GEMS.Seeder do
   end
 
   def create_entities(module, entries) do
-    Enum.each(entries, fn entry ->
-      module_name = List.last(Module.split(module))
-      Logger.debug("Seeding #{module_name} code=#{entry["code"]} id=#{entry["id"]}")
-      upsert_entity!(module.seed_changeset(struct!(module), entry))
+    Repo.transaction(fn ->
+      Enum.each(entries, fn entry ->
+        module_name = List.last(Module.split(module))
+        Logger.notice("Seeding #{module_name} code=#{entry["code"]} id=#{entry["id"]}")
+        manually_upsert_entity!(module.seed_changeset(struct!(module), entry))
+      end)
     end)
   end
 
-  defp upsert_entity!(changeset, opts \\ []) do
-    %{data: %{__struct__: module}} = changeset
-    primary_keys = module.__schema__(:primary_key)
+  # We need to manually upsert entities while seeding because we can't use standard upserts with relations.
+  # Although less performatic, checking the entity exists first is simpler than decomposing the changeset
+  # into separate inserts and then handling stale associations individually. The only thing should be
+  # aware of is that the replaceable assocs need to be loaded and have `:on_replace` as `:delete`.
+  defp manually_upsert_entity!(changeset) do
+    %{data: %{__struct__: module}, changes: changes} = changeset
 
-    conflict_target = Keyword.get(opts, :conflict_target, primary_keys)
-    replace_except = Keyword.get(opts, :replace_except, [:id, :code, :hash])
+    case find_entity(module, changes.id) do
+      nil ->
+        Repo.insert!(changeset)
 
-    Repo.insert!(changeset,
-      conflict_target: conflict_target,
-      on_conflict: {:replace_all_except, replace_except}
+      entity ->
+        entity
+        |> Ecto.Changeset.change(changes)
+        |> Repo.update!()
+    end
+  end
+
+  def find_entity(module, id) do
+    preloads = module.__collection__(:default_preloads)
+
+    Repo.one(
+      from q in module,
+        where: q.id == ^id,
+        preload: ^preloads
     )
   end
 end

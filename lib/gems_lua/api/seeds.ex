@@ -41,7 +41,11 @@ defmodule GEMSLua.API.Seeds do
 
   defp create_entities(module, table) when is_list(table) do
     entities = table_to_entities(table)
-    Seeder.create_entities(module, entities)
+
+    case Seeder.create_entities(module, entities) do
+      {:ok, result} -> result
+      {:error, reason} -> raise inspect(reason)
+    end
   end
 
   defp create_entities(module, invalid),
