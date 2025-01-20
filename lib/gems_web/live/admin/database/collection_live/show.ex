@@ -20,114 +20,51 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   @collections %{
     "abilities" => %{
       module: Ability,
-      component: Forms.AbilityComponent,
-      preloads: [
-        effects: [
-          :recovery,
-          :state_change,
-          :parameter_change
-        ]
-      ]
+      component: Forms.AbilityComponent
     },
     "ability-types" => %{
       module: AbilityType,
-      component: Forms.AbilityTypeComponent,
-      preloads: []
+      component: Forms.AbilityTypeComponent
     },
     "biomes" => %{
       module: Biome,
-      component: Forms.BiomeComponent,
-      preloads: []
+      component: Forms.BiomeComponent
     },
     "creature-types" => %{
       module: CreatureType,
-      component: Forms.CreatureTypeComponent,
-      preloads: []
+      component: Forms.CreatureTypeComponent
     },
     "creatures" => %{
       module: Creature,
-      component: Forms.CreatureComponent,
-      preloads: [
-        traits: [
-          :ability_seal,
-          :attack_ability,
-          :attack_element,
-          :attack_state,
-          :element_rate,
-          :equipment_seal,
-          :item_seal,
-          :parameter_change,
-          :parameter_rate,
-          :state_rate
-        ]
-      ]
+      component: Forms.CreatureComponent
     },
     "elements" => %{
       module: Element,
-      component: Forms.ElementComponent,
-      preloads: []
+      component: Forms.ElementComponent
     },
     "equipment-types" => %{
       module: EquipmentType,
-      component: Forms.EquipmentTypeComponent,
-      preloads: []
+      component: Forms.EquipmentTypeComponent
     },
     "equipments" => %{
       module: Equipment,
-      component: Forms.EquipmentComponent,
-      preloads: [
-        traits: [
-          :ability_seal,
-          :attack_ability,
-          :attack_element,
-          :attack_state,
-          :element_rate,
-          :equipment_seal,
-          :item_seal,
-          :parameter_change,
-          :parameter_rate,
-          :state_rate
-        ]
-      ]
+      component: Forms.EquipmentComponent
     },
     "items" => %{
       module: Item,
-      component: Forms.ItemComponent,
-      preloads: [
-        effects: [
-          :recovery,
-          :state_change,
-          :parameter_change
-        ]
-      ]
+      component: Forms.ItemComponent
     },
     "item-types" => %{
       module: ItemType,
-      component: Forms.ItemTypeComponent,
-      preloads: []
+      component: Forms.ItemTypeComponent
     },
     "professions" => %{
       module: Profession,
-      component: Forms.ProfessionComponent,
-      preloads: []
+      component: Forms.ProfessionComponent
     },
     "states" => %{
       module: State,
-      component: Forms.StateComponent,
-      preloads: [
-        traits: [
-          :ability_seal,
-          :attack_ability,
-          :attack_element,
-          :attack_state,
-          :element_rate,
-          :equipment_seal,
-          :item_seal,
-          :parameter_change,
-          :parameter_rate,
-          :state_rate
-        ]
-      ]
+      component: Forms.StateComponent
     }
   }
 
@@ -147,14 +84,12 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   def mount(%{"collection" => collection}, _session, socket) do
     %{
       module: module,
-      preloads: preloads,
       component: component
     } = Map.fetch!(@collections, collection)
 
     {:ok,
      assign(socket,
        module: module,
-       preloads: preloads,
        component: component,
        collection: collection
      )}
@@ -163,12 +98,11 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   def handle_params(%{"id" => id}, _uri, socket) do
     %{
       module: module,
-      preloads: preloads,
       live_action: live_action,
       collection: collection
     } = socket.assigns
 
-    entity = get_entity!(module, id, preloads)
+    entity = get_entity!(module, id)
     changeset = change_entity(module, entity)
 
     {:noreply,
@@ -230,7 +164,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
     |> String.capitalize()
   end
 
-  defp get_entity!(module, id, preloads), do: apply(module, :get!, [id, preloads])
+  defp get_entity!(module, id), do: apply(module, :get!, [id])
 
   defp change_entity(module, entity \\ nil, attrs \\ %{}),
     do: apply(module, :change, [entity, attrs])

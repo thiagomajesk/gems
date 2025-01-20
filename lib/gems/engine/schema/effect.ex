@@ -15,9 +15,9 @@ defmodule GEMS.Engine.Schema.Effect do
     belongs_to :item, GEMS.Engine.Schema.Item
     belongs_to :ability, GEMS.Engine.Schema.Ability
 
-    has_one :recovery, GEMS.Engine.Schema.EffectRecovery
-    has_one :state_change, GEMS.Engine.Schema.EffectStateChange
-    has_one :parameter_change, GEMS.Engine.Schema.EffectParameterChange
+    has_one :recovery, GEMS.Engine.Schema.EffectRecovery, on_replace: :delete
+    has_one :state_change, GEMS.Engine.Schema.EffectStateChange, on_replace: :delete
+    has_one :parameter_change, GEMS.Engine.Schema.EffectParameterChange, on_replace: :delete
   end
 
   @doc false

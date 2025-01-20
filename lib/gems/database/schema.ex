@@ -4,16 +4,18 @@ defmodule GEMS.Database.Schema do
     apply(__MODULE__, preset, [opts])
   end
 
-  def resource(opts) do
+  def collection(opts) do
     {required_fields, opts} = Keyword.pop(opts, :required_fields, [])
     {optional_fields, opts} = Keyword.pop(opts, :optional_fields, [])
+    {default_preloads, opts} = Keyword.pop(opts, :default_preloads, [])
 
     quote do
       unquote(default(opts))
 
-      use GEMS.Database.Resource,
+      use GEMS.Database.Collection,
         required_fields: unquote(required_fields),
-        optional_fields: unquote(optional_fields)
+        optional_fields: unquote(optional_fields),
+        default_preloads: unquote(default_preloads)
     end
   end
 

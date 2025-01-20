@@ -1,6 +1,6 @@
 defmodule GEMS.Engine.Schema.Ability do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [:name, :code, :type_id],
     optional_fields: [
       :description,
@@ -20,6 +20,13 @@ defmodule GEMS.Engine.Schema.Ability do
       :critical_hits,
       :messages,
       :damage_element_id
+    ],
+    default_preloads: [
+      effects: [
+        :recovery,
+        :state_change,
+        :parameter_change
+      ]
     ]
 
   @target_sides [

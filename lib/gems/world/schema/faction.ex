@@ -1,6 +1,6 @@
 defmodule GEMS.World.Schema.Faction do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [:name, :code],
     optional_fields: [:description, :icon]
 

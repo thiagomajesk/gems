@@ -1,6 +1,6 @@
 defmodule GEMS.Engine.Schema.Item do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [
       :name,
       :code,
@@ -24,6 +24,14 @@ defmodule GEMS.Engine.Schema.Item do
       :critical_hits,
       :messages,
       :damage_element_id
+    ],
+    default_preloads: [
+      :item_ingredients,
+      effects: [
+        :recovery,
+        :state_change,
+        :parameter_change
+      ]
     ]
 
   @tiers GEMS.Engine.Constants.tiers()
@@ -91,5 +99,6 @@ defmodule GEMS.Engine.Schema.Item do
     )
     |> unique_constraint(:name)
     |> unique_constraint(:code)
+    |> foreign_key_constraint(:type_id)
   end
 end

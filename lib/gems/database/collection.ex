@@ -1,4 +1,4 @@
-defmodule GEMS.Database.Resource do
+defmodule GEMS.Database.Collection do
   @callback changeset(entity :: struct, attrs :: map) :: Ecto.Changeset.t()
 
   @callback seed_changeset(entity :: struct, attrs :: map) :: Ecto.Changeset.t()
@@ -9,26 +9,35 @@ defmodule GEMS.Database.Resource do
   defmacro __using__(opts) do
     required_fields = Keyword.fetch!(opts, :required_fields)
     optional_fields = Keyword.fetch!(opts, :optional_fields)
+    default_preloads = Keyword.fetch!(opts, :default_preloads)
 
     quote location: :keep do
-      @behaviour GEMS.Database.Resource
+      @behaviour GEMS.Database.Collection
+
+      @required_fields unquote(required_fields)
+      @optional_fields unquote(optional_fields)
+      @default_preloads unquote(default_preloads)
+
+      def __collection__(:required_fields), do: @required_fields
+      def __collection__(:optional_fields), do: @optional_fields
+      def __collection__(:default_preloads), do: @default_preloads
 
       @doc """
       Returns the #{__MODULE__} with the given id.
       """
-      def get!(id, preloads \\ []) do
+      def get!(id, preloads \\ nil) do
         __MODULE__
         |> GEMS.Repo.get!(id)
-        |> GEMS.Repo.preload(preloads)
+        |> __MODULE__.preload(preloads)
       end
 
       @doc """
       Returns a list of all #{__MODULE__}.
       """
-      def list(preloads \\ []) do
+      def list(preloads \\ nil) do
         __MODULE__
         |> GEMS.Repo.all()
-        |> GEMS.Repo.preload(preloads)
+        |> __MODULE__.preload(preloads)
       end
 
       @doc """
@@ -71,10 +80,19 @@ defmodule GEMS.Database.Resource do
       end
 
       @doc false
+      def preload(entity_or_entities, preloads \\ nil)
+
+      def preload(entity_or_entities, nil),
+        do: GEMS.Repo.preload(entity_or_entities, @default_preloads)
+
+      def preload(entity_or_entities, preloads) when is_list(preloads),
+        do: GEMS.Repo.preload(entity_or_entities, preloads)
+
+      @doc false
       def changeset(entity, attrs) do
         build_changeset(entity, attrs,
-          required_fields: unquote(required_fields),
-          optional_fields: unquote(optional_fields)
+          required_fields: @required_fields,
+          optional_fields: @optional_fields
         )
       end
 
@@ -83,8 +101,8 @@ defmodule GEMS.Database.Resource do
         build_changeset(
           entity,
           attrs,
-          required_fields: [:id | unquote(required_fields)],
-          optional_fields: unquote(optional_fields)
+          required_fields: [:id | @required_fields],
+          optional_fields: @optional_fields
         )
       end
 

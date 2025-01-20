@@ -1,6 +1,6 @@
 defmodule GEMS.World.Schema.Activity do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [
       :action,
       :zone_id,

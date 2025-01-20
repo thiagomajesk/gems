@@ -1,6 +1,6 @@
 defmodule GEMS.Engine.Schema.Equipment do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [
       :name,
       :code,
@@ -27,6 +27,20 @@ defmodule GEMS.Engine.Schema.Equipment do
       :energy_regen,
       :magic_damage,
       :ability_power
+    ],
+    default_preloads: [
+      traits: [
+        :ability_seal,
+        :attack_ability,
+        :attack_element,
+        :attack_state,
+        :element_rate,
+        :equipment_seal,
+        :item_seal,
+        :parameter_change,
+        :parameter_rate,
+        :state_rate
+      ]
     ]
 
   @tiers GEMS.Engine.Constants.tiers()
@@ -74,8 +88,8 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :ability_power, :integer
 
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
-    has_many :traits, GEMS.Engine.Schema.Trait
-    has_many :equipment_materials, GEMS.Engine.Schema.EquipmentMaterial
+    has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
+    has_many :equipment_materials, GEMS.Engine.Schema.EquipmentMaterial, on_replace: :delete
     many_to_many :materials, GEMS.Engine.Schema.Item, join_through: "equipments_materials"
     many_to_many :abilities, GEMS.Engine.Schema.Ability, join_through: "equipments_abilities"
   end

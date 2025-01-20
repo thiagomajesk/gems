@@ -1,6 +1,6 @@
 defmodule GEMS.World.Schema.Blessing do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [:name, :duration],
     optional_fields: [:icon, :description]
 

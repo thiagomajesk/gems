@@ -1,6 +1,6 @@
 defmodule GEMS.Engine.Schema.Creature do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [
       :name,
       :code,
@@ -24,6 +24,20 @@ defmodule GEMS.Engine.Schema.Creature do
       :energy_regen,
       :magic_damage,
       :ability_power
+    ],
+    default_preloads: [
+      traits: [
+        :ability_seal,
+        :attack_ability,
+        :attack_element,
+        :attack_state,
+        :element_rate,
+        :equipment_seal,
+        :item_seal,
+        :parameter_change,
+        :parameter_rate,
+        :state_rate
+      ]
     ]
 
   schema "creatures" do
@@ -55,7 +69,7 @@ defmodule GEMS.Engine.Schema.Creature do
     belongs_to :biome, GEMS.Engine.Schema.Biome
     belongs_to :type, GEMS.Engine.Schema.CreatureType
     has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
-    has_many :action_patterns, GEMS.Engine.Schema.CreatureActionPattern
+    has_many :action_patterns, GEMS.Engine.Schema.CreatureActionPattern, on_replace: :delete
   end
 
   def build_changeset(creature, attrs, opts) do

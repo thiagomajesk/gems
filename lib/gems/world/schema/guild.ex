@@ -1,6 +1,6 @@
 defmodule GEMS.World.Schema.Guild do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [:name],
     optional_fields: [:description, :icon]
 

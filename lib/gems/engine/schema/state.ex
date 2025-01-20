@@ -1,8 +1,22 @@
 defmodule GEMS.Engine.Schema.State do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [:name, :code],
-    optional_fields: [:description, :icon, :priority, :restriction]
+    optional_fields: [:description, :icon, :priority, :restriction],
+    default_preloads: [
+      traits: [
+        :ability_seal,
+        :attack_ability,
+        :attack_element,
+        :attack_state,
+        :element_rate,
+        :equipment_seal,
+        :item_seal,
+        :parameter_change,
+        :parameter_rate,
+        :state_rate
+      ]
+    ]
 
   @restrictions [
     :attack_enemy,

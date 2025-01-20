@@ -1,6 +1,6 @@
 defmodule GEMS.World.Schema.Zone do
   use GEMS.Database.Schema,
-    preset: :resource,
+    preset: :collection,
     required_fields: [:name, :code, :skull, :biome_id],
     optional_fields: [:description, :danger, :starting]
 
