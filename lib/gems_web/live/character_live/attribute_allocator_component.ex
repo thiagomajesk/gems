@@ -5,14 +5,14 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col gap-4 card bg-base-300 p-4">
-      <div role="alert" class="alert">
-        <UI.Icons.page :if={@total < @max_points} name="circle-alert" class="text-info" />
-        <UI.Icons.page :if={@total == @max_points} name="thumbs-up" class="text-success" />
-        <div>
-          <h3 class="font-bold">Time to distribute your attributes</h3>
+    <div class="space-y-4">
+      <div role="alert" class="alert bg-base-content/5">
+        <UI.Icons.page :if={@errors == []} name="circle-alert" class="text-info" size={18} />
+        <UI.Icons.page :if={@errors != []} name="circle-alert" class="text-error" size={18} />
+        <div class="flex flex-col">
+          <strong>Distribute your attributes</strong>
           <p :if={@errors == []}>You have distributed {@total} of {@max_points} points</p>
-          <p :if={@errors != []} class="text-error">{@errors}</p>
+          <span :if={@errors != []} class="text-error">{@errors}</span>
         </div>
       </div>
       <div class="flex flex-col">
