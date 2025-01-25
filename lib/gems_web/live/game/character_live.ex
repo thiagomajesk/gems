@@ -245,7 +245,7 @@ defmodule GEMSWeb.Game.CharacterLive do
     ~H"""
     <div class="card bg-base-200 p-4">
       <div class="flex gap-2">
-        <img src={@icon || "https://placehold.co/80"} class="size-16 rounded-xl" />
+        <UI.Media.image src={@icon} placeholder={%{height: 80, width: 80}} class="rounded-xl" />
         <div class="flex flex-col justify-between grow">
           <div class="flex items-center justify-between">
             <span class="font-semibold">{@name}</span>
