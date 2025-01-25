@@ -33,3 +33,17 @@ progress::-webkit-progress-value {
 progress::-moz-progress-bar {
   transition: width 0.5s ease-in-out;
 }
+
+/*
+* Disable text selection by default in all elements.
+* The idea is to bring a more native look and feel to the web app.
+* It might be feel too restrictive initially, but the majority of the UX
+* is not around selecting text so we want to control where it's enabled.
+*/
+
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
