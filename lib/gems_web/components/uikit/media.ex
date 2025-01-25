@@ -9,7 +9,7 @@ defmodule GEMSWeb.UIKIT.Media do
   def avatar(assigns) do
     assigns =
       assign_new(assigns, :src, fn %{avatar: avatar} ->
-        GEMS.game_assets_endpoint(["avatars", avatar.icon])
+        GEMS.game_assets_endpoint(["avatars", to_string(avatar.icon)])
       end)
 
     ~H"""
