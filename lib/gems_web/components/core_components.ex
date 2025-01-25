@@ -117,6 +117,12 @@ defmodule GEMSWeb.CoreComponents do
     """
   end
 
+  def input(%{type: "hidden"} = assigns) do
+    ~H"""
+    <input type="hidden" id={@id} name={@name} value={@value} />
+    """
+  end
+
   def input(assigns) do
     ~H"""
     <label class="form-control w-full">
