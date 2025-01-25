@@ -103,7 +103,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
     <div class="card bg-base-200 p-4">
       <div class="flex items-center gap-2">
         <UI.Media.image placeholder={%{width: 100, height: 100}} class="size-18 rounded-xl" />
-        <div class="flex flex-col justify-between space-y-2 grow">
+        <div class="flex flex-col justify-between space-y-2 grow h-full">
           <div class="flex items-center">
             <span class="font-semibold w-1/2">{@activity.item.name}</span>
             <div class="flex items-center justify-end w-1/2 gap-2">
