@@ -25,7 +25,7 @@ defmodule GEMSWeb.UIKIT.Media do
     assigns = assign_placeholder(assigns)
 
     ~H"""
-    <img src={@src || @placeholder} {@rest} />
+    <img src={@src || @placeholder} {@rest} draggable="false" />
     """
   end
 
