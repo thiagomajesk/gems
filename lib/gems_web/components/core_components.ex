@@ -49,14 +49,14 @@ defmodule GEMSWeb.CoreComponents do
     """
   end
 
-  attr :id, :any, default: nil
+  attr :id, :any
   attr :name, :any
-  attr :label, :string, required: true
+  attr :label, :string
   attr :value, :any
 
   attr :type, :string,
     default: "text",
-    values: ~w(checkbox email file number password text select)
+    values: ~w(checkbox email file number password text select hidden)
 
   attr :field, Phoenix.HTML.FormField
   attr :errors, :list, default: []
