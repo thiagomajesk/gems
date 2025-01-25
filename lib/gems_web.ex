@@ -87,7 +87,7 @@ defmodule GEMSWeb do
       import Phoenix.HTML
 
       # Core UI components and translation
-      import GEMSWeb.ErrorHelpers
+      import GEMS.ErrorHelpers
       import GEMSWeb.FormHelpers
       import GEMSWeb.CoreComponents
 

@@ -1,10 +1,4 @@
-defmodule GEMSWeb.ErrorHelpers do
-  def input_errors(%Phoenix.HTML.FormField{} = field) do
-    if Phoenix.Component.used_input?(field),
-      do: Enum.map(field.errors, &translate_error(&1)),
-      else: []
-  end
-
+defmodule GEMS.ErrorHelpers do
   def get_errors(%Ecto.Changeset{errors: errors}, key) do
     with {msg, opts} <- Keyword.get(errors, key, []), do: translate_error({msg, opts})
   end

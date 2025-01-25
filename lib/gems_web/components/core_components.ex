@@ -2,7 +2,7 @@ defmodule GEMSWeb.CoreComponents do
   use Phoenix.Component
   use Gettext, backend: GEMSWeb.Gettext
 
-  import GEMSWeb.ErrorHelpers
+  import GEMSWeb.FormHelpers
 
   alias GEMSWeb.UIKIT.Icons
 
@@ -67,13 +67,9 @@ defmodule GEMSWeb.CoreComponents do
                 multiple pattern placeholder readonly required rows size step)
 
   def input(%{field: %{} = field} = assigns) do
-    errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
-
     assigns
-    |> assign(field: nil, id: assigns.id || field.id)
-    |> assign(:errors, Enum.map(errors, &translate_error(&1)))
-    |> assign_new(:name, fn -> field.name end)
-    |> assign_new(:value, fn -> field.value end)
+    |> assign(field: nil)
+    |> assign_input_state(field)
     |> input()
   end
 
