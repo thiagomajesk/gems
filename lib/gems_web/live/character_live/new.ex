@@ -4,18 +4,13 @@ defmodule GEMSWeb.CharacterLive.New do
   alias GEMS.Characters
   alias GEMS.World.Schema.Character
   alias GEMSWeb.CharacterLive.AttributeAllocatorComponent
+  alias GEMSWeb.CharacterLive.AvatarSelectorComponent
 
   def mount(_params, _session, socket) do
-    avatars = GEMS.World.list_avatars()
     changeset = Characters.change_character(%Character{})
     faction_options = GEMS.World.Schema.Faction.options()
 
-    {:ok,
-     assign(socket,
-       form: to_form(changeset),
-       avatars: avatars,
-       faction_options: faction_options
-     )}
+    {:ok, assign(socket, form: to_form(changeset), faction_options: faction_options)}
   end
 
   def render(assigns) do
@@ -39,17 +34,19 @@ defmodule GEMSWeb.CharacterLive.New do
           required
         />
 
-        <fieldset class="flex flex-col">
-          <legend class="text-lg text-center font-semibold mb-4">Attributes</legend>
+        <section class="flex flex-col card bg-base-300 p-4">
+          <h2 class="text-lg text-center font-semibold mb-4">Attributes</h2>
           <.live_component form={f} id="attribute-allocator" module={AttributeAllocatorComponent} />
-        </fieldset>
+        </section>
 
-        <fieldset class="flex flex-col">
-          <legend class="text-lg text-center font-semibold mb-4">Avatars</legend>
-          <div class="grid grid-cols-4 md:grid-cols-8 gap-4">
-            <.inputs_for_avatar avatars={@avatars} field={f[:avatar_id]} />
-          </div>
-        </fieldset>
+        <section class="flex flex-col card bg-base-300 p-4">
+          <h2 class="text-lg text-center font-semibold mb-4">Avatars</h2>
+          <.live_component
+            field={f[:avatar_id]}
+            id="avatar-selector"
+            module={AvatarSelectorComponent}
+          />
+        </section>
         <div>
           <button type="submit" class="btn btn-primary">Create character</button>
         </div>
@@ -82,32 +79,10 @@ defmodule GEMSWeb.CharacterLive.New do
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
-  attr :field, Phoenix.HTML.FormField, required: true
-  attr :avatars, :list, required: true
-
-  defp inputs_for_avatar(assigns) do
-    ~H"""
-    <div :for={{avatar, idx} <- Enum.with_index(@avatars)}>
-      <label phx-click={JS.dispatch("change")} for={"#{@field.id}_#{idx}"}>
-        <UI.Media.avatar
-          avatar={avatar}
-          data-selected={@field.value == avatar.id}
-          class={[
-            "rounded-btn overflow-hidden border-2",
-            "border-transparent hover:border-primary cursor-pointer",
-            "data-[selected]:border-primary"
-          ]}
-        />
-        <input
-          type="radio"
-          name={@field.name}
-          id={"#{@field.id}_#{idx}"}
-          value={avatar.id}
-          checked={@field.value == avatar.id}
-          class="hidden"
-        />
-      </label>
-    </div>
-    """
+  def handle_info({AvatarSelectorComponent, :validate, avatar_id}, socket) do
+    %{form: %{data: character, params: params}} = socket.assigns
+    updated_params = Map.merge(params, %{"avatar_id" => avatar_id})
+    changeset = Characters.change_character(character, updated_params)
+    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 end

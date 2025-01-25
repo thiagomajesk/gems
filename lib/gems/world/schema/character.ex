@@ -83,17 +83,17 @@ defmodule GEMS.World.Schema.Character do
 
     case strength + dexterity + intelligence do
       total when total > max_points ->
-        GEMSWeb.ErrorHelpers.add_new_error(
+        GEMS.ErrorHelpers.add_new_error(
           changeset,
           :attributes,
-          "The maximum amount of points is #{max_points}, you have distributed #{total}"
+          "the maximum amount of points is #{max_points}, you have distributed #{total}"
         )
 
       total when total < max_points ->
-        GEMSWeb.ErrorHelpers.add_new_error(
+        GEMS.ErrorHelpers.add_new_error(
           changeset,
           :attributes,
-          "The minimum amount of points is #{max_points}, you have distributed #{total}"
+          "the minimum amount of points is #{max_points}, you have distributed #{total}"
         )
 
       ^max_points ->
