@@ -147,8 +147,8 @@ defmodule GEMSWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600">
-      <Icons.page name="circle-alert" class="mt-0.5 h-5 w-5 flex-none" />
+    <p :if={@inner_block} class="mt-3 flex items-center gap-2 text-sm leading-6 text-rose-600">
+      <Icons.page name="circle-alert" size={16} />
       {render_slot(@inner_block)}
     </p>
     """
