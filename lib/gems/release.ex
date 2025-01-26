@@ -5,24 +5,28 @@ defmodule GEMS.Release do
   """
   @app :gems
 
+  import GEMS.Environment
+
   def migrate do
-    load_app()
-
-    for repo <- repos() do
-      {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
-    end
+    :ok = load_app()
+    {:ok, _, _} = Ecto.Migrator.with_repo(GEMS.Repo, &Ecto.Migrator.run(&1, :up, all: true))
   end
 
-  def rollback(repo, version) do
-    load_app()
-    {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
+  def rollback(version) do
+    :ok = load_app()
+    {:ok, _, _} = Ecto.Migrator.with_repo(GEMS.Repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
-  defp repos do
-    Application.fetch_env!(@app, :ecto_repos)
+  def seeds do
+    :ok = load_app()
+
+    # Create default admin user
+    password = ensure_env!("GEMS_ADMIN_PASSWORD")
+    GEMS.Seeder.create_admin(password)
+
+    # Trigger the on seeds hook
+    GEMSLua.Manager.trigger_hook(:on_seeds)
   end
 
-  defp load_app do
-    Application.load(@app)
-  end
+  defp load_app, do: Application.load(@app)
 end
