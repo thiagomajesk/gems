@@ -36,7 +36,7 @@ defmodule GEMS.Environment do
       when access in [:read_write, :write] ->
         true
 
-      {:error, _reason} ->
+      _anything_else ->
         false
     end
   end
