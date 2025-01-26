@@ -20,7 +20,7 @@ defmodule GEMSWeb.FormHelpers do
     |> assign_fn.(:id, field.id)
     |> assign_fn.(:name, field.name)
     |> assign_fn.(:value, field.value)
-    |> assign_fn.(:errors, input_errors(field))
+    |> assign(:errors, input_errors(field))
   end
 
   @doc """
