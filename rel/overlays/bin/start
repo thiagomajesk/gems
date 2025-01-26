@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+echo "Running migrations..."
+exec /app/bin/migrate
+
+echo "Running seeds..."
+exec /app/bin/seeds
+
+echo "Starting server..."
+exec /app/bin/server

@@ -31,4 +31,6 @@ COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/gems ./
 
 USER nobody
 
-CMD ["/app/bin/server"]
+RUN chmod +x /app/bin/start
+
+CMD ["/app/bin/start"]
