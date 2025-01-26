@@ -16,7 +16,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   alias GEMS.Engine.Schema.State
 
   alias GEMSWeb.Admin.Database.CollectionLive.Forms
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent
 
   @collections %{
     "abilities" => %{
@@ -155,7 +155,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
     {:noreply, assign(socket, :form, to_form(changeset, action: :validate))}
   end
 
-  def handle_info({FileComponent, :validate, merge_params}, socket) do
+  def handle_info({FileExplorerComponent, :validate, merge_params}, socket) do
     %{module: module, form: %{data: entity, params: params}} = socket.assigns
     changeset = change_entity(module, entity, Map.merge(params, merge_params))
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}

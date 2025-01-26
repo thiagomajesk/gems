@@ -1,12 +1,31 @@
-defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
   use GEMSWeb, :live_component
 
   @impl true
-  def render(assigns) do
+  def render(%{mounted: false} = assigns) do
     ~H"""
-    <div>
-      <label class="input input-bordered flex items-center px-2">
-        <UI.Media.image width="25" class="rounded" src={GEMS.public_asset_path(@value)} />
+    <div class="alert alert-warning">
+      <UI.Icons.page name="alert-triangle" size={18} />
+      <div class="flex flex-col">
+        <strong>Invalid path! Failed to mount the file explorer</strong>
+        <div class="flex flex-col">
+          <p>Check if the path exists and that you have the correct permissions to access it</p>
+          <small class="font-medium">{@local_path}</small>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  @impl true
+  def render(%{mounted: true} = assigns) do
+    ~H"""
+    <label class="form-control w-full">
+      <div class="label font-medium">
+        <span class="label-text">{@label}</span>
+      </div>
+      <div class="input input-bordered flex items-center px-2">
+        <.miniature_preview src={GEMS.public_asset_path(@value)} />
         <input
           type="text"
           id={@id}
@@ -23,7 +42,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent do
         >
           <UI.Icons.page name="file-stack" /> Select
         </button>
-      </label>
+      </div>
       <.file_picker
         files={@files}
         open={@picker_open}
@@ -31,7 +50,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent do
         target={@myself}
         current={@value}
       />
-    </div>
+    </label>
     """
   end
 
@@ -44,7 +63,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent do
   def update(assigns, socket) do
     {:ok,
      socket
-     |> assign_required(assigns, [:id, :field, :label, :directory])
+     |> assign_required(assigns, [:id, :field, :label, :directory, :extensions])
      |> assign_input_state(assigns.field, force: true)
      |> assign_file_picker_state()}
   end
@@ -73,7 +92,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent do
       <div class="modal-box max-w-none">
         <header class="text-neutral flex items-center bg-base-200 rounded-btn py-2 px-4 mb-4">
           <UI.Icons.page name="folder-open" />
-          <span class="ml-2 select-text">{GEMS.local_asset_path(@directory)}</span>
+          <span class="ml-2 select-text">{GEMS.local_asset_path!(@directory)}</span>
           <button
             type="button"
             class="btn btn-sm text-sm ml-auto"
@@ -86,11 +105,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent do
         <ul class="flex flex-col flex-wrap gap-2">
           <li :for={file <- @files} class="flex items-center justify-between">
             <div class="flex items-center gap-2 w-2/3 ">
-              <UI.Media.image
-                width="25"
-                class="rounded"
-                src={GEMS.public_asset_path([@directory, file.name])}
-              />
+              <.miniature_preview src={GEMS.public_asset_path([@directory, file.name])} />
               <span
                 phx-target={@target}
                 phx-click="select-file"
@@ -113,18 +128,45 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent do
     """
   end
 
-  defp assign_file_picker_state(socket) do
-    directory = socket.assigns.directory
+  attr :src, :string, required: true
 
-    assign_new(socket, :files, fn ->
-      directory
-      |> list_local_files()
-      |> Enum.filter(&File.regular?(&1.path))
-    end)
+  defp miniature_preview(assigns) do
+    assigns = assign_new(assigns, :mime, &MIME.from_path(to_string(&1.src)))
+
+    ~H"""
+    <%= case @mime do %>
+      <% "application/octet-stream" -> %>
+        <UI.Icons.page name="file-question" size="25" class="text-neutral" />
+      <% _ -> %>
+        <UI.Media.image class="rounded size-[25px]" src={@src} />
+    <% end %>
+    """
   end
 
-  defp list_local_files(directory) do
-    local_path = GEMS.local_asset_path(directory)
+  defp assign_file_picker_state(socket) do
+    directory = socket.assigns.directory
+    extensions = socket.assigns.extensions
+
+    case GEMS.local_asset_path(directory) do
+      {:ok, local_path} ->
+        socket
+        |> assign(:mounted, true)
+        |> assign(:local_path, local_path)
+        |> assign_new(:files, fn ->
+          local_path
+          |> list_local_files()
+          |> filter_valid_files(extensions)
+        end)
+
+      {:error, local_path} ->
+        socket
+        |> assign(:files, [])
+        |> assign(:local_path, local_path)
+        |> assign(:mounted, false)
+    end
+  end
+
+  defp list_local_files(local_path) do
     local_files = File.ls!(local_path)
 
     Enum.map(local_files, fn file_name ->
@@ -135,6 +177,17 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent do
         name: Path.basename(file_name),
         stat: File.stat!(file_path, time: :posix)
       }
+    end)
+  end
+
+  defp filter_valid_files(files, extensions) do
+    files
+    |> Enum.filter(&File.regular?(&1.path))
+    |> Enum.filter(fn %{path: path} ->
+      path
+      |> Path.extname()
+      |> String.trim_leading(".")
+      |> then(&Kernel.in(&1, extensions))
     end)
   end
 
