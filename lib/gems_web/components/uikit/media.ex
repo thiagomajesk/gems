@@ -8,8 +8,12 @@ defmodule GEMSWeb.UIKIT.Media do
 
   def avatar(assigns) do
     assigns =
-      assign_new(assigns, :src, fn %{avatar: avatar} ->
-        GEMS.game_assets_endpoint(["avatars", to_string(avatar.icon)])
+      assign_new(assigns, :src, fn
+        %{avatar: %{icon: nil}} ->
+          nil
+
+        %{avatar: %{icon: icon}} ->
+          GEMS.public_asset_path(["avatars", icon])
       end)
 
     ~H"""

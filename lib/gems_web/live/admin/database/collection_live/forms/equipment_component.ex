@@ -4,6 +4,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EquipmentComponent do
   alias UI.Admin.Forms
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent
 
   def render(assigns) do
     ~H"""
@@ -27,8 +28,13 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EquipmentComponent do
               />
             </div>
             <Forms.field_input type="textarea" field={f[:description]} label="Description" />
-            <Forms.field_input type="text" field={f[:icon]} label="Icon" />
-
+            <.live_component
+              module={FileComponent}
+              id="equipment-icon"
+              directory="equipments"
+              field={f[:icon]}
+              label="Icon"
+            />
             <div class="grid grid-cols-2 gap-6">
               <Forms.field_input
                 type="select"

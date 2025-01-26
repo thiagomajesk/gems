@@ -51,8 +51,8 @@ defmodule GEMSWeb.CoreComponents do
 
   attr :id, :any
   attr :name, :any
-  attr :label, :string
   attr :value, :any
+  attr :label, :string, default: nil
 
   attr :type, :string,
     default: "text",

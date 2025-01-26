@@ -3,6 +3,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemComponent do
 
   alias UI.Admin.Forms
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.EffectsAssocInput
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent
 
   def render(assigns) do
     ~H"""
@@ -26,8 +27,13 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemComponent do
               />
             </div>
             <Forms.field_input type="textarea" field={f[:description]} label="Description" />
-            <Forms.field_input type="text" field={f[:icon]} label="Icon" />
-
+            <.live_component
+              module={FileComponent}
+              id="item-icon"
+              directory="items"
+              field={f[:icon]}
+              label="Icon"
+            />
             <div class="grid grid-cols-3 gap-6">
               <Forms.field_input
                 type="select"

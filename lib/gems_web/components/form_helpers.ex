@@ -13,12 +13,14 @@ defmodule GEMSWeb.FormHelpers do
   @doc """
   Assigns the basic state for a input using form field
   """
-  def assign_input_state(assigns, %Phoenix.HTML.FormField{} = field) do
+  def assign_input_state(assigns, %Phoenix.HTML.FormField{} = field, opts \\ []) do
+    assign_fn = if opts[:force], do: &assign/3, else: &assign_new(&1, &2, fn -> &3 end)
+
     assigns
-    |> assign_new(:id, fn -> field.id end)
-    |> assign_new(:name, fn -> field.name end)
-    |> assign_new(:value, fn -> field.value end)
-    |> assign(:errors, input_errors(field))
+    |> assign_fn.(:id, field.id)
+    |> assign_fn.(:name, field.name)
+    |> assign_fn.(:value, field.value)
+    |> assign_fn.(:errors, input_errors(field))
   end
 
   @doc """

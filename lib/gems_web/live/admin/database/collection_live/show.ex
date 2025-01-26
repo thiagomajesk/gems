@@ -16,6 +16,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   alias GEMS.Engine.Schema.State
 
   alias GEMSWeb.Admin.Database.CollectionLive.Forms
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileComponent
 
   @collections %{
     "abilities" => %{
@@ -152,6 +153,12 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
     code = Recase.to_snake("#{prefix}-#{name}")
     changeset = Ecto.Changeset.put_change(changeset, :code, code)
     {:noreply, assign(socket, :form, to_form(changeset, action: :validate))}
+  end
+
+  def handle_info({FileComponent, :validate, merge_params}, socket) do
+    %{module: module, form: %{data: entity, params: params}} = socket.assigns
+    changeset = change_entity(module, entity, Map.merge(params, merge_params))
+    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
   defp page_title(collection, :new), do: "New • #{title(collection)}"
