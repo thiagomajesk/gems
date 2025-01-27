@@ -28,5 +28,5 @@ defmodule GEMS.Release do
     GEMSLua.Manager.trigger_hook(:on_seeds)
   end
 
-  defp load_app, do: Application.load(@app)
+  defp load_app, do: Application.ensure_loaded(@app)
 end
