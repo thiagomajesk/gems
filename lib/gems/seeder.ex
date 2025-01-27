@@ -7,9 +7,9 @@ defmodule GEMS.Seeder do
 
   require Logger
 
-  def create_admin(password) do
+  def create_admin(email, password) do
     hash = Bcrypt.hash_pwd_salt(password)
-    user = %User{email: "mail@domain.com", hashed_password: hash}
+    user = %User{email: email, hashed_password: hash}
     Repo.insert!(user, on_conflict: :replace_all, conflict_target: :email)
   end
 

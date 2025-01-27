@@ -31,6 +31,11 @@ COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/gems ./
 
 USER nobody
 
+# Make sure that we have the right permissions
+# when running the app through docker compose
+RUN chmod +x /app/bin/migrate
+RUN chmod +x /app/bin/seeds
+RUN chmod +x /app/bin/server
 RUN chmod +x /app/bin/start
 
 CMD ["/app/bin/start"]
