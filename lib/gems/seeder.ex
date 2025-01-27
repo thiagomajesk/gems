@@ -10,7 +10,13 @@ defmodule GEMS.Seeder do
   def create_admin(email, password) do
     hash = Bcrypt.hash_pwd_salt(password)
     user = %User{email: email, hashed_password: hash}
-    Repo.insert!(user, on_conflict: :replace_all, conflict_target: :email)
+
+    # We avoid replacing the id because of existing user tokens.
+    # In fact, we want to allow updating only the email and password.
+    Repo.insert!(user,
+      on_conflict: {:replace, [:email, :hashed_password]},
+      conflict_target: :email
+    )
   end
 
   def create_entities(module, entries) do

@@ -5,6 +5,7 @@ alias GEMS.Seeder
 # It's recommended to use environment variables for sensitive data
 email = System.get_env("GEMS_ADMIN_EMAIL", "mail@domain.com")
 password = System.get_env("GEMS_ADMIN_PASSWORD", "123123123")
+
 Seeder.create_admin(email, password)
 
 # Trigger the seeds hook to execute the Lua code.
