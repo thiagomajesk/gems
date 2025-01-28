@@ -1,13 +1,15 @@
 #!/bin/sh
 set -euo pipefail
 
-echo "Running migrations..."
+# This is the default command when running GEMS from the container.
+# It bootstraps the app by running pending migrations, seeds and then starts the server.
+# If you don't want to run everything in this sequence, you can still override the default docker command.
+
+printf "\n🔧 Running migrations...\n"
 /app/bin/migrate
 
-if [ "${GEMS_SEEDS_AUTO-}" = true ]; then
-    echo "Running seeds..."
-    /app/bin/seeds
-fi
+printf "\n🌱 Seeding the project...\n"
+/app/bin/seeds
 
-echo "Starting server..."
+printf "\n🚀 Starting the server...\n"
 /app/bin/server
