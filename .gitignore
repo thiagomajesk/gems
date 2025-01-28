@@ -35,3 +35,5 @@ gems-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Ignores any local .env files
+.env.local.*

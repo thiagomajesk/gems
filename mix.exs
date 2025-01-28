@@ -57,7 +57,8 @@ defmodule GEMS.MixProject do
       {:cachex, "~> 4.0"},
       {:lua, "0.0.22"},
       {:timex, "~> 3.7"},
-      {:sizeable, "~> 1.0"}
+      {:sizeable, "~> 1.0"},
+      {:nvir, "~> 0.10"}
     ]
   end
 

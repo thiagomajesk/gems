@@ -30,8 +30,7 @@ defmodule GEMS do
   end
 
   def data_path do
-    Application.get_env(:gems, :game_path) ||
-      Application.app_dir(:gems, "priv/data")
+    Application.get_env(:gems, :game_path)
   end
 
   defp read_manifest(path) do
