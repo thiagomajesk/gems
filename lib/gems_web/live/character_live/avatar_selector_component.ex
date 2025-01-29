@@ -42,9 +42,11 @@ defmodule GEMSWeb.CharacterLive.AvatarSelectorComponent do
 
   @impl true
   def update(assigns, socket) do
+    assigns = fetch_assigns(assigns, [:id, :field])
+
     {:ok,
      socket
-     |> assign_required(assigns, [:id, :field])
+     |> assign(assigns)
      |> assign_input_state(assigns.field)}
   end
 

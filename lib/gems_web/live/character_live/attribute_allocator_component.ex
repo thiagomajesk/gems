@@ -85,9 +85,11 @@ defmodule GEMSWeb.CharacterLive.AttributeAllocatorComponent do
   end
 
   def update(assigns, socket) do
+    assigns = fetch_assigns(assigns, [:id, :form])
+
     {:ok,
      socket
-     |> assign_required(assigns, [:id, :form])
+     |> assign(assigns)
      |> assign_attribute_errors()}
   end
 

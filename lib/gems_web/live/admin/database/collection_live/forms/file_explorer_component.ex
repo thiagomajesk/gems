@@ -61,9 +61,18 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
 
   @impl true
   def update(assigns, socket) do
+    assigns =
+      fetch_assigns(assigns, [
+        :id,
+        :field,
+        :label,
+        :directory,
+        :extensions
+      ])
+
     {:ok,
      socket
-     |> assign_required(assigns, [:id, :field, :label, :directory, :extensions])
+     |> assign(assigns)
      |> assign_input_state(assigns.field, force: true)
      |> assign_file_picker_state()}
   end
