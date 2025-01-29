@@ -27,8 +27,7 @@ defmodule GEMSWeb.Endpoint do
 
   plug Plug.Static,
     at: "/game",
-    from: GEMS.data_path(),
-    gzip: false,
+    from: {GEMS, :data_path, []},
     only: ~w(assets)
 
   # Code reloading can be explicitly enabled under the
