@@ -13,7 +13,7 @@ defmodule GEMSWeb.UIKIT.Media do
           nil
 
         %{avatar: %{icon: icon}} ->
-          GEMS.public_asset_path(["avatars", icon])
+          GEMS.public_asset_path([icon])
       end)
 
     ~H"""
