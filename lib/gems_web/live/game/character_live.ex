@@ -2,6 +2,44 @@ defmodule GEMSWeb.Game.CharacterLive do
   use GEMSWeb, :live_view
 
   @impl true
+  def render(assigns) do
+    ~H"""
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="w-full md:w-1/3 flex flex-col space-y-4">
+        <.bio_section character={@selected_character} />
+        <.attributes_section character={@selected_character} />
+        <.guild_section :if={@guild} guild={@guild} />
+      </div>
+      <div class="w-full md:w-2/3 flex flex-col space-y-4">
+        <div role="tablist" class="tabs tabs-bordered">
+          <.link
+            patch={~p"/game/character?showing=inventory"}
+            role="tab"
+            class={["tab", @action == :inventory && "tab-active"]}
+          >
+            Inventory
+          </.link>
+          <.link
+            patch={~p"/game/character?showing=professions"}
+            role="tab"
+            class={["tab", @action == :professions && "tab-active"]}
+          >
+            Professions
+          </.link>
+        </div>
+        <div :if={@action == :inventory} class="flex flex-wrap gap-4">
+          <.apparel_section />
+          <.satchel_section />
+        </div>
+        <div :if={@action == :professions} class="flex flex-wrap gap-4">
+          <.professions_section character_professions={@character_professions} />
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  @impl true
   def mount(_params, _session, socket) do
     character = socket.assigns.selected_character
 
@@ -12,21 +50,14 @@ defmodule GEMSWeb.Game.CharacterLive do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div class="flex flex-col md:flex-row gap-4">
-      <div class="w-full md:w-1/3 flex flex-col space-y-4">
-        <.bio_section character={@selected_character} />
-        <.attributes_section character={@selected_character} />
-        <.guild_section :if={@guild} guild={@guild} />
-      </div>
-      <div class="w-full md:w-2/3 flex flex-col space-y-4">
-        <.professions_section character_professions={@character_professions} />
-        <.apparel_section />
-        <.satchel_section />
-      </div>
-    </div>
-    """
+  def handle_params(params, _uri, socket) do
+    case Map.get(params, "showing", "inventory") do
+      "inventory" ->
+        {:noreply, assign(socket, :action, :inventory)}
+
+      "professions" ->
+        {:noreply, assign(socket, :action, :professions)}
+    end
   end
 
   attr :character, :any, required: true
@@ -162,7 +193,7 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp professions_section(assigns) do
     ~H"""
-    <section>
+    <section class="grow">
       <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Professions</h1>
       <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
         <.profession_card
@@ -179,7 +210,7 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp apparel_section(assigns) do
     ~H"""
-    <section>
+    <section class="grow">
       <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Apparel</h1>
       <div class="card bg-base-200 p-4">
         <div class="grid grid-cols-3 gap-2">
@@ -245,7 +276,7 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp satchel_section(assigns) do
     ~H"""
-    <section>
+    <section class="grow">
       <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Satchel</h1>
       <div class="card bg-base-200 p-4">
         <div class="grid grid-cols-3 gap-2">
