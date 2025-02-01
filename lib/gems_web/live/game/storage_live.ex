@@ -6,26 +6,8 @@ defmodule GEMSWeb.Game.StorageLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <section>
-      <header class="mb-4">
-        <div role="tablist" class="tabs tabs-bordered">
-          <.link
-            patch={~p"/game/storage?showing=items"}
-            role="tab"
-            class={["tab", @action == :items && "tab-active"]}
-          >
-            Items
-          </.link>
-          <.link
-            patch={~p"/game/storage?showing=equipments"}
-            role="tab"
-            class={["tab", @action == :equipments && "tab-active"]}
-          >
-            Equipments
-          </.link>
-        </div>
-      </header>
-      <div :if={@action == :items} class="flex flex-wrap gap-4">
+    <UI.Navigation.tabs current_path={~p"/game/storage"} current_action={@action}>
+      <:tabs action={:items} label="Items">
         <.async_result :let={character_items} assign={@character_items}>
           <:loading>Loading items...</:loading>
           <.item_card
@@ -34,8 +16,8 @@ defmodule GEMSWeb.Game.StorageLive do
             amount={character_item.amount}
           />
         </.async_result>
-      </div>
-      <div :if={@action == :equipments} class="flex flex-wrap gap-4">
+      </:tabs>
+      <:tabs action={:equipments} label="Equipments">
         <.async_result :let={character_equipments} assign={@character_equipments}>
           <:loading>Loading equipments...</:loading>
           <.equipment_card
@@ -45,8 +27,8 @@ defmodule GEMSWeb.Game.StorageLive do
             experience={character_equipment.experience}
           />
         </.async_result>
-      </div>
-    </section>
+      </:tabs>
+    </UI.Navigation.tabs>
     """
   end
 

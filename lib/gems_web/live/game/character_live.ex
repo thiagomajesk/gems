@@ -11,29 +11,15 @@ defmodule GEMSWeb.Game.CharacterLive do
         <.guild_section :if={@guild} guild={@guild} />
       </div>
       <div class="w-full md:w-2/3 flex flex-col space-y-4">
-        <div role="tablist" class="tabs tabs-bordered">
-          <.link
-            patch={~p"/game/character?showing=inventory"}
-            role="tab"
-            class={["tab", @action == :inventory && "tab-active"]}
-          >
-            Inventory
-          </.link>
-          <.link
-            patch={~p"/game/character?showing=professions"}
-            role="tab"
-            class={["tab", @action == :professions && "tab-active"]}
-          >
-            Professions
-          </.link>
-        </div>
-        <div :if={@action == :inventory} class="flex flex-wrap gap-4">
-          <.apparel_section />
-          <.satchel_section />
-        </div>
-        <div :if={@action == :professions} class="flex flex-wrap gap-4">
-          <.professions_section character_professions={@character_professions} />
-        </div>
+        <UI.Navigation.tabs current_path={~p"/game/character"} current_action={@action}>
+          <:tabs action={:inventory} label="Inventory">
+            <.apparel_section />
+            <.satchel_section />
+          </:tabs>
+          <:tabs action={:professions} label="Professions">
+            <.professions_section character_professions={@character_professions} />
+          </:tabs>
+        </UI.Navigation.tabs>
       </div>
     </div>
     """
