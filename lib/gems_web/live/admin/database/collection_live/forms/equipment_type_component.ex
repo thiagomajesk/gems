@@ -13,7 +13,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EquipmentTypeComponent do
             field={f[:name]}
             label="Name"
             phx-keyup={@live_action == :new && "code-hint"}
-            phx-value-prefix="equipment-type"
           />
           <Forms.field_input
             type="text"

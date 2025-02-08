@@ -147,10 +147,10 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
     {:noreply, save_entity(socket, action, params)}
   end
 
-  def handle_event("code-hint", %{"prefix" => prefix, "value" => name}, socket) do
+  def handle_event("code-hint", %{"value" => name}, socket) do
     %{form: %{source: changeset}} = socket.assigns
 
-    code = Recase.to_snake("#{prefix}-#{name}")
+    code = Recase.to_snake(name)
     changeset = Ecto.Changeset.put_change(changeset, :code, code)
     {:noreply, assign(socket, :form, to_form(changeset, action: :validate))}
   end

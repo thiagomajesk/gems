@@ -17,7 +17,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.CreatureComponent do
                 field={f[:name]}
                 label="Name"
                 phx-keyup={@live_action == :new && "code-hint"}
-                phx-value-prefix={@live_action == :new && "creature"}
               />
               <Forms.field_input
                 type="text"

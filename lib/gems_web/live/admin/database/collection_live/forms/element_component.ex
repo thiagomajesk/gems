@@ -13,7 +13,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ElementComponent do
             field={f[:name]}
             label="Name"
             phx-keyup={@live_action == :new && "code-hint"}
-            phx-value-prefix={@live_action == :new && "element"}
           />
           <Forms.field_input
             type="text"
