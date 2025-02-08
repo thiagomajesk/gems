@@ -56,6 +56,7 @@ defmodule GEMSLua.Manager do
       opts
       |> Lua.new()
       |> Lua.load_api(GEMSLua.API)
+      |> Lua.load_api(GEMSLua.API.Hooks)
       |> Lua.load_api(GEMSLua.API.Seeds)
       |> Lua.set_lua_paths(lua_paths)
 
