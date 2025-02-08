@@ -22,41 +22,41 @@ defmodule GEMSLua.API.Seeds do
 
   require Logger
 
-  deflua(create_abilities(table), do: create_entities(Ability, table))
-  deflua(create_ability_types(table), do: create_entities(AbilityType, table))
-  deflua(create_activities(table), do: create_entities(Activity, table))
-  deflua(create_avatars(table), do: create_entities(Avatar, table))
-  deflua(create_biomes(table), do: create_entities(Biome, table))
-  deflua(create_creature_types(table), do: create_entities(CreatureType, table))
-  deflua(create_creatures(table), do: create_entities(Creature, table))
-  deflua(create_elements(table), do: create_entities(Element, table))
-  deflua(create_equipment_types(table), do: create_entities(EquipmentType, table))
-  deflua(create_equipments(table), do: create_entities(Equipment, table))
-  deflua(create_factions(table), do: create_entities(Faction, table))
-  deflua(create_item_types(table), do: create_entities(ItemType, table))
-  deflua(create_items(table), do: create_entities(Item, table))
-  deflua(create_professions(table), do: create_entities(Profession, table))
-  deflua(create_states(table), do: create_entities(State, table))
-  deflua(create_zones(table), do: create_entities(Zone, table))
+  deflua(insert_abilities(table), do: insert_entities(Ability, table))
+  deflua(insert_ability_types(table), do: insert_entities(AbilityType, table))
+  deflua(insert_activities(table), do: insert_entities(Activity, table))
+  deflua(insert_avatars(table), do: insert_entities(Avatar, table))
+  deflua(insert_biomes(table), do: insert_entities(Biome, table))
+  deflua(insert_creature_types(table), do: insert_entities(CreatureType, table))
+  deflua(insert_creatures(table), do: insert_entities(Creature, table))
+  deflua(insert_elements(table), do: insert_entities(Element, table))
+  deflua(insert_equipment_types(table), do: insert_entities(EquipmentType, table))
+  deflua(insert_equipments(table), do: insert_entities(Equipment, table))
+  deflua(insert_factions(table), do: insert_entities(Faction, table))
+  deflua(insert_item_types(table), do: insert_entities(ItemType, table))
+  deflua(insert_items(table), do: insert_entities(Item, table))
+  deflua(insert_professions(table), do: insert_entities(Profession, table))
+  deflua(insert_states(table), do: insert_entities(State, table))
+  deflua(insert_zones(table), do: insert_entities(Zone, table))
 
-  defp create_entities(module, table) when is_list(table) do
-    entities = table_to_entities(table)
+  defp insert_entities(module, table) when is_list(table) do
+    entries = table_to_entries(table)
 
-    case Seeder.create_entities(module, entities) do
+    case Seeder.insert_entities(module, entries) do
       {:ok, result} -> result
       {:error, reason} -> raise inspect(reason)
     end
   end
 
-  defp create_entities(module, invalid),
+  defp insert_entities(module, invalid),
     do: raise("Expected a table for #{inspect(module)}, got: #{inspect(invalid)}")
 
-  defp table_to_entities(table) do
-    Logger.debug("table_to_entities: #{inspect(table)}")
+  # The elixir type that we receive for tables is a kv list, so we need to convert it to a map.
+  # Besides that Lua tables are do not preserve order, so we need to rely on additional metadata.
+  # For that, we rely on a special `__order` key so we can issue inserts in the proper sequence.
+  defp table_to_entries(table) do
+    Logger.debug("Casting table: #{inspect(table)}")
 
-    # The elixir type that we receive for tables is a kv list, so we need to convert it to a map.
-    # Besides that Lua tables are do not preserve order, so we need to rely on additional metadata.
-    # For that, we rely on a special `__order` key so we can issue inserts in the proper sequence.
     table
     |> Enum.map(fn {_key, table} -> Lua.Table.deep_cast(table) end)
     |> Enum.sort_by(&Map.get(&1, "__order"))
