@@ -58,7 +58,16 @@ defmodule GEMSLua.API.Seeds do
     Logger.debug("Casting table: #{inspect(table)}")
 
     table
-    |> Enum.map(fn {_key, table} -> Lua.Table.deep_cast(table) end)
+    |> Enum.map(&cast_lua_table/1)
     |> Enum.sort_by(&Map.get(&1, "__order"))
   end
+
+  defp cast_lua_table({key, table}) when is_binary(key) do
+    table
+    |> Lua.Table.deep_cast()
+    |> Map.put_new("code", key)
+  end
+
+  defp cast_lua_table(other),
+    do: raise("Expected a table with named keys, got: #{inspect(other)}")
 end
