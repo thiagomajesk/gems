@@ -4,6 +4,7 @@ defmodule GEMSWeb.UIKIT.Media do
   import GEMS.Macros
 
   attr :avatar, :map, required: true
+  attr :class, :string, default: nil
   attr :rest, :global
 
   def avatar(assigns) do
@@ -17,7 +18,36 @@ defmodule GEMSWeb.UIKIT.Media do
       end)
 
     ~H"""
-    <.image src={@src} {@rest} placeholder={%{width: "100", height: "100"}} />
+    <.image
+      src={@src}
+      {@rest}
+      placeholder={%{width: "100", height: "100"}}
+      class={["w-full h-full object-cover", @class]}
+    />
+    """
+  end
+
+  attr :origin, :map, required: true
+  attr :class, :string, default: nil
+  attr :rest, :global
+
+  def origin(assigns) do
+    assigns =
+      assign_new(assigns, :src, fn
+        %{origin: %{icon: nil}} ->
+          nil
+
+        %{origin: %{icon: icon}} ->
+          GEMS.public_asset_path([icon])
+      end)
+
+    ~H"""
+    <.image
+      src={@src}
+      {@rest}
+      placeholder={%{width: "100", height: "100"}}
+      class={["w-full h-full object-cover", @class]}
+    />
     """
   end
 

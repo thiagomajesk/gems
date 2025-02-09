@@ -19,10 +19,10 @@ defmodule GEMSWeb.CharacterLive.Index do
           <UI.Icons.page name="plus-circle" /> Create character
         </a>
       </header>
-      <div class="grid grid-cols-3 gap-4 mt-8">
-        <div :for={character <- @characters} class="card bg-base-content/5 p-4 shadow">
-          <div class="flex justify-between gap-4">
-            <UI.Media.avatar avatar={character.avatar} class="size-24 rounded-lg" />
+      <div class="grid grid-cols-4 md:grid-cols-6 xl:grid-cols-8 gap-4 mt-8">
+        <div :for={character <- @characters} class="card bg-base-content/5 p-2 shadow">
+          <div class="flex flex-col justify-between gap-4">
+            <UI.Media.avatar avatar={character.avatar} class="rounded-lg" />
             <div class="flex flex-col items-center grow space-y-2">
               <span class="text-center font-medium">{character.name}</span>
               <span :if={character.title} class="text-xs text-center">{character.title}</span>

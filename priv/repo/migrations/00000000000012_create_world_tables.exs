@@ -39,10 +39,28 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :code, :string, null: false
       add :icon, :string, null: true
       add :description, :string, null: true
-      add :duration, :integer, null: false
+      add :duration, :integer, null: true
     end
 
     create unique_index(:blessings, :code)
+
+    ################################################################################
+    # Origins
+    ################################################################################
+
+    create table(:origins) do
+      add :name, :string, null: false
+      add :code, :string, null: false
+      add :description, :string, null: true
+      add :icon, :string, null: true
+      add :strength, :integer, null: false
+      add :dexterity, :integer, null: false
+      add :intelligence, :integer, null: false
+      add :blessing_id, references(:blessings), null: false
+    end
+
+    create unique_index(:origins, :name)
+    create unique_index(:origins, :code)
 
     ################################################################################
     # Pets

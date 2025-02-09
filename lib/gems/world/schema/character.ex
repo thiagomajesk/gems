@@ -3,11 +3,9 @@ defmodule GEMS.World.Schema.Character do
 
   @required_fields [
     :name,
+    :origin_id,
     :avatar_id,
-    :faction_id,
-    :strength,
-    :dexterity,
-    :intelligence
+    :faction_id
   ]
 
   @optional_fields [:title, :bio]
@@ -17,9 +15,9 @@ defmodule GEMS.World.Schema.Character do
     field :title, :string
     field :bio, :string
 
-    field :strength, :integer, default: 0
-    field :dexterity, :integer, default: 0
-    field :intelligence, :integer, default: 0
+    field :strength, :integer, virtual: true
+    field :dexterity, :integer, virtual: true
+    field :intelligence, :integer, virtual: true
 
     # STR
     field :armor_rating, :integer, virtual: true
@@ -42,6 +40,7 @@ defmodule GEMS.World.Schema.Character do
     field :magic_damage, :integer, virtual: true
     field :ability_power, :integer, virtual: true
 
+    belongs_to :origin, GEMS.World.Schema.Origin
     belongs_to :faction, GEMS.World.Schema.Faction
     belongs_to :avatar, GEMS.World.Schema.Avatar
     belongs_to :user, GEMS.Accounts.Schema.User
@@ -70,34 +69,5 @@ defmodule GEMS.World.Schema.Character do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> unique_constraint(:name)
-    |> validate_attribute_values()
-  end
-
-  @doc false
-  def validate_attribute_values(changeset) do
-    max_points = 100
-
-    strength = Ecto.Changeset.get_change(changeset, :strength, 0)
-    dexterity = Ecto.Changeset.get_change(changeset, :dexterity, 0)
-    intelligence = Ecto.Changeset.get_change(changeset, :intelligence, 0)
-
-    case strength + dexterity + intelligence do
-      total when total > max_points ->
-        GEMS.ErrorHelpers.add_new_error(
-          changeset,
-          :attributes,
-          "the maximum amount of points is #{max_points}, you have distributed #{total}"
-        )
-
-      total when total < max_points ->
-        GEMS.ErrorHelpers.add_new_error(
-          changeset,
-          :attributes,
-          "the minimum amount of points is #{max_points}, you have distributed #{total}"
-        )
-
-      ^max_points ->
-        changeset
-    end
   end
 end

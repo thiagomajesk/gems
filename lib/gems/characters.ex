@@ -56,8 +56,10 @@ defmodule GEMS.Characters do
   @doc """
   Gets a single character.
   """
-  def get_character(%User{id: user_id}, id),
-    do: Repo.get_by(Character, id: id, user_id: user_id)
+  def get_character(%User{id: user_id}, id) do
+    character = Repo.get_by(Character, id: id, user_id: user_id)
+    with %Character{} = character <- character, do: load_character(character)
+  end
 
   @doc """
   Gets the guild of a character.
@@ -118,5 +120,38 @@ defmodule GEMS.Characters do
   """
   def change_character(%Character{} = character, attrs \\ %{}) do
     Character.changeset(character, attrs)
+  end
+
+  defp load_character(character) do
+    character
+    |> preload_character()
+    |> hydrate_virtuals()
+  end
+
+  defp preload_character(character) do
+    Repo.preload(character, [
+      :origin,
+      :faction,
+      :avatar
+    ])
+  end
+
+  defp hydrate_virtuals(character) do
+    character
+    |> Map.put(:strength, calculate_strength(character))
+    |> Map.put(:dexterity, calculate_dexterity(character))
+    |> Map.put(:intelligence, calculate_intelligence(character))
+  end
+
+  defp calculate_strength(character) do
+    character.origin.strength
+  end
+
+  defp calculate_dexterity(character) do
+    character.origin.dexterity
+  end
+
+  defp calculate_intelligence(character) do
+    character.origin.intelligence
   end
 end

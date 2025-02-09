@@ -1,6 +1,7 @@
 defmodule GEMS.World do
   alias GEMS.Repo
   alias GEMS.World.Schema.Avatar
+  alias GEMS.World.Schema.Origin
   alias GEMS.World.Schema.Character
   alias GEMS.World.Schema.Activity
 
@@ -8,6 +9,10 @@ defmodule GEMS.World do
 
   def list_avatars() do
     Repo.all(Avatar)
+  end
+
+  def list_origins() do
+    Repo.all(Origin)
   end
 
   def get_starting_zone() do

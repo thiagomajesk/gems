@@ -12,8 +12,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   alias GEMS.Engine.Schema.EquipmentType
   alias GEMS.Engine.Schema.Item
   alias GEMS.Engine.Schema.ItemType
-  alias GEMS.World.Schema.Profession
   alias GEMS.Engine.Schema.State
+  alias GEMS.World.Schema.Origin
+  alias GEMS.World.Schema.Profession
 
   alias GEMSWeb.Admin.Database.CollectionLive.Forms
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent
@@ -50,6 +51,10 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
     "equipments" => %{
       module: Equipment,
       component: Forms.EquipmentComponent
+    },
+    "origins" => %{
+      module: Origin,
+      component: Forms.OriginComponent
     },
     "items" => %{
       module: Item,

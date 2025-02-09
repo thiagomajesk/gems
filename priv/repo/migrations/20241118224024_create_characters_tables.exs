@@ -15,12 +15,9 @@ defmodule GEMS.Repo.Migrations.CreateCharactersTables do
       add :experience, :integer, null: false, default: 0
       add :souls, :integer, null: false, default: 1
 
-      add :strength, :integer, null: false
-      add :dexterity, :integer, null: false
-      add :intelligence, :integer, null: false
-
       add :avatar_id, references(:avatars), null: false
       add :faction_id, references(:factions), null: false
+      add :origin_id, references(:origins), null: false
       add :zone_id, references(:zones), null: false
       add :user_id, references(:users), null: false
 

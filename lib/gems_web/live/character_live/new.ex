@@ -5,13 +5,7 @@ defmodule GEMSWeb.CharacterLive.New do
   alias GEMS.World.Schema.Character
   alias GEMSWeb.CharacterLive.AttributeAllocatorComponent
   alias GEMSWeb.CharacterLive.AvatarSelectorComponent
-
-  def mount(_params, _session, socket) do
-    changeset = Characters.change_character(%Character{})
-    faction_options = GEMS.World.Schema.Faction.options()
-
-    {:ok, assign(socket, form: to_form(changeset), faction_options: faction_options)}
-  end
+  alias GEMSWeb.CharacterLive.PreviewSelectorComponent
 
   def render(assigns) do
     ~H"""
@@ -35,8 +29,18 @@ defmodule GEMSWeb.CharacterLive.New do
         />
 
         <section class="flex flex-col card bg-base-300 p-4">
-          <h2 class="text-lg text-center font-semibold mb-4">Attributes</h2>
-          <.live_component form={f} id="attribute-allocator" module={AttributeAllocatorComponent} />
+          <h2 class="text-lg text-center font-semibold mb-4">Origins</h2>
+          <.live_component
+            field={f[:origin_id]}
+            title="Choose your character's origin"
+            subtitle="This will determine your character's starting attributes"
+            id="origin-selector"
+            module={PreviewSelectorComponent}
+          >
+            <:item :for={origin <- @origins} id={origin.id}>
+              <UI.Media.origin origin={origin} />
+            </:item>
+          </.live_component>
         </section>
 
         <section class="flex flex-col card bg-base-300 p-4">
@@ -44,8 +48,14 @@ defmodule GEMSWeb.CharacterLive.New do
           <.live_component
             field={f[:avatar_id]}
             id="avatar-selector"
-            module={AvatarSelectorComponent}
-          />
+            title="Choose your character's avatar"
+            subtitle="This will determine your character's in-game appearance"
+            module={PreviewSelectorComponent}
+          >
+            <:item :for={avatar <- @avatars} id={avatar.id}>
+              <UI.Media.avatar avatar={avatar} />
+            </:item>
+          </.live_component>
         </section>
         <div>
           <button type="submit" class="btn btn-primary">Create character</button>
@@ -53,6 +63,22 @@ defmodule GEMSWeb.CharacterLive.New do
       </.form>
     </section>
     """
+  end
+
+  def mount(_params, _session, socket) do
+    changeset = Characters.change_character(%Character{})
+    faction_options = GEMS.World.Schema.Faction.options()
+
+    origins = GEMS.World.list_origins()
+    avatars = GEMS.World.list_avatars()
+
+    {:ok,
+     assign(socket,
+       form: to_form(changeset),
+       faction_options: faction_options,
+       avatars: avatars,
+       origins: origins
+     )}
   end
 
   def handle_event("validate", %{"character" => params}, socket) do
@@ -73,15 +99,9 @@ defmodule GEMSWeb.CharacterLive.New do
     end
   end
 
-  def handle_info({AttributeAllocatorComponent, :validate, attributes}, socket) do
+  def handle_info({PreviewSelectorComponent, :validate, merge_params}, socket) do
     %{form: %{data: character, params: params}} = socket.assigns
-    changeset = Characters.change_character(character, Map.merge(params, attributes))
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
-  end
-
-  def handle_info({AvatarSelectorComponent, :validate, avatar_id}, socket) do
-    %{form: %{data: character, params: params}} = socket.assigns
-    updated_params = Map.merge(params, %{"avatar_id" => avatar_id})
+    updated_params = Map.merge(params, Map.merge(params, merge_params))
     changeset = Characters.change_character(character, updated_params)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end

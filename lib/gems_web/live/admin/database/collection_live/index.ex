@@ -14,8 +14,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
   alias GEMS.Engine.Schema.EquipmentType
   alias GEMS.Engine.Schema.Item
   alias GEMS.Engine.Schema.ItemType
-  alias GEMS.World.Schema.Profession
   alias GEMS.Engine.Schema.State
+  alias GEMS.World.Schema.Origin
+  alias GEMS.World.Schema.Profession
 
   @collections %{
     "abilities" => %{
@@ -104,6 +105,15 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
     },
     "item-types" => %{
       module: ItemType,
+      preloads: [],
+      columns: [
+        %{field: :id, type: :id, label: "ID"},
+        %{field: :name, type: :text, label: "Name"},
+        %{field: :code, type: :text, label: "Code"}
+      ]
+    },
+    "origins" => %{
+      module: Origin,
       preloads: [],
       columns: [
         %{field: :id, type: :id, label: "ID"},

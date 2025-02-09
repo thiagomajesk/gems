@@ -1,4 +1,4 @@
-defmodule GEMSWeb.CharacterLive.AvatarSelectorComponent do
+defmodule GEMSWeb.CharacterLive.PreviewSelectorComponent do
   use GEMSWeb, :live_component
 
   @impl true
@@ -9,26 +9,27 @@ defmodule GEMSWeb.CharacterLive.AvatarSelectorComponent do
         <UI.Icons.page :if={@errors == []} name="circle-alert" class="text-info" size={18} />
         <UI.Icons.page :if={@errors != []} name="circle-alert" class="text-error" size={18} />
         <div class="flex flex-col">
-          <strong>Choose your avatar (you can change later)</strong>
-          <p :if={@errors == []}>Your avatar is how people will recognize you in the game</p>
+          <span class="font-medium">{@title}</span>
+          <span :if={@errors == []} class="text-sm text-base-content/30">{@subtitle}</span>
           <span :if={@errors != []} class="text-error">{@errors}</span>
         </div>
       </div>
-      <div class="grid grid-cols-4 md:grid-cols-8 gap-4">
+      <div class="grid grid-cols-4 md:grid-cols-6 xl:grid-cols-8 gap-4">
         <.input type="hidden" field={@field} value={@value || @selected} />
-        <UI.Media.avatar
-          :for={avatar <- @avatars}
-          avatar={avatar}
+        <div
+          :for={item <- @item}
           phx-click="select"
           phx-target={@myself}
-          phx-value-id={avatar.id}
-          data-selected={@selected == avatar.id}
+          phx-value-id={Map.fetch!(item, :id)}
+          data-selected={@selected == Map.fetch!(item, :id)}
           class={[
-            "rounded-btn overflow-hidden border-2",
+            "rounded-lg overflow-hidden border-2",
             "border-transparent hover:border-primary cursor-pointer",
             "data-[selected]:border-primary"
           ]}
-        />
+        >
+          {render_slot(item)}
+        </div>
       </div>
     </div>
     """
@@ -36,13 +37,12 @@ defmodule GEMSWeb.CharacterLive.AvatarSelectorComponent do
 
   @impl true
   def mount(socket) do
-    avatars = GEMS.World.list_avatars()
-    {:ok, assign(socket, avatars: avatars, selected: nil)}
+    {:ok, assign(socket, items: [], selected: nil)}
   end
 
   @impl true
   def update(assigns, socket) do
-    assigns = fetch_assigns(assigns, [:id, :field])
+    assigns = fetch_assigns(assigns, [:id, :field, :title, :subtitle, :item])
 
     {:ok,
      socket
@@ -51,9 +51,9 @@ defmodule GEMSWeb.CharacterLive.AvatarSelectorComponent do
   end
 
   @impl true
-  def handle_event("select", %{"id" => avatar_id}, socket) do
-    send(self(), {__MODULE__, :validate, avatar_id})
-
-    {:noreply, assign(socket, selected: avatar_id)}
+  def handle_event("select", %{"id" => selected}, socket) do
+    field_name = to_string(get_in(socket.assigns.field.field))
+    send(self(), {__MODULE__, :validate, %{field_name => selected}})
+    {:noreply, assign(socket, selected: selected)}
   end
 end
