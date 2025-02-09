@@ -224,6 +224,12 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
     """
   end
 
+  defp render_table_column(%{field: :code} = assigns) do
+    ~H"""
+    <span class="rounded px-1 bg-base-content/10 shadow">{@value}</span>
+    """
+  end
+
   defp render_table_column(%{type: :id} = assigns) do
     ~H"""
     <.link
