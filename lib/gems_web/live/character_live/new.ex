@@ -3,8 +3,6 @@ defmodule GEMSWeb.CharacterLive.New do
 
   alias GEMS.Characters
   alias GEMS.World.Schema.Character
-  alias GEMSWeb.CharacterLive.AttributeAllocatorComponent
-  alias GEMSWeb.CharacterLive.AvatarSelectorComponent
   alias GEMSWeb.CharacterLive.PreviewSelectorComponent
 
   def render(assigns) do
@@ -37,6 +35,7 @@ defmodule GEMSWeb.CharacterLive.New do
             id="origin-selector"
             module={PreviewSelectorComponent}
           >
+            <:preview :let={origin}>{inspect(origin)}</:preview>
             <:item :for={origin <- @origins} id={origin.id}>
               <UI.Media.origin origin={origin} />
             </:item>
@@ -52,6 +51,7 @@ defmodule GEMSWeb.CharacterLive.New do
             subtitle="This will determine your character's in-game appearance"
             module={PreviewSelectorComponent}
           >
+            <:preview :let={avatar}>{inspect(avatar)}</:preview>
             <:item :for={avatar <- @avatars} id={avatar.id}>
               <UI.Media.avatar avatar={avatar} />
             </:item>
