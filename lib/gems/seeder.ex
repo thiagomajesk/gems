@@ -33,10 +33,11 @@ defmodule GEMS.Seeder do
   # into separate inserts and then handling stale associations individually. The only thing we should be
   # aware of is that the replaceable assocs need to be loaded and have `:on_replace` set to `:delete`.
   defp insert_or_update_entity(module, entry) do
+    entry_id = Map.fetch!(entry, "id")
     preloads = module.__collection__(:default_preloads)
 
     module
-    |> find_or_build(entry["id"])
+    |> find_or_build(entry_id)
     |> module.seed_changeset(entry)
     |> Repo.preload(preloads)
     |> Repo.insert_or_update!()
