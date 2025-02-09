@@ -18,6 +18,7 @@ defmodule GEMSWeb.CharacterLive.New do
         class="card bg-base-200 p-4 space-y-4 shadow"
       >
         <.input type="text" field={f[:name]} label="Name" required />
+        <.input type="select" field={f[:origin_id]} label="Origin" options={@origin_options} required />
         <.input
           type="select"
           field={f[:faction_id]}
@@ -25,22 +26,6 @@ defmodule GEMSWeb.CharacterLive.New do
           options={@faction_options}
           required
         />
-
-        <section class="flex flex-col card bg-base-300 p-4">
-          <h2 class="text-lg text-center font-semibold mb-4">Origins</h2>
-          <.live_component
-            field={f[:origin_id]}
-            title="Choose your character's origin"
-            subtitle="This will determine your character's starting attributes"
-            id="origin-selector"
-            module={PreviewSelectorComponent}
-          >
-            <:preview :let={origin}>{inspect(origin)}</:preview>
-            <:item :for={origin <- @origins} id={origin.id}>
-              <UI.Media.origin origin={origin} />
-            </:item>
-          </.live_component>
-        </section>
 
         <section class="flex flex-col card bg-base-300 p-4">
           <h2 class="text-lg text-center font-semibold mb-4">Avatars</h2>
@@ -67,17 +52,17 @@ defmodule GEMSWeb.CharacterLive.New do
 
   def mount(_params, _session, socket) do
     changeset = Characters.change_character(%Character{})
+    origin_options = GEMS.World.Schema.Origin.options()
     faction_options = GEMS.World.Schema.Faction.options()
 
-    origins = GEMS.World.list_origins()
     avatars = GEMS.World.list_avatars()
 
     {:ok,
      assign(socket,
        form: to_form(changeset),
+       origin_options: origin_options,
        faction_options: faction_options,
-       avatars: avatars,
-       origins: origins
+       avatars: avatars
      )}
   end
 

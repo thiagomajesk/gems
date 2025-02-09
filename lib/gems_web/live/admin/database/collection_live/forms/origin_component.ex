@@ -2,7 +2,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.OriginComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent
 
   def render(assigns) do
     ~H"""
@@ -37,15 +36,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.OriginComponent do
               field={f[:blessing_id]}
               label="Blessing"
               options={@blessing_options}
-            />
-
-            <.live_component
-              module={FileExplorerComponent}
-              extensions={["png", "jpg", "jpeg"]}
-              id="origin-icon"
-              directory="origins"
-              field={f[:icon]}
-              label="Icon"
             />
           </div>
         </div>

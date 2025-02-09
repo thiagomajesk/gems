@@ -11,10 +11,6 @@ defmodule GEMS.World do
     Repo.all(Avatar)
   end
 
-  def list_origins() do
-    Repo.all(Origin)
-  end
-
   def get_starting_zone() do
     Repo.one!(
       from z in GEMS.World.Schema.Zone,

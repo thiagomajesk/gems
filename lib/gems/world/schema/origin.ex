@@ -6,12 +6,11 @@ defmodule GEMS.World.Schema.Origin do
       :code,
       :strength,
       :dexterity,
-      :intelligence,
-      :blessing_id
+      :intelligence
     ],
     optional_fields: [
       :description,
-      :icon
+      :blessing_id
     ]
 
   schema "origins" do
@@ -21,7 +20,6 @@ defmodule GEMS.World.Schema.Origin do
     field :strength, :integer
     field :dexterity, :integer
     field :intelligence, :integer
-    field :icon, :string
 
     belongs_to :blessing, GEMS.World.Schema.Blessing
   end

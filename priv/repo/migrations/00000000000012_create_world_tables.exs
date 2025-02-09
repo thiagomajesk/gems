@@ -52,11 +52,10 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :icon, :string, null: true
       add :strength, :integer, null: false
       add :dexterity, :integer, null: false
       add :intelligence, :integer, null: false
-      add :blessing_id, references(:blessings), null: false
+      add :blessing_id, references(:blessings), null: true
     end
 
     create unique_index(:origins, :name)
