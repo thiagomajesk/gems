@@ -77,17 +77,10 @@ defmodule GEMS.Characters do
   Creates a character.
   """
   def create_character(%User{} = user, attrs \\ %{}) do
-    %{id: zone_id} = GEMS.World.get_starting_zone()
-
-    professions = GEMS.World.Schema.Profession.list()
-
     %Character{}
     |> Character.changeset(attrs)
-    |> Ecto.Changeset.put_change(:max_health, 100)
-    |> Ecto.Changeset.put_change(:max_energy, 100)
     |> Ecto.Changeset.put_change(:user_id, user.id)
-    |> Ecto.Changeset.put_change(:zone_id, zone_id)
-    |> Ecto.Changeset.put_assoc(:professions, professions)
+    |> patch_creation_changeset()
     |> Repo.insert()
   end
 
@@ -120,6 +113,21 @@ defmodule GEMS.Characters do
   """
   def change_character(%Character{} = character, attrs \\ %{}) do
     Character.changeset(character, attrs)
+  end
+
+  defp patch_creation_changeset(changeset) do
+    Ecto.Changeset.prepare_changes(changeset, fn changeset ->
+      faction_id = Ecto.Changeset.get_field(changeset, :faction_id)
+
+      zone = GEMS.World.get_starting_zone(faction_id)
+      professions = GEMS.World.Schema.Profession.list()
+
+      changeset
+      |> Ecto.Changeset.put_change(:max_health, 100)
+      |> Ecto.Changeset.put_change(:max_energy, 100)
+      |> Ecto.Changeset.put_change(:zone_id, zone.id)
+      |> Ecto.Changeset.put_assoc(:professions, professions)
+    end)
   end
 
   defp load_character(character) do
