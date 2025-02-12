@@ -105,12 +105,14 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
+      add :icon, :string, null: true
       add :skull, :string, null: false
       add :danger, :integer, null: false, default: 1
       add :starting, :boolean, null: false, default: false
 
       add :biome_id, references(:biomes), null: false
       add :faction_id, references(:factions), null: true
+      add :nearby_id, references(:zones, on_delete: :nilify_all), null: true
     end
 
     create unique_index(:zones, :name)

@@ -110,10 +110,11 @@ defmodule GEMSWeb.Router do
         {GEMSWeb.CheckCharacterHook, :ensure_selected_character},
         {GEMSWeb.PageHook, :current_path}
       ] do
+      live "/home", HomeLive
       live "/character", CharacterLive
       live "/activities", ActivitiesLive
       live "/storage", StorageLive
-      live "/home", HomeLive
+      live "/world", WorldLive
     end
   end
 end
