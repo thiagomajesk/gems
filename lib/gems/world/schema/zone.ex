@@ -2,7 +2,16 @@ defmodule GEMS.World.Schema.Zone do
   use GEMS.Database.Schema,
     preset: :collection,
     required_fields: [:name, :code, :skull, :biome_id],
-    optional_fields: [:description, :icon, :danger, :starting, :nearby_id]
+    optional_fields: [
+      :description,
+      :image,
+      :danger,
+      :starting,
+      :gold_cost,
+      :stamina_cost,
+      :faction_id,
+      :nearby_id
+    ]
 
   @skulls [:blue, :yellow, :red, :black]
 
@@ -10,10 +19,12 @@ defmodule GEMS.World.Schema.Zone do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :icon, :string
+    field :image, :string
     field :skull, Ecto.Enum, values: @skulls
     field :danger, :integer
     field :starting, :boolean
+    field :gold_cost, :integer
+    field :stamina_cost, :integer
 
     belongs_to :biome, GEMS.Engine.Schema.Biome
     belongs_to :faction, GEMS.World.Schema.Faction

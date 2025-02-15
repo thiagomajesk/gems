@@ -6,9 +6,48 @@ defmodule GEMSWeb.Game.WorldLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="grid grid-cols-1 gap-4">
-      <.zone_card :for={zone <- @nearby_zones} zone={zone} />
-    </div>
+    <UI.Panels.section title="Nearby Zones" divider>
+      <UI.Lists.cards_with_covers>
+        <:card
+          :for={zone <- @nearby_zones}
+          title={zone.name}
+          subtitle={zone.description}
+          cover={zone.image}
+        >
+          <div class="flex items-center justify-between mb-2 text-gray-400">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold uppercase text-accent">{zone.biome.name}</span>
+              <UI.Icons.game name="skull-crack" size={18} class={skull_text_color(zone.skull)} />
+              <UI.Media.game_icon
+                :if={faction = zone.faction}
+                title={faction.name}
+                icon={faction.icon}
+                fallback="black-flag"
+                width={18}
+              />
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="badge badge-neutral flex items-center gap-1" title="Gold cost">
+                <UI.Icons.game name="two-coins" size={18} />
+                <span>{zone.gold_cost}</span>
+              </div>
+              <div class="badge badge-neutral flex items-center gap-1" title="Stamina cost">
+                <UI.Icons.game name="run" size={18} />
+                <span>{zone.stamina_cost}</span>
+              </div>
+              <div class="badge badge-neutral flex items-center gap-1" title="Danger">
+                <UI.Icons.game name="spiked-halo" size={18} />
+                <span>{zone.danger}</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center gap-2 mt-2 pt-2 border-t border-base-content/10">
+            <div class="flex items-center gap-2">Activities...</div>
+            <.link class="btn btn-sm btn-primary">Travel</.link>
+          </div>
+        </:card>
+      </UI.Lists.cards_with_covers>
+    </UI.Panels.section>
     """
   end
 
@@ -19,40 +58,8 @@ defmodule GEMSWeb.Game.WorldLive do
     {:ok, assign(socket, nearby_zones: nearby_zones)}
   end
 
-  attr :zone, :map, required: true
-
-  defp zone_card(assigns) do
-    ~H"""
-    <div class="card bg-base-200 p-4">
-      <div class="flex gap-2">
-        <UI.Media.image src={@zone.icon} placeholder={%{height: 100, width: 100}} class="rounded-xl" />
-        <div class="flex flex-col justify-between grow">
-          <div class="flex flex-col">
-            <span class="font-semibold">{@zone.name}</span>
-            <p class="text-sm">{@zone.description}</p>
-          </div>
-          <div>
-            <span class="badge badge-neutral flex-items-center gap-2">
-              <UI.Icons.page name="leaf" />
-              {Recase.to_title("#{@zone.biome.name}")}
-            </span>
-            <span class="badge badge-neutral flex-items-center gap-2">
-              <UI.Icons.page name="skull" />
-              {Recase.to_title("#{@zone.skull} Skull")}
-            </span>
-            <span class="badge badge-neutral flex-items-center gap-2">
-              <UI.Icons.page name="triangle-alert" />
-              {Recase.to_title("Danger Level #{@zone.danger}")}
-            </span>
-          </div>
-
-          <div class="flex w-full mt-4">
-            <div>Activities...</div>
-            <button class="btn btn-sm btn-primary ml-auto">Travel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    """
-  end
+  defp skull_text_color(:blue), do: "text-blue-500"
+  defp skull_text_color(:yellow), do: "text-yellow-500"
+  defp skull_text_color(:red), do: "text-red-500"
+  defp skull_text_color(:black), do: "text-black"
 end

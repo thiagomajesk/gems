@@ -9,7 +9,7 @@ defmodule GEMS.Repo.Migrations.CreateGuildsTables do
     create table(:guilds) do
       add :name, :string, null: false
       add :description, :string, null: true
-      add :icon, :string, null: true
+      add :icon, :map, null: true
     end
 
     create unique_index(:guilds, :name)

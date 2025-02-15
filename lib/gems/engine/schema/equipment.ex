@@ -10,7 +10,7 @@ defmodule GEMS.Engine.Schema.Equipment do
     ],
     optional_fields: [
       :description,
-      :icon,
+      :image,
       :price,
       :armor_rating,
       :max_health,
@@ -61,7 +61,7 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :icon, :string
+    field :image, :string
     field :slot, Ecto.Enum, values: @slots
     field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
@@ -88,8 +88,10 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :ability_power, :integer
 
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
+
     has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
     has_many :equipment_materials, GEMS.Engine.Schema.EquipmentMaterial, on_replace: :delete
+
     many_to_many :materials, GEMS.Engine.Schema.Item, join_through: "equipments_materials"
     many_to_many :abilities, GEMS.Engine.Schema.Ability, join_through: "equipments_abilities"
   end

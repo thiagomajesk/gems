@@ -4,7 +4,6 @@ defmodule GEMS.Engine.Schema.Biome do
     required_fields: [:name, :code],
     optional_fields: [
       :description,
-      :icon,
       :affinity_id,
       :aversion_id
     ]
@@ -13,7 +12,6 @@ defmodule GEMS.Engine.Schema.Biome do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :icon, :string
 
     belongs_to :affinity, GEMS.Engine.Schema.Element
     belongs_to :aversion, GEMS.Engine.Schema.Element

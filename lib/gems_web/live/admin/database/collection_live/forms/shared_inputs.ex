@@ -57,6 +57,43 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
     """
   end
 
+  attr :field, :any, required: true
+  attr :rest, :global
+
+  def colorpicker(assigns) do
+    assigns = Forms.input_assigns(assigns)
+
+    ~H"""
+    <label class="bg-base-content/10 p-2 rounded-btn relative cursor-pointer group">
+      <span
+        class="block w-4 h-4 rounded-full border border-base-content/50 transition-transform duration-500 group-hover:scale-125"
+        style={"background-color: #{@value}"}
+      >
+      </span>
+      <input
+        type="color"
+        id={@id}
+        name={@name}
+        value={@value}
+        class="absolute top-8 size-0 opacity-0"
+        {@rest}
+      />
+    </label>
+    """
+  end
+
+  attr :type, :string, required: true
+  attr :field, :any, required: true
+  attr :rest, :global, include: ~w(readonly)
+
+  def unstyled(assigns) do
+    assigns = Forms.input_assigns(assigns)
+
+    ~H"""
+    <input type={@type} id={@id} name={@name} value={@value} {@rest} />
+    """
+  end
+
   attr :form, :any, required: true
 
   def stats_fieldset(assigns) do

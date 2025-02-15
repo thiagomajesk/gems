@@ -4,7 +4,6 @@ defmodule GEMS.Engine.Schema.Ability do
     required_fields: [:name, :code, :type_id],
     optional_fields: [
       :description,
-      :icon,
       :health_cost,
       :energy_cost,
       :target_side,
@@ -37,9 +36,10 @@ defmodule GEMS.Engine.Schema.Ability do
   ]
 
   @hit_types [
-    :physical_attack,
-    :magical_attack,
-    :certain_hit
+    :ranged,
+    :magical,
+    :melee,
+    :certain
   ]
 
   @damage_types [
@@ -55,7 +55,6 @@ defmodule GEMS.Engine.Schema.Ability do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :icon, :string
     field :health_cost, :integer
     field :energy_cost, :integer
     field :messages, :map
@@ -74,8 +73,11 @@ defmodule GEMS.Engine.Schema.Ability do
     field :damage_variance, :float
     field :critical_hits, :boolean
 
+    embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
+
     belongs_to :type, GEMS.Engine.Schema.AbilityType
     belongs_to :damage_element, GEMS.Engine.Schema.Element
+
     has_many :effects, GEMS.Engine.Schema.Effect, on_replace: :delete
   end
 
@@ -83,6 +85,7 @@ defmodule GEMS.Engine.Schema.Ability do
     changeset = super(ability, attrs, opts)
 
     changeset
+    |> cast_embed(:icon)
     |> cast_assoc(:effects, sort_param: :effects_sort, drop_param: :effects_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)

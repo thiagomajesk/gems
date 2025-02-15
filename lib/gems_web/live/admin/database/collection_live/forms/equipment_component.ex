@@ -30,10 +30,10 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EquipmentComponent do
             <.live_component
               module={FileExplorerComponent}
               extensions={["png", "jpg", "jpeg"]}
-              id="equipment-icon"
+              id="equipment-image"
               directory="equipments"
-              field={f[:icon]}
-              label="Icon"
+              field={f[:image]}
+              label="Image"
             />
             <div class="grid grid-cols-2 gap-6">
               <Forms.field_input

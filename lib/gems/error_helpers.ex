@@ -1,4 +1,8 @@
 defmodule GEMS.ErrorHelpers do
+  def collect_errors(%Ecto.Changeset{} = changeset) do
+    Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+  end
+
   def get_errors(%Ecto.Changeset{errors: errors}, key) do
     with {msg, opts} <- Keyword.get(errors, key, []), do: translate_error({msg, opts})
   end

@@ -9,6 +9,7 @@ defmodule GEMS.Engine.Schema.Creature do
     ],
     optional_fields: [
       :description,
+      :image,
       :armor_rating,
       :max_health,
       :health_regen,
@@ -44,6 +45,7 @@ defmodule GEMS.Engine.Schema.Creature do
     field :name, :string
     field :code, :string
     field :description, :string
+    field :image, :string
 
     # STR
     field :armor_rating, :integer
@@ -68,6 +70,7 @@ defmodule GEMS.Engine.Schema.Creature do
 
     belongs_to :biome, GEMS.Engine.Schema.Biome
     belongs_to :type, GEMS.Engine.Schema.CreatureType
+
     has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
     has_many :action_patterns, GEMS.Engine.Schema.CreatureActionPattern, on_replace: :delete
   end

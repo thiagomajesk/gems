@@ -10,7 +10,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :icon, :string, null: true
+      add :image, :string, null: true
     end
 
     create unique_index(:avatars, :name)
@@ -24,7 +24,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :icon, :string, null: true
+      add :icon, :map, null: true
     end
 
     create unique_index(:professions, :name)
@@ -37,8 +37,8 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:blessings) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :icon, :string, null: true
       add :description, :string, null: true
+      add :icon, :map, null: true
       add :duration, :integer, null: true
     end
 
@@ -68,8 +68,8 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:pets) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :icon, :string, null: true
       add :description, :string, null: true
+      add :image, :string, null: true
     end
 
     create unique_index(:pets, :code)
@@ -91,7 +91,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :icon, :string, null: true
+      add :icon, :map, null: true
     end
 
     create unique_index(:factions, :name)
@@ -105,10 +105,12 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :icon, :string, null: true
+      add :image, :map, null: true
       add :skull, :string, null: false
       add :danger, :integer, null: false, default: 1
       add :starting, :boolean, null: false, default: false
+      add :gold_cost, :integer, null: false, default: 0
+      add :stamina_cost, :integer, null: false, default: 0
 
       add :biome_id, references(:biomes), null: false
       add :faction_id, references(:factions), null: true

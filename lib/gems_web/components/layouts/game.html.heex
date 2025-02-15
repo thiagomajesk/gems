@@ -1,7 +1,7 @@
 <.flash_group flash={@flash} />
-<div class="flex flex-col h-screen overflow-y-hidden xl:container xl:mx-auto px-4 xl:px-0">
+<div class="flex flex-col h-screen overflow-y-hidden ">
   <.annoucement_banner :if={false} />
-  <header>
+  <UI.Panels.container tag="header">
     <UI.Menus.global current_path={@current_path}>
       <:link href="/home" icon="house" label="Home" />
       <:link href={~p"/game/character"} icon="skills" label="Character" />
@@ -19,8 +19,10 @@
       <:link href="/challenges" icon="trophy-cup" label="Challenges" />
       <:link href="/calendar" icon="calendar" label="Calendar" />
     </UI.Menus.global>
-  </header>
+  </UI.Panels.container>
   <main class="h-full overflow-y-auto px-2 pt-4">
-    {@inner_content}
+    <UI.Panels.container>
+      {@inner_content}
+    </UI.Panels.container>
   </main>
 </div>

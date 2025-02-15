@@ -2,15 +2,19 @@ defmodule GEMS.World.Schema.Blessing do
   use GEMS.Database.Schema,
     preset: :collection,
     required_fields: [:name, :code],
-    optional_fields: [:icon, :description, :duration]
+    optional_fields: [:description, :duration]
 
   schema "blessings" do
     field :name, :string
     field :code, :string
-    field :icon, :string
     field :description, :string
     field :duration, :integer
 
-    many_to_many :traits, GEMS.Engine.Schema.Trait, join_through: "blessings_traits"
+    embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
+  end
+
+  def build_changeset(blessing, attrs, opts) do
+    changeset = super(blessing, attrs, opts)
+    cast_embed(changeset, :icon)
   end
 end

@@ -2,77 +2,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   @moduledoc false
   use GEMSWeb, :live_view
 
-  alias GEMS.Engine.Schema.Ability
-  alias GEMS.Engine.Schema.AbilityType
-  alias GEMS.Engine.Schema.Biome
-  alias GEMS.Engine.Schema.Creature
-  alias GEMS.Engine.Schema.CreatureType
-  alias GEMS.Engine.Schema.Element
-  alias GEMS.Engine.Schema.Equipment
-  alias GEMS.Engine.Schema.EquipmentType
-  alias GEMS.Engine.Schema.Item
-  alias GEMS.Engine.Schema.ItemType
-  alias GEMS.Engine.Schema.State
-  alias GEMS.World.Schema.Origin
-  alias GEMS.World.Schema.Profession
+  require Logger
 
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent
-
-  @collections %{
-    "abilities" => %{
-      module: Ability,
-      component: Forms.AbilityComponent
-    },
-    "ability-types" => %{
-      module: AbilityType,
-      component: Forms.AbilityTypeComponent
-    },
-    "biomes" => %{
-      module: Biome,
-      component: Forms.BiomeComponent
-    },
-    "creature-types" => %{
-      module: CreatureType,
-      component: Forms.CreatureTypeComponent
-    },
-    "creatures" => %{
-      module: Creature,
-      component: Forms.CreatureComponent
-    },
-    "elements" => %{
-      module: Element,
-      component: Forms.ElementComponent
-    },
-    "equipment-types" => %{
-      module: EquipmentType,
-      component: Forms.EquipmentTypeComponent
-    },
-    "equipments" => %{
-      module: Equipment,
-      component: Forms.EquipmentComponent
-    },
-    "origins" => %{
-      module: Origin,
-      component: Forms.OriginComponent
-    },
-    "items" => %{
-      module: Item,
-      component: Forms.ItemComponent
-    },
-    "item-types" => %{
-      module: ItemType,
-      component: Forms.ItemTypeComponent
-    },
-    "professions" => %{
-      module: Profession,
-      component: Forms.ProfessionComponent
-    },
-    "states" => %{
-      module: State,
-      component: Forms.StateComponent
-    }
-  }
+  alias GEMSWeb.Collections
 
   def render(assigns) do
     ~H"""
@@ -88,28 +20,20 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   end
 
   def mount(%{"collection" => collection}, _session, socket) do
-    %{
-      module: module,
-      component: component
-    } = Map.fetch!(@collections, collection)
+    %{form: component} = Collections.spec(collection)
 
     {:ok,
      assign(socket,
-       module: module,
        component: component,
        collection: collection
      )}
   end
 
   def handle_params(%{"id" => id}, _uri, socket) do
-    %{
-      module: module,
-      live_action: live_action,
-      collection: collection
-    } = socket.assigns
+    %{live_action: live_action, collection: collection} = socket.assigns
 
-    entity = get_entity!(module, id)
-    changeset = change_entity(module, entity)
+    entity = Collections.get_entity(collection, id)
+    changeset = Collections.change_entity(collection, entity)
 
     {:noreply,
      assign(
@@ -120,13 +44,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   end
 
   def handle_params(_params, _uri, socket) do
-    %{
-      module: module,
-      live_action: live_action,
-      collection: collection
-    } = socket.assigns
+    %{live_action: live_action, collection: collection} = socket.assigns
 
-    changeset = change_entity(module)
+    changeset = Collections.change_entity(collection)
 
     {:noreply,
      assign(
@@ -137,12 +57,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   end
 
   def handle_event("validate", %{"entity" => params}, socket) do
-    %{
-      module: module,
-      form: %{data: entity}
-    } = socket.assigns
+    %{collection: collection, form: %{data: entity}} = socket.assigns
 
-    changeset = change_entity(module, entity, params)
+    changeset = Collections.change_entity(collection, entity, params)
 
     {:noreply, assign(socket, :form, to_form(changeset, action: :validate))}
   end
@@ -160,9 +77,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
     {:noreply, assign(socket, :form, to_form(changeset, action: :validate))}
   end
 
-  def handle_info({FileExplorerComponent, :validate, merge_params}, socket) do
-    %{module: module, form: %{data: entity, params: params}} = socket.assigns
-    changeset = change_entity(module, entity, Map.merge(params, merge_params))
+  def handle_info({_component, :validate, merge_params}, socket) do
+    %{collection: collection, form: %{data: entity, params: params}} = socket.assigns
+    changeset = Collections.change_entity(collection, entity, Map.merge(params, merge_params))
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -176,20 +93,12 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
     |> String.capitalize()
   end
 
-  defp get_entity!(module, id), do: apply(module, :get!, [id])
-
-  defp change_entity(module, entity \\ nil, attrs \\ %{}),
-    do: apply(module, :change, [entity, attrs])
-
-  defp create_entity(module, attrs), do: apply(module, :create, [attrs])
-  defp update_entity(module, entity, attrs), do: apply(module, :update, [entity, attrs])
-
   defp save_entity(socket, :new, params) do
-    %{module: module, collection: collection} = socket.assigns
+    %{collection: collection} = socket.assigns
 
-    case create_entity(module, params) do
+    case Collections.create_entity(collection, params) do
       {:ok, entity} ->
-        changeset = change_entity(module, entity)
+        changeset = Collections.change_entity(collection, entity)
 
         socket
         |> assign(:entity, entity)
@@ -198,6 +107,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
         |> push_patch(to: ~p"/admin/database/#{collection}/#{entity}/edit")
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        errors = GEMS.ErrorHelpers.collect_errors(changeset)
+        Logger.error("Failed to save entity: #{inspect(errors)}")
+
         socket
         |> assign(:form, to_form(changeset))
         |> put_flash(:error, "Failed to create entity.")
@@ -205,15 +117,11 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
   end
 
   defp save_entity(socket, :edit, params) do
-    %{
-      module: module,
-      form: %{data: entity},
-      collection: collection
-    } = socket.assigns
+    %{collection: collection, form: %{data: entity}} = socket.assigns
 
-    case update_entity(module, entity, params) do
+    case Collections.update_entity(collection, entity, params) do
       {:ok, entity} ->
-        changeset = change_entity(module, entity)
+        changeset = Collections.change_entity(collection, entity)
 
         socket
         |> assign(:form, to_form(changeset))

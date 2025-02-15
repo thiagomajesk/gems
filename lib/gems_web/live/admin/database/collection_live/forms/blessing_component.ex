@@ -1,12 +1,13 @@
-defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.OriginComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.BlessingComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent
 
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-wrapper"}>
-      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/origins"}>
+      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/blessings"}>
         <div class="space-y-6">
           <div class="grid grid-cols-2 gap-6">
             <Forms.field_input
@@ -22,19 +23,16 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.OriginComponent do
               disabled={@live_action == :edit}
             />
           </div>
+
           <Forms.field_input type="textarea" field={f[:description]} label="Description" />
 
-          <div class="grid grid-cols-3 gap-6">
-            <Forms.field_input type="number" field={f[:strength]} label="Strength" />
-            <Forms.field_input type="number" field={f[:dexterity]} label="Dexterity" />
-            <Forms.field_input type="number" field={f[:intelligence]} label="Intelligence" />
-          </div>
+          <Forms.field_input type="text" field={f[:duration]} label="Duration" />
 
-          <Forms.field_input
-            type="select"
-            field={f[:blessing_id]}
-            label="Blessing"
-            options={@blessing_options}
+          <.live_component
+            module={IconPickerComponent}
+            id="ability-icon"
+            field={f[:icon]}
+            label="Icon"
           />
         </div>
       </Forms.base_form>
@@ -43,7 +41,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.OriginComponent do
   end
 
   def mount(socket) do
-    blessing_options = GEMS.World.Schema.Blessing.options()
-    {:ok, assign(socket, :blessing_options, blessing_options)}
+    {:ok, socket}
   end
 end

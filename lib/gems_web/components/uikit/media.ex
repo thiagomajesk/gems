@@ -10,11 +10,11 @@ defmodule GEMSWeb.UIKIT.Media do
   def avatar(assigns) do
     assigns =
       assign_new(assigns, :src, fn
-        %{avatar: %{icon: nil}} ->
+        %{avatar: %{image: nil}} ->
           nil
 
-        %{avatar: %{icon: icon}} ->
-          GEMS.public_asset_path([icon])
+        %{avatar: %{image: image}} ->
+          GEMS.public_asset_path([image])
       end)
 
     ~H"""
@@ -24,6 +24,21 @@ defmodule GEMSWeb.UIKIT.Media do
       placeholder={%{width: "100", height: "100"}}
       class={["w-full h-full object-cover", @class]}
     />
+    """
+  end
+
+  attr :icon, :any, required: true
+  attr :fallback, :string, default: nil
+  attr :rest, :global, include: ~w(size)
+
+  def game_icon(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:name, &(get_in(&1.icon.name) || get_in(&1.fallback)))
+      |> assign_new(:color, &(get_in(&1.icon.color) || "current-color"))
+
+    ~H"""
+    <UI.Icons.game name={@name || @fallback} style={"color: #{@color}"} {@rest} />
     """
   end
 

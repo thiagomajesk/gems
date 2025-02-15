@@ -9,7 +9,7 @@ defmodule GEMS.Engine.Schema.Item do
     ],
     optional_fields: [
       :description,
-      :icon,
+      :image,
       :price,
       :target_side,
       :target_status,
@@ -44,9 +44,10 @@ defmodule GEMS.Engine.Schema.Item do
   ]
 
   @hit_types [
-    :physical_attack,
-    :magical_attack,
-    :certain_hit
+    :ranged,
+    :magical,
+    :melee,
+    :certain
   ]
 
   @damage_types [
@@ -62,7 +63,7 @@ defmodule GEMS.Engine.Schema.Item do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :icon, :string
+    field :image, :string
     field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
     field :messages, :map
@@ -83,8 +84,10 @@ defmodule GEMS.Engine.Schema.Item do
 
     belongs_to :type, GEMS.Engine.Schema.ItemType
     belongs_to :damage_element, GEMS.Engine.Schema.Element
+
     has_many :effects, GEMS.Engine.Schema.Effect, on_replace: :delete
     has_many :item_ingredients, GEMS.Engine.Schema.ItemIngredient, on_replace: :delete
+
     many_to_many :ingredients, GEMS.Engine.Schema.Item, join_through: "items_ingredients"
   end
 

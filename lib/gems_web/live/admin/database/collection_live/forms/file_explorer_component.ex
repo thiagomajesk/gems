@@ -85,7 +85,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
 
   @impl true
   def handle_event("select-file", %{"path" => path}, socket) do
-    send(self(), {__MODULE__, :validate, %{"icon" => path}})
+    send(self(), {__MODULE__, :validate, %{"image" => path}})
     {:noreply, assign(socket, picker_open: false)}
   end
 

@@ -3,7 +3,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
 
   alias UI.Admin.Forms
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.EffectsAssocInput
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent
 
   def render(assigns) do
     ~H"""
@@ -28,10 +28,8 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
             <Forms.field_input type="textarea" field={f[:description]} label="Description" />
 
             <.live_component
-              module={FileExplorerComponent}
-              extensions={["png", "jpg", "jpeg"]}
+              module={IconPickerComponent}
               id="ability-icon"
-              directory="abilities"
               field={f[:icon]}
               label="Icon"
             />
@@ -55,7 +53,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
             <Forms.field_input
               type="select"
               field={f[:type_id]}
-              label="Affinity"
+              label="Type"
               options={@ability_types_options}
             />
 

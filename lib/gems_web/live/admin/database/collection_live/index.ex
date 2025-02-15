@@ -2,154 +2,8 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
   @moduledoc false
   use GEMSWeb, :live_view
 
+  alias GEMSWeb.Collections
   import GEMSWeb.UIKIT.Admin.DataTable
-
-  alias GEMS.Engine.Schema.Ability
-  alias GEMS.Engine.Schema.AbilityType
-  alias GEMS.Engine.Schema.Biome
-  alias GEMS.Engine.Schema.Creature
-  alias GEMS.Engine.Schema.CreatureType
-  alias GEMS.Engine.Schema.Element
-  alias GEMS.Engine.Schema.Equipment
-  alias GEMS.Engine.Schema.EquipmentType
-  alias GEMS.Engine.Schema.Item
-  alias GEMS.Engine.Schema.ItemType
-  alias GEMS.Engine.Schema.State
-  alias GEMS.World.Schema.Origin
-  alias GEMS.World.Schema.Profession
-
-  @collections %{
-    "abilities" => %{
-      module: Ability,
-      preloads: [:type],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :code, type: :enum, label: "Code"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :type, type: :assoc, label: "Type"}
-      ]
-    },
-    "ability-types" => %{
-      module: AbilityType,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "biomes" => %{
-      module: Biome,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "ability_types" => %{
-      module: AbilityType,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "creature-types" => %{
-      module: CreatureType,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "creatures" => %{
-      module: Creature,
-      preloads: [:type],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"},
-        %{field: :type, type: :assoc, label: "Type"}
-      ]
-    },
-    "elements" => %{
-      module: Element,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "equipment-types" => %{
-      module: EquipmentType,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "equipments" => %{
-      module: Equipment,
-      preloads: [:type],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"},
-        %{field: :type, type: :assoc, label: "Type"}
-      ]
-    },
-    "item-types" => %{
-      module: ItemType,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "origins" => %{
-      module: Origin,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "items" => %{
-      module: Item,
-      preloads: [:type],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"},
-        %{field: :type, type: :assoc, label: "Type"}
-      ]
-    },
-    "professions" => %{
-      module: Profession,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
-    "states" => %{
-      module: State,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    }
-  }
 
   def render(assigns) do
     ~H"""
@@ -177,15 +31,11 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
   end
 
   def mount(%{"collection" => collection}, _session, socket) do
-    %{
-      module: module,
-      preloads: preloads,
-      columns: columns
-    } = Map.fetch!(@collections, collection)
+    %{columns: columns} = Collections.spec(collection)
 
     entities =
       if connected?(socket),
-        do: apply(module, :list, [preloads]),
+        do: Collections.list_entities(collection),
         else: []
 
     {:ok,

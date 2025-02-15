@@ -2,7 +2,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ProfessionComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent
+  alias GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent
 
   def render(assigns) do
     ~H"""
@@ -24,10 +24,8 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ProfessionComponent do
         </div>
         <Forms.field_input type="textarea" field={f[:description]} label="Description" />
         <.live_component
-          module={FileExplorerComponent}
-          extensions={["png", "jpg", "jpeg"]}
+          module={IconPickerComponent}
           id="profession-icon"
-          directory="professions"
           field={f[:icon]}
           label="Icon"
         />

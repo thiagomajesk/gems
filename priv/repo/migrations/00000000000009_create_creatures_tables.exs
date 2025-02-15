@@ -10,6 +10,7 @@ defmodule GEMS.Repo.Migrations.CreateCreaturesTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
+      add :image, :string, null: true
       add :type_id, references(:creature_types), null: false
       add :biome_id, references(:biomes), null: false
 

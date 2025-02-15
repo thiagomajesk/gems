@@ -12,7 +12,11 @@ defmodule GEMS.World do
   end
 
   def list_nearby_zones(zone_id) do
-    Repo.all(from z in Zone, where: z.nearby_id == ^zone_id, preload: [:biome])
+    Repo.all(
+      from z in Zone,
+        where: z.nearby_id == ^zone_id,
+        preload: [:biome, :faction]
+    )
   end
 
   def get_starting_zone(faction_id) do

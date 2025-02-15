@@ -6,7 +6,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :icon, :string, null: true
+      add :icon, :map, null: true
       add :priority, :integer, default: 100
       add :restriction, :string, null: true
     end

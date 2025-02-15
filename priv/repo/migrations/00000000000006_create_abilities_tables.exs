@@ -10,7 +10,7 @@ defmodule GEMS.Repo.Migrations.CreateAbilitiesTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :icon, :string, null: true
+      add :icon, :map, null: true
       add :type_id, references(:ability_types), null: false
       add :health_cost, :integer, null: false, default: 0
       add :energy_cost, :integer, null: false, default: 0

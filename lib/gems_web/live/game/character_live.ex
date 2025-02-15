@@ -10,7 +10,7 @@ defmodule GEMSWeb.Game.CharacterLive do
         <.attributes_section character={@selected_character} />
         <.guild_section :if={@guild} guild={@guild} />
       </div>
-      <div class="w-full md:w-2/3 flex flex-col space-y-4">
+      <div class="w-full md:w-2/3 flex flex-col space-y-4 bg-base-200 rounded-box p-4">
         <UI.Navigation.tabs current_path={~p"/game/character"} current_action={@action}>
           <:tabs action={:inventory} label="Inventory">
             <.apparel_section />
@@ -50,10 +50,9 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp bio_section(assigns) do
     ~H"""
-    <section>
-      <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Bio</h1>
+    <UI.Panels.section title="Bio">
       <.bio_card text={@character.bio} />
-    </section>
+    </UI.Panels.section>
     """
   end
 
@@ -81,14 +80,13 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp attributes_section(assigns) do
     ~H"""
-    <section>
-      <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Attributes</h1>
+    <UI.Panels.section title="Attributes">
       <div class="grid grid-cols-3 gap-2">
         <.attribute_card name={:strength} value={@character.strength} />
         <.attribute_card name={:dexterity} value={@character.dexterity} />
         <.attribute_card name={:intelligence} value={@character.intelligence} />
       </div>
-    </section>
+    </UI.Panels.section>
     """
   end
 
@@ -121,8 +119,7 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp guild_section(assigns) do
     ~H"""
-    <section>
-      <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Guild</h1>
+    <UI.Panels.section title="Guild">
       <div class="card bg-base-200 p-4">
         <div class="flex gap-2">
           <img src="https://placehold.co/80" class="size-16 rounded-xl" />
@@ -143,6 +140,25 @@ defmodule GEMSWeb.Game.CharacterLive do
           </div>
         </div>
       </div>
+    </UI.Panels.section>
+    """
+  end
+
+  attr :character_professions, :list, required: true
+
+  defp professions_section(assigns) do
+    ~H"""
+    <section class="grow">
+      <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Professions</h1>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        <.profession_card
+          :for={character_profession <- @character_professions}
+          icon={character_profession.profession.icon}
+          name={character_profession.profession.name}
+          level={character_profession.level}
+          experience={character_profession.experience}
+        />
+      </div>
     </section>
     """
   end
@@ -154,10 +170,12 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp profession_card(assigns) do
     ~H"""
-    <div class="card bg-base-200 p-4">
+    <div class="card bg-base-300 p-4">
       <div class="flex gap-2">
-        <UI.Media.image src={@icon} placeholder={%{height: 80, width: 80}} class="rounded-xl" />
-        <div class="flex flex-col justify-between grow">
+        <div class="flex items-center bg-base-content/5 rounded-lg p-2 shadow-lg">
+          <UI.Media.game_icon icon={@icon} size="48" />
+        </div>
+        <div class="flex flex-col justify-between grow space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-semibold">{@name}</span>
             <span class="badge badge-accent font-medium">{@level}/99</span>
@@ -175,136 +193,50 @@ defmodule GEMSWeb.Game.CharacterLive do
     """
   end
 
-  attr :character_professions, :list, required: true
-
-  defp professions_section(assigns) do
-    ~H"""
-    <section class="grow">
-      <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Professions</h1>
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
-        <.profession_card
-          :for={character_profession <- @character_professions}
-          icon={character_profession.profession.icon}
-          name={character_profession.profession.name}
-          level={character_profession.level}
-          experience={character_profession.experience}
-        />
-      </div>
-    </section>
-    """
-  end
-
   defp apparel_section(assigns) do
     ~H"""
-    <section class="grow">
-      <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Apparel</h1>
-      <div class="card bg-base-200 p-4">
-        <div class="grid grid-cols-3 gap-2">
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="gem-chain" size="24" />
-            </div>
-            <span class="font-medium">Trinket</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="crested-helmet" size="24" />
-            </div>
-            <span class="font-medium">Helmet</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="cloak" size="24" />
-            </div>
-            <span class="font-medium">Cape</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="hand" size="24" />
-            </div>
-            <span class="font-medium">Main-Hand</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="chest-armor" size="24" />
-            </div>
-            <span class="font-medium">Armor</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="hand" size="24" />
-            </div>
-            <span class="font-medium">Off-Hand</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="ring" size="24" />
-            </div>
-            <span class="font-medium">Ring</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="boots" size="24" />
-            </div>
-            <span class="font-medium">Boots</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="necklace" size="24" />
-            </div>
-            <span class="font-medium">Amulet</span>
-          </div>
-        </div>
+    <UI.Panels.section title="Apparel">
+      <div class="grid grid-cols-3 gap-2">
+        <.slot_card icon="gem-chain" name="Trinket" />
+        <.slot_card icon="crested-helmet" name="Helmet" />
+        <.slot_card icon="cloak" name="Cape" />
+        <.slot_card icon="hand" name="Main-Hand" />
+        <.slot_card icon="chest" name="Armor" />
+        <.slot_card icon="hand" name="Off-Hand" />
+        <.slot_card icon="ring" name="Ring" />
+        <.slot_card icon="boots" name="Boots" />
+        <.slot_card icon="necklace" name="Necklace" />
       </div>
-    </section>
+    </UI.Panels.section>
     """
   end
 
   defp satchel_section(assigns) do
     ~H"""
-    <section class="grow">
-      <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Satchel</h1>
-      <div class="card bg-base-200 p-4">
-        <div class="grid grid-cols-3 gap-2">
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="potion-ball" size="24" />
-            </div>
-            <span class="font-medium">Consumable</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="drink-me" size="24" />
-            </div>
-            <span class="font-medium">Consumable</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="shiny-apple" size="24" />
-            </div>
-            <span class="font-medium">Consumable</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="pear" size="24" />
-            </div>
-            <span class="font-medium">Consumable</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="waterskin" size="24" />
-            </div>
-            <span class="font-medium">Consumable</span>
-          </div>
-          <div class="card bg-base-100 p-4 flex-row items-center rounded-btn gap-4">
-            <div class="flex items-center bg-base-200 rounded-lg p-2">
-              <UI.Icons.game name="card-joker" size="24" />
-            </div>
-            <span class="font-medium">Consumable</span>
-          </div>
-        </div>
+    <UI.Panels.section title="Satchel">
+      <div class="grid grid-cols-3 gap-2">
+        <.slot_card icon="potion-ball" name="Consumable" />
+        <.slot_card icon="drink-me" name="Consumable" />
+        <.slot_card icon="shiny-apple" name="Consumable" />
+        <.slot_card icon="pear" name="Consumable" />
+        <.slot_card icon="waterskin" name="Consumable" />
+        <.slot_card icon="card-joker" name="Consumable" />
       </div>
-    </section>
+    </UI.Panels.section>
+    """
+  end
+
+  attr :icon, :string, required: true
+  attr :name, :string, required: true
+
+  defp slot_card(assigns) do
+    ~H"""
+    <div class="card bg-base-300 shadow-sm p-4 flex-row items-center rounded-btn gap-4">
+      <div class="flex items-center bg-base-content/5 rounded-lg p-2 shadow-lg">
+        <UI.Icons.game name={@icon} size="24" />
+      </div>
+      <span class="font-medium">{@name}</span>
+    </div>
     """
   end
 
