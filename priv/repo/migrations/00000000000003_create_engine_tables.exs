@@ -25,9 +25,9 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :strength, :integer, null: false
-      add :dexterity, :integer, null: false
-      add :intelligence, :integer, null: false
+      add :strength_curve, :map, null: false
+      add :dexterity_curve, :map, null: false
+      add :intelligence_curve, :map, null: false
     end
 
     create unique_index(:classes, :name)

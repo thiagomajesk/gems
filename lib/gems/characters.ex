@@ -152,14 +152,20 @@ defmodule GEMS.Characters do
   end
 
   defp calculate_strength(character) do
-    character.class.strength
+    %{class: %{strength_curve: curve}} = character
+    # TODO: Incorporate character level when available
+    GEMS.Progression.value_for(curve, 1)
   end
 
   defp calculate_dexterity(character) do
-    character.class.dexterity
+    %{class: %{dexterity_curve: curve}} = character
+    # TODO: Incorporate character level available
+    GEMS.Progression.value_for(curve, 1)
   end
 
   defp calculate_intelligence(character) do
-    character.class.intelligence
+    %{class: %{intelligence_curve: curve}} = character
+    # TODO: Incorporate character level available
+    GEMS.Progression.value_for(curve, 1)
   end
 end

@@ -19,9 +19,10 @@ defmodule GEMS.Engine.Schema.Trait do
   schema "traits" do
     field :kind, Ecto.Enum, values: @kinds
 
+    belongs_to :state, GEMS.Engine.Schema.State
+    belongs_to :class, GEMS.Engine.Schema.Class
     belongs_to :creature, GEMS.Engine.Schema.Creature
     belongs_to :equipment, GEMS.Engine.Schema.Equipment
-    belongs_to :state, GEMS.Engine.Schema.State
 
     has_one :skill_seal, GEMS.Engine.Schema.TraitSkillSeal, on_replace: :delete
     has_one :attack_skill, GEMS.Engine.Schema.TraitAttackSkill, on_replace: :delete
@@ -39,9 +40,10 @@ defmodule GEMS.Engine.Schema.Trait do
     trait
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> assoc_constraint(:state)
+    |> assoc_constraint(:class)
     |> assoc_constraint(:creature)
     |> assoc_constraint(:equipment)
-    |> assoc_constraint(:state)
     |> cast_assoc(:skill_seal)
     |> cast_assoc(:attack_skill)
     |> cast_assoc(:attack_element)

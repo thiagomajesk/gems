@@ -34,7 +34,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
   attr :icon, :string, default: nil
   attr :type, :string, required: true
   attr :field, :any, required: true
-  attr :rest, :global, include: ~w(step)
+  attr :rest, :global, include: ~w(step min max)
 
   def input(assigns) do
     assigns = Forms.input_assigns(assigns)

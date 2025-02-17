@@ -124,7 +124,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
           value={@value}
           type="number"
           placeholder={@placeholder}
-          step="0.01"
+          step="0.1"
           class={["w-full", @errors != [] && "input-error"]}
           {@rest}
         />

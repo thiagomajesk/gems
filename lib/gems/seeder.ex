@@ -38,8 +38,8 @@ defmodule GEMS.Seeder do
 
     module
     |> find_or_build(entry_id)
-    |> module.seed_changeset(entry)
     |> Repo.preload(preloads)
+    |> module.seed_changeset(entry)
     |> Repo.insert_or_update!()
   end
 
