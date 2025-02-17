@@ -29,13 +29,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ClassComponent do
             <Forms.field_input type="number" field={f[:dexterity]} label="Dexterity" />
             <Forms.field_input type="number" field={f[:intelligence]} label="Intelligence" />
           </div>
-
-          <Forms.field_input
-            type="select"
-            field={f[:blessing_id]}
-            label="Blessing"
-            options={@blessing_options}
-          />
         </div>
       </Forms.base_form>
     </div>
