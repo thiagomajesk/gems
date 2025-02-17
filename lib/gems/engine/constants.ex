@@ -12,10 +12,10 @@ defmodule GEMS.Engine.Constants do
       :accuracy_rating,
       :critical_power,
       :magic_resist,
-      :max_energy,
-      :energy_regen,
+      :max_mana,
+      :mana__regen,
       :magic_damage,
-      :ability_power
+      :skill_power
     ]
 
   def tiers,

@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.OriginComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ClassComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
@@ -6,7 +6,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.OriginComponent do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-wrapper"}>
-      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/origins"}>
+      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/classes"}>
         <div class="space-y-6">
           <div class="grid grid-cols-2 gap-6">
             <Forms.field_input

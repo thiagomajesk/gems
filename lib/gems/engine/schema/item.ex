@@ -52,11 +52,11 @@ defmodule GEMS.Engine.Schema.Item do
 
   @damage_types [
     :health_damage,
-    :energy_damage,
+    :mana_damage,
     :health_recover,
-    :energy_recover,
+    :mana_recover,
     :health_drain,
-    :energy_drain
+    :mana_drain
   ]
 
   schema "items" do

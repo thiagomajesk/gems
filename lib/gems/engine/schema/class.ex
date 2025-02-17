@@ -1,4 +1,4 @@
-defmodule GEMS.World.Schema.Origin do
+defmodule GEMS.Engine.Schema.Class do
   use GEMS.Database.Schema,
     preset: :collection,
     required_fields: [
@@ -9,19 +9,16 @@ defmodule GEMS.World.Schema.Origin do
       :intelligence
     ],
     optional_fields: [
-      :description,
-      :blessing_id
+      :description
     ]
 
-  schema "origins" do
+  schema "classes" do
     field :name, :string
     field :code, :string
     field :description, :string
     field :strength, :integer
     field :dexterity, :integer
     field :intelligence, :integer
-
-    belongs_to :blessing, GEMS.World.Schema.Blessing
   end
 
   def build_changeset(avatar, attrs, opts) do

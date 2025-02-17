@@ -18,7 +18,7 @@ defmodule GEMSWeb.CharacterLive.New do
         class="card bg-base-200 p-4 space-y-4 shadow"
       >
         <.input type="text" field={f[:name]} label="Name" required />
-        <.input type="select" field={f[:origin_id]} label="Origin" options={@origin_options} required />
+        <.input type="select" field={f[:class_id]} label="Class" options={@class_options} required />
         <.input
           type="select"
           field={f[:faction_id]}
@@ -52,7 +52,7 @@ defmodule GEMSWeb.CharacterLive.New do
 
   def mount(_params, _session, socket) do
     changeset = Characters.change_character(%Character{})
-    origin_options = GEMS.World.Schema.Origin.options()
+    class_options = GEMS.Engine.Schema.Class.options()
     faction_options = GEMS.World.Schema.Faction.options()
 
     avatars = GEMS.World.list_avatars()
@@ -60,7 +60,7 @@ defmodule GEMSWeb.CharacterLive.New do
     {:ok,
      assign(socket,
        form: to_form(changeset),
-       origin_options: origin_options,
+       class_options: class_options,
        faction_options: faction_options,
        avatars: avatars
      )}

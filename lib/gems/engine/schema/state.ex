@@ -5,8 +5,8 @@ defmodule GEMS.Engine.Schema.State do
     optional_fields: [:description, :priority, :restriction],
     default_preloads: [
       traits: [
-        :ability_seal,
-        :attack_ability,
+        :skill_seal,
+        :attack_skill,
         :attack_element,
         :attack_state,
         :element_rate,

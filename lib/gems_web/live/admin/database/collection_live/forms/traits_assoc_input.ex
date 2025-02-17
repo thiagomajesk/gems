@@ -37,15 +37,15 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput do
             </button>
           </header>
           <div>
-            <.ability_seal_inputs
-              :if={to_string(f[:kind].value) == "ability_seal"}
-              field={f[:ability_seal]}
-              options={@ability_options}
+            <.skill_seal_inputs
+              :if={to_string(f[:kind].value) == "skill_seal"}
+              field={f[:skill_seal]}
+              options={@skill_options}
             />
-            <.attack_ability_inputs
-              :if={to_string(f[:kind].value) == "attack_ability"}
-              field={f[:attack_ability]}
-              options={@ability_options}
+            <.attack_skill_inputs
+              :if={to_string(f[:kind].value) == "attack_skill"}
+              field={f[:attack_skill]}
+              options={@skill_options}
             />
             <.attack_element_inputs
               :if={to_string(f[:kind].value) == "attack_element"}
@@ -107,7 +107,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput do
     socket
     |> assign_new(:trait_options, fn -> trait_options() end)
     |> assign_new(:stat_options, fn -> stat_options() end)
-    |> assign_new(:ability_options, fn -> GEMS.Engine.Schema.Ability.options() end)
+    |> assign_new(:skill_options, fn -> GEMS.Engine.Schema.Skill.options() end)
     |> assign_new(:state_options, fn -> GEMS.Engine.Schema.State.options() end)
     |> assign_new(:element_options, fn -> GEMS.Engine.Schema.Element.options() end)
     |> assign_new(:equipment_options, fn -> GEMS.Engine.Schema.Equipment.options() end)
@@ -135,10 +135,10 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput do
   attr :field, :any, required: true
   attr :options, :list, required: true
 
-  defp ability_seal_inputs(assigns) do
+  defp skill_seal_inputs(assigns) do
     ~H"""
     <.inputs_for :let={f} field={@field}>
-      <SharedInputs.select label="Ability" field={f[:ability_id]} options={@options} />
+      <SharedInputs.select label="Skill" field={f[:skill_id]} options={@options} />
     </.inputs_for>
     """
   end
@@ -146,10 +146,10 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput do
   attr :field, :any, required: true
   attr :options, :list, required: true
 
-  defp attack_ability_inputs(assigns) do
+  defp attack_skill_inputs(assigns) do
     ~H"""
     <.inputs_for :let={f} field={@field}>
-      <SharedInputs.select label="Ability" field={f[:ability_id]} options={@options} />
+      <SharedInputs.select label="Skill" field={f[:skill_id]} options={@options} />
     </.inputs_for>
     """
   end

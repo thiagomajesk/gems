@@ -13,7 +13,7 @@ defmodule GEMS.Engine.Schema.Effect do
     field :kind, Ecto.Enum, values: @kinds
 
     belongs_to :item, GEMS.Engine.Schema.Item
-    belongs_to :ability, GEMS.Engine.Schema.Ability
+    belongs_to :skill, GEMS.Engine.Schema.Skill
 
     has_one :recovery, GEMS.Engine.Schema.EffectRecovery, on_replace: :delete
     has_one :state_change, GEMS.Engine.Schema.EffectStateChange, on_replace: :delete

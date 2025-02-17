@@ -26,7 +26,7 @@ defmodule GEMS.World.Schema.Zone do
     field :gold_cost, :integer
     field :stamina_cost, :integer
 
-    belongs_to :biome, GEMS.Engine.Schema.Biome
+    belongs_to :biome, GEMS.World.Schema.Biome
     belongs_to :faction, GEMS.World.Schema.Faction
     belongs_to :nearby, GEMS.World.Schema.Zone
 

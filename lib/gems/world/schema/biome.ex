@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.Schema.Biome do
+defmodule GEMS.World.Schema.Biome do
   use GEMS.Database.Schema,
     preset: :collection,
     required_fields: [:name, :code],

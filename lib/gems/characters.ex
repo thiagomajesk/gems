@@ -124,7 +124,7 @@ defmodule GEMS.Characters do
 
       changeset
       |> Ecto.Changeset.put_change(:max_health, 100)
-      |> Ecto.Changeset.put_change(:max_energy, 100)
+      |> Ecto.Changeset.put_change(:max_mana, 100)
       |> Ecto.Changeset.put_change(:zone_id, zone.id)
       |> Ecto.Changeset.put_assoc(:professions, professions)
     end)
@@ -138,7 +138,7 @@ defmodule GEMS.Characters do
 
   defp preload_character(character) do
     Repo.preload(character, [
-      :origin,
+      :class,
       :faction,
       :avatar
     ])
@@ -152,14 +152,14 @@ defmodule GEMS.Characters do
   end
 
   defp calculate_strength(character) do
-    character.origin.strength
+    character.class.strength
   end
 
   defp calculate_dexterity(character) do
-    character.origin.dexterity
+    character.class.dexterity
   end
 
   defp calculate_intelligence(character) do
-    character.origin.intelligence
+    character.class.intelligence
   end
 end

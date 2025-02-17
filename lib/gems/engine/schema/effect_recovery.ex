@@ -1,10 +1,7 @@
 defmodule GEMS.Engine.Schema.EffectRecovery do
   use GEMS.Database.Schema, preset: :default
 
-  @parameters [
-    :health,
-    :energy
-  ]
+  @parameters [:health, :mana]
 
   @required_fields [:parameter]
 

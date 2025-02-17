@@ -30,7 +30,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.BlessingComponent do
 
           <.live_component
             module={IconPickerComponent}
-            id="ability-icon"
+            id="-icon"
             field={f[:icon]}
             label="Icon"
           />

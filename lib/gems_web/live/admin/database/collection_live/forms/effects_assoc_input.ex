@@ -40,7 +40,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EffectsAssocInput do
             <.recovery_inputs
               :if={to_string(f[:kind].value) == "recovery"}
               field={f[:recovery]}
-              options={[Health: :health, Energy: :energy]}
+              options={[Health: :health, Mana: :mana]}
             />
             <.state_change_inputs
               :if={to_string(f[:kind].value) == "state_change"}

@@ -3,7 +3,7 @@ defmodule GEMS.World.Schema.Character do
 
   @required_fields [
     :name,
-    :origin_id,
+    :class_id,
     :avatar_id,
     :faction_id
   ]
@@ -35,12 +35,12 @@ defmodule GEMS.World.Schema.Character do
 
     # INT
     field :magic_resist, :integer, virtual: true
-    field :max_energy, :integer, virtual: true
-    field :energy_regen, :integer, virtual: true
+    field :max_mana, :integer, virtual: true
+    field :mana__regen, :integer, virtual: true
     field :magic_damage, :integer, virtual: true
-    field :ability_power, :integer, virtual: true
+    field :skill_power, :integer, virtual: true
 
-    belongs_to :origin, GEMS.World.Schema.Origin
+    belongs_to :class, GEMS.Engine.Schema.Class
     belongs_to :faction, GEMS.World.Schema.Faction
     belongs_to :avatar, GEMS.World.Schema.Avatar
     belongs_to :user, GEMS.Accounts.Schema.User

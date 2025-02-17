@@ -2,9 +2,9 @@ defmodule GEMSWeb.Collections do
   alias GEMSWeb.Admin.Database.CollectionLive.Forms
 
   @collections %{
-    "abilities" => %{
-      module: GEMS.Engine.Schema.Ability,
-      form: Forms.AbilityComponent,
+    "skills" => %{
+      module: GEMS.Engine.Schema.Skill,
+      form: Forms.SkillComponent,
       preloads: [:type],
       columns: [
         %{field: :id, type: :id, label: "ID"},
@@ -13,9 +13,9 @@ defmodule GEMSWeb.Collections do
         %{field: :type, type: :assoc, label: "Type"}
       ]
     },
-    "ability-types" => %{
-      module: GEMS.Engine.Schema.AbilityType,
-      form: Forms.AbilityTypeComponent,
+    "-types" => %{
+      module: GEMS.Engine.Schema.SkillType,
+      form: Forms.SkillTypeComponent,
       preloads: [],
       columns: [
         %{field: :id, type: :id, label: "ID"},
@@ -24,7 +24,7 @@ defmodule GEMSWeb.Collections do
       ]
     },
     "biomes" => %{
-      module: GEMS.Engine.Schema.Biome,
+      module: GEMS.World.Schema.Biome,
       form: Forms.BiomeComponent,
       preloads: [],
       columns: [
@@ -117,7 +117,7 @@ defmodule GEMSWeb.Collections do
     },
     "items" => %{
       module: GEMS.Engine.Schema.Item,
-      form: ItemComponent.AbilityComponent,
+      form: Forms.ItemComponent,
       preloads: [:type],
       columns: [
         %{field: :id, type: :id, label: "ID"},
@@ -126,9 +126,9 @@ defmodule GEMSWeb.Collections do
         %{field: :type, type: :assoc, label: "Type"}
       ]
     },
-    "origins" => %{
-      module: GEMS.World.Schema.Origin,
-      form: Forms.OriginComponent,
+    "classes" => %{
+      module: GEMS.Engine.Schema.Class,
+      form: Forms.ClassComponent,
       preloads: [],
       columns: [
         %{field: :id, type: :id, label: "ID"},

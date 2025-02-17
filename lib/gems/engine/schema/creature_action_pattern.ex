@@ -5,10 +5,10 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
     :always,
     :turn_number,
     :health_number,
-    :energy_number
+    :_number
   ]
 
-  @required_fields [:name, :ability_id, :condition]
+  @required_fields [:name, :skill_id, :condition]
 
   @optional_fields [
     :description,
@@ -17,8 +17,8 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
     :max_turn,
     :min_health,
     :max_health,
-    :min_energy,
-    :max_energy,
+    :min_,
+    :max_mana,
     :state_id
   ]
 
@@ -31,11 +31,11 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
     field :max_turn, :integer
     field :min_health, :integer
     field :max_health, :integer
-    field :min_energy, :integer
-    field :max_energy, :integer
+    field :min_, :integer
+    field :max_mana, :integer
 
     belongs_to :creature, GEMS.Engine.Schema.Creature
-    belongs_to :ability, GEMS.Engine.Schema.Ability
+    belongs_to :skill, GEMS.Engine.Schema.Skill
     belongs_to :state, GEMS.Engine.Schema.State
   end
 
@@ -44,7 +44,7 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
     action_pattern
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> assoc_constraint(:ability)
+    |> assoc_constraint(:skill)
     |> assoc_constraint(:state)
   end
 end

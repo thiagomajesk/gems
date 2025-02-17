@@ -1,9 +1,9 @@
 defmodule GEMSLua.API.Seeds do
   use Lua.API, scope: "GEMS.api.seeds"
 
-  alias GEMS.Engine.Schema.Ability
-  alias GEMS.Engine.Schema.AbilityType
-  alias GEMS.Engine.Schema.Biome
+  alias GEMS.Engine.Schema.Skill
+  alias GEMS.Engine.Schema.SkillType
+  alias GEMS.World.Schema.Biome
   alias GEMS.Engine.Schema.Creature
   alias GEMS.Engine.Schema.CreatureType
   alias GEMS.Engine.Schema.Element
@@ -16,7 +16,7 @@ defmodule GEMSLua.API.Seeds do
   alias GEMS.World.Schema.Avatar
   alias GEMS.World.Schema.Blessing
   alias GEMS.World.Schema.Faction
-  alias GEMS.World.Schema.Origin
+  alias GEMS.Engine.Schema.Class
   alias GEMS.World.Schema.Profession
   alias GEMS.World.Schema.Zone
 
@@ -24,8 +24,8 @@ defmodule GEMSLua.API.Seeds do
 
   require Logger
 
-  deflua insert_abilities(table), do: insert_entities(Ability, table)
-  deflua insert_ability_types(table), do: insert_entities(AbilityType, table)
+  deflua insert_skills(table), do: insert_entities(Skill, table)
+  deflua insert_skill_types(table), do: insert_entities(SkillType, table)
   deflua insert_activities(table), do: insert_entities(Activity, table)
   deflua insert_avatars(table), do: insert_entities(Avatar, table)
   deflua insert_biomes(table), do: insert_entities(Biome, table)
@@ -38,7 +38,7 @@ defmodule GEMSLua.API.Seeds do
   deflua insert_factions(table), do: insert_entities(Faction, table)
   deflua insert_item_types(table), do: insert_entities(ItemType, table)
   deflua insert_items(table), do: insert_entities(Item, table)
-  deflua insert_origins(table), do: insert_entities(Origin, table)
+  deflua insert_classes(table), do: insert_entities(Class, table)
   deflua insert_professions(table), do: insert_entities(Profession, table)
   deflua insert_states(table), do: insert_entities(State, table)
   deflua insert_zones(table), do: insert_entities(Zone, table)

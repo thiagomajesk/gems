@@ -3,9 +3,9 @@ defmodule GEMS.Insights do
   alias GEMS.Accounts.Schema.User
   alias GEMS.World.Schema.Character
   alias GEMS.World.Schema.Profession
-  alias GEMS.Engine.Schema.Ability
-  alias GEMS.Engine.Schema.AbilityType
-  alias GEMS.Engine.Schema.Biome
+  alias GEMS.Engine.Schema.Skill
+  alias GEMS.Engine.Schema.SkillType
+  alias GEMS.World.Schema.Biome
   alias GEMS.Engine.Schema.Creature
   alias GEMS.Engine.Schema.CreatureType
   alias GEMS.Engine.Schema.Equipment
@@ -23,12 +23,12 @@ defmodule GEMS.Insights do
     Repo.aggregate(Character, :count, :id)
   end
 
-  def count_abilities() do
-    Repo.aggregate(Ability, :count, :id)
+  def count_skills() do
+    Repo.aggregate(Skill, :count, :id)
   end
 
-  def count_ability_types() do
-    Repo.aggregate(AbilityType, :count, :id)
+  def count_skill_types() do
+    Repo.aggregate(SkillType, :count, :id)
   end
 
   def count_biomes() do

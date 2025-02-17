@@ -105,16 +105,16 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
         <Forms.field_input type="number" field={@form[:magic_resist]} label="Magic Resist" />
         <Forms.field_input type="number" field={@form[:max_health]} label="Max Health" />
         <Forms.field_input type="number" field={@form[:attack_speed]} label="Attack Speed" />
-        <Forms.field_input type="number" field={@form[:max_energy]} label="Max Energy" />
+        <Forms.field_input type="number" field={@form[:max_mana]} label="Max Mana" />
         <Forms.field_input type="number" field={@form[:health_regen]} label="Health Regen" />
         <Forms.field_input type="number" field={@form[:critical_rating]} label="Critical Rating" />
         <Forms.field_input type="number" field={@form[:attack_damage]} label="Physical Damage" />
         <Forms.field_input type="number" field={@form[:accuracy_rating]} label="Accuracy Rating" />
-        <Forms.field_input type="number" field={@form[:energy_regen]} label="Energy Regen" />
+        <Forms.field_input type="number" field={@form[:mana__regen]} label="Mana Regen" />
         <Forms.field_input type="number" field={@form[:magic_damage]} label="Magical Damage" />
         <Forms.field_input type="number" field={@form[:weapon_power]} label="Weapon Power" />
         <Forms.field_input type="number" field={@form[:critical_power]} label="Critical Power" />
-        <Forms.field_input type="number" field={@form[:ability_power]} label="Ability Power" />
+        <Forms.field_input type="number" field={@form[:skill_power]} label="Skill Power" />
       </div>
     </Forms.fieldset>
     """

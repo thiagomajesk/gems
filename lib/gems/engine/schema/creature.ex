@@ -4,8 +4,7 @@ defmodule GEMS.Engine.Schema.Creature do
     required_fields: [
       :name,
       :code,
-      :type_id,
-      :biome_id
+      :type_id
     ],
     optional_fields: [
       :description,
@@ -21,15 +20,15 @@ defmodule GEMS.Engine.Schema.Creature do
       :accuracy_rating,
       :critical_power,
       :magic_resist,
-      :max_energy,
-      :energy_regen,
+      :max_mana,
+      :mana__regen,
       :magic_damage,
-      :ability_power
+      :skill_power
     ],
     default_preloads: [
       traits: [
-        :ability_seal,
-        :attack_ability,
+        :skill_seal,
+        :attack_skill,
         :attack_element,
         :attack_state,
         :element_rate,
@@ -63,12 +62,11 @@ defmodule GEMS.Engine.Schema.Creature do
 
     # INT
     field :magic_resist, :integer
-    field :max_energy, :integer
-    field :energy_regen, :integer
+    field :max_mana, :integer
+    field :mana__regen, :integer
     field :magic_damage, :integer
-    field :ability_power, :integer
+    field :skill_power, :integer
 
-    belongs_to :biome, GEMS.Engine.Schema.Biome
     belongs_to :type, GEMS.Engine.Schema.CreatureType
 
     has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete

@@ -8,7 +8,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemComponent do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-wrapper"}>
-      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/abilities"}>
+      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/"}>
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
           <div class="space-y-6">
             <div class="grid grid-cols-2 gap-6">
@@ -120,14 +120,14 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ItemComponent do
 
   def mount(socket) do
     item_type_options = GEMS.Engine.Schema.ItemType.options()
-    ability_types_options = GEMS.Engine.Schema.AbilityType.options()
+    skill_types_options = GEMS.Engine.Schema.SkillType.options()
     element_options = GEMS.Engine.Schema.Element.options()
 
     {:ok,
      assign(socket,
        tier_options: tier_options(),
        item_type_options: item_type_options,
-       ability_types_options: ability_types_options,
+       skill_types_options: skill_types_options,
        element_options: element_options,
        hit_type_options: hit_type_options(),
        target_side_options: target_side_options(),

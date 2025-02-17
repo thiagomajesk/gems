@@ -8,13 +8,14 @@ defmodule GEMS.Repo.Migrations.CreateTraitsTables do
 
     create table(:traits) do
       add :kind, :string, null: false
+      add :state_id, references(:states, on_delete: :delete_all)
+      add :class_id, references(:classes, on_delete: :delete_all)
       add :creature_id, references(:creatures, on_delete: :delete_all)
       add :equipment_id, references(:equipments, on_delete: :delete_all)
-      add :state_id, references(:states, on_delete: :delete_all)
     end
 
     create constraint(:traits, :single_association,
-             check: "num_nonnulls(creature_id, equipment_id, state_id) = 1"
+             check: "num_nonnulls(state_id, class_id, creature_id, equipment_id) = 1"
            )
 
     ################################################################################
@@ -103,29 +104,29 @@ defmodule GEMS.Repo.Migrations.CreateTraitsTables do
            )
 
     ################################################################################
-    # Attack Abilities
+    # Attack Skills
     ################################################################################
 
-    create table(:traits_attack_abilities) do
+    create table(:traits_attack_skills) do
       add :trait_id, references(:traits, on_delete: :delete_all), null: false
-      add :ability_id, references(:abilities, on_delete: :delete_all), null: false
+      add :skill_id, references(:skills, on_delete: :delete_all), null: false
     end
 
-    create constraint(:traits_attack_abilities, :trait_kind_matches,
-             check: "check_column_value(trait_id, 'traits', 'kind', 'attack_ability')"
+    create constraint(:traits_attack_skills, :trait_kind_matches,
+             check: "check_column_value(trait_id, 'traits', 'kind', 'attack_skill')"
            )
 
     ################################################################################
-    # Abilities Seals
+    # Skills Seals
     ################################################################################
 
-    create table(:traits_abilities_seals) do
+    create table(:traits_skills_seals) do
       add :trait_id, references(:traits, on_delete: :delete_all), null: false
-      add :ability_id, references(:abilities, on_delete: :delete_all), null: false
+      add :skill_id, references(:skills, on_delete: :delete_all), null: false
     end
 
-    create constraint(:traits_abilities_seals, :trait_kind_matches,
-             check: "check_column_value(trait_id, 'traits', 'kind', 'ability_seal')"
+    create constraint(:traits_skills_seals, :trait_kind_matches,
+             check: "check_column_value(trait_id, 'traits', 'kind', 'skill_seal')"
            )
 
     ################################################################################

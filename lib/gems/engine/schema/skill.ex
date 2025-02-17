@@ -1,11 +1,11 @@
-defmodule GEMS.Engine.Schema.Ability do
+defmodule GEMS.Engine.Schema.Skill do
   use GEMS.Database.Schema,
     preset: :collection,
     required_fields: [:name, :code, :type_id],
     optional_fields: [
       :description,
       :health_cost,
-      :energy_cost,
+      :mana_cost,
       :target_side,
       :target_status,
       :target_number,
@@ -44,19 +44,19 @@ defmodule GEMS.Engine.Schema.Ability do
 
   @damage_types [
     :health_damage,
-    :energy_damage,
+    :mana_damage,
     :health_recover,
-    :energy_recover,
+    :mana_recover,
     :health_drain,
-    :energy_drain
+    :mana_drain
   ]
 
-  schema "abilities" do
+  schema "skills" do
     field :name, :string
     field :code, :string
     field :description, :string
     field :health_cost, :integer
-    field :energy_cost, :integer
+    field :mana_cost, :integer
     field :messages, :map
 
     field :target_side, Ecto.Enum, values: @target_sides
@@ -75,14 +75,16 @@ defmodule GEMS.Engine.Schema.Ability do
 
     embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
 
-    belongs_to :type, GEMS.Engine.Schema.AbilityType
+    belongs_to :type, GEMS.Engine.Schema.SkillType
     belongs_to :damage_element, GEMS.Engine.Schema.Element
 
     has_many :effects, GEMS.Engine.Schema.Effect, on_replace: :delete
   end
 
-  def build_changeset(ability, attrs, opts) do
-    changeset = super(ability, attrs, opts)
+  def build_changeset(skill, attrs, opts) do
+    changeset = super(skill, attrs, opts)
+
+    dbg(attrs)
 
     changeset
     |> cast_embed(:icon)

@@ -23,15 +23,15 @@ defmodule GEMS.Engine.Schema.Equipment do
       :accuracy_rating,
       :critical_power,
       :magic_resist,
-      :max_energy,
-      :energy_regen,
+      :max_mana,
+      :mana__regen,
       :magic_damage,
-      :ability_power
+      :skill_power
     ],
     default_preloads: [
       traits: [
-        :ability_seal,
-        :attack_ability,
+        :skill_seal,
+        :attack_skill,
         :attack_element,
         :attack_state,
         :element_rate,
@@ -82,10 +82,10 @@ defmodule GEMS.Engine.Schema.Equipment do
 
     # INT
     field :magic_resist, :integer
-    field :max_energy, :integer
-    field :energy_regen, :integer
+    field :max_mana, :integer
+    field :mana__regen, :integer
     field :magic_damage, :integer
-    field :ability_power, :integer
+    field :skill_power, :integer
 
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
 
@@ -93,7 +93,7 @@ defmodule GEMS.Engine.Schema.Equipment do
     has_many :equipment_materials, GEMS.Engine.Schema.EquipmentMaterial, on_replace: :delete
 
     many_to_many :materials, GEMS.Engine.Schema.Item, join_through: "equipments_materials"
-    many_to_many :abilities, GEMS.Engine.Schema.Ability, join_through: "equipments_abilities"
+    many_to_many :skills, GEMS.Engine.Schema.Skill, join_through: "equipments_skills"
   end
 
   def build_changeset(equipment, attrs, opts) do
@@ -101,7 +101,7 @@ defmodule GEMS.Engine.Schema.Equipment do
 
     changeset
     |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
-    |> cast_assoc(:abilities, sort_param: :abilities_sort, drop_param: :abilities_drop)
+    |> cast_assoc(:skills, sort_param: :skills_sort, drop_param: :skills_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

@@ -1,4 +1,4 @@
-defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
+defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
@@ -8,7 +8,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-wrapper"}>
-      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/abilities"}>
+      <Forms.base_form :let={f} id={@id} for={@form} return_to={~p"/admin/database/"}>
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
           <div class="space-y-6">
             <div class="grid grid-cols-2 gap-6">
@@ -29,14 +29,14 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
 
             <.live_component
               module={IconPickerComponent}
-              id="ability-icon"
+              id="-icon"
               field={f[:icon]}
               label="Icon"
             />
 
             <div class="grid grid-cols-2 gap-6">
-              <Forms.field_input type="text" field={f[:health_cost]} label="Health Cost" />
-              <Forms.field_input type="text" field={f[:energy_cost]} label="Energy Cost" />
+              <Forms.field_input type="number" field={f[:health_cost]} label="Health Cost" />
+              <Forms.field_input type="number" field={f[:mana_cost]} label="Mana Cost" />
             </div>
 
             <div class="grid grid-cols-3 gap-6">
@@ -54,7 +54,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
               type="select"
               field={f[:type_id]}
               label="Type"
-              options={@ability_types_options}
+              options={@skill_types_options}
             />
 
             <Forms.fieldset legend="Target">
@@ -120,12 +120,12 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
   end
 
   def mount(socket) do
-    ability_types_options = GEMS.Engine.Schema.AbilityType.options()
+    skill_types_options = GEMS.Engine.Schema.SkillType.options()
     element_options = GEMS.Engine.Schema.Element.options()
 
     {:ok,
      assign(socket,
-       ability_types_options: ability_types_options,
+       skill_types_options: skill_types_options,
        element_options: element_options,
        hit_type_options: hit_type_options(),
        target_side_options: target_side_options(),
@@ -135,25 +135,25 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.AbilityComponent do
   end
 
   defp hit_type_options() do
-    GEMS.Engine.Schema.Ability
+    GEMS.Engine.Schema.Skill
     |> Ecto.Enum.mappings(:hit_type)
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 
   defp target_side_options() do
-    GEMS.Engine.Schema.Ability
+    GEMS.Engine.Schema.Skill
     |> Ecto.Enum.mappings(:target_side)
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 
   defp target_status_options() do
-    GEMS.Engine.Schema.Ability
+    GEMS.Engine.Schema.Skill
     |> Ecto.Enum.mappings(:target_status)
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 
   defp damage_type_options() do
-    GEMS.Engine.Schema.Ability
+    GEMS.Engine.Schema.Skill
     |> Ecto.Enum.mappings(:damage_type)
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end

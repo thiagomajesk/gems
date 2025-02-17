@@ -45,23 +45,6 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create unique_index(:blessings, :code)
 
     ################################################################################
-    # Origins
-    ################################################################################
-
-    create table(:origins) do
-      add :name, :string, null: false
-      add :code, :string, null: false
-      add :description, :string, null: true
-      add :strength, :integer, null: false
-      add :dexterity, :integer, null: false
-      add :intelligence, :integer, null: false
-      add :blessing_id, references(:blessings), null: true
-    end
-
-    create unique_index(:origins, :name)
-    create unique_index(:origins, :code)
-
-    ################################################################################
     # Pets
     ################################################################################
 
@@ -96,6 +79,22 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
 
     create unique_index(:factions, :name)
     create unique_index(:factions, :code)
+
+    ################################################################################
+    # Biomes
+    ################################################################################
+
+    create table(:biomes) do
+      add :name, :string, null: false
+      add :code, :string, null: false
+      add :description, :string, null: true
+
+      add :affinity_id, references(:elements), null: true
+      add :aversion_id, references(:elements), null: true
+    end
+
+    create unique_index(:biomes, :name)
+    create unique_index(:biomes, :code)
 
     ################################################################################
     # Zones

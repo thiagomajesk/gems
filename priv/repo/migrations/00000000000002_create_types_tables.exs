@@ -16,33 +16,17 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
     create unique_index(:elements, :code)
 
     ################################################################################
-    # Biomes
+    # Skill Types
     ################################################################################
 
-    create table(:biomes) do
-      add :name, :string, null: false
-      add :code, :string, null: false
-      add :description, :string, null: true
-
-      add :affinity_id, references(:elements), null: true
-      add :aversion_id, references(:elements), null: true
-    end
-
-    create unique_index(:biomes, :name)
-    create unique_index(:biomes, :code)
-
-    ################################################################################
-    # Ability Types
-    ################################################################################
-
-    create table(:ability_types) do
+    create table(:skill_types) do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
     end
 
-    create unique_index(:ability_types, :name)
-    create unique_index(:ability_types, :code)
+    create unique_index(:skill_types, :name)
+    create unique_index(:skill_types, :code)
 
     ################################################################################
     # Item Types

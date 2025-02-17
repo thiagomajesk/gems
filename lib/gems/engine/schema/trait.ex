@@ -2,8 +2,8 @@ defmodule GEMS.Engine.Schema.Trait do
   use GEMS.Database.Schema, preset: :default
 
   @kinds [
-    :ability_seal,
-    :attack_ability,
+    :skill_seal,
+    :attack_skill,
     :attack_element,
     :attack_state,
     :parameter_rate,
@@ -23,8 +23,8 @@ defmodule GEMS.Engine.Schema.Trait do
     belongs_to :equipment, GEMS.Engine.Schema.Equipment
     belongs_to :state, GEMS.Engine.Schema.State
 
-    has_one :ability_seal, GEMS.Engine.Schema.TraitAbilitySeal, on_replace: :delete
-    has_one :attack_ability, GEMS.Engine.Schema.TraitAttackAbility, on_replace: :delete
+    has_one :skill_seal, GEMS.Engine.Schema.TraitSkillSeal, on_replace: :delete
+    has_one :attack_skill, GEMS.Engine.Schema.TraitAttackSkill, on_replace: :delete
     has_one :attack_element, GEMS.Engine.Schema.TraitAttackElement, on_replace: :delete
     has_one :attack_state, GEMS.Engine.Schema.TraitAttackState, on_replace: :delete
     has_one :parameter_rate, GEMS.Engine.Schema.TraitParameterRate, on_replace: :delete
@@ -42,8 +42,8 @@ defmodule GEMS.Engine.Schema.Trait do
     |> assoc_constraint(:creature)
     |> assoc_constraint(:equipment)
     |> assoc_constraint(:state)
-    |> cast_assoc(:ability_seal)
-    |> cast_assoc(:attack_ability)
+    |> cast_assoc(:skill_seal)
+    |> cast_assoc(:attack_skill)
     |> cast_assoc(:attack_element)
     |> cast_assoc(:attack_state)
     |> cast_assoc(:parameter_rate)

@@ -55,7 +55,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.CreatureComponent do
   end
 
   def mount(socket) do
-    biome_options = GEMS.Engine.Schema.Biome.options()
+    biome_options = GEMS.World.Schema.Biome.options()
     type_options = GEMS.Engine.Schema.CreatureType.options()
 
     {:ok,
