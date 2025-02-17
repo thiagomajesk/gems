@@ -13,7 +13,7 @@ defmodule GEMS.Engine.Constants do
       :critical_power,
       :magic_resist,
       :max_mana,
-      :mana__regen,
+      :mana_regen,
       :magic_damage,
       :skill_power
     ]

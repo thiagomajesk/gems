@@ -36,7 +36,7 @@ defmodule GEMS.World.Schema.Character do
     # INT
     field :magic_resist, :integer, virtual: true
     field :max_mana, :integer, virtual: true
-    field :mana__regen, :integer, virtual: true
+    field :mana_regen, :integer, virtual: true
     field :magic_damage, :integer, virtual: true
     field :skill_power, :integer, virtual: true
 

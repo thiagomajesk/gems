@@ -96,7 +96,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       # INT
       add :magic_resist, :integer, default: 0
       add :max_mana, :integer, default: 0
-      add :mana__regen, :integer, default: 0
+      add :mana_regen, :integer, default: 0
       add :magic_damage, :integer, default: 0
       add :skill_power, :integer, default: 0
     end
@@ -116,7 +116,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :max_turn, :integer, null: true
       add :min_health, :integer, null: true
       add :max_health, :integer, null: true
-      add :min_, :integer, null: true
+      add :min_mana, :integer, null: true
       add :max_mana, :integer, null: true
       add :state_id, references(:states), null: true
     end
@@ -197,7 +197,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       # INT
       add :magic_resist, :integer, default: 0
       add :max_mana, :integer, default: 0
-      add :mana__regen, :integer, default: 0
+      add :mana_regen, :integer, default: 0
       add :magic_damage, :integer, default: 0
       add :skill_power, :integer, default: 0
     end

@@ -17,7 +17,7 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
     :max_turn,
     :min_health,
     :max_health,
-    :min_,
+    :min_mana,
     :max_mana,
     :state_id
   ]
@@ -31,7 +31,7 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
     field :max_turn, :integer
     field :min_health, :integer
     field :max_health, :integer
-    field :min_, :integer
+    field :min_mana, :integer
     field :max_mana, :integer
 
     belongs_to :creature, GEMS.Engine.Schema.Creature

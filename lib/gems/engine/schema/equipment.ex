@@ -24,7 +24,7 @@ defmodule GEMS.Engine.Schema.Equipment do
       :critical_power,
       :magic_resist,
       :max_mana,
-      :mana__regen,
+      :mana_regen,
       :magic_damage,
       :skill_power
     ],
@@ -83,7 +83,7 @@ defmodule GEMS.Engine.Schema.Equipment do
     # INT
     field :magic_resist, :integer
     field :max_mana, :integer
-    field :mana__regen, :integer
+    field :mana_regen, :integer
     field :magic_damage, :integer
     field :skill_power, :integer
 

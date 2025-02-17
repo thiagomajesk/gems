@@ -110,7 +110,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
         <Forms.field_input type="number" field={@form[:critical_rating]} label="Critical Rating" />
         <Forms.field_input type="number" field={@form[:attack_damage]} label="Physical Damage" />
         <Forms.field_input type="number" field={@form[:accuracy_rating]} label="Accuracy Rating" />
-        <Forms.field_input type="number" field={@form[:mana__regen]} label="Mana Regen" />
+        <Forms.field_input type="number" field={@form[:mana_regen]} label="Mana Regen" />
         <Forms.field_input type="number" field={@form[:magic_damage]} label="Magical Damage" />
         <Forms.field_input type="number" field={@form[:weapon_power]} label="Weapon Power" />
         <Forms.field_input type="number" field={@form[:critical_power]} label="Critical Power" />
