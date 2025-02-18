@@ -27,8 +27,8 @@ defmodule GEMS.Database.ProgressCurve do
     |> validate_required(@required_fields)
     |> validate_number(:max_value, greater_than: 0)
     |> validate_number(:base_value, greater_than: 0)
-    |> validate_number(:extra_value, greater_than: 0, less_than: 100)
-    |> validate_number(:acceleration, greater_than: 0, less_than: 100)
-    |> validate_number(:inflation, greater_than: 0, less_than: 100)
+    |> validate_number(:extra_value, greater_than: 0, less_than_or_equal_to: 100)
+    |> validate_number(:acceleration, greater_than: 0, less_than_or_equal_to: 100)
+    |> validate_number(:inflation, greater_than: 0, less_than_or_equal_to: 100)
   end
 end
