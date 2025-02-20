@@ -104,7 +104,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :string, null: true
-      add :image, :map, null: true
+      add :image, :string, null: true
       add :skull, :string, null: false
       add :danger, :integer, null: false, default: 1
       add :starting, :boolean, null: false, default: false
