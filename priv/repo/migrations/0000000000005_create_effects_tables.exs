@@ -12,9 +12,7 @@ defmodule GEMS.Repo.Migrations.CreateEffectsTables do
       add :skill_id, references(:skills)
     end
 
-    create constraint(:effects, :single_association,
-             check: "num_nonnulls(item_id, skill_id) = 1"
-           )
+    create constraint(:effects, :single_association, check: "num_nonnulls(item_id, skill_id) = 1")
 
     ################################################################################
     # Recoveries

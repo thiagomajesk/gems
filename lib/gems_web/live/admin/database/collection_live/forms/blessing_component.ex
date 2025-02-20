@@ -28,12 +28,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.BlessingComponent do
 
           <Forms.field_input type="text" field={f[:duration]} label="Duration" />
 
-          <.live_component
-            module={IconPickerComponent}
-            id="-icon"
-            field={f[:icon]}
-            label="Icon"
-          />
+          <.live_component module={IconPickerComponent} id="-icon" field={f[:icon]} label="Icon" />
         </div>
       </Forms.base_form>
     </div>
