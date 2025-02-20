@@ -11,7 +11,12 @@ defmodule GEMSWeb.UIKIT.Lists do
     ~H"""
     <ul class="space-y-2">
       <li :for={card <- @card} class="flex rounded-lg bg-base-200 overflow-hidden shadow">
-        <UI.Media.image src={card.cover} width="150" placeholder={%{width: "150", height: "150"}} />
+        <UI.Media.image
+          src={GEMS.public_asset_path(card.cover)}
+          width="150"
+          class="object-cover"
+          placeholder={%{width: "150", height: "150"}}
+        />
         <div class="flex flex-col p-2 w-full">
           <h6 class="font-semibold text-base">{card.title}</h6>
           <p class="text-sm text-gray-400">{card.subtitle}</p>
