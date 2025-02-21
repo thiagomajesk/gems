@@ -25,8 +25,7 @@ defmodule GEMS do
 
   def public_asset_path(paths_or_paths) do
     known_local_path = local_asset_path!(paths_or_paths)
-    relative = Path.relative_to(known_local_path, data_path())
-    Path.join([GEMSWeb.Endpoint.url(), "game", relative])
+    Path.join(["/game", Path.relative_to(known_local_path, data_path())])
   end
 
   def data_path do
