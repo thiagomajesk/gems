@@ -8,7 +8,7 @@ defmodule GEMS.Repo.Migrations.CreateGuildsTables do
 
     create table(:guilds) do
       add :name, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :icon, :map, null: true
     end
 

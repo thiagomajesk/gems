@@ -9,7 +9,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:avatars) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :image, :string, null: true
     end
 
@@ -23,7 +23,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:professions) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :icon, :map, null: true
     end
 
@@ -37,7 +37,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:blessings) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :icon, :map, null: true
       add :duration, :integer, null: true
     end
@@ -51,7 +51,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:pets) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :image, :string, null: true
     end
 
@@ -73,7 +73,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:factions) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :icon, :map, null: true
     end
 
@@ -87,7 +87,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:biomes) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
 
       add :affinity_id, references(:elements), null: true
       add :aversion_id, references(:elements), null: true
@@ -103,7 +103,7 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     create table(:zones) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :image, :string, null: true
       add :skull, :string, null: false
       add :danger, :integer, null: false, default: 1

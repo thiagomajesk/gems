@@ -9,7 +9,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     create table(:states) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :icon, :map, null: true
       add :priority, :integer, default: 100
       add :restriction, :string, null: true
@@ -24,7 +24,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     create table(:classes) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :strength_curve, :map, null: false
       add :dexterity_curve, :map, null: false
       add :intelligence_curve, :map, null: false
@@ -40,7 +40,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     create table(:skills) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :icon, :map, null: true
       add :type_id, references(:skill_types), null: false
       add :health_cost, :integer, null: false, default: 0
@@ -75,7 +75,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     create table(:creatures) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :image, :string, null: true
       add :type_id, references(:creature_types), null: false
 
@@ -128,7 +128,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     create table(:items) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :image, :string, null: true
       add :type_id, references(:item_types), null: false
       add :tier, :string, null: false
@@ -173,7 +173,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     create table(:equipments) do
       add :name, :string, null: false
       add :code, :string, null: false
-      add :description, :string, null: true
+      add :description, :text, null: true
       add :image, :string, null: true
       add :type_id, references(:equipment_types), null: false
       add :slot, :string, null: false
