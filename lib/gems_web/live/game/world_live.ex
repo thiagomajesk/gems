@@ -17,26 +17,25 @@ defmodule GEMSWeb.Game.WorldLive do
           <div class="flex items-center justify-between mb-2 text-gray-400">
             <div class="flex items-center gap-2">
               <span class="font-semibold uppercase text-accent">{zone.biome.name}</span>
-              <UI.Icons.game name="skull-crack" size={18} class={skull_text_color(zone.skull)} />
+              <UI.Icons.game name="skull-crack" class={skull_text_color(zone.skull)} />
               <UI.Media.game_icon
                 :if={faction = zone.faction}
                 title={faction.name}
                 icon={faction.icon}
                 fallback="black-flag"
-                width={18}
               />
             </div>
             <div class="flex items-center gap-2">
               <div class="badge badge-neutral flex items-center gap-1" title="Gold cost">
-                <UI.Icons.game name="two-coins" size={18} />
+                <UI.Icons.game name="two-coins" />
                 <span>{zone.gold_cost}</span>
               </div>
               <div class="badge badge-neutral flex items-center gap-1" title="Stamina cost">
-                <UI.Icons.game name="run" size={18} />
+                <UI.Icons.game name="run" />
                 <span>{zone.stamina_cost}</span>
               </div>
               <div class="badge badge-neutral flex items-center gap-1" title="Danger">
-                <UI.Icons.game name="skull-crossed-bones" size={18} />
+                <UI.Icons.game name="skull-crossed-bones" />
                 <span>{zone.danger}</span>
               </div>
             </div>
