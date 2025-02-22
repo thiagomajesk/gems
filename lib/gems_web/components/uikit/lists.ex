@@ -19,7 +19,7 @@ defmodule GEMSWeb.UIKIT.Lists do
         />
         <div class="flex flex-col p-2 w-full">
           <h6 class="font-semibold text-base">{card.title}</h6>
-          <p class="text-sm text-gray-400">{card.subtitle}</p>
+          <p class="text-sm text-gray-400 mb-4">{card.subtitle}</p>
           <div class="mt-auto">{render_slot(card)}</div>
         </div>
       </li>
