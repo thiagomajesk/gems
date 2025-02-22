@@ -36,7 +36,7 @@ defmodule GEMSWeb.Game.WorldLive do
                 <span>{zone.stamina_cost}</span>
               </div>
               <div class="badge badge-neutral flex items-center gap-1" title="Danger">
-                <UI.Icons.game name="spiked-halo" size={18} />
+                <UI.Icons.game name="skull-crossed-bones" size={18} />
                 <span>{zone.danger}</span>
               </div>
             </div>
