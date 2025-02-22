@@ -4,22 +4,29 @@ defmodule GEMSWeb.Game.CharacterLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col md:flex-row gap-4">
-      <div class="w-full md:w-1/3 flex flex-col space-y-4">
-        <.bio_section character={@selected_character} />
-        <.attributes_section character={@selected_character} />
-        <.guild_section :if={@guild} guild={@guild} />
-      </div>
-      <div class="w-full md:w-2/3 flex flex-col space-y-4 bg-base-200 rounded-box p-4">
-        <UI.Navigation.tabs current_path={~p"/game/character"} current_action={@action}>
-          <:tabs action={:inventory} label="Inventory">
-            <.apparel_section />
-            <.satchel_section />
-          </:tabs>
-          <:tabs action={:professions} label="Professions">
-            <.professions_section character_professions={@character_professions} />
-          </:tabs>
-        </UI.Navigation.tabs>
+    <div class="flex flex-col">
+      <.live_component
+        id="zone-preview"
+        module={GEMSWeb.ZonePreviewComponent}
+        zone_id={@selected_character.zone_id}
+      />
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="w-full md:w-1/3 flex flex-col space-y-4">
+          <.bio_section character={@selected_character} />
+          <.attributes_section character={@selected_character} />
+          <.guild_section :if={@guild} guild={@guild} />
+        </div>
+        <div class="w-full md:w-2/3 flex flex-col space-y-4 bg-base-200 rounded-box p-4">
+          <UI.Navigation.tabs current_path={~p"/game/character"} current_action={@action}>
+            <:tabs action={:inventory} label="Inventory">
+              <.apparel_section />
+              <.satchel_section />
+            </:tabs>
+            <:tabs action={:professions} label="Professions">
+              <.professions_section character_professions={@character_professions} />
+            </:tabs>
+          </UI.Navigation.tabs>
+        </div>
       </div>
     </div>
     """

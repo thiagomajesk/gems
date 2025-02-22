@@ -11,6 +11,10 @@ defmodule GEMS.World.Schema.Zone do
       :stamina_cost,
       :faction_id,
       :nearby_id
+    ],
+    default_preloads: [
+      :biome,
+      :faction
     ]
 
   @skulls [:blue, :yellow, :red, :black]

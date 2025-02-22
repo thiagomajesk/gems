@@ -12,10 +12,12 @@ defmodule GEMS.World do
   end
 
   def list_nearby_zones(zone_id) do
+    preloads = Zone.__collection__(:default_preloads)
+
     Repo.all(
       from z in Zone,
         where: z.nearby_id == ^zone_id,
-        preload: [:biome, :faction]
+        preload: ^preloads
     )
   end
 
