@@ -10,7 +10,13 @@ defmodule GEMSWeb.ZonePreviewComponent do
       class="mb-8 relative overflow-hidden rounded-lg grow shadow-xl cursor-pointer"
       phx-click={expand("##{@id}-drawer")}
     >
-      <UI.Media.image src={GEMS.public_asset_path(@zone.image)} class="max-h-64 w-full object-cover" />
+      <UI.Media.image
+        src={GEMS.public_asset_path(@zone.image)}
+        class={[
+          "max-h-64 w-full object-cover transition-all",
+          "duration-300 delay-0 hover:delay-700 hover:duration-1000 ease-spring hover:max-h-screen hover:scale-105"
+        ]}
+      />
       <header class="absolute bottom-0 p-4 w-full bg-base-300/50 backdrop-blur">
         <div class="flex flex-col space-y-2 h-full">
           <div class="flex items-center text-2xl justify-between">
