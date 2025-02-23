@@ -4,6 +4,32 @@ defmodule GEMSWeb.Game.ActivitiesLive do
   require Logger
 
   @impl true
+  def render(assigns) do
+    ~H"""
+    <div class="flex flex-col">
+      <.live_component
+        id="zone-preview"
+        module={GEMSWeb.ZonePreviewComponent}
+        zone_id={@selected_character.zone_id}
+      />
+      <UI.Panels.section title="Activities" divider>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <.activity_card
+            :for={activity <- @activities}
+            activity={activity}
+            requirements={@activities_requirements[activity.id]}
+            running_timer={
+              if activity.id == @current_activity_id,
+                do: @current_activity_timer
+            }
+          />
+        </div>
+      </UI.Panels.section>
+    </div>
+    """
+  end
+
+  @impl true
   def mount(_params, _session, socket) do
     character = socket.assigns.selected_character
     activities = GEMS.World.list_available_activities(character)
@@ -24,23 +50,6 @@ defmodule GEMSWeb.Game.ActivitiesLive do
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <.activity_card
-        :for={activity <- @activities}
-        activity={activity}
-        requirements={@activities_requirements[activity.id]}
-        running_timer={
-          if activity.id == @current_activity_id,
-            do: @current_activity_timer
-        }
-      />
-    </div>
-    """
-  end
-
-  @impl true
   def handle_event("start", %{"id" => activity_id}, socket) do
     character = socket.assigns.selected_character
 
@@ -49,7 +58,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
     GEMS.ActivityManager.start_activity(character, activity)
 
-    # Optimistic update the assign before we get notified by the server
+    # Optimistically update the assign before we get notified by the server
     {:noreply, assign(socket, current_activity_id: activity_id)}
   end
 
@@ -102,33 +111,41 @@ defmodule GEMSWeb.Game.ActivitiesLive do
     ~H"""
     <div class="card bg-base-200 p-4">
       <div class="flex items-center gap-2">
-        <UI.Media.image placeholder={%{width: 100, height: 100}} class="size-18 rounded-xl" />
+        <UI.Media.image placeholder={%{width: 100, height: 100}} class="h-full w-18 rounded-xl" />
         <div class="flex flex-col justify-between space-y-2 grow h-full">
           <div class="flex items-center">
-            <span class="font-semibold w-1/2">{@activity.item.name}</span>
+            <span class="font-semibold text-lg w-1/2">{@activity.item.name}</span>
             <div class="flex items-center justify-end w-1/2 gap-2">
-              <span class="badge badge-accent font-medium">{@activity.profession.name}</span>
-              <button
-                :if={!@running_timer}
-                class="btn btn-neutral btn-sm grow max-w-32"
-                phx-click={@requirements.satisfied_all? && "start"}
-                phx-value-id={@requirements.satisfied_all? && @activity.id}
-                disabled={!@requirements.satisfied_all?}
-              >
-                {@activity.action}
-              </button>
-              <button
-                :if={@running_timer}
-                class="btn btn-neutral btn-sm grow max-w-32"
-                phx-click="stop"
-                phx-value-id={@activity.id}
-              >
-                <UI.Icons.page name="circle-stop" /> Stop
-              </button>
+              <%= if @running_timer do %>
+                <button
+                  class="btn btn-neutral btn-sm grow max-w-32"
+                  phx-click="stop"
+                  phx-value-id={@activity.id}
+                >
+                  <UI.Icons.page name="circle-stop" /> Stop
+                </button>
+              <% else %>
+                <button
+                  class="btn btn-neutral btn-sm grow max-w-32"
+                  phx-click={@requirements.satisfied_all? && "start"}
+                  phx-value-id={@requirements.satisfied_all? && @activity.id}
+                  disabled={!@requirements.satisfied_all?}
+                >
+                  <UI.Icons.page name="circle-play" />
+                  <span>{Recase.to_title(@activity.action)}</span>
+                </button>
+              <% end %>
             </div>
           </div>
+          <p class="line-clamp-2 text-sm text-base-content/70 break-all">
+            {@activity.item.description}
+          </p>
           <div class="flex items-center justify-between flex-wrap gap-2 mt-1">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="badge badge-accent font-medium gap-2">
+                <UI.Media.game_icon icon={@activity.profession.icon} />
+                <span>{@activity.profession.name}</span>
+              </span>
               <span class={[
                 "badge font-medium",
                 (@requirements.profession.satisfied? && "badge-neutral") || "badge-error"
