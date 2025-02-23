@@ -40,7 +40,8 @@ defmodule GEMSLua.Manager do
       {callback, lua} ->
         # For now we just use the caller's lua state instead of the server's
         # state because hooks should be stateless (ie: not affect server's state).
-        {result, _lua} = Lua.call_function!(lua, callback, args)
+        Logger.info("Triggering hook: #{name}")
+        result = safe_call_hook(lua, callback, args)
 
         {:reply, result, state}
     end
@@ -69,11 +70,22 @@ defmodule GEMSLua.Manager do
   # Created to safe load lua files while the issue is not fixed.
   # See here for more details: https://github.com/tv-labs/lua/issues/61.
   defp safe_load(lua, path) do
-    Logger.info("Loading lua file: \n #{path}")
+    Logger.info("Loading lua file: #{path}")
     Lua.load_file!(lua, path)
   catch
-    :error, {:case_clause, {:eof, _lines}} ->
-      Logger.info("Lua file has no instructions, skipping: \n #{path}")
+    :error, {:case_clause, {:eof, _line}} ->
+      Logger.info("Lua file has no instructions, skipping.")
       lua
+  end
+
+  defp safe_call_hook(lua, callback, args) do
+    Lua.call_function!(lua, callback, args)
+  catch
+    :error, {:case_clause, {:eof, _line}} ->
+      Logger.info("Found empty lua file during hook invocation, skipping.")
+      :noop
+
+    :error, %Lua.RuntimeException{} = e ->
+      reraise GEMSLua.PluginError, e, __STACKTRACE__
   end
 end
