@@ -20,6 +20,7 @@ defmodule GEMS.Engine.Constants do
 
   def tiers,
     do: [
+      :t0,
       :t1,
       :t2,
       :t3,

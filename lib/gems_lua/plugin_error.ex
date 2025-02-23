@@ -20,7 +20,7 @@ defmodule GEMSLua.PluginError do
 
   def current_line(state), do: Enum.into(collapse(state), %{})
 
-  defp collapse({:meta, _, _, _, _}), do: dbg() && []
+  defp collapse({:meta, _, _, _, _}), do: []
   defp collapse({:call_frame, _, _, _, _, _, _}), do: []
   defp collapse({:current_line, line, file}), do: %{file: file, line: line}
   defp collapse(arg) when is_tuple(arg), do: collapse(Tuple.to_list(arg))
