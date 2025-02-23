@@ -14,7 +14,8 @@ defmodule GEMS.World.Schema.Zone do
     ],
     default_preloads: [
       :biome,
-      :faction
+      :faction,
+      :activities
     ]
 
   @skulls [:blue, :yellow, :red, :black]
@@ -34,7 +35,7 @@ defmodule GEMS.World.Schema.Zone do
     belongs_to :faction, GEMS.World.Schema.Faction
     belongs_to :nearby, GEMS.World.Schema.Zone
 
-    has_many :activities, GEMS.World.Schema.Activity
+    has_many :activities, GEMS.World.Schema.Activity, on_replace: :delete
 
     many_to_many :creatures, GEMS.Engine.Schema.Creature,
       join_through: "zones_creatures",
@@ -45,6 +46,7 @@ defmodule GEMS.World.Schema.Zone do
     changeset = super(zone, attrs, opts)
 
     changeset
+    |> cast_assoc(:activities, sort_param: :activities_sort, drop_param: :activities_drop)
     |> cast_assoc(:creatures, sort_param: :creatures_sort, drop_param: :creatures_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)

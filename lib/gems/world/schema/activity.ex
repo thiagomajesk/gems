@@ -1,17 +1,15 @@
 defmodule GEMS.World.Schema.Activity do
-  use GEMS.Database.Schema,
-    preset: :collection,
-    required_fields: [
-      :action,
-      :zone_id,
-      :item_id
-    ],
-    optional_fields: [
-      :duration,
-      :experience,
-      :profession_id,
-      :required_level
-    ]
+  use GEMS.Database.Schema, preset: :default
+
+  @required_fields [
+    :action,
+    :amount,
+    :duration,
+    :experience,
+    :required_level,
+    :item_id,
+    :profession_id
+  ]
 
   schema "activities" do
     field :action, :string
@@ -23,5 +21,13 @@ defmodule GEMS.World.Schema.Activity do
     belongs_to :zone, GEMS.World.Schema.Zone
     belongs_to :item, GEMS.Engine.Schema.Item
     belongs_to :profession, GEMS.World.Schema.Profession
+  end
+
+  def changeset(activity, attrs) do
+    activity
+    |> cast(attrs, @required_fields)
+    |> validate_required(@required_fields)
+    |> assoc_constraint(:item)
+    |> assoc_constraint(:profession)
   end
 end
