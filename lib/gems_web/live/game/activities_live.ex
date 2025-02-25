@@ -90,14 +90,15 @@ defmodule GEMSWeb.Game.ActivitiesLive do
   end
 
   @impl true
-  def handle_info({:activity_completed, activity}, socket) do
-    %{id: activity_id, item: item, profession: profession, amount: amount} = activity
+  def handle_info({:activity_completed, activity_metadata}, socket) do
+    %{activity: %{id: activity_id}} = activity_metadata
+
     Logger.debug("COMPLETED ACTIVITY: #{activity_id}, #{inspect(self())}")
 
     message =
       """
-      Gained #{amount} #{item.name} and
-      #{activity.experience} XP in #{profession.name}
+      Gained #{activity_metadata.amount} #{activity_metadata.activity.item.name} and
+      #{activity_metadata.activity.experience} XP in #{activity_metadata.activity.profession.name}
       """
 
     {:noreply, put_flash(socket, :info, message)}
@@ -142,25 +143,24 @@ defmodule GEMSWeb.Game.ActivitiesLive do
           </p>
           <div class="flex items-center justify-between flex-wrap gap-2 mt-1">
             <div class="flex items-center flex-wrap gap-2">
-              <span class="badge badge-accent font-medium gap-2">
+              <span class="badge badge-accent font-medium gap-2" title="Profession">
                 <UI.Media.game_icon icon={@activity.profession.icon} />
                 <span>{@activity.profession.name}</span>
               </span>
-              <span class={[
-                "badge font-medium",
-                (@requirements.profession.satisfied? && "badge-neutral") || "badge-error"
-              ]}>
+              <span
+                class={[
+                  "badge font-medium",
+                  (@requirements.profession.satisfied? && "badge-neutral") || "badge-error"
+                ]}
+                title="Required level"
+              >
                 {"LV #{@activity.required_level}"}
               </span>
-              <span class="badge badge-neutral font-medium gap-1">
-                <UI.Icons.page name="hand-coins" />
-                <span>{@activity.amount}</span>
-              </span>
-              <span class="badge badge-neutral font-medium gap-1">
+              <span class="badge badge-neutral font-medium gap-1" title="Duration">
                 <UI.Icons.page name="clock" />
                 <span>{"#{@activity.duration}s"}</span>
               </span>
-              <span class="badge badge-neutral font-medium gap-1">
+              <span class="badge badge-neutral font-medium gap-1" title="Experience">
                 <UI.Icons.page name="arrow-big-up-dash" />
                 <span>{"#{@activity.experience} XP"}</span>
               </span>
@@ -276,5 +276,9 @@ defmodule GEMSWeb.Game.ActivitiesLive do
          satisfied?: current_amount >= ingredient.amount
        }}
     end)
+  end
+
+  defp average_amount(activity) do
+    div(activity.min_amount + activity.max_amount, 2)
   end
 end

@@ -132,8 +132,16 @@ defmodule GEMS.ActivityManager do
   end
 
   def handle_info({:complete_activity, character, activity}, state) do
+    amount = get_activity_amount(activity)
+
+    activity_metadata = %{
+      amount: amount,
+      activity: activity,
+      character: character
+    }
+
     GEMS.Repo.transaction(fn ->
-      GEMS.Characters.give_item!(character.id, activity.item_id, activity.amount)
+      GEMS.Characters.give_item!(character.id, activity.item_id, amount)
       GEMS.Characters.give_experience!(character.id, activity.profession_id, activity.experience)
     end)
 
@@ -141,11 +149,14 @@ defmodule GEMS.ActivityManager do
       GEMS.PubSub,
       self(),
       build_topic(character),
-      {:activity_completed, activity}
+      {:activity_completed, activity_metadata}
     )
 
     {:noreply, state}
   end
+
+  defp get_activity_amount(%{min_amount: min, max_amount: max}),
+    do: :rand.uniform(max - min + 1) + min - 1
 
   defp build_topic(character) do
     %{id: id, zone_id: zone_id} = character

@@ -137,7 +137,8 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :action, :string, null: false
       add :duration, :integer, null: false, default: 0
       add :item_id, references(:items), null: true
-      add :amount, :integer, null: false, default: 1
+      add :min_amount, :integer, null: false, default: 1, check: "min_amount >= 1"
+      add :max_amount, :integer, null: false, default: 1, check: "max_amount >= min_amount"
       add :profession_id, references(:professions), null: false
       add :experience, :integer, null: false, default: 0
       add :required_level, :integer, null: false, default: 0

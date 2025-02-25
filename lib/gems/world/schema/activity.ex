@@ -3,18 +3,23 @@ defmodule GEMS.World.Schema.Activity do
 
   @required_fields [
     :action,
-    :amount,
     :duration,
     :experience,
-    :required_level,
     :item_id,
     :profession_id
   ]
 
+  @optional_fields [
+    :min_amount,
+    :max_amount,
+    :required_level
+  ]
+
   schema "activities" do
     field :action, :string
-    field :amount, :integer
     field :duration, :integer
+    field :min_amount, :integer
+    field :max_amount, :integer
     field :experience, :integer
     field :required_level, :integer
 
@@ -25,7 +30,7 @@ defmodule GEMS.World.Schema.Activity do
 
   def changeset(activity, attrs) do
     activity
-    |> cast(attrs, @required_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> assoc_constraint(:item)
     |> assoc_constraint(:profession)
