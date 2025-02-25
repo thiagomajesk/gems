@@ -84,8 +84,6 @@ defmodule GEMS.Engine.Schema.Skill do
   def build_changeset(skill, attrs, opts) do
     changeset = super(skill, attrs, opts)
 
-    dbg(attrs)
-
     changeset
     |> cast_embed(:icon)
     |> cast_assoc(:effects, sort_param: :effects_sort, drop_param: :effects_drop)
