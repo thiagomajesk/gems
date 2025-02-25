@@ -1,20 +1,25 @@
 defmodule GEMSLua.PluginError do
-  defexception [:message, :original, :file, :line]
+  defexception [:message, :original, :path]
 
   alias __MODULE__
 
   @impl true
   def exception(%Lua.RuntimeException{} = e) do
-    %{file: file, line: line} = current_line(e.state)
-    %PluginError{message: e.message, original: e.original, file: file, line: line}
+    case current_line(e.state) do
+      %{file: file, line: line} ->
+        %PluginError{message: e.message, original: e.original, path: "#{file}:#{line}"}
+
+      _other ->
+        %PluginError{message: e.message, original: e.original}
+    end
   end
 
   @impl true
   def message(%PluginError{} = exception) do
     """
     #{String.trim(exception.message, "\n")}
-    #{format_exception_help(exception)}
-    File: #{exception.file}:#{exception.line}
+    #{format_help_text(exception)}
+    #{format_file_path(exception)}
     """
   end
 
@@ -29,9 +34,12 @@ defmodule GEMSLua.PluginError do
   defp collapse(arg) when is_list(arg), do: Enum.flat_map(arg, &collapse/1)
   defp collapse(_arg), do: []
 
-  defp format_exception_help(%{original: {:illegal_index, container, field}}) do
+  defp format_file_path(%{path: nil}), do: nil
+  defp format_file_path(%{path: path}), do: "File: #{path}"
+
+  defp format_help_text(%{original: {:illegal_index, container, field}}) do
     "You are trying to access #{inspect(field)} inside #{inspect(container)} but it does not exist."
   end
 
-  defp format_exception_help(_other), do: nil
+  defp format_help_text(_other), do: nil
 end
