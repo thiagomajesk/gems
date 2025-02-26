@@ -277,8 +277,4 @@ defmodule GEMSWeb.Game.ActivitiesLive do
        }}
     end)
   end
-
-  defp average_amount(activity) do
-    div(activity.min_amount + activity.max_amount, 2)
-  end
 end
