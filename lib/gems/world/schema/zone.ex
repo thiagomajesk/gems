@@ -9,13 +9,13 @@ defmodule GEMS.World.Schema.Zone do
       :starting,
       :gold_cost,
       :stamina_cost,
-      :faction_id,
-      :nearby_id
+      :faction_id
     ],
     default_preloads: [
       :biome,
       :faction,
-      :activities
+      :portals,
+      activities: [:profession, :item]
     ]
 
   @skulls [:blue, :yellow, :red, :black]
@@ -33,8 +33,8 @@ defmodule GEMS.World.Schema.Zone do
 
     belongs_to :biome, GEMS.World.Schema.Biome
     belongs_to :faction, GEMS.World.Schema.Faction
-    belongs_to :nearby, GEMS.World.Schema.Zone
 
+    has_many :portals, GEMS.World.Schema.Portal, foreign_key: :origin_id, on_replace: :delete
     has_many :activities, GEMS.World.Schema.Activity, on_replace: :delete
 
     many_to_many :creatures, GEMS.Engine.Schema.Creature,
@@ -46,6 +46,7 @@ defmodule GEMS.World.Schema.Zone do
     changeset = super(zone, attrs, opts)
 
     changeset
+    |> cast_assoc(:portals, sort_param: :portals_sort, drop_param: :portals_drop)
     |> cast_assoc(:activities, sort_param: :activities_sort, drop_param: :activities_drop)
     |> cast_assoc(:creatures, sort_param: :creatures_sort, drop_param: :creatures_drop)
     |> unique_constraint(:name)

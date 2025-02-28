@@ -32,23 +32,54 @@ defmodule GEMSWeb.Game.WorldLive do
                 />
               </div>
               <div class="flex items-center gap-2">
-                <div class="badge badge-neutral flex items-center gap-1" title="Gold cost">
-                  <UI.Icons.game name="two-coins" />
-                  <span>{zone.gold_cost}</span>
-                </div>
-                <div class="badge badge-neutral flex items-center gap-1" title="Stamina cost">
-                  <UI.Icons.game name="run" />
-                  <span>{zone.stamina_cost}</span>
-                </div>
                 <div class="badge badge-neutral flex items-center gap-1" title="Danger">
                   <UI.Icons.game name="skull-crossed-bones" />
                   <span>{zone.danger}</span>
                 </div>
+                <div
+                  class={[
+                    "badge flex items-center gap-1",
+                    (@selected_character.gold >= zone.gold_cost && "badge-neutral") || "badge-error"
+                  ]}
+                  title="Gold cost"
+                >
+                  <UI.Icons.game name="two-coins" />
+                  <span>{zone.gold_cost}</span>
+                </div>
+                <div
+                  class={[
+                    "badge flex items-center gap-1",
+                    (@selected_character.stamina >= zone.stamina_cost && "badge-neutral") ||
+                      "badge-error"
+                  ]}
+                  title="Stamina cost"
+                >
+                  <UI.Icons.game name="run" />
+                  <span>{zone.stamina_cost}</span>
+                </div>
               </div>
             </div>
             <div class="flex justify-between items-center gap-2 mt-2 pt-2 border-t border-base-content/10">
-              <div class="flex items-center gap-2">Activities...</div>
-              <.link class="btn btn-sm btn-primary">Travel</.link>
+              <div class="flex items-center gap-1">
+                <span
+                  :for={activity <- Enum.uniq_by(zone.activities, & &1.profession_id)}
+                  title={activity.profession.name}
+                  class="px-2 bg-base-content/10 rounded shadow"
+                >
+                  <UI.Media.game_icon icon={activity.profession.icon} />
+                </span>
+              </div>
+              <.link
+                :if={
+                  @selected_character.gold >= zone.gold_cost &&
+                    @selected_character.stamina >= zone.stamina_cost
+                }
+                phx-click="travel"
+                phx-value-id={zone.id}
+                class="btn btn-sm btn-primary"
+              >
+                <UI.Icons.game name="walking-boot" /> Travel
+              </.link>
             </div>
           </:card>
         </UI.Lists.cards_with_covers>
@@ -62,6 +93,18 @@ defmodule GEMSWeb.Game.WorldLive do
     character = socket.assigns.selected_character
     nearby_zones = GEMS.World.list_nearby_zones(character.zone_id)
     {:ok, assign(socket, nearby_zones: nearby_zones)}
+  end
+
+  @impl true
+  def handle_event("travel", %{"id" => zone_id}, socket) do
+    character = socket.assigns.selected_character
+    character = GEMS.World.travel(character, zone_id)
+    nearby_zones = GEMS.World.list_nearby_zones(character.zone_id)
+
+    {:noreply,
+     socket
+     |> assign(:selected_character, character)
+     |> assign(:nearby_zones, nearby_zones)}
   end
 
   defp skull_text_color(:blue), do: "text-blue-500"

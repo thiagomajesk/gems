@@ -113,11 +113,20 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
 
       add :biome_id, references(:biomes), null: false
       add :faction_id, references(:factions), null: true
-      add :nearby_id, references(:zones, on_delete: :nilify_all), null: true
     end
 
     create unique_index(:zones, :name)
     create unique_index(:zones, :code)
+
+    ################################################################################
+    # Portals
+    ################################################################################
+
+    create table(:portals, primary_key: false) do
+      add :origin_id, references(:zones), null: false, primary_key: true
+      add :target_id, references(:zones), null: false, primary_key: true
+      add :direction, :string, null: false, primary_key: true
+    end
 
     ################################################################################
     # Zones Creatures
