@@ -64,7 +64,7 @@ defmodule GEMSWeb.Game.WorldLive do
                 <span
                   :for={activity <- Enum.uniq_by(zone.activities, & &1.profession_id)}
                   title={activity.profession.name}
-                  class="px-2 bg-base-content/10 rounded shadow"
+                  class="px-2 bg-base-content/10 rounded-sm shadow-sm"
                 >
                   <UI.Media.game_icon icon={activity.profession.icon} />
                 </span>

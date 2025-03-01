@@ -68,7 +68,7 @@ defmodule GEMSWeb.Game.StorageLive do
       title={@item.name}
     >
       <UI.Media.image placeholder={%{height: 100, width: 100}} class="rounded-xl" />
-      <span class="flex items-center rounded-btn px-2 font-medium bg-base-300/50 backdrop-blur shadow-sm absolute top-1 gap-1">
+      <span class="flex items-center rounded-btn px-2 font-medium bg-base-300/50 backdrop-blur-sm shadow-xs absolute top-1 gap-1">
         <UI.Icons.page name="star" class="fill-red-500" />
         <span>{format_tier_name(@item.tier)}</span>
       </span>
@@ -91,7 +91,7 @@ defmodule GEMSWeb.Game.StorageLive do
       title={@equipment.name}
     >
       <UI.Media.image placeholder={%{height: 100, width: 100}} class="rounded-xl" />
-      <span class="flex items-center rounded-btn px-2 font-medium bg-base-300/50 backdrop-blur shadow-sm absolute top-1 gap-1">
+      <span class="flex items-center rounded-btn px-2 font-medium bg-base-300/50 backdrop-blur-sm shadow-xs absolute top-1 gap-1">
         <UI.Icons.page name="star" class="fill-red-500" />
         <span>{format_tier_name(@equipment.tier)}</span>
       </span>
@@ -115,55 +115,55 @@ defmodule GEMSWeb.Game.StorageLive do
 
   defp tier_style_classes(:t1),
     do: [
-      "bg-gradient-to-t from-base-300",
+      "bg-linear-to-t from-base-300",
       "to-gray-500/10 border border-gray-500/40"
     ]
 
   defp tier_style_classes(:t2),
     do: [
-      "bg-gradient-to-t from-base-300",
+      "bg-linear-to-t from-base-300",
       "to-stone-500/10 border border-stone-500/40"
     ]
 
   defp tier_style_classes(:t3),
     do: [
-      "bg-gradient-to-t from-base-300",
-      "to-green-500/10 border border-green-500/40 shadow-sm shadow-green-500/50"
+      "bg-linear-to-t from-base-300",
+      "to-green-500/10 border border-green-500/40 shadow-xs shadow-green-500/50"
     ]
 
   defp tier_style_classes(:t4),
     do: [
-      "bg-gradient-to-t from-base-300",
-      "to-blue-500/10 border border-blue-500/40 shadow-sm shadow-blue-500/50"
+      "bg-linear-to-t from-base-300",
+      "to-blue-500/10 border border-blue-500/40 shadow-xs shadow-blue-500/50"
     ]
 
   defp tier_style_classes(:t5),
     do: [
-      "bg-gradient-to-t from-base-300",
-      "to-red-500/10 border border-red-500/40 shadow-sm shadow-red-500/50"
+      "bg-linear-to-t from-base-300",
+      "to-red-500/10 border border-red-500/40 shadow-xs shadow-red-500/50"
     ]
 
   defp tier_style_classes(:t6),
     do: [
-      "bg-gradient-to-t from-base-300",
-      "to-orange-500/10 border border-orange-500/40 shadow-sm shadow-orange-500/50"
+      "bg-linear-to-t from-base-300",
+      "to-orange-500/10 border border-orange-500/40 shadow-xs shadow-orange-500/50"
     ]
 
   defp tier_style_classes(:t7),
     do: [
-      "bg-gradient-to-t from-base-300",
-      "to-yellow-500/10 border border-yellow-500/40 shadow-sm shadow-yellow-500/50"
+      "bg-linear-to-t from-base-300",
+      "to-yellow-500/10 border border-yellow-500/40 shadow-xs shadow-yellow-500/50"
     ]
 
   defp tier_style_classes(:t8),
     do: [
-      "bg-gradient-to-t from-base-300",
-      "to-purple-500/10 border border-purple-500/40 shadow-sm shadow-purple-500/50"
+      "bg-linear-to-t from-base-300",
+      "to-purple-500/10 border border-purple-500/40 shadow-xs shadow-purple-500/50"
     ]
 
   defp tier_style_classes(:t9),
     do: [
-      "bg-gradient-to-t from-base-300",
-      "to-pink-500/10 border border-pink-500/40 shadow-sm shadow-pink-500/50"
+      "bg-linear-to-t from-base-300",
+      "to-pink-500/10 border border-pink-500/40 shadow-xs shadow-pink-500/50"
     ]
 end

@@ -6,10 +6,8 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ProgressCurveComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id={"#{@id}-progress-curve"} class="form-control w-full">
-      <div class="label font-medium">
-        <span class="label-text">{@label}</span>
-      </div>
+    <fieldset id={"#{@id}-progress-curve"} class="fieldset">
+      <label class="label">{@label}</label>
       <.inputs_for :let={f} field={@field}>
         <div class="flex items-center rounded-btn bg-base-content/5 p-2 my-1 gap-2">
           <div class="grid grid-cols-5 gap-2">
@@ -49,7 +47,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ProgressCurveComponent do
         </div>
         <.curve_preview :if={@preview_open} curve={normalize_value(@value)} target={@myself} />
       </.inputs_for>
-    </div>
+    </fieldset>
     """
   end
 

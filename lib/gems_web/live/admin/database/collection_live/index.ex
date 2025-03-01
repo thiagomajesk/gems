@@ -14,7 +14,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
           <UI.Icons.page name="circle-plus" /> New
         </.link>
       </header>
-      <div class="card card-bordered bg-base-100">
+      <div class="card card-border bg-base-100">
         <.table_view id={"#{@collection}-catalog"} rows={@entities}>
           <:col :let={entity} :for={column <- @columns} label={column.label}>
             <.table_column
@@ -76,7 +76,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
 
   defp render_table_column(%{field: :code} = assigns) do
     ~H"""
-    <span class="rounded px-1 bg-base-content/10 shadow">{@value}</span>
+    <span class="rounded-sm px-1 bg-base-content/10 shadow-sm">{@value}</span>
     """
   end
 

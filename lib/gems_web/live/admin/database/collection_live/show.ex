@@ -12,7 +12,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Show do
       <header class="flex items-center justify-between w-full mb-4">
         <h1 class="text-2xl font-bold uppercase">{@title}</h1>
       </header>
-      <div class="card card-bordered p-4 bg-base-100">
+      <div class="card card-border p-4 bg-base-100">
         <.live_component module={@component} id="entity-form" form={@form} live_action={@live_action} />
       </div>
     </section>

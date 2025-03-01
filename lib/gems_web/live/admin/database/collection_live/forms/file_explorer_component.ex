@@ -20,11 +20,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
   @impl true
   def render(%{mounted: true} = assigns) do
     ~H"""
-    <label class="form-control w-full">
-      <div class="label font-medium">
-        <span class="label-text">{@label}</span>
-      </div>
-      <div class="input input-bordered flex items-center px-2">
+    <fieldset class="fieldset">
+      <label class="label">{@label}</label>
+      <div class="input  flex items-center px-2">
         <.miniature_preview src={GEMS.public_asset_path(@value)} />
         <input
           type="text"
@@ -50,7 +48,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
         target={@myself}
         current={@value}
       />
-    </label>
+    </fieldset>
     """
   end
 
@@ -120,7 +118,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
                 phx-click="select-file"
                 phx-value-path={Path.join([@directory, file.name])}
                 data-selected={@current == Path.join([@directory, file.name])}
-                class="hover:text-primary cursor-pointer data-[selected]:text-primary"
+                class="hover:text-primary cursor-pointer data-selected:text-primary"
               >
                 {file.name}
               </span>
@@ -147,7 +145,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
       <% "application/octet-stream" -> %>
         <UI.Icons.page name="file-question" size="25" class="text-neutral" />
       <% _ -> %>
-        <UI.Media.image class="rounded size-[25px]" src={@src} />
+        <UI.Media.image class="rounded-sm size-[25px]" src={@src} />
     <% end %>
     """
   end

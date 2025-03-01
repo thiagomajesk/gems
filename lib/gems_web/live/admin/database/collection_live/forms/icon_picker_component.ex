@@ -8,12 +8,10 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id={"#{@id}-icon-picker"} class="form-control w-full" phx-hook="IconPicker">
-      <div class="label font-medium">
-        <span class="label-text">{@label}</span>
-      </div>
+    <fieldset id={"#{@id}-icon-picker"} class="fieldset" phx-hook="IconPicker">
+      <label class="label">{@label}</label>
       <.inputs_for :let={f} field={@field}>
-        <div class="input input-bordered flex items-center px-2">
+        <div class="input  flex items-center px-2">
           <div :if={@value} class="flex items-center gap-2">
             <SharedInputs.colorpicker field={f[:color]} phx-debounce="10" />
             <UI.Icons.game
@@ -41,7 +39,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent do
         </div>
         <.icon_picker icons={@streams[:icons]} open={@picker_open} search={@search} target={@myself} />
       </.inputs_for>
-    </div>
+    </fieldset>
     """
   end
 
@@ -129,7 +127,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent do
           <li
             :for={{dom_id, icon} <- @icons || []}
             id={dom_id}
-            class="hover:text-primary cursor-pointer data-[selected]:text-primary"
+            class="hover:text-primary cursor-pointer data-selected:text-primary"
             title={icon}
           >
             <span

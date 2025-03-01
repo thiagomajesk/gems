@@ -179,7 +179,7 @@ defmodule GEMSWeb.Game.CharacterLive do
     ~H"""
     <div class={[
       "rounded-box flex flex-col items-center justify-center h-24 gap-2 p-2 relative",
-      "bg-gradient-to-br from-base-300",
+      "bg-linear-to-br from-base-300",
       attribute_gradient_stop(@name)
     ]}>
       <UI.Icons.game
@@ -187,7 +187,7 @@ defmodule GEMSWeb.Game.CharacterLive do
         size="unset"
         class={["h-full w-full absolute inset-0", attribute_text_color(@name)]}
       />
-      <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-sm px-2 py-1 rounded-btn shadow size-12 flex items-center justify-center">
+      <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-xs px-2 py-1 rounded-btn shadow-sm size-12 flex items-center justify-center">
         {@value}
       </span>
       <small class="absolute bottom-2 right-2 font-semibold uppercase">
@@ -292,7 +292,7 @@ defmodule GEMSWeb.Game.CharacterLive do
         <.slot_card icon="hand" name="Main-Hand" />
         <.slot_card icon="chest" name="Armor" />
         <.slot_card icon="hand" name="Off-Hand" />
-        <.slot_card icon="ring" name="Ring" />
+        <.slot_card icon="ring-3" name="Ring" />
         <.slot_card icon="boots" name="Boots" />
         <.slot_card icon="necklace" name="Necklace" />
       </div>
@@ -320,7 +320,7 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp slot_card(assigns) do
     ~H"""
-    <div class="card bg-base-300 shadow-sm p-4 flex-row items-center rounded-btn gap-4">
+    <div class="card bg-base-300 shadow-xs p-4 flex-row items-center rounded-btn gap-4">
       <div class="flex items-center bg-base-content/5 rounded-lg p-2 shadow-lg">
         <UI.Icons.game name={@icon} size="24" />
       </div>

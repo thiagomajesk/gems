@@ -1,4 +1,14 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import "resets.css";
+@import "tailwindcss";
+@import "./resets.css";
+
+/*
+* Plugins
+*/
+@plugin "@tailwindcss/typography";
+@plugin "daisyui";
+
+/*
+* Custom DaisyUI themes 
+*/
+
+@import "./themes/elegant.css";

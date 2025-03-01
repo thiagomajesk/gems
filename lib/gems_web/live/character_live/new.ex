@@ -15,7 +15,7 @@ defmodule GEMSWeb.CharacterLive.New do
         for={@form}
         phx-submit="save"
         phx-change="validate"
-        class="card bg-base-200 p-4 space-y-4 shadow"
+        class="card bg-base-200 p-4 space-y-4 shadow-sm"
       >
         <.input type="text" field={f[:name]} label="Name" required />
         <.input type="select" field={f[:class_id]} label="Class" options={@class_options} required />

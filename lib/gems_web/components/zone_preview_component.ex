@@ -17,7 +17,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
           "duration-300 delay-0 hover:delay-700 hover:duration-1000 ease-spring hover:max-h-screen hover:scale-105"
         ]}
       />
-      <header class="absolute bottom-0 p-4 w-full bg-base-300/50 backdrop-blur">
+      <header class="absolute bottom-0 p-4 w-full bg-base-300/50 backdrop-blur-sm">
         <div class="flex flex-col space-y-2 h-full">
           <div class="flex items-center text-2xl justify-between">
             <strong>{@zone.name}</strong>
@@ -35,7 +35,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
             <p class="text-sm text-base-content/50">{@zone.description}</p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
               <div
-                class="px-1 rounded-btn bg-base-content/10 shadow flex items-center justify-between"
+                class="px-1 rounded-btn bg-base-content/10 shadow-sm flex items-center justify-between"
                 title="Crafting"
               >
                 <span class="flex items-center gap-2">
@@ -44,7 +44,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
                 <span class="font-medium">+10%</span>
               </div>
               <div
-                class="px-1 rounded-btn bg-base-content/10 shadow flex items-center justify-between"
+                class="px-1 rounded-btn bg-base-content/10 shadow-sm flex items-center justify-between"
                 title="Gathering"
               >
                 <span class="flex items-center gap-2">
@@ -53,7 +53,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
                 <span class="font-medium">+10%</span>
               </div>
               <div
-                class="px-1 rounded-btn bg-base-content/10 shadow flex items-center justify-between"
+                class="px-1 rounded-btn bg-base-content/10 shadow-sm flex items-center justify-between"
                 title="Farming"
               >
                 <span class="flex items-center gap-2">
@@ -62,7 +62,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
                 <span class="font-medium">+10%</span>
               </div>
               <div
-                class="px-1 rounded-btn bg-base-content/10 shadow flex items-center justify-between"
+                class="px-1 rounded-btn bg-base-content/10 shadow-sm flex items-center justify-between"
                 title="Combat"
               >
                 <span class="flex items-center gap-2">

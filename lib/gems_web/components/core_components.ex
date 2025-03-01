@@ -75,41 +75,31 @@ defmodule GEMSWeb.CoreComponents do
 
   def input(%{type: "checkbox"} = assigns) do
     ~H"""
-    <div class="form-control">
-      <label class="label cursor-pointer">
-        <span class="label-text">{@label}</span>
-        <input
-          id={@id}
-          name={@name}
-          value={@value}
-          type="checkbox"
-          checked="checked"
-          class={["checkbox", @errors != [] && "checkbox-error"]}
-        />
-      </label>
+    <fieldset class="fieldset">
+      <label class="label">{@label}</label>
+      <input
+        id={@id}
+        name={@name}
+        value={@value}
+        type="checkbox"
+        checked="checked"
+        class={["checkbox", @errors != [] && "checkbox-error"]}
+      />
       <.error :for={msg <- @errors}>{msg}</.error>
-    </div>
+    </fieldset>
     """
   end
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <label class="form-control w-full">
-      <div class="label font-medium">
-        <span class="label-text">
-          {@label}
-        </span>
-      </div>
-      <select
-        id={@id}
-        name={@name}
-        class={["select select-bordered", @errors != [] && "select-error"]}
-      >
+    <fieldset class="fieldset">
+      <label class="label font-medium">{@label}</label>
+      <select id={@id} name={@name} class={["select ", @errors != [] && "select-error"]}>
         <option value="">Select an option</option>
         {Phoenix.HTML.Form.options_for_select(@options, @value)}
       </select>
       <.error :for={msg <- @errors}>{msg}</.error>
-    </label>
+    </fieldset>
     """
   end
 
@@ -121,21 +111,17 @@ defmodule GEMSWeb.CoreComponents do
 
   def input(assigns) do
     ~H"""
-    <label class="form-control w-full">
-      <div class="label font-medium">
-        <span class="label-text">
-          {@label}
-        </span>
-      </div>
+    <fieldset class="fieldset">
+      <label class="label font-medium">{@label}</label>
       <input
         id={@id}
         name={@name}
         value={@value}
         type={@type}
-        class={["input input-bordered w-full", @errors != [] && "input-error"]}
+        class={["input  w-full", @errors != [] && "input-error"]}
       />
       <.error :for={msg <- @errors}>{msg}</.error>
-    </label>
+    </fieldset>
     """
   end
 

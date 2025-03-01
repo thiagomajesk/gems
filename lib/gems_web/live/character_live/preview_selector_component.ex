@@ -25,7 +25,7 @@ defmodule GEMSWeb.CharacterLive.PreviewSelectorComponent do
           class={[
             "rounded-lg overflow-hidden border-2",
             "border-transparent hover:border-primary cursor-pointer",
-            "data-[selected]:border-primary"
+            "data-selected:border-primary"
           ]}
         >
           {render_slot(item)}

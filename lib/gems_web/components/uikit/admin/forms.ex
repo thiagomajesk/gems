@@ -67,56 +67,39 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
 
   def render_field_input(%{type: "textarea"} = assigns) do
     ~H"""
-    <label class="form-control w-full">
-      <div class="label font-medium">
-        <span class="label-text">
-          {@label}
-        </span>
-      </div>
+    <fieldset class="fieldset">
+      <label class="label">{@label}</label>
       <textarea
         id={@id}
         name={@name}
         value={@value}
         placeholder={@placeholder}
-        class={["textarea textarea-bordered w-full", @errors != [] && "textarea-error"]}
+        class={["textarea  w-full", @errors != [] && "textarea-error"]}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
       <.error_message :for={msg <- @errors}>{msg}</.error_message>
-    </label>
+    </fieldset>
     """
   end
 
   def render_field_input(%{type: "select"} = assigns) do
     ~H"""
-    <label class="form-control w-full">
-      <div class="label font-medium">
-        <span class="label-text">
-          {@label}
-        </span>
-      </div>
-      <select
-        id={@id}
-        name={@name}
-        class={["select select-bordered", @errors != [] && "select-error"]}
-        {@rest}
-      >
+    <fieldset class="fieldset">
+      <label class="label">{@label}</label>
+      <select id={@id} name={@name} class={["select ", @errors != [] && "select-error"]} {@rest}>
         <option value="">Select an option</option>
         {Phoenix.HTML.Form.options_for_select(@options, @value)}
       </select>
       <.error_message :for={msg <- @errors}>{msg}</.error_message>
-    </label>
+    </fieldset>
     """
   end
 
   def render_field_input(%{type: "percentage"} = assigns) do
     ~H"""
-    <label class="form-control w-full">
-      <div class="label font-medium">
-        <span class="label-text">
-          {@label}
-        </span>
-      </div>
-      <div class="flex items-center input input-bordered gap-2">
+    <fieldset class="fieldset">
+      <label class="label">{@label}</label>
+      <div class="flex items-center input  gap-2">
         <UI.Icons.page name="percent" />
         <input
           id={@id}
@@ -130,7 +113,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
         />
         <.error_message :for={msg <- @errors}>{msg}</.error_message>
       </div>
-    </label>
+    </fieldset>
     """
   end
 
@@ -138,23 +121,19 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   # https://github.com/phoenixframework/phoenix_live_view/issues/3531
   def render_field_input(assigns) do
     ~H"""
-    <label class="form-control w-full">
-      <div class="label font-medium">
-        <span class="label-text">
-          {@label}
-        </span>
-      </div>
+    <fieldset class="fieldset">
+      <label class="label">{@label}</label>
       <input
         id={@id}
         name={@name}
         value={@value}
         type={@type}
         placeholder={@placeholder}
-        class={["input input-bordered w-full", @errors != [] && "input-error"]}
+        class={["input  w-full", @errors != [] && "input-error"]}
         {@rest}
       />
       <.error_message :for={msg <- @errors}>{msg}</.error_message>
-    </label>
+    </fieldset>
     """
   end
 

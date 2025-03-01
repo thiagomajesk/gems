@@ -20,7 +20,7 @@ defmodule GEMSWeb.CharacterLive.Index do
         </a>
       </header>
       <div class="grid grid-cols-4 md:grid-cols-6 xl:grid-cols-8 gap-4 mt-8">
-        <div :for={character <- @characters} class="card bg-base-content/5 p-2 shadow">
+        <div :for={character <- @characters} class="card bg-base-content/5 p-2 shadow-sm">
           <div class="flex flex-col justify-between gap-4">
             <UI.Media.avatar avatar={character.avatar} class="rounded-lg" />
             <div class="flex flex-col items-center grow space-y-2">

@@ -10,7 +10,7 @@ defmodule GEMSWeb.UIKIT.Lists do
   def cards_with_covers(assigns) do
     ~H"""
     <ul class="space-y-2">
-      <li :for={card <- @card} class="flex rounded-lg bg-base-200 overflow-hidden shadow">
+      <li :for={card <- @card} class="flex rounded-lg bg-base-200 overflow-hidden shadow-sm">
         <UI.Media.image
           src={GEMS.public_asset_path(card.cover)}
           width="150"

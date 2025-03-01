@@ -7,7 +7,7 @@ defmodule GEMSWeb.UserRegistrationLive do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col justify-center items-center h-full">
-      <div class="card w-96 bg-base-200 shadow">
+      <div class="card w-96 bg-base-200 shadow-sm">
         <div class="card-body">
           <header class="text-center">
             <h2 class="text-2xl mb-4">Register for an account</h2>
