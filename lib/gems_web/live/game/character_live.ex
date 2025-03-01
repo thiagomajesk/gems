@@ -251,6 +251,11 @@ defmodule GEMSWeb.Game.CharacterLive do
   attr :icon, :string, default: nil
 
   defp profession_card(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:max, &GEMS.Leveling.profession_experience(&1.level))
+      |> assign_new(:progress, &Float.round(&1.experience / &1.max * 100, 2))
+
     ~H"""
     <div class="card bg-base-300 p-4">
       <div class="flex gap-2">
@@ -260,13 +265,15 @@ defmodule GEMSWeb.Game.CharacterLive do
         <div class="flex flex-col justify-between grow space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-semibold">{@name}</span>
-            <span class="badge badge-accent font-medium">{@level}/99</span>
+            <span class="badge badge-accent font-medium">LV {@level}</span>
           </div>
-          <UI.Progress.profession value={80} max={100} />
+          <UI.Progress.profession value={@experience} max={@max} />
           <div class="flex items-center justify-between mt-1">
-            <div class="badge badge-neutral font-medium">XP {@experience} of 100</div>
-            <div class="badge badge-neutral font-medium gap-1">
-              <UI.Icons.page name="loader" /> 70%
+            <div class="badge badge-neutral font-medium text-xs">
+              {"#{@experience} of #{@max} XP"}
+            </div>
+            <div class="badge badge-neutral font-medium gap-1 text-xs">
+              <UI.Icons.page name="loader" /> {"#{@progress}%"}
             </div>
           </div>
         </div>
