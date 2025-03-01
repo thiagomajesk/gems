@@ -6,8 +6,8 @@ defmodule GEMSWeb.UIKIT.Progress do
   def experience(assigns) do
     assigns =
       assigns
-      |> assign_new(:value, &(&1.character.experience + 50))
-      |> assign_new(:max, &GEMS.Leveling.experience(&1.character.level))
+      |> assign_new(:value, & &1.character.experience)
+      |> assign_new(:max, &GEMS.Leveling.class_experience(&1.character.level))
       |> assign_new(:progress, &calculate_progress(&1.value, &1.max))
 
     ~H"""
@@ -26,7 +26,7 @@ defmodule GEMSWeb.UIKIT.Progress do
         "absolute inset-0 flex items-center justify-center px-2 text-white",
         "[text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]"
       ]}>
-        Level 1
+        Level {@character.level}
       </small>
     </div>
     """
