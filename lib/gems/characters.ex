@@ -123,8 +123,8 @@ defmodule GEMS.Characters do
       professions = GEMS.World.Schema.Profession.list()
 
       changeset
-      |> Ecto.Changeset.put_change(:max_health, 100)
-      |> Ecto.Changeset.put_change(:max_mana, 100)
+      |> Ecto.Changeset.put_change(:souls, 10)
+      |> Ecto.Changeset.put_change(:stamina, 1000)
       |> Ecto.Changeset.put_change(:zone_id, zone.id)
       |> Ecto.Changeset.put_assoc(:professions, professions)
     end)

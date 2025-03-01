@@ -1,13 +1,21 @@
 <.flash_group flash={@flash} />
-<div class="flex flex-col h-screen overflow-y-hidden ">
+<section class="flex flex-col h-screen overflow-y-hidden">
   <.annoucement_banner :if={false} />
   <UI.Panels.container tag="header">
+    <div class="mt-4">
+      <div class="flex flex-col gap-3">
+        <UI.Progress.experience character={@selected_character} />
+        <div class="flex items-center gap-4">
+          <UI.Progress.stamina character={@selected_character} />
+        </div>
+      </div>
+    </div>
     <UI.Menus.global current_path={@current_path}>
       <:link href="/home" icon="house" label="Home" />
       <:link href={~p"/game/character"} icon="skills" label="Character" />
       <:link href="/progress" icon="progression" label="Progress" />
       <:link href={~p"/game/storage"} icon="locked-chest" label="Storage" />
-      <:link href={~p"/game/world"} icon="world" label="World" />
+      <:link href={~p"/game/world"} icon="compass" label="World" />
       <:link href={~p"/game/activities"} icon="run" label="Activities" />
       <:link href="/combat" icon="fishing-net" label="Hunt" />
       <:link href="/square" icon="hanging-sign" label="Square" />
@@ -25,4 +33,4 @@
       {@inner_content}
     </UI.Panels.container>
   </main>
-</div>
+</section>

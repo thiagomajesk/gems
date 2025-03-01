@@ -15,6 +15,13 @@ defmodule GEMS.World.Schema.Character do
     field :title, :string
     field :bio, :string
 
+    field :level, :integer
+    field :experience, :integer
+    field :gold, :integer
+    field :souls, :integer
+    field :stamina, :integer
+    field :fame, :integer
+
     field :strength, :integer, virtual: true
     field :dexterity, :integer, virtual: true
     field :intelligence, :integer, virtual: true

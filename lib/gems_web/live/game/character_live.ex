@@ -12,8 +12,9 @@ defmodule GEMSWeb.Game.CharacterLive do
       />
       <div class="flex flex-col md:flex-row gap-4">
         <div class="w-full md:w-1/3 flex flex-col space-y-4">
-          <.bio_section character={@selected_character} />
+          <.info_section character={@selected_character} />
           <.attributes_section character={@selected_character} />
+          <.bio_section character={@selected_character} />
           <.guild_section :if={@guild} guild={@guild} />
         </div>
         <div class="w-full md:w-2/3 flex flex-col space-y-4 bg-base-200 rounded-box p-4">
@@ -51,6 +52,80 @@ defmodule GEMSWeb.Game.CharacterLive do
       "professions" ->
         {:noreply, assign(socket, :action, :professions)}
     end
+  end
+
+  attr :character, :any, required: true
+
+  defp info_section(assigns) do
+    ~H"""
+    <UI.Panels.section title="Info">
+      <dl class="card bg-base-200 p-4 divide-y divide-dotted divide-base-content/20">
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="character" class="text-indigo-500" />
+            <span>Name</span>
+          </dt>
+          <dd>{@character.name}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="winged-shield" class="text-orange-500" />
+            <span>Class</span>
+          </dt>
+          <dd>{@character.class.name}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="heart-beats" class="text-red-500" />
+            <span>Health</span>
+          </dt>
+          <dd>1000</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="bolt-drop" class="text-blue-500" />
+            <span>Mana</span>
+          </dt>
+          <dd>1000</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="up-card" class="text-yellow-500" />
+            <span>Level</span>
+          </dt>
+          <dd>{@character.level}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="chart" class="text-green-500" />
+            <span>Experience</span>
+          </dt>
+          <dd>{@character.experience}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="run" class="text-amber-500" />
+            <span>Stamina</span>
+          </dt>
+          <dd>{@character.stamina}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="striped-sun" class="text-cyan-500" />
+            <span>Souls</span>
+          </dt>
+          <dd>{@character.souls}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center font-medium gap-2">
+            <UI.Icons.game name="trophy" class="text-purple-500" />
+            <span>Fame</span>
+          </dt>
+          <dd>{@character.fame}</dd>
+        </div>
+      </dl>
+    </UI.Panels.section>
+    """
   end
 
   attr :character, :any, required: true
@@ -187,7 +262,7 @@ defmodule GEMSWeb.Game.CharacterLive do
             <span class="font-semibold">{@name}</span>
             <span class="badge badge-accent font-medium">{@level}/99</span>
           </div>
-          <progress class="progress progress-primary" value="70" max="100"></progress>
+          <UI.Progress.profession value={80} max={100} />
           <div class="flex items-center justify-between mt-1">
             <div class="badge badge-neutral font-medium">XP {@experience} of 100</div>
             <div class="badge badge-neutral font-medium gap-1">
