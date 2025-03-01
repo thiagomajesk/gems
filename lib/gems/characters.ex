@@ -98,14 +98,39 @@ defmodule GEMS.Characters do
     )
   end
 
-  def give_experience!(character_id, profession_id, amount) do
-    attrs = %{character_id: character_id, profession_id: profession_id, experience: amount}
-    changeset = CharacterProfession.changeset(%CharacterProfession{}, attrs)
+  def give_experience!(%Character{} = character, amount) do
+    exp_to_next_level = GEMS.Leveling.class_experience(character.level)
 
-    Repo.insert!(changeset,
-      conflict_target: [:character_id, :profession_id],
-      on_conflict: [inc: [experience: amount]]
-    )
+    {current_level, current_exp} =
+      if character.experience + amount >= exp_to_next_level,
+        do: {character.level + 1, 0},
+        else: {character.level, character.experience + amount}
+
+    character
+    |> Ecto.Changeset.change(%{})
+    |> Ecto.Changeset.put_change(:level, current_level)
+    |> Ecto.Changeset.put_change(:experience, current_exp)
+    |> Repo.update!()
+  end
+
+  def give_experience!(character, profession_id, amount) do
+    character_profession =
+      Repo.get_by!(CharacterProfession,
+        character_id: character.id,
+        profession_id: profession_id
+      )
+
+    {current_level, current_exp} =
+      if character_profession.experience + amount >=
+           GEMS.Leveling.class_experience(character_profession.level),
+         do: {character_profession.level + 1, 0},
+         else: {character_profession.level, character_profession.experience + amount}
+
+    character_profession
+    |> Ecto.Changeset.change(%{})
+    |> Ecto.Changeset.put_change(:level, current_level)
+    |> Ecto.Changeset.put_change(:experience, current_exp)
+    |> Repo.update!()
   end
 
   @doc """

@@ -91,7 +91,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
   @impl true
   def handle_info({:activity_completed, activity_metadata}, socket) do
-    %{activity: %{id: activity_id}} = activity_metadata
+    %{activity: %{id: activity_id}, character: character} = activity_metadata
 
     Logger.debug("COMPLETED ACTIVITY: #{activity_id}, #{inspect(self())}")
 
@@ -101,7 +101,10 @@ defmodule GEMSWeb.Game.ActivitiesLive do
       #{activity_metadata.activity.experience} XP in #{activity_metadata.activity.profession.name}
       """
 
-    {:noreply, put_flash(socket, :info, message)}
+    {:noreply,
+     socket
+     |> assign(:selected_character, character)
+     |> put_flash(:info, message)}
   end
 
   attr :activity, :any, required: true

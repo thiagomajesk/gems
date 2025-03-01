@@ -134,16 +134,13 @@ defmodule GEMS.ActivityManager do
   def handle_info({:complete_activity, character, activity}, state) do
     amount = get_activity_amount(activity)
 
+    {:ok, character} = reward_character!(character, activity, amount)
+
     activity_metadata = %{
       amount: amount,
       activity: activity,
       character: character
     }
-
-    GEMS.Repo.transaction(fn ->
-      GEMS.Characters.give_item!(character.id, activity.item_id, amount)
-      GEMS.Characters.give_experience!(character.id, activity.profession_id, activity.experience)
-    end)
 
     Phoenix.PubSub.broadcast_from(
       GEMS.PubSub,
@@ -161,5 +158,13 @@ defmodule GEMS.ActivityManager do
   defp build_topic(character) do
     %{id: id, zone_id: zone_id} = character
     "#{@topic_prefix}:zone:#{zone_id}:character:#{id}"
+  end
+
+  defp reward_character!(character, activity, amount) do
+    GEMS.Repo.transaction(fn ->
+      GEMS.Characters.give_item!(character.id, activity.item_id, amount)
+      GEMS.Characters.give_experience!(character, activity.profession_id, activity.experience)
+      GEMS.Characters.give_experience!(character, round(activity.experience * 0.1))
+    end)
   end
 end
