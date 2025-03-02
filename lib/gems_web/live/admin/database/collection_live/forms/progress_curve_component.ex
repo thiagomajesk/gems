@@ -6,10 +6,20 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ProgressCurveComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <fieldset id={"#{@id}-progress-curve"} class="fieldset">
-      <label class="label">{@label}</label>
+    <div class="flex flex-col" data-auto-animate>
       <.inputs_for :let={f} field={@field}>
-        <div class="flex items-center rounded-btn bg-base-content/5 p-2 my-1 gap-2">
+        <section class="rounded-box bg-base-content/5 shadow p-2 my-1">
+          <header class="flex items-center justify-between mb-0.5">
+            <span class="text-xs font-medium uppercase">{@label}</span>
+            <button
+              type="button"
+              class="btn btn-sm btn-square ml-auto self-end"
+              phx-target={@myself}
+              phx-click="toggle-preview"
+            >
+              <UI.Icons.page name="eye" class="text-[1.2em]" />
+            </button>
+          </header>
           <div class="grid grid-cols-5 gap-2">
             <SharedInputs.input type="number" min="0" label="Base Value" field={f[:base_value]} />
             <SharedInputs.input type="number" min="0" label="Max Value" field={f[:max_value]} />
@@ -35,19 +45,10 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ProgressCurveComponent do
               field={f[:inflation]}
             />
           </div>
-
-          <button
-            type="button"
-            class="btn btn-sm btn-ghost btn-square ml-auto self-end"
-            phx-target={@myself}
-            phx-click="toggle-preview"
-          >
-            <UI.Icons.page name="eye" />
-          </button>
-        </div>
+        </section>
         <.curve_preview :if={@preview_open} curve={normalize_value(@value)} target={@myself} />
       </.inputs_for>
-    </fieldset>
+    </div>
     """
   end
 

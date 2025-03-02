@@ -8,12 +8,12 @@ defmodule GEMSWeb.Collections do
       preloads: [:type],
       columns: [
         %{field: :id, type: :id, label: "ID"},
-        %{field: :code, type: :enum, label: "Code"},
         %{field: :name, type: :text, label: "Name"},
-        %{field: :type, type: :assoc, label: "Type"}
+        %{field: :code, type: :enum, label: "Code"},
+        %{field: :type, type: {:assoc, "skill-types"}, label: "Type"}
       ]
     },
-    "-types" => %{
+    "skill-types" => %{
       module: GEMS.Engine.Schema.SkillType,
       form: Forms.SkillTypeComponent,
       preloads: [],
@@ -61,7 +61,7 @@ defmodule GEMSWeb.Collections do
         %{field: :id, type: :id, label: "ID"},
         %{field: :name, type: :text, label: "Name"},
         %{field: :code, type: :text, label: "Code"},
-        %{field: :type, type: :assoc, label: "Type"}
+        %{field: :type, type: {:assoc, "creature-types"}, label: "Type"}
       ]
     },
     "elements" => %{
@@ -92,7 +92,7 @@ defmodule GEMSWeb.Collections do
         %{field: :id, type: :id, label: "ID"},
         %{field: :name, type: :text, label: "Name"},
         %{field: :code, type: :text, label: "Code"},
-        %{field: :type, type: :assoc, label: "Type"}
+        %{field: :type, type: {:assoc, "equipment-types"}, label: "Type"}
       ]
     },
     "factions" => %{
@@ -123,7 +123,7 @@ defmodule GEMSWeb.Collections do
         %{field: :id, type: :id, label: "ID"},
         %{field: :name, type: :text, label: "Name"},
         %{field: :code, type: :text, label: "Code"},
-        %{field: :type, type: :assoc, label: "Type"}
+        %{field: :type, type: {:assoc, "item-types"}, label: "Type"}
       ]
     },
     "classes" => %{

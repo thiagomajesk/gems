@@ -5,12 +5,12 @@ defmodule GEMSWeb.CharacterLive.PreviewSelectorComponent do
   def render(assigns) do
     ~H"""
     <div class="space-y-4">
-      <div role="alert" class="alert bg-base-content/5">
+      <div role="alert" class="alert bg-base-200 border border-base-content/10">
         <UI.Icons.page :if={@errors == []} name="circle-alert" class="text-info" size={18} />
         <UI.Icons.page :if={@errors != []} name="circle-alert" class="text-error" size={18} />
         <div class="flex flex-col">
           <span class="font-medium">{@title}</span>
-          <span :if={@errors == []} class="text-sm text-base-content/30">{@subtitle}</span>
+          <span :if={@errors == []} class="text-sm">{@subtitle}</span>
           <span :if={@errors != []} class="text-error">{@errors}</span>
         </div>
       </div>

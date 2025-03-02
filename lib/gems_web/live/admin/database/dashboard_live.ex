@@ -64,16 +64,20 @@ defmodule GEMSWeb.Admin.Database.DashboardLive do
 
   defp insight_card(assigns) do
     ~H"""
-    <div class="flex flex-col bg-base-200 shadow-md rounded-box p-4">
-      <header class="flex flex-items justify-between">
-        <span class="font-semibold text-sm uppercase">{@title}</span>
-        <span class="flex items-center justify-center rounded-btn p-2 bg-base-300">
-          <UI.Icons.page name={@icon} />
-        </span>
-      </header>
-      <span class="text-3xl font-bold text-white">
-        {@count}
-      </span>
+    <div class="card bg-base-100 shadow">
+      <div class="card-body gap-2">
+        <div class="flex items-start justify-between gap-2 text-sm">
+          <div>
+            <p class="text-base-content/80 font-medium">{@title}</p>
+            <div class="mt-3 flex items-center gap-2">
+              <p class="text-2xl font-semibold">{@count}</p>
+            </div>
+          </div>
+          <div class="bg-base-200 rounded-box flex items-center p-2">
+            <UI.Icons.page name={@icon} />
+          </div>
+        </div>
+      </div>
     </div>
     """
   end

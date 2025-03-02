@@ -11,9 +11,9 @@ defmodule GEMSWeb.UIKIT.Navigation do
 
   def tabs(assigns) do
     ~H"""
-    <section>
-      <header class="mb-4">
-        <div role="tablist" class="tabs tabs-bordered">
+    <section class="card bg-base-300 p-2">
+      <header class="mb-4 w-full">
+        <div role="tablist" class="tabs tabs-lift border-b border-base-content/5">
           <.link
             :for={tab <- @tabs}
             patch={@current_path <> "?showing=#{tab.action}"}
@@ -24,7 +24,7 @@ defmodule GEMSWeb.UIKIT.Navigation do
           </.link>
         </div>
       </header>
-      <div :for={tab <- @tabs} :if={@current_action == tab.action} class="flex flex-wrap gap-4">
+      <div :for={tab <- @tabs} :if={@current_action == tab.action} class="flex flex-wrap p-2 gap-4">
         {render_slot(tab)}
       </div>
     </section>

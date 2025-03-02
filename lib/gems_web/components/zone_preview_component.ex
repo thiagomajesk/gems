@@ -7,7 +7,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
     ~H"""
     <section
       id={"#{@id}-wrapper"}
-      class="mb-8 relative overflow-hidden rounded-lg grow shadow-xl cursor-pointer"
+      class="mb-8 relative overflow-hidden rounded-box grow shadow-xl cursor-pointer"
       phx-click={expand("##{@id}-drawer")}
     >
       <UI.Media.image
@@ -17,25 +17,24 @@ defmodule GEMSWeb.ZonePreviewComponent do
           "duration-300 delay-0 hover:delay-700 hover:duration-1000 ease-spring hover:max-h-screen hover:scale-105"
         ]}
       />
-      <header class="absolute bottom-0 p-4 w-full bg-base-300/50 backdrop-blur-sm">
+      <header class="absolute bottom-0 p-4 w-full bg-base-300/60 backdrop-blur-lg">
         <div class="flex flex-col space-y-2 h-full">
-          <div class="flex items-center text-2xl justify-between">
+          <div class="flex items-center text-2xl justify-between mb-0">
             <strong>{@zone.name}</strong>
-            <div class="flex items-center gap-2">
-              <UI.Icons.game name="skull-crack" class={skull_text_color(@zone.skull)} />
-              <UI.Media.game_icon
-                :if={faction = @zone.faction}
-                title={faction.name}
-                icon={faction.icon}
-                fallback="black-flag"
-              />
+            <div class="flex items-center gap-4">
+              <span title={@zone.skull}>
+                <UI.Icons.game name="skull-crack" class={skull_text_color(@zone.skull)} />
+              </span>
+              <span :if={faction = @zone.faction} title={faction.name}>
+                <UI.Media.game_icon title={faction.name} icon={faction.icon} fallback="black-flag" />
+              </span>
             </div>
           </div>
-          <div id={"#{@id}-drawer"} class="hidden transform-gpu flex-col space-y-2">
-            <p class="text-sm text-base-content/50">{@zone.description}</p>
+          <div id={"#{@id}-drawer"} class="hidden transform-gpu flex-col space-y-4">
+            <p class="text-sm my-4">{@zone.description}</p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
               <div
-                class="px-1 rounded-btn bg-base-content/10 shadow-sm flex items-center justify-between"
+                class="px-1 rounded-box bg-base-300/5 backdrop-blur-sm shadow flex items-center justify-between"
                 title="Crafting"
               >
                 <span class="flex items-center gap-2">
@@ -44,7 +43,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
                 <span class="font-medium">+10%</span>
               </div>
               <div
-                class="px-1 rounded-btn bg-base-content/10 shadow-sm flex items-center justify-between"
+                class="px-1 rounded-box bg-base-300/5 backdrop-blur-sm shadow flex items-center justify-between"
                 title="Gathering"
               >
                 <span class="flex items-center gap-2">
@@ -53,7 +52,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
                 <span class="font-medium">+10%</span>
               </div>
               <div
-                class="px-1 rounded-btn bg-base-content/10 shadow-sm flex items-center justify-between"
+                class="px-1 rounded-box bg-base-300/5 backdrop-blur-sm shadow flex items-center justify-between"
                 title="Farming"
               >
                 <span class="flex items-center gap-2">
@@ -62,7 +61,7 @@ defmodule GEMSWeb.ZonePreviewComponent do
                 <span class="font-medium">+10%</span>
               </div>
               <div
-                class="px-1 rounded-btn bg-base-content/10 shadow-sm flex items-center justify-between"
+                class="px-1 rounded-box bg-base-300/5 backdrop-blur-sm shadow flex items-center justify-between"
                 title="Combat"
               >
                 <span class="flex items-center gap-2">

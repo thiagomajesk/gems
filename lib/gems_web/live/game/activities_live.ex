@@ -113,84 +113,90 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
   defp activity_card(assigns) do
     ~H"""
-    <div class="card bg-base-200 p-4">
-      <div class="flex items-center gap-2">
-        <UI.Media.image placeholder={%{width: 100, height: 100}} class="h-full w-18 rounded-xl" />
-        <div class="flex flex-col justify-between space-y-2 grow h-full">
-          <div class="flex items-center">
-            <span class="font-semibold text-lg w-1/2">{@activity.item.name}</span>
-            <div class="flex items-center justify-end w-1/2 gap-2">
-              <%= if @running_timer do %>
-                <button
-                  class="btn btn-neutral btn-sm grow max-w-32"
-                  phx-click="stop"
-                  phx-value-id={@activity.id}
-                >
-                  <UI.Icons.page name="circle-stop" /> Stop
-                </button>
-              <% else %>
-                <button
-                  class="btn btn-neutral btn-sm grow max-w-32"
-                  phx-click={@requirements.satisfied_all? && "start"}
-                  phx-value-id={@requirements.satisfied_all? && @activity.id}
-                  disabled={!@requirements.satisfied_all?}
-                >
-                  <UI.Icons.page name="circle-play" />
-                  <span>{Recase.to_title(@activity.action)}</span>
-                </button>
-              <% end %>
-            </div>
-          </div>
-          <p class="line-clamp-2 text-sm text-base-content/70 break-all">
-            {@activity.item.description}
-          </p>
-          <div class="flex items-center justify-between flex-wrap gap-2 mt-1">
-            <div class="flex items-center flex-wrap gap-2">
-              <span class="badge badge-accent font-medium gap-2" title="Profession">
-                <UI.Media.game_icon icon={@activity.profession.icon} />
-                <span>{@activity.profession.name}</span>
-              </span>
-              <span
-                class={[
-                  "badge font-medium",
-                  (@requirements.profession.satisfied? && "badge-neutral") || "badge-error"
-                ]}
-                title="Required level"
-              >
-                {"LV #{@activity.required_level}"}
-              </span>
-              <span class="badge badge-neutral font-medium gap-1" title="Duration">
-                <UI.Icons.page name="clock" />
-                <span>{"#{@activity.duration}s"}</span>
-              </span>
-              <span class="badge badge-neutral font-medium gap-1" title="Experience">
-                <UI.Icons.page name="arrow-big-up-dash" />
-                <span>{"#{@activity.experience} XP"}</span>
-              </span>
-            </div>
-            <div class="flex items-center gap-2">
-              <%= for item_ingredient <- @activity.item.item_ingredients do %>
-                <% requirement = @requirements.ingredients[item_ingredient.ingredient.id] %>
-                <span class={[
-                  "badge font-medium gap-1",
-                  (requirement.satisfied? && "badge-neutral") || "badge-error"
-                ]}>
-                  {"#{item_ingredient.amount}x #{item_ingredient.ingredient.name}"}
-                </span>
-              <% end %>
-            </div>
-          </div>
-          <.activity_progress
-            id={"#{@activity.id}-progress"}
-            animate={@running_timer != nil}
-            duration={:timer.seconds(@activity.duration)}
-            remaining={
-              if @running_timer,
-                do: Process.read_timer(@running_timer) || 0,
-                else: :timer.seconds(@activity.duration)
-            }
-          />
+    <div class="card card-side bg-base-300 shadow card-border border-base-content/5 max-h-56">
+      <figure class="min-w-1/4 min-w-42">
+        <UI.Media.image placeholder={%{width: 100, height: 100}} />
+      </figure>
+      <div class="card-body p-3 space-y-2">
+        <div class="flex items-center">
+          <span class="font-semibold grow text-normal md:text-lg">{@activity.item.name}</span>
+          <%= if @running_timer do %>
+            <button
+              class="btn btn-neutral btn-sm md:btn-md grow max-w-32"
+              phx-click="stop"
+              phx-value-id={@activity.id}
+            >
+              <UI.Icons.page name="circle-stop" class="text-[1.2em]" /> Stop
+            </button>
+          <% else %>
+            <button
+              class="btn btn-neutral btn-sm md:btn-md grow max-w-32"
+              phx-click={@requirements.satisfied_all? && "start"}
+              phx-value-id={@requirements.satisfied_all? && @activity.id}
+              disabled={!@requirements.satisfied_all?}
+            >
+              <UI.Icons.page name="circle-play" class="text-[1.2em]" />
+              <span>{Recase.to_title(@activity.action)}</span>
+            </button>
+          <% end %>
         </div>
+        <p class="line-clamp-2 text-sm text-base-content/70 break-all">
+          {@activity.item.description}
+        </p>
+        <div class="flex items-center flex-wrap gap-2">
+          <span
+            class="badge badge-sm md:badge-md badge-soft badge-accent font-medium gap-1"
+            title="Profession"
+          >
+            <UI.Media.game_icon icon={@activity.profession.icon} class="text-[1.2em]" />
+            <span>{@activity.profession.name}</span>
+          </span>
+          <span
+            class={[
+              "badge badge-sm md:badge-md font-medium",
+              (@requirements.profession.satisfied? && "bg-base-content/5 border-base-content/5") ||
+                "badge-error"
+            ]}
+            title="Required level"
+          >
+            {"LV #{@activity.required_level}"}
+          </span>
+          <span
+            class="badge badge-sm md:badge-md bg-base-content/5 border-base-content/5 font-medium gap-1"
+            title="Duration"
+          >
+            <UI.Icons.page name="clock" class="text-[1.2em]" />
+            <span>{"#{@activity.duration}s"}</span>
+          </span>
+          <span
+            class="badge badge-sm md:badge-md bg-base-content/5 border-base-content/5 font-medium gap-1"
+            title="Experience"
+          >
+            <UI.Icons.page name="arrow-big-up-dash" class="text-[1.2em]" />
+            <span>{"#{@activity.experience} XP"}</span>
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <%= for item_ingredient <- @activity.item.item_ingredients do %>
+            <% requirement = @requirements.ingredients[item_ingredient.ingredient.id] %>
+            <span class={[
+              "badge badge-sm md:badge-md font-medium gap-1",
+              (requirement.satisfied? && "bg-base-content/5 border-base-content/5") || "badge-error"
+            ]}>
+              {"#{item_ingredient.amount}x #{item_ingredient.ingredient.name}"}
+            </span>
+          <% end %>
+        </div>
+        <.activity_progress
+          id={"#{@activity.id}-progress"}
+          animate={@running_timer != nil}
+          duration={:timer.seconds(@activity.duration)}
+          remaining={
+            if @running_timer,
+              do: Process.read_timer(@running_timer) || 0,
+              else: :timer.seconds(@activity.duration)
+          }
+        />
       </div>
     </div>
     """

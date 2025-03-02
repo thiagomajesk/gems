@@ -12,7 +12,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EffectsAssocInput do
     <div class="flex flex-col h-full min-h-64" data-auto-animate>
       <input type="hidden" name="entity[effects_drop][]" />
       <.inputs_for :let={f} field={@field}>
-        <section class="rounded-btn bg-base-content/5 p-2 my-1">
+        <section class="rounded-box bg-base-content/5 p-2 my-1">
           <input type="hidden" name="entity[effects_sort][]" value={f.index} />
           <header class="flex items-center justify-between mb-0.5">
             <SharedInputs.select
@@ -60,9 +60,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EffectsAssocInput do
         name="entity[effects_sort][]"
         value="new"
         phx-click={JS.dispatch("change")}
-        class="btn btn-neutral btn-sm w-full mt-auto"
+        class="btn bg-base-content/10 btn-sm w-56 self-center mt-auto"
       >
-        <UI.Icons.page name="plus-circle" /> Add
+        <UI.Icons.page name="plus-circle" class="text-[1.2em]" /> Add
       </button>
     </div>
     """

@@ -12,22 +12,21 @@ defmodule GEMSWeb.UIKIT.Progress do
 
     ~H"""
     <div
-      class="h-6 bg-black/40 relative shadow-lg rounded-xs grow"
+      class="h-6 bg-base-300 relative overflow-hidden rounded-box grow"
       title={"Experience: #{@value}/#{@max}"}
     >
       <div
         class={[
-          "absolute inset-y-0 left-0 transition-all duration-300 rounded-xs",
+          "absolute inset-y-0 left-0 transition-all duration-300",
           exp_gradient_class(@progress)
         ]}
         style={"width: #{@progress}%;"}
       />
-      <small class={[
-        "absolute inset-0 flex items-center justify-center px-2 text-white",
-        "[text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]"
-      ]}>
-        Level {@character.level}
-      </small>
+      <div class="absolute inset-0 flex items-center justify-center px-2">
+        <small class="bg-base-content/10 rounded-selector px-2 text-xs glass">
+          Level {@character.level}
+        </small>
+      </div>
     </div>
     """
   end
@@ -39,7 +38,7 @@ defmodule GEMSWeb.UIKIT.Progress do
     assigns = assign_new(assigns, :progress, &calculate_progress(&1.value, &1.max))
 
     ~H"""
-    <div class="h-2 bg-black/40 relative rounded-sm grow" title={"Experience: #{@value}/#{@max}"}>
+    <div class="h-2 bg-base-300 relative rounded grow" title={"Experience: #{@value}/#{@max}"}>
       <div
         class={[
           "absolute inset-y-0 left-0 transition-all duration-300 rounded-sm",
@@ -61,7 +60,7 @@ defmodule GEMSWeb.UIKIT.Progress do
       |> assign_new(:progress, &calculate_progress(&1.value, &1.max))
 
     ~H"""
-    <div class="h-1 bg-black/40 relative grow" title={"Stamina: #{@value}/#{@max}"}>
+    <div class="h-1 bg-base-300 relative grow" title={"Stamina: #{@value}/#{@max}"}>
       <div
         class={[
           "absolute inset-y-0 left-0 transition-all duration-300 rounded-full",
@@ -113,5 +112,5 @@ defmodule GEMSWeb.UIKIT.Progress do
   defp stamina_gradient_class(_progress),
     do: "bg-linear-to-r from-red-500 to-orange-400 shadow-[0_0_12px_rgba(234,88,12,0.7)]"
 
-  defp calculate_progress(value, max), do: round(value / max * 100)
+  defp calculate_progress(value, max), do: min(round(value / max * 100), max)
 end

@@ -64,7 +64,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
     assigns = Forms.input_assigns(assigns)
 
     ~H"""
-    <label class="bg-base-content/10 p-2 rounded-btn relative cursor-pointer group">
+    <label class="bg-base-content/10 p-2 rounded-box relative cursor-pointer group">
       <span
         class="block w-4 h-4 rounded-full border border-base-content/50 transition-transform duration-500 group-hover:scale-125"
         style={"background-color: #{@value}"}

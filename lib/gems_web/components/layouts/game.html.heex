@@ -1,36 +1,30 @@
 <.flash_group flash={@flash} />
-<section class="flex flex-col h-screen overflow-y-hidden">
-  <.annoucement_banner :if={false} />
-  <UI.Panels.container tag="header">
-    <div class="mt-4">
-      <div class="flex flex-col gap-3">
-        <UI.Progress.experience character={@selected_character} />
-        <div class="flex items-center gap-4">
-          <UI.Progress.stamina character={@selected_character} />
-        </div>
-      </div>
+<div class="flex flex-col h-full">
+  <UI.Panels.container>
+    <.annoucement_banner :if={false} />
+    <div class="my-4 flex flex-col gap-3">
+      <UI.Progress.experience character={@selected_character} />
+      <UI.Progress.stamina character={@selected_character} />
+      <UI.Menus.global current_path={@current_path}>
+        <:link href="/home" icon="house" label="Home" />
+        <:link href={~p"/game/character"} icon="skills" label="Character" />
+        <:link href="/progress" icon="progression" label="Progress" />
+        <:link href={~p"/game/storage"} icon="locked-chest" label="Storage" />
+        <:link href={~p"/game/world"} icon="compass" label="World" />
+        <:link href={~p"/game/activities"} icon="run" label="Activities" />
+        <:link href="/combat" icon="fishing-net" label="Hunt" />
+        <:link href="/square" icon="hanging-sign" label="Square" />
+        <:link href="/journal" icon="notebook" label="Journal" />
+        <:link href="/guild" icon="vertical-banner" label="Guild" />
+        <:link href="/dungeons" icon="torch" label="Dungeons" />
+        <:link href="/bosses" icon="crowned-skull" label="Bosses" />
+        <:link href="/ranks" icon="achievement" label="Ranks" />
+        <:link href="/challenges" icon="trophy-cup" label="Challenges" />
+        <:link href="/calendar" icon="calendar" label="Calendar" />
+      </UI.Menus.global>
     </div>
-    <UI.Menus.global current_path={@current_path}>
-      <:link href="/home" icon="house" label="Home" />
-      <:link href={~p"/game/character"} icon="skills" label="Character" />
-      <:link href="/progress" icon="progression" label="Progress" />
-      <:link href={~p"/game/storage"} icon="locked-chest" label="Storage" />
-      <:link href={~p"/game/world"} icon="compass" label="World" />
-      <:link href={~p"/game/activities"} icon="run" label="Activities" />
-      <:link href="/combat" icon="fishing-net" label="Hunt" />
-      <:link href="/square" icon="hanging-sign" label="Square" />
-      <:link href="/journal" icon="notebook" label="Journal" />
-      <:link href="/guild" icon="vertical-banner" label="Guild" />
-      <:link href="/dungeons" icon="torch" label="Dungeons" />
-      <:link href="/bosses" icon="crowned-skull" label="Bosses" />
-      <:link href="/ranks" icon="achievement" label="Ranks" />
-      <:link href="/challenges" icon="trophy-cup" label="Challenges" />
-      <:link href="/calendar" icon="calendar" label="Calendar" />
-    </UI.Menus.global>
-  </UI.Panels.container>
-  <main class="h-full overflow-y-auto px-2 pt-4">
-    <UI.Panels.container>
+    <main class="py-4">
       {@inner_content}
-    </UI.Panels.container>
-  </main>
-</section>
+    </main>
+  </UI.Panels.container>
+</div>

@@ -4,43 +4,45 @@ defmodule GEMSWeb.CharacterLive.Index do
   alias GEMS.Characters
 
   @impl true
-  def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
-    {:ok, assign(socket, :characters, Characters.list_characters(user))}
+  def render(assigns) do
+    ~H"""
+    <div class="py-8">
+      <UI.Panels.container tag="section">
+        <header class="flex items-center justify-between">
+          <h1 class="mb-4 text-3xl font-semibold">Characters</h1>
+          <a href={~p"/accounts/characters/new"} class="btn btn-primary">
+            <UI.Icons.page name="plus-circle" size={18} /> New character
+          </a>
+        </header>
+        <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 mt-8">
+          <.link
+            :for={character <- @characters}
+            href={~p"/character/#{character}/select"}
+            draggable="false"
+            method="post"
+            class={[
+              "card bg-base-300 p-4 shadow border border-base-content/10",
+              "transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:border-primary"
+            ]}
+          >
+            <UI.Media.avatar avatar={character.avatar} class="rounded-lg" />
+            <div class="flex flex-col items-center justify-center grow space-y-2 mt-2">
+              <span class="font-medium">{character.name}</span>
+              <span class="badge badge-neutral gap-2 font-medium">
+                <span>{character.class.name}</span>
+                {"LV #{character.level}"}
+              </span>
+            </div>
+          </.link>
+        </div>
+      </UI.Panels.container>
+    </div>
+    """
   end
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <section class="container mx-auto py-8">
-      <header class="flex items-center justify-between">
-        <h1 class="mb-4 text-3xl font-semibold">Character Creation</h1>
-        <a href={~p"/accounts/characters/new"} class="btn btn-primary">
-          <UI.Icons.page name="plus-circle" /> Create character
-        </a>
-      </header>
-      <div class="grid grid-cols-4 md:grid-cols-6 xl:grid-cols-8 gap-4 mt-8">
-        <div :for={character <- @characters} class="card bg-base-content/5 p-2 shadow-sm">
-          <div class="flex flex-col justify-between gap-4">
-            <UI.Media.avatar avatar={character.avatar} class="rounded-lg" />
-            <div class="flex flex-col items-center grow space-y-2">
-              <span class="text-center font-medium">{character.name}</span>
-              <span :if={character.title} class="text-xs text-center">{character.title}</span>
-              <span class="badge badge-neutral font-medium gap-2">
-                <UI.Icons.page name="zap" /> 1200 power
-              </span>
-              <.link
-                href={~p"/character/#{character}/select"}
-                method="post"
-                class="btn btn-sm btn-accent w-full"
-              >
-                <UI.Icons.page name="play" /> Play
-              </.link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    """
+  def mount(_params, _session, socket) do
+    user = socket.assigns.current_user
+    {:ok, assign(socket, :characters, Characters.list_characters(user))}
   end
 end

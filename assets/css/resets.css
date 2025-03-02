@@ -47,3 +47,18 @@ progress::-moz-progress-bar {
   -ms-user-select: none;
   user-select: none;
 }
+
+/*
+* Override default values for all DaisyUI themes.
+* Disable depth and noise by default and set scrollbar and bg color.
+*/
+:root {
+  --depth: 0;
+  --noise: 0;
+  background-color: var(--root-bg, var(--color-base-100));
+  scrollbar-color: color-mix(in oklch, currentColor 35%, #0000) #0000;
+}
+
+.table thead th {
+  @apply font-medium;
+}

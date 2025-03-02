@@ -76,15 +76,17 @@ defmodule GEMSWeb.CoreComponents do
   def input(%{type: "checkbox"} = assigns) do
     ~H"""
     <fieldset class="fieldset">
-      <label class="label">{@label}</label>
-      <input
-        id={@id}
-        name={@name}
-        value={@value}
-        type="checkbox"
-        checked="checked"
-        class={["checkbox", @errors != [] && "checkbox-error"]}
-      />
+      <label class="label">
+        <input
+          id={@id}
+          name={@name}
+          value={@value}
+          type="checkbox"
+          checked="checked"
+          class={["checkbox", @errors != [] && "checkbox-error"]}
+        />
+        {@label}
+      </label>
       <.error :for={msg <- @errors}>{msg}</.error>
     </fieldset>
     """

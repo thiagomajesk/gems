@@ -13,76 +13,9 @@ defmodule GEMSWeb.Game.WorldLive do
         zone_id={@selected_character.zone_id}
       />
       <UI.Panels.section title="Nearby Zones" divider>
-        <UI.Lists.cards_with_covers>
-          <:card
-            :for={zone <- @nearby_zones}
-            title={zone.name}
-            subtitle={zone.description}
-            cover={zone.image}
-          >
-            <div class="flex items-center justify-between mb-2 text-gray-400">
-              <div class="flex items-center gap-2">
-                <span class="font-semibold uppercase text-accent">{zone.biome.name}</span>
-                <UI.Icons.game name="skull-crack" class={skull_text_color(zone.skull)} />
-                <UI.Media.game_icon
-                  :if={faction = zone.faction}
-                  title={faction.name}
-                  icon={faction.icon}
-                  fallback="black-flag"
-                />
-              </div>
-              <div class="flex items-center gap-2">
-                <div class="badge badge-neutral flex items-center gap-1" title="Danger">
-                  <UI.Icons.game name="skull-crossed-bones" />
-                  <span>{zone.danger}</span>
-                </div>
-                <div
-                  class={[
-                    "badge flex items-center gap-1",
-                    (@selected_character.gold >= zone.gold_cost && "badge-neutral") || "badge-error"
-                  ]}
-                  title="Gold cost"
-                >
-                  <UI.Icons.game name="two-coins" />
-                  <span>{zone.gold_cost}</span>
-                </div>
-                <div
-                  class={[
-                    "badge flex items-center gap-1",
-                    (@selected_character.stamina >= zone.stamina_cost && "badge-neutral") ||
-                      "badge-error"
-                  ]}
-                  title="Stamina cost"
-                >
-                  <UI.Icons.game name="run" />
-                  <span>{zone.stamina_cost}</span>
-                </div>
-              </div>
-            </div>
-            <div class="flex justify-between items-center gap-2 mt-2 pt-2 border-t border-base-content/10">
-              <div class="flex items-center gap-1">
-                <span
-                  :for={activity <- Enum.uniq_by(zone.activities, & &1.profession_id)}
-                  title={activity.profession.name}
-                  class="px-2 bg-base-content/10 rounded-sm shadow-sm"
-                >
-                  <UI.Media.game_icon icon={activity.profession.icon} />
-                </span>
-              </div>
-              <.link
-                :if={
-                  @selected_character.gold >= zone.gold_cost &&
-                    @selected_character.stamina >= zone.stamina_cost
-                }
-                phx-click="travel"
-                phx-value-id={zone.id}
-                class="btn btn-sm btn-primary"
-              >
-                <UI.Icons.game name="walking-boot" /> Travel
-              </.link>
-            </div>
-          </:card>
-        </UI.Lists.cards_with_covers>
+        <div class="flex fle-col space-y-2">
+          <.zone_card :for={zone <- @nearby_zones} zone={zone} character={@selected_character} />
+        </div>
       </UI.Panels.section>
     </div>
     """
@@ -105,6 +38,93 @@ defmodule GEMSWeb.Game.WorldLive do
      socket
      |> assign(:selected_character, character)
      |> assign(:nearby_zones, nearby_zones)}
+  end
+
+  attr :zone, :any, required: true
+  attr :character, :any, required: true
+
+  defp zone_card(assigns) do
+    ~H"""
+    <div class="card card-side bg-base-300 shadow card-border border-base-content/5 max-h-56">
+      <figure class="min-w-1/4 min-w-42">
+        <UI.Media.image
+          src={GEMS.public_asset_path(@zone.image)}
+          placeholder={%{width: 100, height: 100}}
+        />
+      </figure>
+      <div class="card-body p-3 space-y-2">
+        <div class="flex items-center">
+          <span class="font-semibold grow text-normal md:text-lg">{@zone.name}</span>
+          <div class="flex items-center gap-2">
+            <.link
+              :if={
+                @character.gold >= @zone.gold_cost &&
+                  @character.stamina >= @zone.stamina_cost
+              }
+              phx-click="travel"
+              phx-value-id={@zone.id}
+              class="btn btn-neutral btn-sm md:btn-md grow max-w-32"
+            >
+              <UI.Icons.game name="walking-boot" /> Travel
+            </.link>
+          </div>
+        </div>
+        <p class="line-clamp-2 text-sm text-base-content/70 break-all">
+          {@zone.description}
+        </p>
+        <div class="flex items-center flex-wrap gap-2">
+          <UI.Icons.game name="skull-crack" class={skull_text_color(@zone.skull)} />
+          <UI.Media.game_icon
+            :if={faction = @zone.faction}
+            title={faction.name}
+            icon={faction.icon}
+            fallback="black-flag"
+          />
+          <span class="badge badge-sm md:badge-md badge-soft badge-accent font-medium gap-1">
+            {@zone.biome.name}
+          </span>
+          <span
+            class="badge badge-sm md:badge-md bg-base-content/5 border-base-content/10 flex items-center gap-1"
+            title="Danger"
+          >
+            <UI.Icons.game name="skull-crossed-bones" />
+            <span>{@zone.danger}</span>
+          </span>
+          <span
+            class={[
+              "badge badge-sm md:badge-md flex items-center gap-1",
+              (@character.gold >= @zone.gold_cost && "bg-base-content/5 border-base-content/10 ") ||
+                "badge-error"
+            ]}
+            title="Gold cost"
+          >
+            <UI.Icons.game name="two-coins" />
+            <span>{@zone.gold_cost}</span>
+          </span>
+          <span
+            class={[
+              "badge badge-sm md:badge-md flex items-center gap-1",
+              (@character.stamina >= @zone.stamina_cost && "bg-base-content/5 border-base-content/10") ||
+                "badge-error"
+            ]}
+            title="Stamina cost"
+          >
+            <UI.Icons.game name="run" />
+            <span>{@zone.stamina_cost}</span>
+          </span>
+        </div>
+        <div class="flex items-center gap-2 border-t border-base-content/10 pt-2">
+          <span
+            :for={activity <- Enum.uniq_by(@zone.activities, & &1.profession_id)}
+            title={activity.profession.name}
+            class="px-2 bg-base-content/5 rounded-sm shadow-sm"
+          >
+            <UI.Media.game_icon icon={activity.profession.icon} />
+          </span>
+        </div>
+      </div>
+    </div>
+    """
   end
 
   defp skull_text_color(:blue), do: "text-blue-500"

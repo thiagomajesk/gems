@@ -11,7 +11,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent do
     <fieldset id={"#{@id}-icon-picker"} class="fieldset" phx-hook="IconPicker">
       <label class="label">{@label}</label>
       <.inputs_for :let={f} field={@field}>
-        <div class="input  flex items-center px-2">
+        <div class="input w-full flex items-center px-2">
           <div :if={@value} class="flex items-center gap-2">
             <SharedInputs.colorpicker field={f[:color]} phx-debounce="10" />
             <UI.Icons.game
@@ -99,7 +99,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent do
     ~H"""
     <div class="modal" role="dialog" open={@open}>
       <div class="modal-box flex flex-col border border-base-content/10 max-w-6xl overflow-y-hidden">
-        <header class="text-neutral flex items-center bg-base-200 rounded-btn gap-2 py-2 px-4 mb-4">
+        <header class="text-neutral flex items-center bg-base-200 rounded-box gap-2 py-2 px-4 mb-4">
           <label class="input input-sm input-ghost bg-base-200 flex items-center gap-2 grow">
             <UI.Icons.page name="search" />
             <input
@@ -134,7 +134,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent do
               phx-target={@target}
               phx-click="select-icon"
               phx-value-icon={icon}
-              class="flex flex-col items-center hover:bg-base-200 rounded-btn p-2"
+              class="flex flex-col items-center hover:bg-base-200 rounded-box p-2"
             >
               <UI.Icons.game name={icon} class="text-4xl" noobserver />
               <.search_mark icon={icon} search={@search} />

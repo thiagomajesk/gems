@@ -7,46 +7,48 @@ defmodule GEMSWeb.CharacterLive.New do
 
   def render(assigns) do
     ~H"""
-    <section class="container mx-auto py-8">
-      <h1 class="text-3xl font-semibold mb-4">New character</h1>
-      <.form
-        :let={f}
-        id="character-creation-form"
-        for={@form}
-        phx-submit="save"
-        phx-change="validate"
-        class="card bg-base-200 p-4 space-y-4 shadow-sm"
-      >
-        <.input type="text" field={f[:name]} label="Name" required />
-        <.input type="select" field={f[:class_id]} label="Class" options={@class_options} required />
-        <.input
-          type="select"
-          field={f[:faction_id]}
-          label="Faction"
-          options={@faction_options}
-          required
-        />
+    <div class="py-8">
+      <UI.Panels.container tag="section" title="New character">
+        <header class="flex items-center justify-between">
+          <h1 class="mb-4 text-3xl font-semibold">New Character</h1>
+        </header>
+        <.form
+          :let={f}
+          id="character-creation-form"
+          for={@form}
+          phx-submit="save"
+          phx-change="validate"
+          class="card bg-base-300 p-4 space-y-4 border border-base-content/10 shadow"
+        >
+          <.input type="text" field={f[:name]} label="Name" required />
+          <.input type="select" field={f[:class_id]} label="Class" options={@class_options} required />
+          <.input
+            type="select"
+            field={f[:faction_id]}
+            label="Faction"
+            options={@faction_options}
+            required
+          />
 
-        <section class="flex flex-col card bg-base-300 p-4">
-          <h2 class="text-lg text-center font-semibold mb-4">Avatars</h2>
-          <.live_component
-            field={f[:avatar_id]}
-            id="avatar-selector"
-            title="Choose your character's avatar"
-            subtitle="This will determine your character's in-game appearance"
-            module={PreviewSelectorComponent}
-          >
-            <:preview :let={avatar}>{inspect(avatar)}</:preview>
-            <:item :for={avatar <- @avatars} id={avatar.id}>
-              <UI.Media.avatar avatar={avatar} />
-            </:item>
-          </.live_component>
-        </section>
-        <div>
-          <button type="submit" class="btn btn-primary">Create character</button>
-        </div>
-      </.form>
-    </section>
+          <UI.Panels.section title="Avatars" center>
+            <.live_component
+              field={f[:avatar_id]}
+              id="avatar-selector"
+              title="Choose your character's avatar"
+              subtitle="This will determine your character's in-game appearance"
+              module={PreviewSelectorComponent}
+            >
+              <:item :for={avatar <- @avatars} id={avatar.id}>
+                <UI.Media.avatar avatar={avatar} />
+              </:item>
+            </.live_component>
+          </UI.Panels.section>
+          <div>
+            <button type="submit" class="btn btn-primary">Create character</button>
+          </div>
+        </.form>
+      </UI.Panels.container>
+    </div>
     """
   end
 

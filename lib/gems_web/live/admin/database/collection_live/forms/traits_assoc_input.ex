@@ -12,7 +12,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput do
     <div class="flex flex-col h-full min-h-64" data-auto-animate>
       <input type="hidden" name="entity[traits_drop][]" />
       <.inputs_for :let={f} field={@field}>
-        <section class="rounded-btn bg-base-content/5 p-2 my-1">
+        <section class="rounded-box bg-base-content/5 shadow p-2 my-1">
           <input type="hidden" name="entity[traits_sort][]" value={f.index} />
           <header class="flex items-center justify-between mb-0.5">
             <SharedInputs.select
@@ -22,18 +22,18 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput do
               options={@trait_options}
               phx-blur={on_select(f[:kind].id)}
             />
-            <span :if={f[:id].value != nil} class="text-sm font-medium uppercase">
+            <span :if={f[:id].value != nil} class="text-xs font-medium uppercase">
               {Recase.to_title(to_string(f[:kind].value))}
             </span>
             <button
               :if={f[:id].value != nil}
               type="button"
-              class="btn btn-ghost btn-square btn-xs"
+              class="btn btn-sm btn-square"
               name="entity[traits_drop][]"
               value={f.index}
               phx-click={JS.dispatch("change")}
             >
-              <UI.Icons.page name="minus-circle" />
+              <UI.Icons.page name="minus-circle" class="text-[1.2em]" />
             </button>
           </header>
           <div>
@@ -95,9 +95,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput do
         name="entity[traits_sort][]"
         value="new"
         phx-click={JS.dispatch("change")}
-        class="btn btn-neutral btn-sm w-full mt-auto"
+        class="btn bg-base-content/10 btn-sm w-56 self-center mt-auto"
       >
-        <UI.Icons.page name="plus-circle" /> Add
+        <UI.Icons.page name="plus-circle" class="text-[1.2em]" /> Add
       </button>
     </div>
     """

@@ -8,10 +8,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
       <UI.Icons.page name="alert-triangle" size={18} />
       <div class="flex flex-col">
         <strong>Invalid path! Failed to mount the file explorer</strong>
-        <div class="flex flex-col">
-          <p>Check if the path exists and that you have the correct permissions to access it</p>
-          <small class="font-medium">{@local_path}</small>
-        </div>
+        <p>
+          Check if the path exists and that you have the correct permissions to access it: {@local_path}
+        </p>
       </div>
     </div>
     """
@@ -22,7 +21,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
     ~H"""
     <fieldset class="fieldset">
       <label class="label">{@label}</label>
-      <div class="input  flex items-center px-2">
+      <div class="input w-full flex items-center px-2">
         <.miniature_preview src={GEMS.public_asset_path(@value)} />
         <input
           type="text"
@@ -97,7 +96,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent do
     ~H"""
     <div class="modal" role="dialog" open={@open}>
       <div class="modal-box max-w-none">
-        <header class="text-neutral flex items-center bg-base-200 rounded-btn py-2 px-4 mb-4">
+        <header class="text-neutral flex items-center bg-base-200 rounded-box py-2 px-4 mb-4">
           <UI.Icons.page name="folder-open" />
           <span class="ml-2 select-text">{GEMS.local_asset_path!(@directory)}</span>
           <button

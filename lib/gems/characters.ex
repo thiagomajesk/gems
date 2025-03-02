@@ -13,11 +13,21 @@ defmodule GEMS.Characters do
   alias GEMS.Accounts.Schema.User
   alias GEMS.World.Schema.Character
 
+  @default_preloads [
+    :class,
+    :faction,
+    :avatar
+  ]
+
   @doc """
   Returns the list of characters.
   """
   def list_characters(%User{id: user_id}) do
-    Repo.all(from c in Character, where: c.user_id == ^user_id, preload: [:avatar])
+    Repo.all(
+      from c in Character,
+        where: c.user_id == ^user_id,
+        preload: ^@default_preloads
+    )
   end
 
   @doc """
@@ -157,16 +167,8 @@ defmodule GEMS.Characters do
 
   defp load_character(character) do
     character
-    |> preload_character()
+    |> Repo.preload(@default_preloads)
     |> hydrate_virtuals()
-  end
-
-  defp preload_character(character) do
-    Repo.preload(character, [
-      :class,
-      :faction,
-      :avatar
-    ])
   end
 
   defp hydrate_virtuals(character) do

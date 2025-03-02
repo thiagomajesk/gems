@@ -21,11 +21,11 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
         {render_slot(@inner_block, f)}
       </div>
       <div class="flex items-center justify-between">
-        <.link navigate={@return_to} class="btn btn-neutral">
-          <UI.Icons.page name="arrow-left" /> Return
+        <.link navigate={@return_to} class="btn btn-sm btn-link">
+          <UI.Icons.page name="arrow-left" class="text-[1.2em]" /> Return
         </.link>
-        <button type="submit" class="btn btn-primary">
-          <UI.Icons.page name="save" /> Save
+        <button type="submit" class="btn btn-sm btn-primary">
+          <UI.Icons.page name="save" class="text-[1.2em]" /> Save
         </button>
       </div>
     </.form>
@@ -39,8 +39,11 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
 
   def fieldset(assigns) do
     ~H"""
-    <fieldset class={["text-center bg-base-content/5 rounded-box p-4", @class]} {@rest}>
-      <legend :if={@legend} class="uppercase font-bold">
+    <fieldset
+      class={["fieldset text-center bg-base-content/5 rounded-box p-4 shadow", @class]}
+      {@rest}
+    >
+      <legend :if={@legend} class="fieldset-legend uppercase font-semibold">
         {@legend}
       </legend>
       {render_slot(@inner_block)}
@@ -68,13 +71,13 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   def render_field_input(%{type: "textarea"} = assigns) do
     ~H"""
     <fieldset class="fieldset">
-      <label class="label">{@label}</label>
+      <label class="label font-medium">{@label}</label>
       <textarea
         id={@id}
         name={@name}
         value={@value}
         placeholder={@placeholder}
-        class={["textarea  w-full", @errors != [] && "textarea-error"]}
+        class={["textarea w-full", @errors != [] && "textarea-error"]}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
       <.error_message :for={msg <- @errors}>{msg}</.error_message>
@@ -85,8 +88,8 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   def render_field_input(%{type: "select"} = assigns) do
     ~H"""
     <fieldset class="fieldset">
-      <label class="label">{@label}</label>
-      <select id={@id} name={@name} class={["select ", @errors != [] && "select-error"]} {@rest}>
+      <label class="label font-medium">{@label}</label>
+      <select id={@id} name={@name} class={["select w-full", @errors != [] && "select-error"]} {@rest}>
         <option value="">Select an option</option>
         {Phoenix.HTML.Form.options_for_select(@options, @value)}
       </select>
@@ -98,8 +101,8 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   def render_field_input(%{type: "percentage"} = assigns) do
     ~H"""
     <fieldset class="fieldset">
-      <label class="label">{@label}</label>
-      <div class="flex items-center input  gap-2">
+      <label class="label font-medium">{@label}</label>
+      <div class="flex items-center input w-full gap-2">
         <UI.Icons.page name="percent" />
         <input
           id={@id}
@@ -108,7 +111,7 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
           type="number"
           placeholder={@placeholder}
           step="0.1"
-          class={["w-full", @errors != [] && "input-error"]}
+          class={["grow", @errors != [] && "input-error"]}
           {@rest}
         />
         <.error_message :for={msg <- @errors}>{msg}</.error_message>
@@ -122,14 +125,14 @@ defmodule GEMSWeb.UIKIT.Admin.Forms do
   def render_field_input(assigns) do
     ~H"""
     <fieldset class="fieldset">
-      <label class="label">{@label}</label>
+      <label class="label font-medium">{@label}</label>
       <input
         id={@id}
         name={@name}
         value={@value}
         type={@type}
         placeholder={@placeholder}
-        class={["input  w-full", @errors != [] && "input-error"]}
+        class={["input w-full", @errors != [] && "input-error"]}
         {@rest}
       />
       <.error_message :for={msg <- @errors}>{msg}</.error_message>

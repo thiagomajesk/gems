@@ -17,7 +17,7 @@ defmodule GEMSWeb.Game.CharacterLive do
           <.bio_section character={@selected_character} />
           <.guild_section :if={@guild} guild={@guild} />
         </div>
-        <div class="w-full md:w-2/3 flex flex-col space-y-4 bg-base-200 rounded-box p-4">
+        <div class="w-full md:w-2/3 flex flex-col space-y-4">
           <UI.Navigation.tabs current_path={~p"/game/character"} current_action={@action}>
             <:tabs action={:inventory} label="Inventory">
               <.apparel_section />
@@ -59,7 +59,7 @@ defmodule GEMSWeb.Game.CharacterLive do
   defp info_section(assigns) do
     ~H"""
     <UI.Panels.section title="Info">
-      <dl class="card bg-base-200 p-4 divide-y divide-dotted divide-base-content/20">
+      <dl class="card bg-base-300 p-4 divide-y divide-dotted divide-base-content/20">
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center font-medium gap-2">
             <UI.Icons.game name="character" class="text-indigo-500" />
@@ -142,7 +142,7 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp bio_card(assigns) do
     ~H"""
-    <div class="card bg-base-200 p-4">
+    <div class="card bg-base-300 p-4">
       <p :if={@text} class="line-clamp-6"></p>
       <div role="alert" class="alert bg-base-100 text-xs">
         <UI.Icons.page name="info" />
@@ -185,9 +185,9 @@ defmodule GEMSWeb.Game.CharacterLive do
       <UI.Icons.game
         name={attribute_icon(@name)}
         size="unset"
-        class={["h-full w-full absolute inset-0", attribute_text_color(@name)]}
+        class={["!size-full absolute inset-0", attribute_text_color(@name)]}
       />
-      <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-xs px-2 py-1 rounded-btn shadow-sm size-12 flex items-center justify-center">
+      <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-xs px-2 py-1 rounded-box shadow-sm size-14 flex items-center justify-center">
         {@value}
       </span>
       <small class="absolute bottom-2 right-2 font-semibold uppercase">
@@ -230,9 +230,8 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp professions_section(assigns) do
     ~H"""
-    <section class="grow">
-      <h1 class="font-semibold ml-1 mb-2 uppercase text-lg">Professions</h1>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <UI.Panels.section title="Professions">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <.profession_card
           :for={character_profession <- @character_professions}
           icon={character_profession.profession.icon}
@@ -241,7 +240,7 @@ defmodule GEMSWeb.Game.CharacterLive do
           experience={character_profession.experience}
         />
       </div>
-    </section>
+    </UI.Panels.section>
     """
   end
 
@@ -257,22 +256,22 @@ defmodule GEMSWeb.Game.CharacterLive do
       |> assign_new(:progress, &Float.round(&1.experience / &1.max * 100, 2))
 
     ~H"""
-    <div class="card bg-base-300 p-4">
-      <div class="flex gap-2">
-        <div class="flex items-center bg-base-content/5 rounded-lg p-2 shadow-lg">
-          <UI.Media.game_icon icon={@icon} size="48" />
+    <div class="card bg-base-100 shadow-xs p-2">
+      <UI.Progress.profession value={@experience} max={@max} />
+      <div class="card-body flex-row items-center p-2">
+        <div class="bg-base-300 rounded-box flex items-center p-2">
+          <UI.Media.game_icon icon={@icon} class="text-4xl" />
         </div>
         <div class="flex flex-col justify-between grow space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-semibold">{@name}</span>
-            <span class="badge badge-accent font-medium">LV {@level}</span>
+            <span class="badge badge-sm badge-accent font-medium">LV {@level}</span>
           </div>
-          <UI.Progress.profession value={@experience} max={@max} />
           <div class="flex items-center justify-between mt-1">
-            <div class="badge badge-neutral font-medium text-xs">
+            <div class="badge badge-ghost badge-sm">
               {"#{@experience} of #{@max} XP"}
             </div>
-            <div class="badge badge-neutral font-medium gap-1 text-xs">
+            <div class="badge badge-ghost badge-sm gap-2">
               <UI.Icons.page name="loader" /> {"#{@progress}%"}
             </div>
           </div>
@@ -292,7 +291,7 @@ defmodule GEMSWeb.Game.CharacterLive do
         <.slot_card icon="hand" name="Main-Hand" />
         <.slot_card icon="chest" name="Armor" />
         <.slot_card icon="hand" name="Off-Hand" />
-        <.slot_card icon="ring-3" name="Ring" />
+        <.slot_card icon="ring" name="Ring" />
         <.slot_card icon="boots" name="Boots" />
         <.slot_card icon="necklace" name="Necklace" />
       </div>
@@ -320,11 +319,13 @@ defmodule GEMSWeb.Game.CharacterLive do
 
   defp slot_card(assigns) do
     ~H"""
-    <div class="card bg-base-300 shadow-xs p-4 flex-row items-center rounded-btn gap-4">
-      <div class="flex items-center bg-base-content/5 rounded-lg p-2 shadow-lg">
-        <UI.Icons.game name={@icon} size="24" />
+    <div class="card bg-base-100 shadow-xs shadow">
+      <div class="card-body items-center p-3">
+        <div class="bg-base-300 rounded-box flex items-center p-2">
+          <UI.Icons.game name={@icon} class="text-2xl" />
+        </div>
+        <span class="font-medium">{@name}</span>
       </div>
-      <span class="font-medium">{@name}</span>
     </div>
     """
   end

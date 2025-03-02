@@ -10,22 +10,25 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
     <section class="space-y-8">
       <header class="flex items-center justify-between w-full mb-4">
         <h1 class="text-2xl font-bold uppercase">{@title}</h1>
-        <.link navigate={~p"/admin/database/#{@collection}/new"} class="btn btn-neutral">
-          <UI.Icons.page name="circle-plus" /> New
+        <.link navigate={~p"/admin/database/#{@collection}/new"} class="btn btn-sm btn-primary">
+          <UI.Icons.page name="circle-plus" class="text-[1.2em]" /> Add
         </.link>
       </header>
-      <div class="card card-border bg-base-100">
-        <.table_view id={"#{@collection}-catalog"} rows={@entities}>
-          <:col :let={entity} :for={column <- @columns} label={column.label}>
-            <.table_column
-              collection={@collection}
-              entity={entity}
-              type={column.type}
-              field={column.field}
-            />
-          </:col>
-        </.table_view>
-      </div>
+      <.table_view id={"#{@collection}-catalog"} rows={@entities}>
+        <:col
+          :let={entity}
+          :for={column <- @columns}
+          label={column.label}
+          class={if column.field == :name, do: "w-full"}
+        >
+          <.table_column
+            collection={@collection}
+            entity={entity}
+            type={column.type}
+            field={column.field}
+          />
+        </:col>
+      </.table_view>
     </section>
     """
   end
@@ -76,19 +79,23 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
 
   defp render_table_column(%{field: :code} = assigns) do
     ~H"""
-    <span class="rounded-sm px-1 bg-base-content/10 shadow-sm">{@value}</span>
+    <small class="badge badge-soft badge-neutral">
+      {@value}
+    </small>
     """
   end
 
   defp render_table_column(%{type: :id} = assigns) do
     ~H"""
-    <.link
-      title={@value}
-      navigate={~p"/admin/database/#{@collection}/#{@value}/edit"}
-      class="font-medium link-primary hover:underline"
-    >
-      {List.first(String.split(@value, "-"))}
-    </.link>
+    <span class="badge badge-soft badge-accent">
+      <.link
+        title={@value}
+        navigate={~p"/admin/database/#{@collection}/#{@value}/edit"}
+        class="link-hover"
+      >
+        {List.first(String.split(@value, "-"))}
+      </.link>
+    </span>
     """
   end
 
@@ -106,14 +113,17 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Index do
     """
   end
 
-  defp render_table_column(%{type: :assoc} = assigns) do
+  defp render_table_column(%{type: {:assoc, collection}} = assigns) do
+    assigns = assign(assigns, :assoc, collection)
+
     ~H"""
     <.link
       title={@value.name}
-      navigate={~p"/admin/database/elements/#{@value.id}/edit"}
-      class="hover:underline"
+      navigate={~p"/admin/database/#{@assoc}/#{@value.id}/edit"}
+      class="flex items-center gap-2 hover:underline"
     >
-      {@value.name}
+      <UI.Icons.page name="external-link" />
+      <span>{@value.name}</span>
     </.link>
     """
   end

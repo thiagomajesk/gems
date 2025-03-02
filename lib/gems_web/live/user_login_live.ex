@@ -3,34 +3,25 @@ defmodule GEMSWeb.UserLoginLive do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col justify-center items-center h-full">
-      <div class="card w-96 bg-base-200 shadow-sm">
-        <div class="card-body">
-          <header class="text-center">
-            <h2 class="text-2xl mb-4">Log in to account</h2>
-          </header>
-          <.form for={@form} id="login_form" action={~p"/login"} phx-update="ignore" class="space-y-4">
-            <.input field={@form[:email]} type="email" label="Email" required />
-            <.input field={@form[:password]} type="password" label="Password" required />
-            <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
-            <button phx-disable-with="Logging in..." class="btn btn-primary w-full">Log in</button>
-
-            <div class="text-center">
-              <.link href={~p"/reset-password"} class="text-sm link link-hover">
-                Forgot your password?
-              </.link>
-
-              <p class="text-sm">
-                Don't have an account yet?
-                <.link navigate={~p"/register"} class="link link-primary font-semibold">
-                  Sign up
-                </.link>
-              </p>
-            </div>
-          </.form>
+    <UI.Panels.simple_slate title="Log in to account">
+      <.form for={@form} id="login_form" action={~p"/login"} phx-update="ignore" class="space-y-4">
+        <.input field={@form[:email]} type="email" label="Email" required />
+        <.input field={@form[:password]} type="password" label="Password" required />
+        <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
+        <button phx-disable-with="Logging in..." class="btn btn-primary w-full">Log in</button>
+        <div class="text-center">
+          <.link href={~p"/reset-password"} class="text-sm link link-hover">
+            Forgot your password?
+          </.link>
+          <p class="text-sm">
+            Don't have an account yet?
+            <.link navigate={~p"/register"} class="link link-primary">
+              Sign up
+            </.link>
+          </p>
         </div>
-      </div>
-    </div>
+      </.form>
+    </UI.Panels.simple_slate>
     """
   end
 

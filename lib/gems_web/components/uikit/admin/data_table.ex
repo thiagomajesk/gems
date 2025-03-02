@@ -6,15 +6,18 @@ defmodule GEMSWeb.UIKIT.Admin.DataTable do
 
   slot :col, required: true do
     attr :label, :string, required: true
+    attr :class, :any
   end
 
   def table_view(assigns) do
     ~H"""
-    <div class="overflow-x-auto">
-      <table class="table table-zebra">
+    <div class="overflow-x-auto card bg-base-100 shadow">
+      <table class="table">
         <thead>
           <tr>
-            <th :for={col <- @col}>{col[:label]}</th>
+            <th :for={col <- @col} class={col[:class]}>
+              {col[:label]}
+            </th>
           </tr>
         </thead>
         <tbody id={@id} phx-update="stream">
