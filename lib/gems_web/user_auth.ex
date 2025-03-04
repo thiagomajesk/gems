@@ -141,7 +141,7 @@ defmodule GEMSWeb.UserAuth do
     end
   end
 
-  def signed_in_path(_conn), do: ~p"/"
+  def signed_in_path(_conn), do: ~p"/accounts/characters"
 
   defp put_token_in_session(conn, token) do
     conn
