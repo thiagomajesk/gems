@@ -9,7 +9,7 @@ defmodule GEMS.World do
   import Ecto.Query
 
   def list_avatars() do
-    Repo.all(Avatar)
+    Repo.all(from a in Avatar, order_by: fragment("random()"))
   end
 
   def list_nearby_zones(zone_id) do
