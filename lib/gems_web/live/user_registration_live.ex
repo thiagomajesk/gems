@@ -6,33 +6,35 @@ defmodule GEMSWeb.UserRegistrationLive do
 
   def render(assigns) do
     ~H"""
-    <UI.Panels.simple_slate title="Register for an account">
-      <.form
-        for={@form}
-        id="registration_form"
-        phx-submit="save"
-        phx-change="validate"
-        phx-trigger-action={@trigger_submit}
-        action={~p"/login?_action=registered"}
-        method="post"
-        class="space-y-4"
-      >
-        <.input field={@form[:email]} type="email" label="Email" required />
-        <.input field={@form[:password]} type="password" label="Password" required />
-        <button phx-disable-with="Creating account..." class="btn btn-primary w-full">
-          Create account
-        </button>
+    <div class="flex items-center justify-center min-h-screen">
+      <UI.Panels.simple_slate title="Register for an account">
+        <.form
+          for={@form}
+          id="registration_form"
+          phx-submit="save"
+          phx-change="validate"
+          phx-trigger-action={@trigger_submit}
+          action={~p"/login?_action=registered"}
+          method="post"
+          class="space-y-4"
+        >
+          <.input field={@form[:email]} type="email" label="Email" required />
+          <.input field={@form[:password]} type="password" label="Password" required />
+          <button phx-disable-with="Creating account..." class="btn btn-primary w-full">
+            Create account
+          </button>
 
-        <div class="text-center">
-          <p class="text-sm">
-            Already registered?
-            <.link navigate={~p"/login"} class="link link-primary font-semibold">
-              Log in
-            </.link>
-          </p>
-        </div>
-      </.form>
-    </UI.Panels.simple_slate>
+          <div class="text-center">
+            <p class="text-sm">
+              Already registered?
+              <.link navigate={~p"/login"} class="link link-primary font-semibold">
+                Log in
+              </.link>
+            </p>
+          </div>
+        </.form>
+      </UI.Panels.simple_slate>
+    </div>
     """
   end
 
