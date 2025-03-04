@@ -23,8 +23,9 @@ defmodule GEMSWeb.CharacterLive.PreviewSelectorComponent do
           phx-value-id={Map.fetch!(item, :id)}
           data-selected={@selected == Map.fetch!(item, :id)}
           class={[
-            "rounded-lg overflow-hidden border-2",
-            "border-transparent hover:border-primary cursor-pointer",
+            "rounded-lg overflow-hidden bg-base-content/5 p-1 shadow",
+            "border-2 border-transparent hover:border-primary cursor-pointer",
+            "transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow",
             "data-selected:border-primary"
           ]}
         >
