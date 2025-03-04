@@ -151,6 +151,19 @@ defmodule GEMSWeb.CoreComponents do
   end
 
   @doc """
+  Assigns the given key with the given value if the socket is connected.
+  If the socket is not connected, the key is assigned with the fallback value.
+  """
+  def assign_live(%Phoenix.LiveView.Socket{} = socket, key, fun_or_value, fallback \\ nil) do
+    case {Phoenix.LiveView.connected?(socket), fun_or_value} do
+      {true, fun} when is_function(fun, 0) -> assign(socket, key, fun.())
+      {true, fun} when is_function(fun, 1) -> assign(socket, key, fun.(socket))
+      {true, value} -> assign(socket, key, value)
+      {false, _} -> assign(socket, key, fallback)
+    end
+  end
+
+  @doc """
   Takes the given assigns and converts them into a props attribute.
   """
   def assign_props(socket_or_assigns, fun_or_props)

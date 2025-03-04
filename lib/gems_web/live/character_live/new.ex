@@ -57,15 +57,12 @@ defmodule GEMSWeb.CharacterLive.New do
     class_options = GEMS.Engine.Schema.Class.options()
     faction_options = GEMS.World.Schema.Faction.options()
 
-    avatars = GEMS.World.list_avatars()
-
     {:ok,
-     assign(socket,
-       form: to_form(changeset),
-       class_options: class_options,
-       faction_options: faction_options,
-       avatars: avatars
-     )}
+     socket
+     |> assign(:form, to_form(changeset))
+     |> assign(:class_options, class_options)
+     |> assign(:faction_options, faction_options)
+     |> assign_live(:avatars, &GEMS.World.list_avatars/0, [])}
   end
 
   def handle_event("validate", %{"character" => params}, socket) do
