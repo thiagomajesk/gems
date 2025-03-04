@@ -96,7 +96,7 @@ defmodule GEMSWeb.CoreComponents do
     ~H"""
     <fieldset class="fieldset">
       <label class="label font-medium">{@label}</label>
-      <select id={@id} name={@name} class={["select ", @errors != [] && "select-error"]}>
+      <select id={@id} name={@name} class={["select w-full", @errors != [] && "select-error"]}>
         <option value="">Select an option</option>
         {Phoenix.HTML.Form.options_for_select(@options, @value)}
       </select>
