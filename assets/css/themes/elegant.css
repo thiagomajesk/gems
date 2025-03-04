@@ -2,6 +2,10 @@
   name: "elegant";
   color-scheme: dark;
 
+  --root-bg: #121416;
+  --depth: 0;
+  --noise: 0;
+
   --color-base-100: #181c20;
   --color-base-200: #22262a;
   --color-base-300: #2c3034;
@@ -28,6 +32,5 @@
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --rounded-box: 0.25rem;
-  --root-bg: #121416;
+  --rounded-box: 0.25rem;  
 }
