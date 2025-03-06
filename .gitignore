@@ -37,3 +37,6 @@ npm-debug.log
 
 # Ignores any local .env files
 .env.local.*
+
+# Ignore elixir ls folder
+.elixir_ls
