@@ -1,4 +1,14 @@
 defmodule GEMS.Engine.Constants do
+  @doc """
+  Returns the maximum stamina available to all characters.
+  The maximum stamina represents the number of seconds in a day.
+  """
+  def max_stamina(level \\ nil)
+  def max_stamina(level) when level >= 1000, do: max_stamina() * 2.0
+  def max_stamina(level) when level >= 500, do: max_stamina() * 1.0
+  def max_stamina(level) when level >= 100, do: max_stamina() * 0.5
+  def max_stamina(_level), do: 86400
+
   def stats,
     do: [
       :armor_rating,

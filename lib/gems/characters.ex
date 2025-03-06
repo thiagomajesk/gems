@@ -157,9 +157,11 @@ defmodule GEMS.Characters do
       zone = GEMS.World.get_starting_zone(faction_id)
       professions = GEMS.World.Schema.Profession.list()
 
+      initial_stamina = GEMS.Engine.Constants.max_stamina()
+
       changeset
       |> Ecto.Changeset.put_change(:souls, 10)
-      |> Ecto.Changeset.put_change(:stamina, 1000)
+      |> Ecto.Changeset.put_change(:stamina, initial_stamina)
       |> Ecto.Changeset.put_change(:zone_id, zone.id)
       |> Ecto.Changeset.put_assoc(:professions, professions)
     end)

@@ -1,6 +1,67 @@
 defmodule GEMSWeb.UIKIT.Progress do
   use GEMSWeb, :html
 
+  attr :activity, :map, required: true
+  attr :timer, :map, required: true
+
+  def activity(assigns) do
+    %{activity: activity, timer: timer} = assigns
+
+    timestamp =
+      if timer do
+        remaining = Process.read_timer(timer)
+
+        DateTime.utc_now()
+        |> DateTime.add(remaining, :millisecond)
+        |> DateTime.to_iso8601()
+      end
+
+    main_id = "activity-progress-main-#{activity.id}"
+    trail_id = "activity-progress-trail-#{activity.id}"
+    wrapper_id = "activity-progress-wrapper-#{activity.id}"
+
+    props = %{
+      main: "##{main_id}",
+      trail: "##{trail_id}",
+      timestamp: timestamp
+    }
+
+    assigns =
+      assigns
+      |> assign(:main_id, main_id)
+      |> assign(:trail_id, trail_id)
+      |> assign(:wrapper_id, wrapper_id)
+      |> assign_props(props)
+
+    ~H"""
+    <div
+      id={@wrapper_id}
+      phx-update="ignore"
+      phx-hook="ActivityProgress"
+      data-props={@props}
+      class="relative flex w-full h-2 outline-2 outline-base-content/10 bg-base-content/5 rounded-box overflow-hidden group"
+      role="progressbar"
+    >
+      <div
+        id={@trail_id}
+        class={[
+          "absolute h-2 flex flex-col justify-center rounded-box overflow-hidden text-xs text-white text-center whitespace-nowrap",
+          "transition duration-500 transition-[width] ease-out bg-gradient-to-r from-orange-200 via-amber-200 to-yellow-100 shadow"
+        ]}
+      >
+      </div>
+      <div
+        id={@main_id}
+        class={[
+          "absolute h-2 flex flex-col justify-center rounded-box overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap",
+          "transition duration-500 transition-[width] ease-out bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-400 shadow"
+        ]}
+      >
+      </div>
+    </div>
+    """
+  end
+
   attr :character, :map, required: true
 
   def experience(assigns) do
@@ -12,20 +73,22 @@ defmodule GEMSWeb.UIKIT.Progress do
 
     ~H"""
     <div
-      class="h-6 bg-base-300 relative overflow-hidden rounded-box grow"
+      aria-valuenow={@value}
+      aria-valuemax={@max}
+      class="flex w-full h-5 relative bg-base-content/5 rounded overflow-hidden"
       title={"Experience: #{@value}/#{@max}"}
     >
       <div
         class={[
-          "absolute inset-y-0 left-0 transition-all duration-300",
-          exp_gradient_class(@progress)
+          "flex flex-col justify-center overflow-hidden transition-all duration-300",
+          "bg-linear-to-r from-indigo-600 to-cyan-400"
         ]}
         style={"width: #{@progress}%;"}
       />
-      <div class="absolute inset-0 flex items-center justify-center px-2">
-        <small class="bg-base-content/10 rounded-selector px-2 text-xs glass">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <span class="glass rounded-selector px-2 text-[10px] uppercase font-semibold">
           Level {@character.level}
-        </small>
+        </span>
       </div>
     </div>
     """
@@ -38,11 +101,16 @@ defmodule GEMSWeb.UIKIT.Progress do
     assigns = assign_new(assigns, :progress, &calculate_progress(&1.value, &1.max))
 
     ~H"""
-    <div class="h-2 bg-base-300 relative rounded grow" title={"Experience: #{@value}/#{@max}"}>
+    <div
+      aria-valuenow={@value}
+      aria-valuemax={@max}
+      class="flex w-full h-2 relative bg-base-content/5 rounded-full overflow-hidden"
+      title={"Experience: #{@value}/#{@max}"}
+    >
       <div
         class={[
-          "absolute inset-y-0 left-0 transition-all duration-300 rounded-sm",
-          profession_gradient_class(@progress)
+          "flex flex-col justify-center overflow-hidden transition-all duration-300",
+          "bg-linear-to-r from-green-400 to-emerald-300"
         ]}
         style={"width: #{@progress}%;"}
       />
@@ -56,61 +124,26 @@ defmodule GEMSWeb.UIKIT.Progress do
     assigns =
       assigns
       |> assign_new(:value, & &1.character.stamina)
-      |> assign_new(:max, &(&1.character.level * 1000))
+      |> assign_new(:max, &GEMS.Engine.Constants.max_stamina(&1.character.level))
       |> assign_new(:progress, &calculate_progress(&1.value, &1.max))
 
     ~H"""
-    <div class="h-1 bg-base-300 relative grow" title={"Stamina: #{@value}/#{@max}"}>
+    <div
+      aria-valuenow={@value}
+      aria-valuemax={@max}
+      class="h-1 bg-base-300 relative grow"
+      title={"Stamina: #{@value}/#{@max}"}
+    >
       <div
         class={[
           "absolute inset-y-0 left-0 transition-all duration-300 rounded-full",
-          stamina_gradient_class(@progress)
+          "bg-linear-to-r from-red-500 to-orange-400 shadow-[0_0_12px_rgba(234,88,12,0.7)]"
         ]}
         style={"width: #{@progress}%;"}
       />
     </div>
     """
   end
-
-  # Experience gradients (blue/indigo to purple transitions)
-  defp exp_gradient_class(progress) when progress <= 25,
-    do: "bg-linear-to-r from-indigo-900 to-purple-800"
-
-  defp exp_gradient_class(progress) when progress <= 50,
-    do: "bg-linear-to-r from-indigo-700 to-purple-600"
-
-  defp exp_gradient_class(progress) when progress <= 75,
-    do: "bg-linear-to-r from-indigo-600 to-purple-500"
-
-  defp exp_gradient_class(_progress),
-    do: "bg-linear-to-r from-indigo-500 to-purple-400"
-
-  # Profession gradients (balanced green transitions)
-  defp profession_gradient_class(progress) when progress <= 25,
-    do: "bg-linear-to-r from-emerald-900 via-green-800 to-emerald-700"
-
-  defp profession_gradient_class(progress) when progress <= 50,
-    do: "bg-linear-to-r from-emerald-700 via-green-600 to-emerald-500"
-
-  defp profession_gradient_class(progress) when progress <= 75,
-    do: "bg-linear-to-r from-emerald-600 via-green-500 to-emerald-400"
-
-  defp profession_gradient_class(_progress),
-    do:
-      "bg-linear-to-r from-emerald-500 via-green-400 to-emerald-300 shadow-[0_0_8px_rgba(16,185,129,0.2)]"
-
-  # Stamina gradients (red/orange theme with gradual glow)
-  defp stamina_gradient_class(progress) when progress <= 25,
-    do: "bg-linear-to-r from-red-900 to-orange-800 shadow-[0_0_4px_rgba(234,88,12,0.1)]"
-
-  defp stamina_gradient_class(progress) when progress <= 50,
-    do: "bg-linear-to-r from-red-700 to-orange-600 shadow-[0_0_6px_rgba(234,88,12,0.3)]"
-
-  defp stamina_gradient_class(progress) when progress <= 75,
-    do: "bg-linear-to-r from-red-600 to-orange-500 shadow-[0_0_8px_rgba(234,88,12,0.5)]"
-
-  defp stamina_gradient_class(_progress),
-    do: "bg-linear-to-r from-red-500 to-orange-400 shadow-[0_0_12px_rgba(234,88,12,0.7)]"
 
   defp calculate_progress(value, max), do: min(round(value / max * 100), max)
 end

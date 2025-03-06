@@ -113,12 +113,11 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
   defp activity_card(assigns) do
     ~H"""
-    <div class="card card-side bg-base-300 shadow card-border border-base-content/5 max-h-32">
-
+    <div class="card card-side bg-base-300 shadow card-border border-base-content/5 ">
       <div class="card-body flex-row p-3">
-      <figure class="w-32 aspect-square rounded-box">
-        <UI.Media.image placeholder={%{width: 100, height: 100}} />
-      </figure>
+        <figure class="w-32 aspect-square rounded-box">
+          <UI.Media.image placeholder={%{width: 100, height: 100}} />
+        </figure>
         <div class="flex flex-col space-y-2 grow">
           <div class="flex items-center">
             <span class="font-semibold grow text-normal md:text-lg">{@activity.item.name}</span>
@@ -189,43 +188,10 @@ defmodule GEMSWeb.Game.ActivitiesLive do
               </span>
             <% end %>
           </div>
-          <.activity_progress
-            id={"#{@activity.id}-progress"}
-            animate={@running_timer != nil}
-            duration={:timer.seconds(@activity.duration)}
-            remaining={
-              if @running_timer,
-                do: Process.read_timer(@running_timer) || 0,
-                else: :timer.seconds(@activity.duration)
-            }
-          />
+          <UI.Progress.activity activity={@activity} timer={@running_timer} />
         </div>
       </div>
     </div>
-    """
-  end
-
-  attr :id, :string, required: true
-  attr :animate, :boolean, default: false
-  attr :duration, :integer, required: true
-  attr :remaining, :integer, required: true
-
-  defp activity_progress(assigns) do
-    assigns =
-      assigns
-      |> assign_new(:value, &(&1.duration - &1.remaining))
-      |> assign_props(&%{animate: &1.animate})
-
-    ~H"""
-    <progress
-      id={@id}
-      max={@duration}
-      value={@value}
-      class="progress"
-      phx-hook="ActivityProgress"
-      data-props={@props}
-    >
-    </progress>
     """
   end
 
