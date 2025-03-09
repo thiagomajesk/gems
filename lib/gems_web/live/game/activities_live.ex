@@ -95,16 +95,22 @@ defmodule GEMSWeb.Game.ActivitiesLive do
 
     Logger.debug("COMPLETED ACTIVITY: #{activity_id}, #{inspect(self())}")
 
-    message =
-      """
-      Gained #{activity_metadata.amount} #{activity_metadata.activity.item.name} and
-      #{activity_metadata.activity.experience} XP in #{activity_metadata.activity.profession.name}
-      """
+    activity_notification = %{
+      kind: :activity_completed,
+      metadata: %{
+        amount: activity_metadata.amount,
+        item: activity_metadata.activity.item,
+        experience: activity_metadata.activity.experience,
+        profession: activity_metadata.activity.profession
+      }
+    }
 
-    {:noreply,
-     socket
-     |> assign(:selected_character, character)
-     |> put_flash(:info, message)}
+    send_update(GEMSWeb.NotificationCenterComponent,
+      id: "activity-notification-center",
+      notification: activity_notification
+    )
+
+    {:noreply, assign(socket, :selected_character, character)}
   end
 
   attr :activity, :any, required: true
@@ -127,7 +133,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 phx-click="stop"
                 phx-value-id={@activity.id}
               >
-                <UI.Icons.page name="circle-stop" class="text-[1.2em]" /> Stop
+                <UI.Icons.page name="circle-stop" class="text-[1.2em] text-error" /> Stop
               </button>
             <% else %>
               <button
@@ -136,7 +142,7 @@ defmodule GEMSWeb.Game.ActivitiesLive do
                 phx-value-id={@requirements.satisfied_all? && @activity.id}
                 disabled={!@requirements.satisfied_all?}
               >
-                <UI.Icons.page name="circle-play" class="text-[1.2em]" />
+                <UI.Icons.page name="circle-play" class="text-[1.2em] text-success" />
                 <span>{Recase.to_title(@activity.action)}</span>
               </button>
             <% end %>

@@ -1,5 +1,15 @@
 @import "tailwindcss";
-@import "./resets.css";
+
+@theme {
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/*
+* Foundation
+*/
+@import "./foundation/resets.css";
+@import "./foundation/animations.css";
 
 /*
 * Plugins
