@@ -162,7 +162,7 @@ defmodule GEMS.ActivityManager do
 
   defp reward_character!(character, activity, amount) do
     GEMS.Repo.transaction(fn ->
-      GEMS.Characters.give_item!(character.id, activity.item_id, amount)
+      GEMS.Characters.give_item!(character, activity.item_id, amount)
       GEMS.Characters.give_experience!(character, activity.profession_id, activity.experience)
       GEMS.Characters.give_experience!(character, round(activity.experience * 0.1))
     end)

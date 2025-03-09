@@ -98,8 +98,8 @@ defmodule GEMS.Characters do
   Delivers a given amount of a specific item to a character.
   When the character already has the item, it increments the stack.
   """
-  def give_item!(character_id, item_id, amount) do
-    attrs = %{character_id: character_id, item_id: item_id, amount: amount}
+  def give_item!(%Character{} = character, item_id, amount) do
+    attrs = %{character_id: character.id, item_id: item_id, amount: amount}
     changeset = CharacterItem.changeset(%CharacterItem{}, attrs)
 
     Repo.insert!(changeset,
