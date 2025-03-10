@@ -1,10 +1,11 @@
 defmodule GEMS.World do
   alias GEMS.Repo
-  alias GEMS.World.Schema.Avatar
-  alias GEMS.World.Schema.Zone
-  alias GEMS.World.Schema.Portal
-  alias GEMS.World.Schema.Character
   alias GEMS.World.Schema.Activity
+  alias GEMS.World.Schema.Avatar
+  alias GEMS.World.Schema.Character
+  alias GEMS.World.Schema.Portal
+  alias GEMS.World.Schema.Zone
+  alias GEMS.World.Schema.Hunt
 
   import Ecto.Query
 
@@ -53,6 +54,16 @@ defmodule GEMS.World do
       from a in Activity,
         where: a.zone_id == ^zone_id,
         preload: [:profession, item: [item_ingredients: :ingredient]]
+    )
+  end
+
+  def list_avaiable_hunts(%Character{} = character) do
+    %{zone_id: zone_id} = character
+
+    Repo.all(
+      from h in Hunt,
+        where: h.zone_id == ^zone_id,
+        preload: [:creature]
     )
   end
 

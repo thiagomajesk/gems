@@ -15,7 +15,8 @@ defmodule GEMS.World.Schema.Zone do
       :biome,
       :faction,
       :portals,
-      activities: [:profession, :item]
+      activities: [:profession, :item],
+      hunts: [:creature]
     ]
 
   @skulls [:blue, :yellow, :red, :black]
@@ -35,11 +36,10 @@ defmodule GEMS.World.Schema.Zone do
     belongs_to :faction, GEMS.World.Schema.Faction
 
     has_many :portals, GEMS.World.Schema.Portal, foreign_key: :origin_id, on_replace: :delete
+    has_many :hunts, GEMS.World.Schema.Hunt, on_replace: :delete
     has_many :activities, GEMS.World.Schema.Activity, on_replace: :delete
 
-    many_to_many :creatures, GEMS.Engine.Schema.Creature,
-      join_through: "zones_creatures",
-      on_replace: :delete
+    many_to_many :creatures, GEMS.Engine.Schema.Creature, join_through: GEMS.World.Schema.Hunt
   end
 
   def build_changeset(zone, attrs, opts) do
@@ -48,7 +48,7 @@ defmodule GEMS.World.Schema.Zone do
     changeset
     |> cast_assoc(:portals, sort_param: :portals_sort, drop_param: :portals_drop)
     |> cast_assoc(:activities, sort_param: :activities_sort, drop_param: :activities_drop)
-    |> cast_assoc(:creatures, sort_param: :creatures_sort, drop_param: :creatures_drop)
+    |> cast_assoc(:hunts, sort_param: :hunts_sort, drop_param: :hunts_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

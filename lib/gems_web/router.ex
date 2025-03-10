@@ -112,9 +112,10 @@ defmodule GEMSWeb.Router do
       ] do
       live "/home", HomeLive
       live "/character", CharacterLive
-      live "/activities", ActivitiesLive
       live "/storage", StorageLive
       live "/world", WorldLive
+      live "/activities", ActivitiesLive
+      live "/hunt", HuntLive
     end
   end
 end

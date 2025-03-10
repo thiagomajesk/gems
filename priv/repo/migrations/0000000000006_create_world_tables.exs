@@ -129,12 +129,13 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
     end
 
     ################################################################################
-    # Zones Creatures
+    # Hunts
     ################################################################################
 
-    create table(:zones_creatures, primary_key: false) do
+    create table(:hunts) do
       add :zone_id, references(:zones), null: false, primary_key: true
       add :creature_id, references(:creatures), null: false
+      add :challenge, :integer, null: false, default: 1
     end
 
     ################################################################################
