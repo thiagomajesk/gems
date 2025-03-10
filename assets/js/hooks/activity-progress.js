@@ -4,6 +4,10 @@ const UPDATE_INTERVAL = 1000;
 
 const REQUIRED_PROPS = ["timestamp", "main", "trail"];
 
+function clamp(number, min, max) {
+  return Math.min(Math.max(number, min), max);
+}
+
 function updateProgress(element, progress, delay = 0) {
   setTimeout(() => (element.style.width = `${progress}%`), delay);
 }
@@ -69,7 +73,10 @@ export default {
     const now = Date.now();
     const elapsedTime = now - this.startTime;
     const totalDuration = this.endTime - this.startTime;
-    const progress = (elapsedTime / totalDuration) * 100;
+
+    // We clamp the progress to avoid visual glitches in case the user has
+    // a slow connection (causing the client time to be ahead of the server time).
+    const progress = clamp((elapsedTime / totalDuration) * 100, 0, 100);
 
     this.updateIncreasing(progress);
 
