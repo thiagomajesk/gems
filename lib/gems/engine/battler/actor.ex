@@ -48,8 +48,6 @@ defmodule GEMS.Engine.Battler.Actor do
   def enemy?(%Actor{__party__: p1}, %Actor{__party__: p2}), do: p1 != p2
 
   defp identity() do
-    dict = [:colors, :animals]
-    opts = %{style: :capital, separator: " "}
-    UniqueNamesGenerator.generate(dict, opts)
+    System.unique_integer()
   end
 end

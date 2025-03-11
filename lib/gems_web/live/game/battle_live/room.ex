@@ -1,4 +1,4 @@
-defmodule GEMSWeb.BattleLive.Room do
+defmodule GEMSWeb.Game.BattleLive.Room do
   use GEMSWeb, :live_view
 
   def render(assigns) do
