@@ -116,6 +116,8 @@ defmodule GEMSWeb.Router do
       live "/world", WorldLive
       live "/activities", ActivitiesLive
       live "/hunt", HuntLive
+
+      live "/battle/room", BattleLive.Room
     end
   end
 end
