@@ -1,53 +1,35 @@
 defmodule GEMS.Engine.Battler.Actor do
   alias __MODULE__
 
+  @enforce_keys [:id, :party, :health, :mana]
   defstruct [
-    :__id__,
-    :__party__,
-    :__speed__,
-    :__aggro__,
-    :__charge__,
-    :__health__,
-    :__energy__,
-    :__food__,
-    :__potion__,
-    :__spells__,
-    :max_health,
-    :max_energy,
-    :physical_damage,
-    :magical_damage,
-    :physical_defense,
-    :magical_defense,
-    :health_regen,
-    :energy_regen,
-    :accuracy_rating,
-    :evasion_rating,
-    :attack_speed,
-    :break_power,
-    :critical_rating,
-    :critical_power,
-    :weapon_power,
-    :ability_power
+    :id,
+    :party,
+    :health,
+    :mana,
+    speed: 0,
+    aggro: 0,
+    charge: 0,
+    armor_rating: 0,
+    max_health: 0,
+    health_regen: 0,
+    attack_damage: 0,
+    weapon_power: 0,
+    evasion_rating: 0,
+    attack_speed: 0,
+    critical_rating: 0,
+    accuracy_rating: 0,
+    critical_power: 0,
+    magic_resist: 0,
+    max_mana: 0,
+    mana_regen: 0,
+    magic_damage: 0,
+    skill_power: 0
   ]
 
-  def new(attrs) do
-    Actor
-    |> struct!(attrs)
-    |> Map.put(:__id__, identity())
-    |> Map.put(:__aggro__, 0)
-    |> Map.put(:__speed__, 0)
-    |> Map.put(:__charge__, 0)
-    |> Map.put(:__health__, attrs[:max_health])
-    |> Map.put(:__energy__, attrs[:max_energy])
-  end
-
   def dead?(%Actor{} = actor), do: not alive?(actor)
-  def alive?(%Actor{__health__: health}), do: health > 0
-  def self?(%Actor{__id__: id1}, %Actor{__id__: id2}), do: id1 == id2
-  def ally?(%Actor{__party__: p1}, %Actor{__party__: p2}), do: p1 == p2
-  def enemy?(%Actor{__party__: p1}, %Actor{__party__: p2}), do: p1 != p2
-
-  defp identity() do
-    System.unique_integer()
-  end
+  def alive?(%Actor{health: health}), do: health > 0
+  def self?(%Actor{id: id1}, %Actor{id: id2}), do: id1 == id2
+  def ally?(%Actor{party: p1}, %Actor{party: p2}), do: p1 == p2
+  def enemy?(%Actor{party: p1}, %Actor{party: p2}), do: p1 != p2
 end

@@ -37,8 +37,10 @@ defmodule GEMS.Engine.Battler.Turn do
   defp find_leader(actors) do
     actors
     |> Enum.reject(&Actor.dead?/1)
-    |> Enum.max_by(&{&1.__charge__, &1.__speed__, :rand.uniform()})
+    |> Enum.max_by(&{&1.charge, &1.speed, :rand.uniform()})
   end
+
+  defp perform_action(%{action: nil} = turn), do: turn
 
   defp perform_action(turn) do
     Enum.reduce(turn.action.targets, turn, fn target, turn ->
@@ -50,12 +52,12 @@ defmodule GEMS.Engine.Battler.Turn do
 
   defp trigger_regen(turn) do
     health_regen = Math.health_regen(turn.leader)
-    energy_regen = Math.energy_regen(turn.leader)
+    mana_regen = Math.mana_regen(turn.leader)
 
     event =
       Event.new(turn.leader, turn.leader, [
         %Effect{type: :health_regen, metadata: %{amount: health_regen}},
-        %Effect{type: :energy_regen, metadata: %{amount: energy_regen}}
+        %Effect{type: :mana_regen, metadata: %{amount: mana_regen}}
       ])
 
     Map.update!(turn, :events, fn events -> [event | events] end)
@@ -76,7 +78,7 @@ defmodule GEMS.Engine.Battler.Turn do
        do: action.source.effects
 
   defp effects_for(%Action{what: :attack} = action, target) do
-    damage = Math.physical_damage(action.source, target)
+    damage = Math.attack_damage(action.source, target)
     crit_damage = Math.critical_damage(action.source, damage)
 
     hit_chance = Math.hit_chance(action.source, target)
