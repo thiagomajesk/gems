@@ -66,6 +66,10 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
 
+    # TODO: Affinity will increase the stats of the equipment based on the attribute
+    # (souls-like equipment affinity mixed with combat triangle calculations)
+    field :affinity, Ecto.Enum, values: [:strength, :dexterity, :intelligence]
+
     # STR
     field :armor_rating, :integer
     field :max_health, :integer

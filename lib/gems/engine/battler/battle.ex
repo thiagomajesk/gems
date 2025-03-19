@@ -1,75 +1,43 @@
 defmodule GEMS.Engine.Battler.Battle do
+  use Ecto.Schema
+
   alias __MODULE__
   alias GEMS.Engine.Battler.Turn
   alias GEMS.Engine.Battler.Actor
 
-  defstruct status: nil, result: nil, actors: [], turns: []
-
   @charge_threshold 10
 
-  def new(actors), do: %Battle{status: :running, actors: actors}
+  @statuses [:running, :finished]
 
-  def next(%Battle{status: :finished} = battle), do: battle
+  embedded_schema do
+    field :status, Ecto.Enum, values: @statuses
+    field :max_turns, :integer, virtual: true
 
-  def next(%Battle{status: :running} = battle) do
-    battle
-    |> setup_phase()
-    |> upkeep_phase()
-    |> combat_phase()
-    |> cleanup_phase()
-    |> checks_phase()
+    embeds_many :actors, GEMS.Engine.Battler.Actor
+    embeds_many :turns, GEMS.Engine.Battler.Turn
   end
 
-  defp setup_phase(battle) do
+  def new(actors, opts \\ []) do
+    max_turns = Keyword.get(opts, :max_turns, 100)
+    %Battle{status: :running, actors: actors, max_turns: max_turns}
+  end
+
+  def charge_actors(%Battle{} = battle) do
     Map.update!(battle, :actors, fn actors ->
       total_speed = Enum.sum(Enum.map(actors, & &1.attack_speed))
-      Enum.map(actors, &Map.put(&1, :speed, relative_speed(&1, total_speed)))
-    end)
-  end
 
-  # TODO: Tick effects, auras and others
-  defp upkeep_phase(battle) do
-    battle
-    |> charge_actors()
-  end
-
-  defp charge_actors(battle) do
-    Map.update!(battle, :actors, fn actors ->
       Enum.map(actors, fn actor ->
-        Map.update!(actor, :charge, fn charge ->
-          # Guarantees that charges will overflow after the threshold
-          # resulting in a more granular flow of initiative, for instance
-          # an actor with 50% more attack speed will attack twice sometimes
-          # and an actor with 100% more attack speed will attack twice often.
-          rem(charge + actor.speed, @charge_threshold)
-        end)
+        speed = relative_speed(actor, total_speed)
+        # Guarantees that charges will overflow after the threshold
+        # resulting in a more granular flow of initiative, for instance
+        # an actor with 50% more attack speed will attack twice sometimes
+        # and an actor with 100% more attack speed will attack twice often.
+        Map.update!(actor, :charge, &rem(&1 + speed, @charge_threshold))
       end)
     end)
   end
 
-  defp relative_speed(actor, total_speed) do
-    div(actor.attack_speed * @charge_threshold, total_speed)
-  end
-
-  defp combat_phase(battle) do
-    turn = Turn.process(build_turn(battle))
-
-    turn.updated
-    |> Enum.reduce(battle, &replace_actor(&2, &1))
-    |> Map.update!(:turns, &[turn | &1])
-  end
-
-  defp build_turn(battle) do
-    number = length(battle.turns) + 1
-    Turn.new(number, battle.actors)
-  end
-
-  defp cleanup_phase(battle) do
-    battle
-    |> decrease_aggro()
-  end
-
-  defp decrease_aggro(battle) do
+  def decrease_aggro(%Battle{} = battle) do
     Map.update!(battle, :actors, fn actors ->
       Enum.map(actors, fn actor ->
         Map.update!(actor, :aggro, &max(&1 - 1, 0))
@@ -77,7 +45,7 @@ defmodule GEMS.Engine.Battler.Battle do
     end)
   end
 
-  defp replace_actor(battle, actor) do
+  def replace_actor(%Battle{} = battle, %Actor{} = actor) do
     Map.update!(battle, :actors, fn actors ->
       Enum.map(actors, fn existing ->
         if Actor.self?(existing, actor),
@@ -87,28 +55,13 @@ defmodule GEMS.Engine.Battler.Battle do
     end)
   end
 
-  defp checks_phase(battle) do
-    dead = Enum.filter(battle.actors, &Actor.dead?/1)
-    alive = Enum.filter(battle.actors, &Actor.alive?/1)
+  def find_leader(%Battle{} = battle) do
+    battle.actors
+    |> Enum.reject(&Actor.dead?/1)
+    |> Enum.max_by(&{&1.charge, :rand.uniform()})
+  end
 
-    one_actor_alive? = Enum.count(alive) == 1
-    all_actors_dead? = Enum.count(battle.actors) == Enum.count(dead)
-    one_party_alive? = length(Enum.uniq_by(alive, & &1.party)) == 1
-
-    cond do
-      all_actors_dead? ->
-        %{battle | status: nil, result: :draw}
-
-      one_actor_alive? ->
-        [%{party: party}] = alive
-        %{battle | status: nil, result: {:victory, party}}
-
-      one_party_alive? ->
-        [%{party: party} | _] = alive
-        %{battle | status: nil, result: {:victory, party}}
-
-      true ->
-        battle
-    end
+  defp relative_speed(actor, total_speed) do
+    div(actor.attack_speed * @charge_threshold, total_speed)
   end
 end

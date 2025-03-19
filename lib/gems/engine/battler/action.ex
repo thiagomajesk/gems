@@ -1,7 +1,18 @@
 defmodule GEMS.Engine.Battler.Action do
+  use Ecto.Schema
+
   alias GEMS.Engine.Battler.Actor
 
-  defstruct [:what, :source, :targets]
+  @types [:skill, :item]
+
+  embedded_schema do
+    field :type, Ecto.Enum, values: @types
+
+    field :item, :map
+    field :skill, :map
+
+    embeds_many :targets, Actor
+  end
 
   @chain [
     # &Action.maybe_use_food/2,
@@ -9,15 +20,6 @@ defmodule GEMS.Engine.Battler.Action do
     # &Action.maybe_use_spell/2,
     # &Action.maybe_use_attack/2
   ]
-
-  def pick(%Actor{} = leader, targets) do
-    Enum.reduce_while(@chain, nil, fn handler, action ->
-      case apply(handler, [leader, targets]) do
-        nil -> {:cont, action}
-        action -> {:halt, action}
-      end
-    end)
-  end
 
   # def maybe_use_food(_leader, _targets), do: nil
 

@@ -5,7 +5,7 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
     :always,
     :turn_number,
     :health_number,
-    :_number
+    :mana_number
   ]
 
   @required_fields [:name, :skill_id, :condition]

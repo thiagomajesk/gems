@@ -42,4 +42,29 @@ defmodule GEMS.Engine.Constants do
       :t8,
       :t9
     ]
+
+  def target_sides,
+    do: [
+      :self,
+      :ally,
+      :enemy,
+      :anyone
+    ]
+
+  def hit_types,
+    do: [
+      :physical,
+      :magical,
+      :certain
+    ]
+
+  def damage_types,
+    do: [
+      :health_damage,
+      :mana_damage,
+      :health_recover,
+      :mana_recover,
+      :health_drain,
+      :mana_drain
+    ]
 end

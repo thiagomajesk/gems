@@ -36,28 +36,9 @@ defmodule GEMS.Engine.Schema.Item do
 
   @tiers GEMS.Engine.Constants.tiers()
 
-  @target_sides [
-    :self,
-    :ally,
-    :enemy,
-    :ally_or_enemy
-  ]
-
-  @hit_types [
-    :ranged,
-    :magical,
-    :melee,
-    :certain
-  ]
-
-  @damage_types [
-    :health_damage,
-    :mana_damage,
-    :health_recover,
-    :mana_recover,
-    :health_drain,
-    :mana_drain
-  ]
+  @hit_types GEMS.Engine.Constants.hit_types()
+  @target_sides GEMS.Engine.Constants.target_sides()
+  @damage_types GEMS.Engine.Constants.damage_types()
 
   schema "items" do
     field :name, :string

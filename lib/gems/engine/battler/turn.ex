@@ -1,4 +1,6 @@
 defmodule GEMS.Engine.Battler.Turn do
+  use Ecto.Schema
+
   alias __MODULE__
   alias GEMS.Engine.Battler.Event
   alias GEMS.Engine.Battler.Action
@@ -6,96 +8,128 @@ defmodule GEMS.Engine.Battler.Turn do
   alias GEMS.Engine.Battler.Actor
   alias GEMS.Engine.Battler.Math
 
-  defstruct [
-    :number,
-    :action,
-    :leader,
-    updated: [],
-    events: [],
-    summary: %{}
-  ]
+  embedded_schema do
+    field :number, :integer
+    field :summary, :map
+    field :events, {:array, :map}
 
-  def new(number, actors) do
-    leader = find_leader(actors)
-    targets = Enum.reject(actors, &Actor.self?(&1, leader))
-    action = Action.pick(leader, targets)
+    embeds_one :leader, GEMS.Engine.Battler.Actor
+    embeds_one :targets, GEMS.Engine.Battler.Actor
+    embeds_one :action, GEMS.Engine.Battler.Action
+    embeds_many :updated, GEMS.Engine.Battler.Actor
+  end
 
-    %Turn{
-      number: number,
-      leader: leader,
-      action: action
+  def new(number, leader, targets) do
+    %Turn{number: number, leader: leader, targets: targets}
+  end
+
+  def choose_action(%Turn{} = turn) do
+    turn.leader.action_patterns
+    |> Enum.sort_by(& &1.priority)
+    |> Enum.reduce_while(turn, fn action_pattern, turn ->
+      if action_pattern_matches?(action_pattern, turn),
+        do: {:halt, build_action(action_pattern, turn)},
+        else: {:cont, turn}
+    end)
+  end
+
+  def perform_action(%Turn{action: nil} = turn), do: turn
+  def perform_action(%Turn{} = turn), do: turn
+
+  defp action_pattern_matches?(action_pattern, turn),
+    do:
+      action_pattern_matches_targets?(action_pattern, turn) and
+        action_pattern_matches_condition?(action_pattern, turn)
+
+  defp action_pattern_matches_targets?(action_pattern, turn),
+    do: Enum.any?(find_targets(action_pattern, turn))
+
+  defp action_pattern_matches_condition?(%{condition: :turn_number} = action_pattern, turn),
+    do: action_pattern.min_turn <= turn.number and action_pattern.max_turn >= turn.number
+
+  defp action_pattern_matches_condition?(%{condition: :health_number} = action_pattern, turn),
+    do:
+      action_pattern.min_health <= turn.leader.health and
+        action_pattern.max_health >= turn.leader.health
+
+  defp action_pattern_matches_condition?(%{condition: :mana_number} = action_pattern, turn),
+    do:
+      action_pattern.min_mana <= turn.leader.mana and action_pattern.max_mana >= turn.leader.mana
+
+  defp action_pattern_matches_condition?(%{condition: :always}, turn),
+    do: true
+
+  defp find_targets(%{type: :skill} = action_pattern, turn) do
+    case action_pattern.skill do
+      %{target_side: :self} -> [turn.leader]
+      %{target_side: :ally, target_status: :alive} -> list_live_allies(turn)
+      %{target_side: :ally, target_status: :dead} -> list_dead_allies(turn)
+      %{target_side: :enemy, target_status: :alive} -> list_live_enemies(turn)
+      %{target_side: :enemy, target_status: :dead} -> list_dead_enemies(turn)
+      %{target_side: :anyone, target_status: :alive} -> list_live_targets(turn)
+      %{target_side: :anyone, target_status: :dead} -> list_dead_targets(turn)
+    end
+  end
+
+  defp find_targets(%{type: :item} = action_pattern, turn) do
+    case action_pattern.item do
+      %{target_side: :self} -> [turn.leader]
+      %{target_side: :ally, target_status: :alive} -> list_live_allies(turn)
+      %{target_side: :ally, target_status: :dead} -> list_dead_allies(turn)
+      %{target_side: :enemy, target_status: :alive} -> list_live_enemies(turn)
+      %{target_side: :enemy, target_status: :dead} -> list_dead_enemies(turn)
+      %{target_side: :anyone, target_status: :alive} -> list_live_targets(turn)
+      %{target_side: :anyone, target_status: :dead} -> list_dead_targets(turn)
+    end
+  end
+
+  defp list_live_targets(turn) do
+    turn.targets
+    |> Enum.filter(&Actor.alive?/1)
+  end
+
+  defp list_dead_targets(turn) do
+    turn.targets
+    |> Enum.filter(&Actor.dead?/1)
+  end
+
+  defp list_live_allies(turn) do
+    turn.targets
+    |> Enum.filter(&Actor.ally?(&1, turn.leader))
+    |> Enum.filter(&Actor.alive?(&1))
+  end
+
+  defp list_live_enemies(turn) do
+    turn.targets
+    |> Enum.filter(&Actor.enemy?(&1, turn.leader))
+    |> Enum.filter(&Actor.alive?(&1))
+  end
+
+  defp list_dead_allies(turn) do
+    turn.targets
+    |> Enum.filter(&Actor.ally?(&1, turn.leader))
+    |> Enum.filter(&Actor.dead?(&1))
+  end
+
+  defp list_dead_enemies(turn) do
+    turn.targets
+    |> Enum.filter(&Actor.enemy?(&1, turn.leader))
+    |> Enum.filter(&Actor.dead?(&1))
+  end
+
+  defp build_action(%{type: :skill} = action_pattern, turn) do
+    %Action{
+      type: :skill,
+      skill: action_pattern.skill,
+      targets: find_targets(action_pattern, turn)
     }
   end
 
-  def process(%Turn{} = turn) do
-    turn
-    |> perform_action()
-    |> trigger_regen()
-    |> process_events()
-  end
-
-  defp find_leader(actors) do
-    actors
-    |> Enum.reject(&Actor.dead?/1)
-    |> Enum.max_by(&{&1.charge, &1.speed, :rand.uniform()})
-  end
-
-  defp perform_action(%{action: nil} = turn), do: turn
-
-  defp perform_action(turn) do
-    Enum.reduce(turn.action.targets, turn, fn target, turn ->
-      effects = effects_for(turn.action, target)
-      event = Event.new(turn.action.source, target, effects)
-      Map.update!(turn, :events, fn events -> [event | events] end)
-    end)
-  end
-
-  defp trigger_regen(turn) do
-    health_regen = Math.health_regen(turn.leader)
-    mana_regen = Math.mana_regen(turn.leader)
-
-    event =
-      Event.new(turn.leader, turn.leader, [
-        %Effect{type: :health_regen, metadata: %{amount: health_regen}},
-        %Effect{type: :mana_regen, metadata: %{amount: mana_regen}}
-      ])
-
-    Map.update!(turn, :events, fn events -> [event | events] end)
-  end
-
-  defp process_events(turn) do
-    turn.events
-    |> Enum.reverse()
-    |> Enum.reduce(turn, fn event, turn ->
-      Map.update!(turn, :updated, fn changes ->
-        [Event.commit_effects(event) | changes]
-      end)
-    end)
-  end
-
-  defp effects_for(%Action{what: what} = action, _target)
-       when what in [:spell, :potion],
-       do: action.source.effects
-
-  defp effects_for(%Action{what: :attack} = action, target) do
-    damage = Math.attack_damage(action.source, target)
-    crit_damage = Math.critical_damage(action.source, damage)
-
-    hit_chance = Math.hit_chance(action.source, target)
-    hit_connected = :rand.uniform() <= hit_chance
-
-    crit_chance = Math.critical_chance(action.source, target)
-    crit_connected = :rand.uniform() <= crit_chance
-
-    [
-      %Effect{
-        type: :damage,
-        metadata: %{
-          hit: hit_connected,
-          crit: crit_connected,
-          amount: 100 + crit_damage
-        }
-      }
-    ]
+  defp build_action(%{type: :item} = action_pattern, turn) do
+    %Action{
+      type: :item,
+      item: action_pattern.item,
+      targets: find_targets(action_pattern, turn)
+    }
   end
 end
