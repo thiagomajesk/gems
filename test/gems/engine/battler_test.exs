@@ -36,7 +36,9 @@ defmodule GEMS.Engine.BattlerTest do
 
       turn = Turn.new(1, actor_1, [actor_2])
 
-      assert Turn.choose_action(turn)
+      action = %Action{type: :skill, skill: basic_attack_skill_fixture(), targets: [actor_2]}
+
+      assert %Turn{action: ^action} = Turn.choose_action(turn)
     end
   end
 

@@ -14,13 +14,13 @@ defmodule GEMS.Engine.Battler.Turn do
     field :events, {:array, :map}
 
     embeds_one :leader, GEMS.Engine.Battler.Actor
-    embeds_one :targets, GEMS.Engine.Battler.Actor
+    embeds_one :actors, GEMS.Engine.Battler.Actor
     embeds_one :action, GEMS.Engine.Battler.Action
     embeds_many :updated, GEMS.Engine.Battler.Actor
   end
 
-  def new(number, leader, targets) do
-    %Turn{number: number, leader: leader, targets: targets}
+  def new(number, leader, actors) do
+    %Turn{number: number, leader: leader, actors: actors}
   end
 
   def choose_action(%Turn{} = turn) do
@@ -28,7 +28,7 @@ defmodule GEMS.Engine.Battler.Turn do
     |> Enum.sort_by(& &1.priority)
     |> Enum.reduce_while(turn, fn action_pattern, turn ->
       if action_pattern_matches?(action_pattern, turn),
-        do: {:halt, build_action(action_pattern, turn)},
+        do: {:halt, update_action(turn, action_pattern)},
         else: {:cont, turn}
     end)
   end
@@ -84,52 +84,52 @@ defmodule GEMS.Engine.Battler.Turn do
   end
 
   defp list_live_targets(turn) do
-    turn.targets
+    turn.actors
     |> Enum.filter(&Actor.alive?/1)
   end
 
   defp list_dead_targets(turn) do
-    turn.targets
+    turn.actors
     |> Enum.filter(&Actor.dead?/1)
   end
 
   defp list_live_allies(turn) do
-    turn.targets
+    turn.actors
     |> Enum.filter(&Actor.ally?(&1, turn.leader))
     |> Enum.filter(&Actor.alive?(&1))
   end
 
   defp list_live_enemies(turn) do
-    turn.targets
+    turn.actors
     |> Enum.filter(&Actor.enemy?(&1, turn.leader))
     |> Enum.filter(&Actor.alive?(&1))
   end
 
   defp list_dead_allies(turn) do
-    turn.targets
+    turn.actors
     |> Enum.filter(&Actor.ally?(&1, turn.leader))
     |> Enum.filter(&Actor.dead?(&1))
   end
 
   defp list_dead_enemies(turn) do
-    turn.targets
+    turn.actors
     |> Enum.filter(&Actor.enemy?(&1, turn.leader))
     |> Enum.filter(&Actor.dead?(&1))
   end
 
-  defp build_action(%{type: :skill} = action_pattern, turn) do
-    %Action{
+  defp update_action(turn, %{type: :skill} = action_pattern) do
+    Map.put(turn, :action, %Action{
       type: :skill,
       skill: action_pattern.skill,
       targets: find_targets(action_pattern, turn)
-    }
+    })
   end
 
-  defp build_action(%{type: :item} = action_pattern, turn) do
-    %Action{
+  defp update_action(turn, %{type: :item} = action_pattern) do
+    Map.put(turn, :action, %Action{
       type: :item,
       item: action_pattern.item,
       targets: find_targets(action_pattern, turn)
-    }
+    })
   end
 end

@@ -54,9 +54,9 @@ defmodule GEMS.Engine.Battler do
     number = length(battle.turns) + 1
 
     leader = Battle.find_leader(battle)
-    targets = Enum.reject(battle.actors, &Actor.self?(&1, leader))
+    actors = Enum.reject(battle.actors, &Actor.self?(&1, leader))
 
-    Turn.new(number, leader, targets)
+    Turn.new(number, leader, actors)
   end
 
   defp cleanup_phase(battle) do
