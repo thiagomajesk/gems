@@ -5,7 +5,8 @@ defmodule GEMS.Engine.Battler.Battle do
   alias GEMS.Engine.Battler.Turn
   alias GEMS.Engine.Battler.Actor
 
-  @charge_threshold 10
+  @max_turns 100
+  @charge_threshold 100
 
   @statuses [:running, :finished]
 
@@ -18,13 +19,13 @@ defmodule GEMS.Engine.Battler.Battle do
   end
 
   def new(actors, opts \\ []) do
-    max_turns = Keyword.get(opts, :max_turns, 100)
+    max_turns = Keyword.get(opts, :max_turns, @max_turns)
     %Battle{status: :running, actors: actors, max_turns: max_turns}
   end
 
   def charge_actors(%Battle{} = battle) do
     Map.update!(battle, :actors, fn actors ->
-      total_speed = Enum.sum(Enum.map(actors, & &1.attack_speed))
+      total_speed = Enum.sum_by(actors, & &1.attack_speed)
 
       Enum.map(actors, fn actor ->
         speed = relative_speed(actor, total_speed)
