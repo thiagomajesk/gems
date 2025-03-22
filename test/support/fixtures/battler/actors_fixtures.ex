@@ -22,7 +22,7 @@ defmodule GEMS.Battler.ActorsFixtures do
       max_mana: 1,
       mana_regen: 1,
       magic_damage: 1,
-      skill_power: 1,
+      skill_power: 1
     }
   end
 
