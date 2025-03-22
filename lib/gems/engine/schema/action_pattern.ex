@@ -1,11 +1,17 @@
-defmodule GEMS.Engine.Schema.CreatureActionPattern do
+defmodule GEMS.Engine.Schema.ActionPattern do
   use GEMS.Database.Schema, preset: :default
 
+  @types [:item, :skill]
+
   @conditions [
+    :random,
     :always,
     :turn_number,
     :health_number,
-    :mana_number
+    :mana_number,
+    :state_presence,
+    :item_presence,
+    :skill_presence
   ]
 
   @required_fields [:name, :skill_id, :condition]
@@ -13,8 +19,8 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
   @optional_fields [
     :description,
     :priority,
-    :min_turn,
-    :max_turn,
+    :start_turn,
+    :every_turn,
     :min_health,
     :max_health,
     :min_mana,
@@ -22,19 +28,23 @@ defmodule GEMS.Engine.Schema.CreatureActionPattern do
     :state_id
   ]
 
-  schema "action_patterns" do
-    field :name, :string
-    field :description, :string
+  embedded_schema do
+    field :type, Ecto.Enum, values: @types
     field :priority, :integer
+
     field :condition, Ecto.Enum, values: @conditions
-    field :min_turn, :integer
-    field :max_turn, :integer
+
+    field :chance, :float
+
+    field :start_turn, :integer
+    field :every_turn, :integer
+
     field :min_health, :integer
     field :max_health, :integer
+
     field :min_mana, :integer
     field :max_mana, :integer
 
-    belongs_to :creature, GEMS.Engine.Schema.Creature
     belongs_to :skill, GEMS.Engine.Schema.Skill
     belongs_to :state, GEMS.Engine.Schema.State
   end

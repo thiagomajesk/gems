@@ -104,24 +104,6 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     create unique_index(:creatures, :code)
 
     ################################################################################
-    # Creature Action Patterns
-    ################################################################################
-
-    create table(:creature_action_patterns, primary_key: false) do
-      add :creature_id, references(:creatures), null: false
-      add :skill_id, references(:skills), null: false
-      add :priority, :integer, null: false, default: 0
-      add :condition, :string, null: false
-      add :min_turn, :integer, null: true
-      add :max_turn, :integer, null: true
-      add :min_health, :integer, null: true
-      add :max_health, :integer, null: true
-      add :min_mana, :integer, null: true
-      add :max_mana, :integer, null: true
-      add :state_id, references(:states), null: true
-    end
-
-    ################################################################################
     # Items
     ################################################################################
 

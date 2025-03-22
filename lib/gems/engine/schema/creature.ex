@@ -70,7 +70,6 @@ defmodule GEMS.Engine.Schema.Creature do
     belongs_to :type, GEMS.Engine.Schema.CreatureType
 
     has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
-    has_many :action_patterns, GEMS.Engine.Schema.CreatureActionPattern, on_replace: :delete
   end
 
   def build_changeset(creature, attrs, opts) do

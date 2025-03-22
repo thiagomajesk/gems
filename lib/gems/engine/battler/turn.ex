@@ -45,7 +45,9 @@ defmodule GEMS.Engine.Battler.Turn do
     do: Enum.any?(find_targets(action_pattern, turn))
 
   defp action_pattern_matches_condition?(%{condition: :turn_number} = action_pattern, turn),
-    do: action_pattern.min_turn <= turn.number and action_pattern.max_turn >= turn.number
+    do:
+      turn.number >= action_pattern.start_turn and
+        rem(turn.number - action_pattern.start_turn, action_pattern.every_turn) == 0
 
   defp action_pattern_matches_condition?(%{condition: :health_number} = action_pattern, turn),
     do:
@@ -55,6 +57,9 @@ defmodule GEMS.Engine.Battler.Turn do
   defp action_pattern_matches_condition?(%{condition: :mana_number} = action_pattern, turn),
     do:
       action_pattern.min_mana <= turn.leader.mana and action_pattern.max_mana >= turn.leader.mana
+
+  defp action_pattern_matches_condition?(%{condition: :random} = action_pattern, turn),
+    do: action_pattern.chance >= :rand.uniform()
 
   defp action_pattern_matches_condition?(%{condition: :always}, turn),
     do: true
@@ -95,26 +100,26 @@ defmodule GEMS.Engine.Battler.Turn do
 
   defp list_live_allies(turn) do
     turn.actors
+    |> list_live_targets()
     |> Enum.filter(&Actor.ally?(&1, turn.leader))
-    |> Enum.filter(&Actor.alive?(&1))
   end
 
   defp list_live_enemies(turn) do
     turn.actors
+    |> list_live_targets()
     |> Enum.filter(&Actor.enemy?(&1, turn.leader))
-    |> Enum.filter(&Actor.alive?(&1))
   end
 
   defp list_dead_allies(turn) do
     turn.actors
+    |> list_dead_targets()
     |> Enum.filter(&Actor.ally?(&1, turn.leader))
-    |> Enum.filter(&Actor.dead?(&1))
   end
 
   defp list_dead_enemies(turn) do
     turn.actors
+    |> list_dead_targets()
     |> Enum.filter(&Actor.enemy?(&1, turn.leader))
-    |> Enum.filter(&Actor.dead?(&1))
   end
 
   defp update_action(turn, %{type: :skill} = action_pattern) do

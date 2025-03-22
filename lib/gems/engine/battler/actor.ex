@@ -29,11 +29,11 @@ defmodule GEMS.Engine.Battler.Actor do
     field :magic_damage, :integer
     field :skill_power, :integer
 
-    field :items, {:array, :map}, virtual: true
-    field :skills, {:array, :map}, virtual: true
-    field :states, {:array, :map}, virtual: true
+    field :items, {:array, :map}, default: [], virtual: true
+    field :skills, {:array, :map}, default: [], virtual: true
+    field :states, {:array, :map}, default: [], virtual: true
 
-    field :action_patterns, {:array, :map}, virtual: true
+    field :action_patterns, {:array, :map}, default: [], virtual: true
 
     # TODO: Create custom type (SerializedReference / Snapshot) that allows serialization of a references schema so
     # we don't have to specify all the fields we want to serialize (pair with a protocol implementation).
