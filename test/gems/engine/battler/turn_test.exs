@@ -110,6 +110,9 @@ defmodule GEMS.Engine.TurnTest do
   defp build_action(%{type: :skill} = action_pattern, targets),
     do: %Action{type: :skill, skill: action_pattern.skill, targets: targets}
 
-  defp build_dummy_item, do: %{id: 1, name: "Potion", target_side: :self, target_number: 1, random_targets: 0}
-  defp build_dummy_skill, do: %{id: 1, name: "Heal", target_side: :self, target_number: 1, random_targets: 0}
+  defp build_dummy_item,
+    do: %{id: 1, name: "Potion", target_side: :self, target_number: 1, random_targets: 0}
+
+  defp build_dummy_skill,
+    do: %{id: 1, name: "Heal", target_side: :self, target_number: 1, random_targets: 0}
 end

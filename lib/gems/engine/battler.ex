@@ -4,10 +4,6 @@ defmodule GEMS.Engine.Battler do
   alias GEMS.Engine.Battler.Turn
   alias GEMS.Engine.Battler.Action
 
-  def run(%Battle{turns: turns} = battle)
-      when length(turns) >= battle.max_turns,
-      do: battle
-
   def run(%Battle{status: :finished} = battle),
     do: battle
 
@@ -68,14 +64,17 @@ defmodule GEMS.Engine.Battler do
     dead = Enum.filter(battle.actors, &Actor.dead?/1)
     alive = Enum.filter(battle.actors, &Actor.alive?/1)
 
-    one_actor_alive? = Enum.count(alive) == 1
-    all_actors_dead? = Enum.count(battle.actors) == Enum.count(dead)
+    one_actor_alive? = length(alive) == 1
+    all_actors_dead? = length(battle.actors) == length(dead)
     one_party_alive? = length(Enum.uniq_by(alive, & &1.party)) == 1
+    reached_max_turns? = length(battle.turns) >= battle.max_turns
 
+    # TODO: Add additinal metadata for battle termination.
     cond do
       all_actors_dead? -> %{battle | status: :finished}
       one_actor_alive? -> %{battle | status: :finished}
       one_party_alive? -> %{battle | status: :finished}
+      reached_max_turns? -> %{battle | status: :finished}
       true -> battle
     end
   end

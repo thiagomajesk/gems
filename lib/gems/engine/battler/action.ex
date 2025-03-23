@@ -7,7 +7,6 @@ defmodule GEMS.Engine.Battler.Action do
 
   embedded_schema do
     field :type, Ecto.Enum, values: @types
-
     field :item, :map
     field :skill, :map
 

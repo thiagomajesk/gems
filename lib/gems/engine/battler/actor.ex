@@ -8,26 +8,26 @@ defmodule GEMS.Engine.Battler.Actor do
 
   embedded_schema do
     field :party, Ecto.Enum, values: @parties
-    field :health, :integer
-    field :mana, :integer
-    field :aggro, :integer
-    field :charge, :integer
+    field :health, :integer, default: 0
+    field :mana, :integer, default: 0
+    field :aggro, :integer, default: 0
+    field :charge, :integer, default: 0
 
-    field :armor_rating, :integer
-    field :max_health, :integer
-    field :health_regen, :integer
-    field :attack_damage, :integer
-    field :weapon_power, :integer
-    field :evasion_rating, :integer
-    field :attack_speed, :integer
-    field :critical_rating, :integer
-    field :accuracy_rating, :integer
-    field :critical_power, :integer
-    field :magic_resist, :integer
-    field :max_mana, :integer
-    field :mana_regen, :integer
-    field :magic_damage, :integer
-    field :skill_power, :integer
+    field :armor_rating, :integer, default: 0
+    field :max_health, :integer, default: 0
+    field :health_regen, :integer, default: 0
+    field :attack_damage, :integer, default: 0
+    field :weapon_power, :integer, default: 0
+    field :evasion_rating, :integer, default: 0
+    field :attack_speed, :integer, default: 0
+    field :critical_rating, :integer, default: 0
+    field :accuracy_rating, :integer, default: 0
+    field :critical_power, :integer, default: 0
+    field :magic_resist, :integer, default: 0
+    field :max_mana, :integer, default: 0
+    field :mana_regen, :integer, default: 0
+    field :magic_damage, :integer, default: 0
+    field :skill_power, :integer, default: 0
 
     field :items, {:array, :map}, default: [], virtual: true
     field :skills, {:array, :map}, default: [], virtual: true
@@ -39,19 +39,15 @@ defmodule GEMS.Engine.Battler.Actor do
     # we don't have to specify all the fields we want to serialize (pair with a protocol implementation).
     # We also should just handle plain maps inside the logic so serialization is easy enough. When building an actor
     # we should serialize everything first and work with the same format that we are going to persist.
-    field :skills_sealed, {:array, :map}
-    field :attack_skill, :map
-    field :attack_element, :map
-    field :attack_states, {:array, :map}
-    field :parameter_rates, {:array, :map}
-    field :element_rates, {:array, :map}
-
-    # TODO: Probably need to remove this trait
-    # because it doesn't make sense for in-combat mechanics.
-    field :equipments_sealed, {:array, :map}
-    field :items_sealed, {:array, :map}
-    field :parameter_changes, {:array, :map}
-    field :state_rates, {:array, :map}
+    field :attack_skill, :map, virtual: true
+    field :attack_element, :map, virtual: true
+    field :state_rates, {:array, :map}, default: [], virtual: true
+    field :items_sealed, {:array, :map}, default: [], virtual: true
+    field :skills_sealed, {:array, :map}, default: [], virtual: true
+    field :attack_states, {:array, :map}, default: [], virtual: true
+    field :element_rates, {:array, :map}, default: [], virtual: true
+    field :parameter_rates, {:array, :map}, default: [], virtual: true
+    field :parameter_changes, {:array, :map}, default: [], virtual: true
   end
 
   def dead?(%Actor{} = actor), do: not alive?(actor)

@@ -78,19 +78,6 @@ defmodule GEMS.Engine.ActorTest do
                Actor.put_trait(actor, trait)
     end
 
-    test "equipment_seal" do
-      equipment = %Equipment{id: 1}
-      actor = %Actor{equipments_sealed: []}
-
-      trait = %Trait{
-        kind: :equipment_seal,
-        equipment_seal: %TraitEquipmentSeal{equipment: equipment}
-      }
-
-      assert %Actor{equipments_sealed: [^equipment]} =
-               Actor.put_trait(actor, trait)
-    end
-
     test "item_seal" do
       item = %Item{id: 1}
       actor = %Actor{items_sealed: []}
