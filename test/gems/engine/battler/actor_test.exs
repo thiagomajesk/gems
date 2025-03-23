@@ -10,13 +10,11 @@ defmodule GEMS.Engine.ActorTest do
   alias GEMS.Engine.Schema.TraitAttackSkill
   alias GEMS.Engine.Schema.TraitAttackState
   alias GEMS.Engine.Schema.TraitElementRate
-  alias GEMS.Engine.Schema.TraitEquipmentSeal
   alias GEMS.Engine.Schema.TraitItemSeal
   alias GEMS.Engine.Schema.TraitParameterChange
   alias GEMS.Engine.Schema.TraitParameterRate
   alias GEMS.Engine.Schema.TraitSkillSeal
   alias GEMS.Engine.Schema.TraitStateRate
-  alias GEMS.Engine.Schema.Equipment
   alias GEMS.Engine.Schema.Item
 
   describe "put_trait/2" do

@@ -2,20 +2,17 @@ defmodule GEMS.Engine.Battler.Turn do
   use Ecto.Schema
 
   alias __MODULE__
-  alias GEMS.Engine.Battler.Event
   alias GEMS.Engine.Battler.Action
-  alias GEMS.Engine.Battler.Effect
   alias GEMS.Engine.Battler.Actor
-  alias GEMS.Engine.Battler.Math
 
   embedded_schema do
-    field :number, :integer
-    field :summary, :map
-    field :events, {:array, :map}
+    field :summary, :map, default: %{}
+    field :number, :integer, default: 0
 
     embeds_one :leader, GEMS.Engine.Battler.Actor
     embeds_one :actors, GEMS.Engine.Battler.Actor
     embeds_one :action, GEMS.Engine.Battler.Action
+    embeds_many :events, GEMS.Engine.Battler.Event
     embeds_many :updated, GEMS.Engine.Battler.Actor
   end
 
@@ -34,7 +31,17 @@ defmodule GEMS.Engine.Battler.Turn do
   end
 
   def perform_action(%Turn{action: nil} = turn), do: turn
-  def perform_action(%Turn{} = turn), do: turn
+
+  def perform_action(%Turn{action: action} = turn) do
+    events = Action.events_for(action)
+
+    Enum.reduce(events, turn, fn effect, turn ->
+      turn
+      |> Map.update!(:events, &[effect | &1])
+
+      # |> Event.apply_effect(effect, turn)
+    end)
+  end
 
   defp action_pattern_matches?(action_pattern, turn),
     do:
@@ -56,12 +63,13 @@ defmodule GEMS.Engine.Battler.Turn do
 
   defp action_pattern_matches_condition?(%{condition: :mana_number} = action_pattern, turn),
     do:
-      action_pattern.min_mana <= turn.leader.mana and action_pattern.max_mana >= turn.leader.mana
+      action_pattern.min_mana <= turn.leader.mana and
+        action_pattern.max_mana >= turn.leader.mana
 
-  defp action_pattern_matches_condition?(%{condition: :random} = action_pattern, turn),
+  defp action_pattern_matches_condition?(%{condition: :random} = action_pattern, _turn),
     do: action_pattern.chance >= :rand.uniform()
 
-  defp action_pattern_matches_condition?(%{condition: :always}, turn),
+  defp action_pattern_matches_condition?(%{condition: :always}, _turn),
     do: true
 
   defp list_valid_targets(%{type: :skill} = action_pattern, turn) do

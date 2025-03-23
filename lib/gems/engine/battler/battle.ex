@@ -2,7 +2,6 @@ defmodule GEMS.Engine.Battler.Battle do
   use Ecto.Schema
 
   alias __MODULE__
-  alias GEMS.Engine.Battler.Turn
   alias GEMS.Engine.Battler.Actor
 
   @max_turns 100

@@ -2,10 +2,7 @@ defmodule GEMS.Engine.BattlerTest do
   use ExUnit.Case, async: true
 
   alias GEMS.Engine.Battler
-  alias GEMS.Engine.Battler.Turn
-  alias GEMS.Engine.Battler.Actor
   alias GEMS.Engine.Battler.Battle
-  alias GEMS.Engine.Battler.Action
 
   alias GEMS.Battler.ActorsFixtures
 

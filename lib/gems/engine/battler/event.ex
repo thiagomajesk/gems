@@ -1,32 +1,37 @@
 defmodule GEMS.Engine.Battler.Event do
+  use Ecto.Schema
+
   alias __MODULE__
-  alias GEMS.Engine.Battler.Effect
 
-  @derive {Inspect, only: [:effects, :timestamp]}
-  defstruct [:source, :target, :effects, :timestamp]
+  @sources [:skill, :item]
 
-  def new(source, target, effects) do
-    %Event{
-      source: source,
-      target: target,
-      effects: effects,
-      timestamp: DateTime.utc_now()
-    }
+  embedded_schema do
+    field :source, Ecto.Enum, values: @sources
+
+    # Effects Snapshot
+    field :effects, {:array, :map}, default: []
+
+    field :item, :map
+    field :skill, :map
+
+    embeds_one :target, GEMS.Engine.Schema.Actor
   end
 
-  def commit_effects(%Event{} = event) do
+  def apply_effect(%Event{} = event) do
     event.effects
     |> Enum.reverse()
-    |> Enum.reduce(event.target, fn effect, target ->
-      Effect.commit_effect(target, effect)
+    |> Enum.reduce(event.target, fn
+      %{source: :skill} = effect, target ->
+        commit_skill_effect(effect.skill, target)
+
+      %{source: :item} = effect, target ->
+        commit_item_effect(effect.item, target)
     end)
   end
 
-  def revert_effects(%Event{} = event) do
-    event.effects
-    |> Enum.reverse()
-    |> Enum.reduce(event.target, fn effect, target ->
-      Effect.revert_effect(target, effect)
-    end)
-  end
+  # TODO: Return the updated actor (target)
+  defp commit_skill_effect(_skill, target), do: target
+
+  # TODO: Return the updated actor (target)
+  defp commit_item_effect(_item, target), do: target
 end

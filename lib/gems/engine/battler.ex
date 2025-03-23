@@ -2,7 +2,6 @@ defmodule GEMS.Engine.Battler do
   alias GEMS.Engine.Battler.Battle
   alias GEMS.Engine.Battler.Actor
   alias GEMS.Engine.Battler.Turn
-  alias GEMS.Engine.Battler.Action
 
   def run(%Battle{status: :finished} = battle),
     do: battle
@@ -10,9 +9,7 @@ defmodule GEMS.Engine.Battler do
   def run(%Battle{status: :running} = battle),
     do: run(next(battle))
 
-  defp next(%Battle{status: :finished} = battle), do: battle
-
-  defp next(%Battle{status: :running} = battle) do
+  defp next(%Battle{} = battle) do
     battle
     |> setup_phase()
     |> upkeep_phase()
