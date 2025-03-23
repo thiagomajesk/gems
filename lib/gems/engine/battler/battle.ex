@@ -8,9 +8,17 @@ defmodule GEMS.Engine.Battler.Battle do
   @max_turns 100
   @charge_threshold 100
 
+  # Duel: 1v1
+  # Raid: PvE
+  # Brawl: FFA
+  # Wingman: 2v2
+  # Skirmish: ZvZ
+
+  @types [:duel, :raid, :brawl, :wingman, :skirmish]
   @statuses [:running, :finished]
 
   embedded_schema do
+    field :type, Ecto.Enum, values: @types
     field :status, Ecto.Enum, values: @statuses
     field :max_turns, :integer, virtual: true
 
