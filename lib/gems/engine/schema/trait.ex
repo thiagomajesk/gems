@@ -30,7 +30,6 @@ defmodule GEMS.Engine.Schema.Trait do
     has_one :attack_state, GEMS.Engine.Schema.TraitAttackState, on_replace: :delete
     has_one :parameter_rate, GEMS.Engine.Schema.TraitParameterRate, on_replace: :delete
     has_one :element_rate, GEMS.Engine.Schema.TraitElementRate, on_replace: :delete
-    # TODO: Remove equipment seal because it doesn't make sense during battle
     has_one :equipment_seal, GEMS.Engine.Schema.TraitEquipmentSeal, on_replace: :delete
     has_one :item_seal, GEMS.Engine.Schema.TraitItemSeal, on_replace: :delete
     has_one :parameter_change, GEMS.Engine.Schema.TraitParameterChange, on_replace: :delete

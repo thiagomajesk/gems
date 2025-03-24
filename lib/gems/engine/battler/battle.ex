@@ -53,6 +53,12 @@ defmodule GEMS.Engine.Battler.Battle do
     end)
   end
 
+  # TODO: Apply all states traits to all actors
+  # Recalculate all "cached fields" based on states
+  def apply_states(%Battle{} = battle), do: battle
+
+  def remove_states(%Battle{} = battle), do: battle
+
   def replace_actor(%Battle{} = battle, %Actor{} = actor) do
     Map.update!(battle, :actors, fn actors ->
       Enum.map(actors, fn existing ->

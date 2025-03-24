@@ -11,21 +11,16 @@ defmodule GEMS.Engine.Battler do
 
   defp next(%Battle{} = battle) do
     battle
-    |> setup_phase()
     |> upkeep_phase()
     |> combat_phase()
     |> cleanup_phase()
     |> checks_phase()
   end
 
-  defp setup_phase(battle) do
-    battle
-    |> Battle.charge_actors()
-  end
-
-  # TODO: Tick effects, auras and others
   defp upkeep_phase(battle) do
     battle
+    |> Battle.charge_actors()
+    |> Battle.apply_states()
   end
 
   defp combat_phase(battle) do
@@ -54,6 +49,7 @@ defmodule GEMS.Engine.Battler do
 
   defp cleanup_phase(battle) do
     battle
+    |> Battle.remove_states()
     |> Battle.decrease_aggro()
   end
 

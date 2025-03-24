@@ -34,13 +34,12 @@ defmodule GEMS.Engine.Battler.Turn do
 
   def perform_action(%Turn{action: action} = turn) do
     events = Action.events_for(action)
+    Map.put(turn, :events, events)
 
-    Enum.reduce(events, turn, fn effect, turn ->
-      turn
-      |> Map.update!(:events, &[effect | &1])
+    # TODO: Apply events effects to actors
+    # Enum.reduce(events, turn, fn effect, turn ->
 
-      # |> Event.apply_effect(effect, turn)
-    end)
+    # end)
   end
 
   defp action_pattern_matches?(action_pattern, turn),

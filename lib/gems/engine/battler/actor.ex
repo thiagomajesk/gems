@@ -31,6 +31,7 @@ defmodule GEMS.Engine.Battler.Actor do
 
     field :items, {:array, :map}, default: [], virtual: true
     field :skills, {:array, :map}, default: [], virtual: true
+    field :equipments, {:array, :map}, default: [], virtual: true
     field :states, {:array, :map}, default: [], virtual: true
 
     field :action_patterns, {:array, :map}, default: [], virtual: true
@@ -44,6 +45,7 @@ defmodule GEMS.Engine.Battler.Actor do
     field :state_rates, {:array, :map}, default: [], virtual: true
     field :items_sealed, {:array, :map}, default: [], virtual: true
     field :skills_sealed, {:array, :map}, default: [], virtual: true
+    field :equipments_sealed, {:array, :map}, default: [], virtual: true
     field :attack_states, {:array, :map}, default: [], virtual: true
     field :element_rates, {:array, :map}, default: [], virtual: true
     field :parameter_rates, {:array, :map}, default: [], virtual: true
@@ -55,6 +57,22 @@ defmodule GEMS.Engine.Battler.Actor do
   def self?(%Actor{id: id1}, %Actor{id: id2}), do: id1 == id2
   def ally?(%Actor{party: p1}, %Actor{party: p2}), do: p1 == p2
   def enemy?(%Actor{party: p1}, %Actor{party: p2}), do: p1 != p2
+
+  def commit_effect(%Actor{} = actor, _effect) do
+    actor
+  end
+
+  def revert_effect(%Actor{} = actor, _effect) do
+    actor
+  end
+
+  def commit_state(%Actor{} = actor, _state) do
+    actor
+  end
+
+  def revert_state(%Actor{} = actor, _state) do
+    actor
+  end
 
   def put_trait(%Actor{} = actor, %Trait{kind: :skill_seal} = trait) do
     %{skill_seal: %{skill: skill}} = trait

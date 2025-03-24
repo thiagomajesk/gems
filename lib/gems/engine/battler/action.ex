@@ -19,8 +19,6 @@ defmodule GEMS.Engine.Battler.Action do
   def events_for(%Action{type: :skill} = action) do
     Enum.map(action.targets, fn target ->
       %Event{
-        source: :skill,
-        skill: action.skill,
         target: target,
         effects: action.skill.effects
       }
@@ -30,8 +28,6 @@ defmodule GEMS.Engine.Battler.Action do
   def events_for(%Action{type: :item} = action) do
     Enum.map(action.targets, fn target ->
       %Event{
-        source: :item,
-        item: action.item,
         target: target,
         effects: action.item.effects
       }
