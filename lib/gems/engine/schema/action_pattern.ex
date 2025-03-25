@@ -1,11 +1,9 @@
 defmodule GEMS.Engine.Schema.ActionPattern do
   use GEMS.Database.Schema, preset: :default
 
-  @types [:item, :skill]
-
   @conditions [
-    :random,
     :always,
+    :random,
     :turn_number,
     :health_number,
     :mana_number,
@@ -29,9 +27,7 @@ defmodule GEMS.Engine.Schema.ActionPattern do
   ]
 
   embedded_schema do
-    field :type, Ecto.Enum, values: @types
     field :priority, :integer
-
     field :condition, Ecto.Enum, values: @conditions
 
     field :chance, :float
