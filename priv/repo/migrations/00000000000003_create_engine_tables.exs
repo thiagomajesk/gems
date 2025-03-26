@@ -195,5 +195,32 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :material_id, references(:items), null: false, primary_key: true
       add :amount, :integer, null: false, default: 1
     end
+
+    ################################################################################
+    # Action Patterns
+    ################################################################################
+
+    create table(:action_patterns) do
+      add :priority, :integer, null: false
+      add :condition, :string, null: false
+      add :chance, :float, null: true
+      add :start_turn, :integer, null: true
+      add :every_turn, :integer, null: true
+      add :min_health, :integer, null: true
+      add :max_health, :integer, null: true
+      add :min_mana, :integer, null: true
+      add :max_mana, :integer, null: true
+      add :skill_id, references(:skills), null: false
+      add :state_id, references(:states), null: true
+    end
+
+    ################################################################################
+    # Creatures Action Patterns
+    ################################################################################
+
+    create table(:creatures_action_patterns, primary_key: false) do
+      add :creature_id, references(:creatures), null: false, primary_key: true
+      add :action_pattern_id, references(:action_patterns), null: false, primary_key: true
+    end
   end
 end

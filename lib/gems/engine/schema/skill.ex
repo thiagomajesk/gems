@@ -36,23 +36,23 @@ defmodule GEMS.Engine.Schema.Skill do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :health_cost, :integer
-    field :mana_cost, :integer
-    field :messages, :map
+    field :messages, :map, default: %{}
+    field :health_cost, :integer, default: 0
+    field :mana_cost, :integer, default: 0
 
     field :target_side, Ecto.Enum, values: @target_sides
     field :target_status, Ecto.Enum, values: [:alive, :dead]
-    field :target_number, :integer
-    field :random_targets, :integer
+    field :target_number, :integer, default: 1
+    field :random_targets, :integer, default: 0
 
     field :hit_type, Ecto.Enum, values: @hit_types
-    field :success_rate, :float
-    field :repeats, :integer
+    field :success_rate, :float, default: 1.0
+    field :repeats, :integer, default: 1
 
     field :damage_type, Ecto.Enum, values: @damage_types
     field :damage_formula, :string
-    field :damage_variance, :float
-    field :critical_hits, :boolean
+    field :damage_variance, :float, default: 0.0
+    field :critical_hits, :boolean, default: true
 
     embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
 

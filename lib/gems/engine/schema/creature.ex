@@ -37,7 +37,8 @@ defmodule GEMS.Engine.Schema.Creature do
         :parameter_change,
         :parameter_rate,
         :state_rate
-      ]
+      ],
+      action_patterns: [:skill, :state]
     ]
 
   schema "creatures" do
@@ -70,6 +71,10 @@ defmodule GEMS.Engine.Schema.Creature do
     belongs_to :type, GEMS.Engine.Schema.CreatureType
 
     has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
+
+    many_to_many :action_patterns, GEMS.Engine.Schema.ActionPattern,
+      join_through: "creatures_action_patterns",
+      on_replace: :delete
   end
 
   def build_changeset(creature, attrs, opts) do
@@ -77,6 +82,10 @@ defmodule GEMS.Engine.Schema.Creature do
 
     changeset
     |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
+    |> cast_assoc(:action_patterns,
+      sort_param: :action_patterns_sort,
+      drop_param: :action_patterns_drop
+    )
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

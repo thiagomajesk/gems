@@ -69,7 +69,8 @@ defmodule GEMS.Engine.Schema.Item do
     has_many :effects, GEMS.Engine.Schema.Effect, on_replace: :delete
     has_many :item_ingredients, GEMS.Engine.Schema.ItemIngredient, on_replace: :delete
 
-    many_to_many :ingredients, GEMS.Engine.Schema.Item, join_through: "items_ingredients"
+    many_to_many :ingredients, GEMS.Engine.Schema.Item,
+      join_through: GEMS.Engine.Schema.ItemIngredient
   end
 
   def build_changeset(item, attrs, opts) do

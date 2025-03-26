@@ -12,11 +12,10 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :skill_presence
   ]
 
-  @required_fields [:name, :skill_id, :condition]
+  @required_fields [:priority, :condition, :skill_id]
 
   @optional_fields [
-    :description,
-    :priority,
+    :chance,
     :start_turn,
     :every_turn,
     :min_health,
@@ -26,7 +25,7 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :state_id
   ]
 
-  embedded_schema do
+  schema "action_patterns" do
     field :priority, :integer
     field :condition, Ecto.Enum, values: @conditions
 

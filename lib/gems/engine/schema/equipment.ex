@@ -96,7 +96,9 @@ defmodule GEMS.Engine.Schema.Equipment do
     has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
     has_many :equipment_materials, GEMS.Engine.Schema.EquipmentMaterial, on_replace: :delete
 
-    many_to_many :materials, GEMS.Engine.Schema.Item, join_through: "equipments_materials"
+    many_to_many :materials, GEMS.Engine.Schema.Item,
+      join_through: GEMS.Engine.Schema.EquipmentMaterial
+
     many_to_many :skills, GEMS.Engine.Schema.Skill, join_through: "equipments_skills"
   end
 
