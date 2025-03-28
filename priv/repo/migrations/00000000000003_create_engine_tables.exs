@@ -201,8 +201,9 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     ################################################################################
 
     create table(:action_patterns) do
-      add :priority, :integer, null: false
+      add :kind, :string, null: false
       add :condition, :string, null: false
+      add :priority, :integer, null: false
       add :chance, :float, null: true
       add :start_turn, :integer, null: true
       add :every_turn, :integer, null: true
@@ -210,9 +211,15 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :max_health, :integer, null: true
       add :min_mana, :integer, null: true
       add :max_mana, :integer, null: true
-      add :skill_id, references(:skills), null: false
+      add :item_id, references(:items), null: true
+      add :skill_id, references(:skills), null: true
       add :state_id, references(:states), null: true
     end
+
+    create constraint(:action_patterns, :action_pattern_kind_matches,
+             check: "(kind = 'item' AND item_id IS NOT NULL)
+             OR (kind = 'skill' AND skill_id IS NOT NULL)"
+           )
 
     ################################################################################
     # Creatures Action Patterns

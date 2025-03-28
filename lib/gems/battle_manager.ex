@@ -1,10 +1,10 @@
 defmodule GEMS.BattleManager do
   use GenServer
 
-  alias GEMS.World.Schema.Character
+  # alias GEMS.World.Schema.Character
   alias GEMS.Engine.Battler.Battle
 
-  @topic_prefix "battles"
+  # @topic_prefix "battles"
 
   require Logger
 
@@ -12,19 +12,19 @@ defmodule GEMS.BattleManager do
     GenServer.start_link(__MODULE__, args, name: __MODULE__)
   end
 
-  def subscribe(%Character{} = character) do
-    topic = build_topic(character)
-    Phoenix.PubSub.subscribe(GEMS.PubSub, topic)
-  end
-
-  def unsubscribe(%Character{} = character) do
-    topic = build_topic(character)
-    Phoenix.PubSub.unsubscribe(GEMS.PubSub, topic)
-  end
-
-  # def fetch_state(%Character{} = character) do
-  #   GenServer.call(__MODULE__, {:fetch_state, character})
+  # def subscribe(%Character{} = character) do
+  #   topic = build_topic(character)
+  #   Phoenix.PubSub.subscribe(GEMS.PubSub, topic)
   # end
+
+  # def unsubscribe(%Character{} = character) do
+  #   topic = build_topic(character)
+  #   Phoenix.PubSub.unsubscribe(GEMS.PubSub, topic)
+  # end
+
+  def fetch_state(identifier) do
+    GenServer.call(__MODULE__, {:fetch_state, identifier})
+  end
 
   def create_battle(%Battle{} = battle) do
     GenServer.call(__MODULE__, {:create_battle, battle})
@@ -55,8 +55,8 @@ defmodule GEMS.BattleManager do
   end
 
   @impl true
-  def handle_call({:fetch_state, character}, _from, state) do
-    {:reply, Map.get(state.battle_lookup, character.id), state}
+  def handle_call({:fetch_state, identifier}, _from, state) do
+    {:reply, Map.get(state.battle_lookup, identifier), state}
   end
 
   @impl true
@@ -65,8 +65,8 @@ defmodule GEMS.BattleManager do
     {:noreply, state}
   end
 
-  defp build_topic(character) do
-    %{id: id, zone_id: zone_id} = character
-    "#{@topic_prefix}:zone:#{zone_id}:character:#{id}"
-  end
+  # defp build_topic(character) do
+  #   %{id: id, zone_id: zone_id} = character
+  #   "#{@topic_prefix}:zone:#{zone_id}:character:#{id}"
+  # end
 end

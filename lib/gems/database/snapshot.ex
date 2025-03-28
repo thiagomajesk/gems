@@ -1,5 +1,5 @@
 defmodule GEMS.Database.Snapshot do
   @moduledoc """
-  A snapshot that contains a subjet of data from a schema.
+  A snapshot that contains a subset of data from a schema.
   """
 end

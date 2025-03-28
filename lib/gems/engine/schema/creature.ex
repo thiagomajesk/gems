@@ -37,8 +37,7 @@ defmodule GEMS.Engine.Schema.Creature do
         :parameter_change,
         :parameter_rate,
         :state_rate
-      ],
-      action_patterns: [:skill, :state]
+      ]
     ]
 
   schema "creatures" do

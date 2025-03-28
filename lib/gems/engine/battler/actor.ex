@@ -28,10 +28,6 @@ defmodule GEMS.Engine.Battler.Actor do
     field :magic_damage, :integer, default: 0
     field :skill_power, :integer, default: 0
 
-    field :items, {:array, :map}, default: [], virtual: true
-    field :skills, {:array, :map}, default: [], virtual: true
-    field :equipments, {:array, :map}, default: [], virtual: true
-
     field :action_patterns, {:array, :map}, default: [], virtual: true
   end
 

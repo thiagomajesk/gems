@@ -3,20 +3,15 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
 
   def render(assigns) do
     ~H"""
+    <div>
+      {inspect(@battle)}
+    </div>
     """
   end
 
-  def mount(_params, _session, socket) do
-    character = socket.assigns.selected_character
+  def mount(%{"id" => identifier}, _session, socket) do
+    battle = GEMS.BattleManager.fetch_state(identifier)
 
-    battle_metadata = GEMS.ActivityManager.fetch_state(character)
-
-    if connected?(socket), do: GEMS.BattleManager.subscribe(character)
-
-    {:ok, assign_current_battle_state(socket, battle_metadata)}
-  end
-
-  defp assign_current_battle_state(socket, _metadata) do
-    socket
+    {:ok, assign(socket, :battle, battle)}
   end
 end

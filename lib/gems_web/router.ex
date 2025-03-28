@@ -116,7 +116,15 @@ defmodule GEMSWeb.Router do
       live "/world", WorldLive
       live "/activities", ActivitiesLive
       live "/hunt", HuntLive
+    end
 
+    live_session :battles,
+      layout: {GEMSWeb.Layouts, :battle},
+      on_mount: [
+        {GEMSWeb.CheckUserHook, :ensure_authenticated},
+        {GEMSWeb.CheckCharacterHook, :ensure_selected_character},
+        {GEMSWeb.PageHook, :current_path}
+      ] do
       live "/battles/duel/:id", BattleLive.DuelRoom
     end
   end
