@@ -2,7 +2,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EquipmentComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.FileExplorerComponent
 
@@ -49,10 +48,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.EquipmentComponent do
 
             <SharedInputs.stats_fieldset form={f} />
           </div>
-
-          <Forms.fieldset legend="Traits">
-            <TraitsAssocInput.inputs_for_assoc field={f[:traits]} />
-          </Forms.fieldset>
         </div>
       </Forms.base_form>
     </div>

@@ -3,7 +3,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ClassComponent do
 
   alias UI.Admin.Forms
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.ProgressCurveComponent
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput
 
   def render(assigns) do
     ~H"""
@@ -48,9 +47,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ClassComponent do
               />
             </Forms.fieldset>
           </div>
-          <Forms.fieldset legend="Traits">
-            <TraitsAssocInput.inputs_for_assoc field={f[:traits]} />
-          </Forms.fieldset>
         </div>
       </Forms.base_form>
     </div>

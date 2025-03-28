@@ -2,7 +2,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.StateComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent
 
   def render(assigns) do
@@ -40,10 +39,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.StateComponent do
               options={@restriction_options}
             />
           </div>
-
-          <Forms.fieldset legend="Traits">
-            <TraitsAssocInput.inputs_for_assoc field={f[:traits]} />
-          </Forms.fieldset>
         </div>
       </Forms.base_form>
     </div>

@@ -2,7 +2,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.EffectsAssocInput
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.IconPickerComponent
 
   def render(assigns) do
@@ -104,10 +103,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
               </div>
             </Forms.fieldset>
           </div>
-
-          <Forms.fieldset legend="Effects">
-            <EffectsAssocInput.inputs_for_assoc field={f[:effects]} />
-          </Forms.fieldset>
         </div>
       </Forms.base_form>
     </div>

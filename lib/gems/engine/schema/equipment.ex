@@ -28,20 +28,7 @@ defmodule GEMS.Engine.Schema.Equipment do
       :magic_damage,
       :skill_power
     ],
-    default_preloads: [
-      traits: [
-        :skill_seal,
-        :attack_skill,
-        :attack_element,
-        :attack_state,
-        :element_rate,
-        :equipment_seal,
-        :item_seal,
-        :parameter_change,
-        :parameter_rate,
-        :state_rate
-      ]
-    ]
+    default_preloads: []
 
   @tiers GEMS.Engine.Constants.tiers()
 
@@ -93,7 +80,6 @@ defmodule GEMS.Engine.Schema.Equipment do
 
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
 
-    has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
     has_many :equipment_materials, GEMS.Engine.Schema.EquipmentMaterial, on_replace: :delete
 
     many_to_many :materials, GEMS.Engine.Schema.Item,
@@ -106,7 +92,6 @@ defmodule GEMS.Engine.Schema.Equipment do
     changeset = super(equipment, attrs, opts)
 
     changeset
-    |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
     |> cast_assoc(:skills, sort_param: :skills_sort, drop_param: :skills_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)

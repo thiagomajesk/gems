@@ -20,13 +20,7 @@ defmodule GEMS.Engine.Schema.Skill do
       :messages,
       :damage_element_id
     ],
-    default_preloads: [
-      effects: [
-        :recovery,
-        :state_change,
-        :parameter_change
-      ]
-    ]
+    default_preloads: []
 
   @hit_types GEMS.Engine.Constants.hit_types()
   @target_sides GEMS.Engine.Constants.target_sides()
@@ -58,8 +52,6 @@ defmodule GEMS.Engine.Schema.Skill do
 
     belongs_to :type, GEMS.Engine.Schema.SkillType
     belongs_to :damage_element, GEMS.Engine.Schema.Element
-
-    has_many :effects, GEMS.Engine.Schema.Effect, on_replace: :delete
   end
 
   def build_changeset(skill, attrs, opts) do
@@ -67,7 +59,6 @@ defmodule GEMS.Engine.Schema.Skill do
 
     changeset
     |> cast_embed(:icon)
-    |> cast_assoc(:effects, sort_param: :effects_sort, drop_param: :effects_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

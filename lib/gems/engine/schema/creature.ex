@@ -25,20 +25,7 @@ defmodule GEMS.Engine.Schema.Creature do
       :magic_damage,
       :skill_power
     ],
-    default_preloads: [
-      traits: [
-        :skill_seal,
-        :attack_skill,
-        :attack_element,
-        :attack_state,
-        :element_rate,
-        :equipment_seal,
-        :item_seal,
-        :parameter_change,
-        :parameter_rate,
-        :state_rate
-      ]
-    ]
+    default_preloads: []
 
   schema "creatures" do
     field :name, :string
@@ -69,8 +56,6 @@ defmodule GEMS.Engine.Schema.Creature do
 
     belongs_to :type, GEMS.Engine.Schema.CreatureType
 
-    has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
-
     many_to_many :action_patterns, GEMS.Engine.Schema.ActionPattern,
       join_through: "creatures_action_patterns",
       on_replace: :delete
@@ -80,7 +65,6 @@ defmodule GEMS.Engine.Schema.Creature do
     changeset = super(creature, attrs, opts)
 
     changeset
-    |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
     |> cast_assoc(:action_patterns,
       sort_param: :action_patterns_sort,
       drop_param: :action_patterns_drop

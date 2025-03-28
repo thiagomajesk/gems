@@ -26,12 +26,7 @@ defmodule GEMS.Engine.Schema.Item do
       :damage_element_id
     ],
     default_preloads: [
-      :item_ingredients,
-      effects: [
-        :recovery,
-        :state_change,
-        :parameter_change
-      ]
+      :item_ingredients
     ]
 
   @tiers GEMS.Engine.Constants.tiers()
@@ -66,7 +61,6 @@ defmodule GEMS.Engine.Schema.Item do
     belongs_to :type, GEMS.Engine.Schema.ItemType
     belongs_to :damage_element, GEMS.Engine.Schema.Element
 
-    has_many :effects, GEMS.Engine.Schema.Effect, on_replace: :delete
     has_many :item_ingredients, GEMS.Engine.Schema.ItemIngredient, on_replace: :delete
 
     many_to_many :ingredients, GEMS.Engine.Schema.Item,
@@ -77,7 +71,6 @@ defmodule GEMS.Engine.Schema.Item do
     changeset = super(item, attrs, opts)
 
     changeset
-    |> cast_assoc(:effects, sort_param: :effects_sort, drop_param: :effects_drop)
     |> cast_assoc(:item_ingredients,
       sort_param: :item_ingredients_sort,
       drop_param: :item_ingredients_drop

@@ -3,20 +3,7 @@ defmodule GEMS.Engine.Schema.Class do
     preset: :collection,
     required_fields: [:name, :code],
     optional_fields: [:description],
-    default_preloads: [
-      traits: [
-        :skill_seal,
-        :attack_skill,
-        :attack_element,
-        :attack_state,
-        :element_rate,
-        :equipment_seal,
-        :item_seal,
-        :parameter_change,
-        :parameter_rate,
-        :state_rate
-      ]
-    ]
+    default_preloads: []
 
   schema "classes" do
     field :name, :string
@@ -26,8 +13,6 @@ defmodule GEMS.Engine.Schema.Class do
     embeds_one :strength_curve, GEMS.Database.ProgressCurve, on_replace: :delete
     embeds_one :dexterity_curve, GEMS.Database.ProgressCurve, on_replace: :delete
     embeds_one :intelligence_curve, GEMS.Database.ProgressCurve, on_replace: :delete
-
-    has_many :traits, GEMS.Engine.Schema.Trait, on_replace: :delete
   end
 
   def build_changeset(avatar, attrs, opts) do
@@ -37,7 +22,6 @@ defmodule GEMS.Engine.Schema.Class do
     |> cast_embed(:strength_curve)
     |> cast_embed(:dexterity_curve)
     |> cast_embed(:intelligence_curve)
-    |> cast_assoc(:traits, sort_param: :traits_sort, drop_param: :traits_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end
