@@ -32,12 +32,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.StateComponent do
               label="Icon"
             />
             <Forms.field_input type="number" field={f[:priority]} label="Priority" />
-            <Forms.field_input
-              type="select"
-              field={f[:restriction]}
-              label="Restriction"
-              options={@restriction_options}
-            />
           </div>
         </div>
       </Forms.base_form>
@@ -46,12 +40,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.StateComponent do
   end
 
   def mount(socket) do
-    {:ok, assign(socket, restriction_options: restriction_options())}
-  end
-
-  defp restriction_options() do
-    GEMS.Engine.Schema.State
-    |> Ecto.Enum.mappings(:restriction)
-    |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
+    {:ok, socket}
   end
 end

@@ -88,9 +88,6 @@ defmodule GEMS.Repo.Migrations.CreateWorldTables do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :text, null: true
-
-      add :affinity_id, references(:elements), null: true
-      add :aversion_id, references(:elements), null: true
     end
 
     create unique_index(:biomes, :name)

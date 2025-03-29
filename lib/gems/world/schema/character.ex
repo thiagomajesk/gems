@@ -31,7 +31,7 @@ defmodule GEMS.World.Schema.Character do
     field :max_health, :integer, virtual: true
     field :health_regen, :integer, virtual: true
     field :attack_damage, :integer, virtual: true
-    field :weapon_power, :integer, virtual: true
+    field :attack_power, :integer, virtual: true
 
     # DEX
     field :evasion_rating, :integer, virtual: true
@@ -42,10 +42,10 @@ defmodule GEMS.World.Schema.Character do
 
     # INT
     field :magic_resist, :integer, virtual: true
-    field :max_mana, :integer, virtual: true
-    field :mana_regen, :integer, virtual: true
+    field :max_energy, :integer, virtual: true
+    field :energy_regen, :integer, virtual: true
     field :magic_damage, :integer, virtual: true
-    field :skill_power, :integer, virtual: true
+    field :magic_power, :integer, virtual: true
 
     belongs_to :class, GEMS.Engine.Schema.Class
     belongs_to :faction, GEMS.World.Schema.Faction

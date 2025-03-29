@@ -12,18 +12,13 @@ defmodule GEMS.Engine.Schema.Item do
       :image,
       :price,
       :target_side,
-      :target_status,
+      :target_filter,
       :target_number,
       :random_targets,
       :hit_type,
       :success_rate,
       :repeats,
-      :damage_type,
-      :damage_formula,
-      :damage_variance,
-      :critical_hits,
-      :messages,
-      :damage_element_id
+      :messages
     ],
     default_preloads: [
       :item_ingredients
@@ -33,7 +28,6 @@ defmodule GEMS.Engine.Schema.Item do
 
   @hit_types GEMS.Engine.Constants.hit_types()
   @target_sides GEMS.Engine.Constants.target_sides()
-  @damage_types GEMS.Engine.Constants.damage_types()
 
   schema "items" do
     field :name, :string
@@ -45,7 +39,7 @@ defmodule GEMS.Engine.Schema.Item do
     field :messages, :map
 
     field :target_side, Ecto.Enum, values: @target_sides
-    field :target_status, Ecto.Enum, values: [:alive, :dead]
+    field :target_filter, Ecto.Enum, values: [:alive, :dead]
     field :target_number, :integer
     field :random_targets, :integer
 
@@ -53,13 +47,7 @@ defmodule GEMS.Engine.Schema.Item do
     field :success_rate, :float
     field :repeats, :integer
 
-    field :damage_type, Ecto.Enum, values: @damage_types
-    field :damage_formula, :string
-    field :damage_variance, :float
-    field :critical_hits, :boolean
-
     belongs_to :type, GEMS.Engine.Schema.ItemType
-    belongs_to :damage_element, GEMS.Engine.Schema.Element
 
     has_many :item_ingredients, GEMS.Engine.Schema.ItemIngredient, on_replace: :delete
 

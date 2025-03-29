@@ -30,7 +30,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
 
             <div class="grid grid-cols-2 gap-6">
               <Forms.field_input type="number" field={f[:health_cost]} label="Health Cost" />
-              <Forms.field_input type="number" field={f[:mana_cost]} label="Mana Cost" />
+              <Forms.field_input type="number" field={f[:energy_cost]} label="Mana Cost" />
             </div>
 
             <div class="grid grid-cols-3 gap-6">
@@ -62,44 +62,13 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
 
                 <Forms.field_input
                   type="select"
-                  field={f[:target_status]}
+                  field={f[:target_filter]}
                   label="Target Status"
-                  options={@target_status_options}
+                  options={@target_filter_options}
                 />
 
                 <Forms.field_input type="number" field={f[:target_number]} label="Target Number" />
                 <Forms.field_input type="number" field={f[:random_targets]} label="Randon Targets" />
-              </div>
-            </Forms.fieldset>
-
-            <Forms.fieldset legend="Damage">
-              <div class="grid grid-cols-2 gap-4">
-                <Forms.field_input
-                  type="select"
-                  field={f[:damage_type]}
-                  label="Damage Type"
-                  options={@damage_type_options}
-                />
-                <Forms.field_input
-                  type="select"
-                  field={f[:damage_element_id]}
-                  label="Damage Element"
-                  options={@element_options}
-                />
-              </div>
-              <Forms.field_input type="text" field={f[:damage_formula]} label="Damage Formula" />
-              <div class="grid grid-cols-2 gap-4">
-                <Forms.field_input
-                  type="select"
-                  field={f[:critical_hits]}
-                  label="Critical Hits"
-                  options={[Yes: true, No: false]}
-                />
-                <Forms.field_input
-                  type="percentage"
-                  field={f[:damage_variance]}
-                  label="Damage Variance"
-                />
               </div>
             </Forms.fieldset>
           </div>
@@ -111,16 +80,13 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
 
   def mount(socket) do
     skill_types_options = GEMS.Engine.Schema.SkillType.options()
-    element_options = GEMS.Engine.Schema.Element.options()
 
     {:ok,
      assign(socket,
        skill_types_options: skill_types_options,
-       element_options: element_options,
        hit_type_options: hit_type_options(),
        target_side_options: target_side_options(),
-       target_status_options: target_status_options(),
-       damage_type_options: damage_type_options()
+       target_filter_options: target_filter_options()
      )}
   end
 
@@ -136,15 +102,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 
-  defp target_status_options() do
+  defp target_filter_options() do
     GEMS.Engine.Schema.Skill
-    |> Ecto.Enum.mappings(:target_status)
-    |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
-  end
-
-  defp damage_type_options() do
-    GEMS.Engine.Schema.Skill
-    |> Ecto.Enum.mappings(:damage_type)
+    |> Ecto.Enum.mappings(:target_filter)
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 end

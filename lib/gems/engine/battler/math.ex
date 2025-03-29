@@ -23,7 +23,7 @@ defmodule GEMS.Engine.Battler.Math do
         defender.evasion_rating
       )
 
-    round(damage * (1 + attacker.weapon_power / 100))
+    round(damage * (1 + attacker.attack_power / 100))
   end
 
   def magic_damage(%Actor{} = attacker, %Actor{} = defender) do
@@ -33,7 +33,7 @@ defmodule GEMS.Engine.Battler.Math do
         defender.magic_resist
       )
 
-    round(damage * (1 + attacker.skill_power / 100))
+    round(damage * (1 + attacker.magic_power / 100))
   end
 
   def health_regen(%Actor{} = actor) do
@@ -43,11 +43,11 @@ defmodule GEMS.Engine.Battler.Math do
     round((scaled_regen + base_regen) * actor.max_health)
   end
 
-  def mana_regen(%Actor{} = actor) do
+  def energy_regen(%Actor{} = actor) do
     base_regen = 0.04 + 0.04 * :rand.uniform()
-    regen_ratio = actor.mana_regen / actor.max_mana
+    regen_ratio = actor.energy_regen / actor.max_energy
     scaled_regen = 0.8 * (1 - :math.exp(-regen_ratio))
-    round((scaled_regen + base_regen) * actor.max_mana)
+    round((scaled_regen + base_regen) * actor.max_energy)
   end
 
   defp damage(damage, defense) do

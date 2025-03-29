@@ -6,7 +6,6 @@ defmodule GEMSLua.API.Seeds do
   alias GEMS.World.Schema.Biome
   alias GEMS.Engine.Schema.Creature
   alias GEMS.Engine.Schema.CreatureType
-  alias GEMS.Engine.Schema.Element
   alias GEMS.Engine.Schema.Equipment
   alias GEMS.Engine.Schema.EquipmentType
   alias GEMS.Engine.Schema.Item
@@ -30,7 +29,6 @@ defmodule GEMSLua.API.Seeds do
   deflua insert_blessings(table), do: insert_entities(Blessing, table)
   deflua insert_creature_types(table), do: insert_entities(CreatureType, table)
   deflua insert_creatures(table), do: insert_entities(Creature, table)
-  deflua insert_elements(table), do: insert_entities(Element, table)
   deflua insert_equipment_types(table), do: insert_entities(EquipmentType, table)
   deflua insert_equipments(table), do: insert_entities(Equipment, table)
   deflua insert_factions(table), do: insert_entities(Faction, table)

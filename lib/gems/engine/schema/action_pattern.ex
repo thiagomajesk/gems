@@ -8,7 +8,7 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :random,
     :turn_number,
     :health_number,
-    :mana_number,
+    :energy_number,
     :state_presence,
     :item_presence,
     :skill_presence
@@ -22,8 +22,8 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :every_turn,
     :min_health,
     :max_health,
-    :min_mana,
-    :max_mana,
+    :min_energy,
+    :max_energy,
     :item_id,
     :skill_id,
     :state_id
@@ -42,8 +42,8 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     field :min_health, :integer
     field :max_health, :integer
 
-    field :min_mana, :integer
-    field :max_mana, :integer
+    field :min_energy, :integer
+    field :max_energy, :integer
 
     belongs_to :item, GEMS.Engine.Schema.Item
     belongs_to :skill, GEMS.Engine.Schema.Skill

@@ -8,7 +8,7 @@ defmodule GEMS.Engine.Battler.Actor do
   embedded_schema do
     field :party, Ecto.Enum, values: @parties
     field :health, :integer, default: 0
-    field :mana, :integer, default: 0
+    field :energy, :integer, default: 0
     field :aggro, :integer, default: 0
     field :charge, :integer, default: 0
 
@@ -16,17 +16,23 @@ defmodule GEMS.Engine.Battler.Actor do
     field :max_health, :integer, default: 0
     field :health_regen, :integer, default: 0
     field :attack_damage, :integer, default: 0
-    field :weapon_power, :integer, default: 0
+    field :attack_power, :integer, default: 0
+
     field :evasion_rating, :integer, default: 0
     field :attack_speed, :integer, default: 0
     field :critical_rating, :integer, default: 0
     field :accuracy_rating, :integer, default: 0
     field :critical_power, :integer, default: 0
+
     field :magic_resist, :integer, default: 0
-    field :max_mana, :integer, default: 0
-    field :mana_regen, :integer, default: 0
+    field :max_energy, :integer, default: 0
+    field :energy_regen, :integer, default: 0
     field :magic_damage, :integer, default: 0
-    field :skill_power, :integer, default: 0
+    field :magic_power, :integer, default: 0
+
+    # Current effects
+    field :buffs, {:array, :map}, default: []
+    field :debuffs, {:array, :map}, default: []
 
     field :action_patterns, {:array, :map}, default: [], virtual: true
   end

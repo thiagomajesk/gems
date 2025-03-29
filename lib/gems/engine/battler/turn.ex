@@ -60,10 +60,10 @@ defmodule GEMS.Engine.Battler.Turn do
       action_pattern.min_health <= turn.leader.health and
         action_pattern.max_health >= turn.leader.health
 
-  defp action_pattern_matches_condition?(%{condition: :mana_number} = action_pattern, turn),
+  defp action_pattern_matches_condition?(%{condition: :energy_number} = action_pattern, turn),
     do:
-      action_pattern.min_mana <= turn.leader.mana and
-        action_pattern.max_mana >= turn.leader.mana
+      action_pattern.min_energy <= turn.leader.energy and
+        action_pattern.max_energy >= turn.leader.energy
 
   defp action_pattern_matches_condition?(%{condition: :random} = action_pattern, _turn),
     do: action_pattern.chance >= :rand.uniform()
@@ -74,24 +74,24 @@ defmodule GEMS.Engine.Battler.Turn do
   defp list_valid_targets(%{type: :skill} = action_pattern, turn) do
     case action_pattern.skill do
       %{target_side: :self} -> [turn.leader]
-      %{target_side: :ally, target_status: :alive} -> list_live_allies(turn)
-      %{target_side: :ally, target_status: :dead} -> list_dead_allies(turn)
-      %{target_side: :enemy, target_status: :alive} -> list_live_enemies(turn)
-      %{target_side: :enemy, target_status: :dead} -> list_dead_enemies(turn)
-      %{target_side: :anyone, target_status: :alive} -> list_live_targets(turn)
-      %{target_side: :anyone, target_status: :dead} -> list_dead_targets(turn)
+      %{target_side: :ally, target_filter: :alive} -> list_live_allies(turn)
+      %{target_side: :ally, target_filter: :dead} -> list_dead_allies(turn)
+      %{target_side: :enemy, target_filter: :alive} -> list_live_enemies(turn)
+      %{target_side: :enemy, target_filter: :dead} -> list_dead_enemies(turn)
+      %{target_side: :anyone, target_filter: :alive} -> list_live_targets(turn)
+      %{target_side: :anyone, target_filter: :dead} -> list_dead_targets(turn)
     end
   end
 
   defp list_valid_targets(%{type: :item} = action_pattern, turn) do
     case action_pattern.item do
       %{target_side: :self} -> [turn.leader]
-      %{target_side: :ally, target_status: :alive} -> list_live_allies(turn)
-      %{target_side: :ally, target_status: :dead} -> list_dead_allies(turn)
-      %{target_side: :enemy, target_status: :alive} -> list_live_enemies(turn)
-      %{target_side: :enemy, target_status: :dead} -> list_dead_enemies(turn)
-      %{target_side: :anyone, target_status: :alive} -> list_live_targets(turn)
-      %{target_side: :anyone, target_status: :dead} -> list_dead_targets(turn)
+      %{target_side: :ally, target_filter: :alive} -> list_live_allies(turn)
+      %{target_side: :ally, target_filter: :dead} -> list_dead_allies(turn)
+      %{target_side: :enemy, target_filter: :alive} -> list_live_enemies(turn)
+      %{target_side: :enemy, target_filter: :dead} -> list_dead_enemies(turn)
+      %{target_side: :anyone, target_filter: :alive} -> list_live_targets(turn)
+      %{target_side: :anyone, target_filter: :dead} -> list_dead_targets(turn)
     end
   end
 

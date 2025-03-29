@@ -13,17 +13,17 @@ defmodule GEMS.Engine.Schema.Creature do
       :max_health,
       :health_regen,
       :attack_damage,
-      :weapon_power,
+      :attack_power,
       :evasion_rating,
       :attack_speed,
       :critical_rating,
       :accuracy_rating,
       :critical_power,
       :magic_resist,
-      :max_mana,
-      :mana_regen,
+      :max_energy,
+      :energy_regen,
       :magic_damage,
-      :skill_power
+      :magic_power
     ],
     default_preloads: []
 
@@ -38,7 +38,7 @@ defmodule GEMS.Engine.Schema.Creature do
     field :max_health, :integer
     field :health_regen, :integer
     field :attack_damage, :integer
-    field :weapon_power, :integer
+    field :attack_power, :integer
 
     # DEX
     field :evasion_rating, :integer
@@ -49,10 +49,10 @@ defmodule GEMS.Engine.Schema.Creature do
 
     # INT
     field :magic_resist, :integer
-    field :max_mana, :integer
-    field :mana_regen, :integer
+    field :max_energy, :integer
+    field :energy_regen, :integer
     field :magic_damage, :integer
-    field :skill_power, :integer
+    field :magic_power, :integer
 
     belongs_to :type, GEMS.Engine.Schema.CreatureType
 

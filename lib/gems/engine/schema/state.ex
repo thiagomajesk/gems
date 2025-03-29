@@ -2,22 +2,15 @@ defmodule GEMS.Engine.Schema.State do
   use GEMS.Database.Schema,
     preset: :collection,
     required_fields: [:name, :code],
-    optional_fields: [:description, :priority, :restriction],
+    optional_fields: [:description, :priority],
     default_preloads: []
-
-  @restrictions [
-    :attack_enemy,
-    :attack_ally,
-    :attack_anyone,
-    :cannot_attack
-  ]
 
   schema "states" do
     field :name, :string
     field :code, :string
     field :description, :string
     field :priority, :integer
-    field :restriction, Ecto.Enum, values: @restrictions
+    field :max_stack, :integer
 
     embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
   end

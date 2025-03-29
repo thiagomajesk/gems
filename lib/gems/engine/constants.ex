@@ -23,8 +23,8 @@ defmodule GEMS.Engine.Constants do
       :accuracy_rating,
       :critical_power,
       :magic_resist,
-      :max_mana,
-      :mana_regen,
+      :max_energy,
+      :energy_regen,
       :magic_damage,
       :skill_power
     ]
@@ -56,15 +56,5 @@ defmodule GEMS.Engine.Constants do
       :physical,
       :magical,
       :certain
-    ]
-
-  def damage_types,
-    do: [
-      :health_damage,
-      :mana_damage,
-      :health_recover,
-      :mana_recover,
-      :health_drain,
-      :mana_drain
     ]
 end

@@ -80,16 +80,16 @@ defmodule GEMS.Engine.TurnTest do
       assert %Turn{action: ^action} = Turn.choose_action(turn)
     end
 
-    test "when condition is mana number", %{type: type} do
+    test "when condition is energy number", %{type: type} do
       action_pattern =
         build_action_pattern(type, %{
           priority: 1,
-          condition: :mana_number,
-          min_mana: 0,
-          max_mana: 10
+          condition: :energy_number,
+          min_energy: 0,
+          max_energy: 10
         })
 
-      leader = %Actor{mana: 5, action_patterns: [action_pattern]}
+      leader = %Actor{energy: 5, action_patterns: [action_pattern]}
 
       turn = Turn.new(1, leader, [%Actor{}])
       action = build_action(action_pattern, [leader])

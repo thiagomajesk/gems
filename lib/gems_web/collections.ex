@@ -64,16 +64,6 @@ defmodule GEMSWeb.Collections do
         %{field: :type, type: {:assoc, "creature-types"}, label: "Type"}
       ]
     },
-    "elements" => %{
-      module: GEMS.Engine.Schema.Element,
-      form: Forms.ElementComponent,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
-    },
     "equipment-types" => %{
       module: GEMS.Engine.Schema.EquipmentType,
       form: Forms.EquipmentTypeComponent,

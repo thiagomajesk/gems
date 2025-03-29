@@ -24,17 +24,17 @@ defmodule GEMS.Battles do
       max_health: creature.max_health,
       health_regen: creature.health_regen,
       attack_damage: creature.attack_damage,
-      weapon_power: creature.weapon_power,
+      attack_power: creature.attack_power,
       evasion_rating: creature.evasion_rating,
       attack_speed: creature.attack_speed,
       critical_rating: creature.critical_rating,
       accuracy_rating: creature.accuracy_rating,
       critical_power: creature.critical_power,
       magic_resist: creature.magic_resist,
-      max_mana: creature.max_mana,
-      mana_regen: creature.mana_regen,
+      max_energy: creature.max_energy,
+      energy_regen: creature.energy_regen,
       magic_damage: creature.magic_damage,
-      skill_power: creature.skill_power,
+      magic_power: creature.magic_power,
       action_patterns: Enum.map(creature.action_patterns, &cast_action_pattern/1)
     }
   end

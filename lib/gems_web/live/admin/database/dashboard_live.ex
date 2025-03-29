@@ -13,7 +13,6 @@ defmodule GEMSWeb.Admin.Database.DashboardLive do
       <.insight_card title="Professions" count={@professions_count} icon="database" />
       <.insight_card title="States" count={@states_count} icon="database" />
       <.insight_card title="Creatures" count={@creatures_count} icon="database" />
-      <.insight_card title="Elements" count={@elements_count} icon="database" />
       <.insight_card title="Biomes" count={@biomes_count} icon="database" />
       <.insight_card title="Skill Types" count={@skill_types_count} icon="database" />
       <.insight_card title="Item Types" count={@item_types_count} icon="database" />
@@ -32,7 +31,6 @@ defmodule GEMSWeb.Admin.Database.DashboardLive do
     professions_count = GEMS.Insights.count_professions()
     states_count = GEMS.Insights.count_states()
     creatures_count = GEMS.Insights.count_creatures()
-    elements_count = GEMS.Insights.count_elements()
     biomes_count = GEMS.Insights.count_biomes()
     skill_types_count = GEMS.Insights.count_skill_types()
     item_types_count = GEMS.Insights.count_item_types()
@@ -49,7 +47,6 @@ defmodule GEMSWeb.Admin.Database.DashboardLive do
        professions_count: professions_count,
        states_count: states_count,
        creatures_count: creatures_count,
-       elements_count: elements_count,
        biomes_count: biomes_count,
        skill_types_count: skill_types_count,
        item_types_count: item_types_count,
