@@ -135,16 +135,6 @@ defmodule GEMSWeb.Collections do
         %{field: :name, type: :text, label: "Name"},
         %{field: :code, type: :text, label: "Code"}
       ]
-    },
-    "states" => %{
-      module: GEMS.Engine.Schema.State,
-      form: Forms.StateComponent,
-      preloads: [],
-      columns: [
-        %{field: :id, type: :id, label: "ID"},
-        %{field: :name, type: :text, label: "Name"},
-        %{field: :code, type: :text, label: "Code"}
-      ]
     }
   }
 

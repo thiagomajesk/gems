@@ -58,12 +58,12 @@ defmodule GEMS.Engine.Battler.Turn do
   defp action_pattern_matches_condition?(%{condition: :health_number} = action_pattern, turn),
     do:
       action_pattern.min_health <= turn.leader.health and
-        action_pattern.max_health >= turn.leader.health
+        action_pattern.maximum_health >= turn.leader.health
 
   defp action_pattern_matches_condition?(%{condition: :energy_number} = action_pattern, turn),
     do:
       action_pattern.min_energy <= turn.leader.energy and
-        action_pattern.max_energy >= turn.leader.energy
+        action_pattern.maximum_energy >= turn.leader.energy
 
   defp action_pattern_matches_condition?(%{condition: :random} = action_pattern, _turn),
     do: action_pattern.chance >= :rand.uniform()

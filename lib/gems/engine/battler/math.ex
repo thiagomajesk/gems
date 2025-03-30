@@ -16,38 +16,38 @@ defmodule GEMS.Engine.Battler.Math do
     round(damage * 1.5 / (1 + :math.exp(-critical_power_ratio)))
   end
 
-  def attack_damage(%Actor{} = attacker, %Actor{} = defender) do
+  def physical_damage(%Actor{} = attacker, %Actor{} = defender) do
     damage =
       damage(
-        attacker.attack_damage,
+        attacker.physical_damage,
         defender.evasion_rating
       )
 
-    round(damage * (1 + attacker.attack_power / 100))
+    round(damage * (1 + attacker.physical_power / 100))
   end
 
-  def magic_damage(%Actor{} = attacker, %Actor{} = defender) do
+  def magical_damage(%Actor{} = attacker, %Actor{} = defender) do
     damage =
       damage(
-        attacker.magic_damage,
-        defender.magic_resist
+        attacker.magical_damage,
+        defender.magical_resistance
       )
 
-    round(damage * (1 + attacker.magic_power / 100))
+    round(damage * (1 + attacker.magical_power / 100))
   end
 
-  def health_regen(%Actor{} = actor) do
+  def health_regeneration(%Actor{} = actor) do
     base_regen = 0.02 + 0.02 * :rand.uniform()
-    regen_ratio = actor.health_regen / actor.max_health
+    regen_ratio = actor.health_regeneration / actor.maximum_health
     scaled_regen = 0.8 * (1 - :math.exp(-regen_ratio))
-    round((scaled_regen + base_regen) * actor.max_health)
+    round((scaled_regen + base_regen) * actor.maximum_health)
   end
 
-  def energy_regen(%Actor{} = actor) do
+  def energy_regeneration(%Actor{} = actor) do
     base_regen = 0.04 + 0.04 * :rand.uniform()
-    regen_ratio = actor.energy_regen / actor.max_energy
+    regen_ratio = actor.energy_regeneration / actor.maximum_energy
     scaled_regen = 0.8 * (1 - :math.exp(-regen_ratio))
-    round((scaled_regen + base_regen) * actor.max_energy)
+    round((scaled_regen + base_regen) * actor.maximum_energy)
   end
 
   defp damage(damage, defense) do

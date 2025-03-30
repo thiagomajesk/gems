@@ -14,6 +14,8 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :skill_presence
   ]
 
+  @states GEMS.Engine.Constants.states()
+
   @required_fields [:kind, :priority, :condition]
 
   @optional_fields [
@@ -21,12 +23,12 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :start_turn,
     :every_turn,
     :min_health,
-    :max_health,
+    :maximum_health,
     :min_energy,
-    :max_energy,
+    :maximum_energy,
+    :state,
     :item_id,
-    :skill_id,
-    :state_id
+    :skill_id
   ]
 
   schema "action_patterns" do
@@ -40,14 +42,15 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     field :every_turn, :integer
 
     field :min_health, :integer
-    field :max_health, :integer
+    field :maximum_health, :integer
 
     field :min_energy, :integer
-    field :max_energy, :integer
+    field :maximum_energy, :integer
+
+    field :state, Ecto.Enum, values: @states
 
     belongs_to :item, GEMS.Engine.Schema.Item
     belongs_to :skill, GEMS.Engine.Schema.Skill
-    belongs_to :state, GEMS.Engine.Schema.State
   end
 
   @doc false
@@ -56,6 +59,5 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> assoc_constraint(:skill)
-    |> assoc_constraint(:state)
   end
 end

@@ -25,27 +25,45 @@ defmodule GEMS.World.Schema.Character do
     field :strength, :integer, virtual: true
     field :dexterity, :integer, virtual: true
     field :intelligence, :integer, virtual: true
+    field :wisdom, :integer, virtual: true
 
-    # STR
-    field :armor_rating, :integer, virtual: true
-    field :max_health, :integer, virtual: true
-    field :health_regen, :integer, virtual: true
-    field :attack_damage, :integer, virtual: true
-    field :attack_power, :integer, virtual: true
+    # STR (Fire)
+    field :physical_resistance, :integer, virtual: true
+    field :maximum_health, :integer, virtual: true
+    field :health_regeneration, :integer, virtual: true
+    field :physical_damage, :integer, virtual: true
+    field :physical_power, :integer, virtual: true
 
-    # DEX
+    # DEX (Air)
     field :evasion_rating, :integer, virtual: true
     field :attack_speed, :integer, virtual: true
     field :critical_rating, :integer, virtual: true
     field :accuracy_rating, :integer, virtual: true
     field :critical_power, :integer, virtual: true
 
-    # INT
-    field :magic_resist, :integer, virtual: true
-    field :max_energy, :integer, virtual: true
-    field :energy_regen, :integer, virtual: true
-    field :magic_damage, :integer, virtual: true
-    field :magic_power, :integer, virtual: true
+    # INT (Water)
+    field :magical_resistance, :integer, virtual: true
+    field :maximum_energy, :integer, virtual: true
+    field :energy_regeneration, :integer, virtual: true
+    field :magical_damage, :integer, virtual: true
+    field :magical_power, :integer, virtual: true
+
+    # WIS (Earth)
+    field :recovery_rating, :integer, virtual: true
+    field :fortitude_rating, :integer, virtual: true
+    field :critical_resistance, :integer, virtual: true
+    field :damage_penetration, :integer, virtual: true
+    field :damage_reflection, :integer, virtual: true
+
+    # Misc
+    field :fire_damage, :integer, virtual: true
+    field :fire_resistance, :integer, virtual: true
+    field :water_damage, :integer, virtual: true
+    field :water_resistance, :integer, virtual: true
+    field :earth_damage, :integer, virtual: true
+    field :earth_resistance, :integer, virtual: true
+    field :air_damage, :integer, virtual: true
+    field :air_resistance, :integer, virtual: true
 
     belongs_to :class, GEMS.Engine.Schema.Class
     belongs_to :faction, GEMS.World.Schema.Faction

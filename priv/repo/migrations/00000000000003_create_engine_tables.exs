@@ -3,20 +3,6 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
 
   def change do
     ################################################################################
-    # States
-    ################################################################################
-
-    create table(:states) do
-      add :name, :string, null: false
-      add :code, :string, null: false
-      add :description, :text, null: true
-      add :icon, :map, null: true
-      add :priority, :integer, default: 100
-    end
-
-    create unique_index(:states, :code)
-
-    ################################################################################
     # Skills
     ################################################################################
 
@@ -70,26 +56,29 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :image, :string, null: true
       add :type_id, references(:creature_types), null: false
 
-      # STR
-      add :armor_rating, :integer, default: 0
-      add :max_health, :integer, default: 0
-      add :health_regen, :integer, default: 0
-      add :attack_damage, :integer, default: 0
-      add :attack_power, :integer, default: 0
+      add :physical_resistance, :integer, default: 0
+      add :maximum_health, :integer, default: 0
+      add :health_regeneration, :integer, default: 0
+      add :physical_damage, :integer, default: 0
+      add :physical_power, :integer, default: 0
 
-      # DEX
       add :evasion_rating, :integer, default: 0
       add :attack_speed, :integer, default: 0
       add :critical_rating, :integer, default: 0
       add :accuracy_rating, :integer, default: 0
       add :critical_power, :integer, default: 0
 
-      # INT
-      add :magic_resist, :integer, default: 0
-      add :max_energy, :integer, default: 0
-      add :energy_regen, :integer, default: 0
-      add :magic_damage, :integer, default: 0
-      add :magic_power, :integer, default: 0
+      add :magical_resistance, :integer, default: 0
+      add :maximum_energy, :integer, default: 0
+      add :energy_regeneration, :integer, default: 0
+      add :magical_damage, :integer, default: 0
+      add :magical_power, :integer, default: 0
+
+      add :recovery_rating, :integer, default: 0
+      add :fortitude_rating, :integer, default: 0
+      add :critical_resistance, :integer, default: 0
+      add :damage_penetration, :integer, default: 0
+      add :damage_reflection, :integer, default: 0
     end
 
     create unique_index(:creatures, :code)
@@ -146,26 +135,38 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :price, :integer, null: true
       add :affinity, :string, null: true
 
-      # STR
-      add :armor_rating, :integer, default: 0
-      add :max_health, :integer, default: 0
-      add :health_regen, :integer, default: 0
-      add :attack_damage, :integer, default: 0
-      add :attack_power, :integer, default: 0
+      add :physical_resistance_bonus, :float, default: 0
+      add :maximum_health_bonus, :float, default: 0
+      add :health_regeneration_bonus, :float, default: 0
+      add :physical_damage_bonus, :float, default: 0
+      add :physical_power_bonus, :float, default: 0
 
-      # DEX
-      add :evasion_rating, :integer, default: 0
-      add :attack_speed, :integer, default: 0
-      add :critical_rating, :integer, default: 0
-      add :accuracy_rating, :integer, default: 0
-      add :critical_power, :integer, default: 0
+      add :evasion_rating_bonus, :float, default: 0
+      add :attack_speed_bonus, :float, default: 0
+      add :critical_rating_bonus, :float, default: 0
+      add :accuracy_rating_bonus, :float, default: 0
+      add :critical_power_bonus, :float, default: 0
 
-      # INT
-      add :magic_resist, :integer, default: 0
-      add :max_energy, :integer, default: 0
-      add :energy_regen, :integer, default: 0
-      add :magic_damage, :integer, default: 0
-      add :magic_power, :integer, default: 0
+      add :magical_resistance_bonus, :float, default: 0
+      add :maximum_energy_bonus, :float, default: 0
+      add :energy_regeneration_bonus, :float, default: 0
+      add :magical_damage_bonus, :float, default: 0
+      add :magical_power_bonus, :float, default: 0
+
+      add :recovery_rating_bonus, :float, default: 0
+      add :fortitude_rating_bonus, :float, default: 0
+      add :critical_resistance_bonus, :float, default: 0
+      add :damage_penetration_bonus, :float, default: 0
+      add :damage_reflection_bonus, :float, default: 0
+
+      add :fire_damage_bonus, :float, default: 0
+      add :fire_resistance_bonus, :float, default: 0
+      add :water_damage_bonus, :float, default: 0
+      add :water_resistance_bonus, :float, default: 0
+      add :earth_damage_bonus, :float, default: 0
+      add :earth_resistance_bonus, :float, default: 0
+      add :air_damage_bonus, :float, default: 0
+      add :air_resistance_bonus, :float, default: 0
     end
 
     create unique_index(:equipments, :code)
@@ -192,12 +193,12 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :start_turn, :integer, null: true
       add :every_turn, :integer, null: true
       add :min_health, :integer, null: true
-      add :max_health, :integer, null: true
+      add :maximum_health, :integer, null: true
       add :min_energy, :integer, null: true
-      add :max_energy, :integer, null: true
+      add :maximum_energy, :integer, null: true
+      add :state, :string, null: true
       add :item_id, references(:items), null: true
       add :skill_id, references(:skills), null: true
-      add :state_id, references(:states), null: true
     end
 
     create constraint(:action_patterns, :action_pattern_kind_matches,

@@ -4,6 +4,7 @@ defmodule GEMS.Engine.Battler.Actor do
   alias __MODULE__
 
   @parties [:alpha, :bravo, :charlie, :delta]
+  @states GEMS.Engine.Constants.states()
 
   embedded_schema do
     field :party, Ecto.Enum, values: @parties
@@ -12,23 +13,40 @@ defmodule GEMS.Engine.Battler.Actor do
     field :aggro, :integer, default: 0
     field :charge, :integer, default: 0
 
-    field :armor_rating, :integer, default: 0
-    field :max_health, :integer, default: 0
-    field :health_regen, :integer, default: 0
-    field :attack_damage, :integer, default: 0
-    field :attack_power, :integer, default: 0
+    field :states, {:array, Ecto.Enum}, values: @states, virtual: true
 
-    field :evasion_rating, :integer, default: 0
-    field :attack_speed, :integer, default: 0
-    field :critical_rating, :integer, default: 0
-    field :accuracy_rating, :integer, default: 0
-    field :critical_power, :integer, default: 0
+    field :physical_resistance, :integer, virtual: true
+    field :maximum_health, :integer, virtual: true
+    field :health_regeneration, :integer, virtual: true
+    field :physical_damage, :integer, virtual: true
+    field :physical_power, :integer, virtual: true
 
-    field :magic_resist, :integer, default: 0
-    field :max_energy, :integer, default: 0
-    field :energy_regen, :integer, default: 0
-    field :magic_damage, :integer, default: 0
-    field :magic_power, :integer, default: 0
+    field :evasion_rating, :integer, virtual: true
+    field :attack_speed, :integer, virtual: true
+    field :critical_rating, :integer, virtual: true
+    field :accuracy_rating, :integer, virtual: true
+    field :critical_power, :integer, virtual: true
+
+    field :magical_resistance, :integer, virtual: true
+    field :maximum_energy, :integer, virtual: true
+    field :energy_regeneration, :integer, virtual: true
+    field :magical_damage, :integer, virtual: true
+    field :magical_power, :integer, virtual: true
+
+    field :recovery_rating, :integer, virtual: true
+    field :fortitude_rating, :integer, virtual: true
+    field :critical_resistance, :integer, virtual: true
+    field :damage_penetration, :integer, virtual: true
+    field :damage_reflection, :integer, virtual: true
+
+    field :fire_damage, :integer, virtual: true
+    field :fire_resistance, :integer, virtual: true
+    field :water_damage, :integer, virtual: true
+    field :water_resistance, :integer, virtual: true
+    field :earth_damage, :integer, virtual: true
+    field :earth_resistance, :integer, virtual: true
+    field :air_damage, :integer, virtual: true
+    field :air_resistance, :integer, virtual: true
 
     # Current effects
     field :buffs, {:array, :map}, default: []

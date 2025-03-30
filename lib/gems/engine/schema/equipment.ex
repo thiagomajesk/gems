@@ -12,37 +12,27 @@ defmodule GEMS.Engine.Schema.Equipment do
       :description,
       :image,
       :price,
-      :armor_rating,
-      :max_health,
-      :health_regen,
-      :attack_damage,
-      :attack_power,
+      :physical_resistance,
+      :maximum_health,
+      :health_regeneration,
+      :physical_damage,
+      :physical_power,
       :evasion_rating,
       :attack_speed,
       :critical_rating,
       :accuracy_rating,
       :critical_power,
-      :magic_resist,
-      :max_energy,
-      :energy_regen,
-      :magic_damage,
-      :magic_power
+      :magical_resistance,
+      :maximum_energy,
+      :energy_regeneration,
+      :magical_damage,
+      :magical_power
     ],
     default_preloads: []
 
   @tiers GEMS.Engine.Constants.tiers()
-
-  @slots [
-    :trinket,
-    :helmet,
-    :cape,
-    :main_hand,
-    :armor,
-    :off_hand,
-    :ring,
-    :boots,
-    :amulet
-  ]
+  @affinities GEMS.Engine.Constants.attributes()
+  @slots GEMS.Engine.Constants.slots()
 
   schema "equipments" do
     field :name, :string
@@ -55,28 +45,40 @@ defmodule GEMS.Engine.Schema.Equipment do
 
     # TODO: Affinity will increase the stats of the equipment based on the attribute
     # (souls-like equipment affinity mixed with combat triangle calculations)
-    field :affinity, Ecto.Enum, values: [:strength, :dexterity, :intelligence]
+    field :affinity, Ecto.Enum, values: @affinities
 
-    # STR
-    field :armor_rating, :integer
-    field :max_health, :integer
-    field :health_regen, :integer
-    field :attack_damage, :integer
-    field :attack_power, :integer
+    field :physical_resistance_bonus, :float
+    field :maximum_health_bonus, :float
+    field :health_regeneration_bonus, :float
+    field :physical_damage_bonus, :float
+    field :physical_power_bonus, :float
 
-    # DEX
-    field :evasion_rating, :integer
-    field :attack_speed, :integer
-    field :critical_rating, :integer
-    field :accuracy_rating, :integer
-    field :critical_power, :integer
+    field :evasion_rating_bonus, :float
+    field :attack_speed_bonus, :float
+    field :critical_rating_bonus, :float
+    field :accuracy_rating_bonus, :float
+    field :critical_power_bonus, :float
 
-    # INT
-    field :magic_resist, :integer
-    field :max_energy, :integer
-    field :energy_regen, :integer
-    field :magic_damage, :integer
-    field :magic_power, :integer
+    field :magical_resistance_bonus, :float
+    field :maximum_energy_bonus, :float
+    field :energy_regeneration_bonus, :float
+    field :magical_damage_bonus, :float
+    field :magical_power_bonus, :float
+
+    field :recovery_rating_bonus, :float
+    field :fortitude_rating_bonus, :float
+    field :critical_resistance_bonus, :float
+    field :damage_penetration_bonus, :float
+    field :damage_reflection_bonus, :float
+
+    field  :fire_damage_bonus, :float
+    field  :fire_resistance_bonus, :float
+    field  :water_damage_bonus, :float
+    field  :water_resistance_bonus, :float
+    field  :earth_damage_bonus, :float
+    field  :earth_resistance_bonus, :float
+    field  :air_damage_bonus, :float
+    field  :air_resistance_bonus, :float
 
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
 

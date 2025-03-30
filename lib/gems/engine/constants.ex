@@ -10,23 +10,12 @@ defmodule GEMS.Engine.Constants do
   def max_stamina(level) when level >= 100, do: @min_stamina * 0.5
   def max_stamina(_level), do: @min_stamina
 
-  def stats,
+  def attributes,
     do: [
-      :armor_rating,
-      :max_health,
-      :health_regen,
-      :attack_damage,
-      :weapon_power,
-      :evasion_rating,
-      :attack_speed,
-      :critical_rating,
-      :accuracy_rating,
-      :critical_power,
-      :magic_resist,
-      :max_energy,
-      :energy_regen,
-      :magic_damage,
-      :skill_power
+      :strength,
+      :dexterity,
+      :intelligence,
+      :wisdom
     ]
 
   def tiers,
@@ -43,6 +32,28 @@ defmodule GEMS.Engine.Constants do
       :t9
     ]
 
+  def slots,
+    do: [
+      :trinket,
+      :helmet,
+      :cape,
+      :main_hand,
+      :armor,
+      :off_hand,
+      :ring,
+      :boots,
+      :amulet
+    ]
+
+  def elements,
+    do: [
+      :air,
+      :earth,
+      :fire,
+      :water,
+      :aether
+    ]
+
   def target_sides,
     do: [
       :self,
@@ -56,5 +67,45 @@ defmodule GEMS.Engine.Constants do
       :physical,
       :magical,
       :certain
+    ]
+
+  # FIRE
+  # Oiled: Increase fire damage taken by 50%
+  # Warm: Increase fire damage taken by 80%
+  # Burning: Deals damage over time
+  #
+  # WATER
+  # Wet: Increase water damage taken by 50%
+  # Chilled: Attack speed is reduced by 20%
+  # Frozen: Attack speed is reduced to 0
+  #
+  # EARTH
+  # Muddy: Increase earth damage taken by 50%
+  # Rooted: Attack speed is reduced to 0
+  # Poisoned: Deals damage over time
+  #
+  # AIR
+  # Ventilated: Increase air damage taken by 50%
+  # Dazed: Accuracy rating is reduced by 20%
+  # Stunned: Increase damage taken by %30
+  #
+  # AETHER
+  # Bleeding: Deals damage over time based on a % of max health
+  # Blighted: Lowers the evasion and accuracy by 20%
+  # Silenced: Prevents the use of spells
+  def states,
+    do: [
+      :oiled,
+      :warm,
+      :burning,
+      :wet,
+      :chilled,
+      :frozen,
+      :muddy,
+      :rooted,
+      :poisoned,
+      :ventilated,
+      :silenced,
+      :stunned
     ]
 end

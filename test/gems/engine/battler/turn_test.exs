@@ -69,7 +69,7 @@ defmodule GEMS.Engine.TurnTest do
           priority: 1,
           condition: :health_number,
           min_health: 0,
-          max_health: 10
+          maximum_health: 10
         })
 
       leader = %Actor{health: 5, action_patterns: [action_pattern]}
@@ -86,7 +86,7 @@ defmodule GEMS.Engine.TurnTest do
           priority: 1,
           condition: :energy_number,
           min_energy: 0,
-          max_energy: 10
+          maximum_energy: 10
         })
 
       leader = %Actor{energy: 5, action_patterns: [action_pattern]}
