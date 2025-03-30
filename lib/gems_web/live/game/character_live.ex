@@ -13,7 +13,6 @@ defmodule GEMSWeb.Game.CharacterLive do
       <div class="flex flex-col md:flex-row gap-4">
         <div class="w-full md:w-1/3 flex flex-col space-y-4">
           <.info_section character={@selected_character} />
-          <.attributes_section character={@selected_character} />
           <.bio_section character={@selected_character} />
           <.guild_section :if={@guild} guild={@guild} />
         </div>
@@ -158,45 +157,6 @@ defmodule GEMSWeb.Game.CharacterLive do
     """
   end
 
-  attr :character, :any, required: true
-
-  defp attributes_section(assigns) do
-    ~H"""
-    <UI.Panels.section title="Attributes">
-      <div class="grid grid-cols-3 gap-2">
-        <.attribute_card name={:strength} value={@character.strength} />
-        <.attribute_card name={:dexterity} value={@character.dexterity} />
-        <.attribute_card name={:intelligence} value={@character.intelligence} />
-      </div>
-    </UI.Panels.section>
-    """
-  end
-
-  attr :name, :atom, required: true, values: [:strength, :dexterity, :intelligence]
-  attr :value, :integer, required: true
-
-  defp attribute_card(assigns) do
-    ~H"""
-    <div class={[
-      "rounded-box flex flex-col items-center justify-center h-24 gap-2 p-2 relative",
-      "bg-linear-to-br from-base-300",
-      attribute_gradient_stop(@name)
-    ]}>
-      <UI.Icons.game
-        name={attribute_icon(@name)}
-        size="unset"
-        class={["!size-full absolute inset-0", attribute_text_color(@name)]}
-      />
-      <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-xs px-2 py-1 rounded-box shadow-sm size-14 flex items-center justify-center">
-        {@value}
-      </span>
-      <small class="absolute bottom-2 right-2 font-semibold uppercase">
-        {attribute_label(@name)}
-      </small>
-    </div>
-    """
-  end
-
   attr :guild, :any, required: true
 
   defp guild_section(assigns) do
@@ -329,20 +289,4 @@ defmodule GEMSWeb.Game.CharacterLive do
     </div>
     """
   end
-
-  defp attribute_icon(:strength), do: "biceps"
-  defp attribute_icon(:dexterity), do: "sprint"
-  defp attribute_icon(:intelligence), do: "brain"
-
-  defp attribute_text_color(:strength), do: "text-rose-500"
-  defp attribute_text_color(:dexterity), do: "text-emerald-500"
-  defp attribute_text_color(:intelligence), do: "text-indigo-500"
-
-  defp attribute_label(:strength), do: "STR"
-  defp attribute_label(:dexterity), do: "DEX"
-  defp attribute_label(:intelligence), do: "INT"
-
-  defp attribute_gradient_stop(:strength), do: "to-rose-500/10"
-  defp attribute_gradient_stop(:dexterity), do: "to-emerald-500/10"
-  defp attribute_gradient_stop(:intelligence), do: "to-indigo-500/10"
 end

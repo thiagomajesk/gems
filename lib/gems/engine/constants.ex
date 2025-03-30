@@ -10,14 +10,6 @@ defmodule GEMS.Engine.Constants do
   def max_stamina(level) when level >= 100, do: @min_stamina * 0.5
   def max_stamina(_level), do: @min_stamina
 
-  def attributes,
-    do: [
-      :strength,
-      :dexterity,
-      :intelligence,
-      :wisdom
-    ]
-
   def tiers,
     do: [
       :t0,
@@ -51,7 +43,7 @@ defmodule GEMS.Engine.Constants do
       :earth,
       :fire,
       :water,
-      :aether
+      :neutral
     ]
 
   def target_sides,
@@ -69,30 +61,40 @@ defmodule GEMS.Engine.Constants do
       :certain
     ]
 
-  # FIRE
-  # Oiled: Increase fire damage taken by 50%
-  # Warm: Increase fire damage taken by 80%
-  # Burning: Deals damage over time
-  #
-  # WATER
-  # Wet: Increase water damage taken by 50%
-  # Chilled: Attack speed is reduced by 20%
-  # Frozen: Attack speed is reduced to 0
-  #
-  # EARTH
-  # Muddy: Increase earth damage taken by 50%
-  # Rooted: Attack speed is reduced to 0
-  # Poisoned: Deals damage over time
-  #
-  # AIR
-  # Ventilated: Increase air damage taken by 50%
-  # Dazed: Accuracy rating is reduced by 20%
-  # Stunned: Increase damage taken by %30
-  #
-  # AETHER
-  # Bleeding: Deals damage over time based on a % of max health
-  # Blighted: Lowers the evasion and accuracy by 20%
-  # Silenced: Prevents the use of spells
+  def roles,
+    do: [
+      :tank,
+      :damage,
+      :healer,
+      :controller
+    ]
+
+  # Elemental charges (applied by skills):
+  # Fire -> Warm (Aquecido)
+  # Water -> Wet (Molhado)
+  # Earth -> Muddy (Enlameado)
+  # Air -> Breezy (Arejado)
+
+  # States
+  # Burning (applied using Warm charges)
+  # Frozen (applied using Wet charges)
+  # Poisoned (applied using Muddy charges)
+  # Stunned (applied using Breezy charges)
+  # Silenced (neutral)
+  # Bleeding (neutral)
+  # Blighted (neutral)
+
+  # Elemental triggers
+  # Flame (chance to apply additional fire damage)
+  # Rain (chance to apply additional water damage)
+  # Rock (chance to apply additional earth damage)
+  # Lightning (chance to apply additional air damage)
+
+  # Fire (STR) -> TANK
+  # Water (INT) -> MAGE
+  # Air (DEX) -> DPS
+  # Earth (WIS) -> CONTROLER/SUPPORT
+
   def states,
     do: [
       :oiled,

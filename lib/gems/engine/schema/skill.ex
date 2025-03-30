@@ -11,12 +11,14 @@ defmodule GEMS.Engine.Schema.Skill do
       :target_number,
       :random_targets,
       :hit_type,
+      :affinity,
       :success_rate,
       :repeats,
       :messages
     ],
     default_preloads: []
 
+  @affinities GEMS.Engine.Constants.elements()
   @hit_types GEMS.Engine.Constants.hit_types()
   @target_sides GEMS.Engine.Constants.target_sides()
 
@@ -28,14 +30,17 @@ defmodule GEMS.Engine.Schema.Skill do
     field :health_cost, :integer, default: 0
     field :energy_cost, :integer, default: 0
 
+    field :repeats, :integer, default: 1
     field :target_side, Ecto.Enum, values: @target_sides
     field :target_filter, Ecto.Enum, values: [:alive, :dead]
     field :target_number, :integer, default: 1
     field :random_targets, :integer, default: 0
+    field :success_rate, :float, default: 1.0
 
     field :hit_type, Ecto.Enum, values: @hit_types
-    field :success_rate, :float, default: 1.0
-    field :repeats, :integer, default: 1
+    field :affinity, Ecto.Enum, values: @affinities
+
+    field :effects, {:array, :map}, default: []
 
     embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
 

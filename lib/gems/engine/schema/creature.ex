@@ -9,21 +9,24 @@ defmodule GEMS.Engine.Schema.Creature do
     optional_fields: [
       :description,
       :image,
-      :physical_resistance,
       :maximum_health,
-      :health_regeneration,
-      :physical_damage,
-      :physical_power,
-      :evasion_rating,
-      :attack_speed,
-      :critical_rating,
-      :accuracy_rating,
-      :critical_power,
-      :magical_resistance,
       :maximum_energy,
+      :health_regeneration,
       :energy_regeneration,
-      :magical_damage,
-      :magical_power
+      :physical_armor,
+      :magical_armor,
+      :attack_speed,
+      :accuracy_rating,
+      :evasion_rating,
+      :critical_rating,
+      :recovery_rating,
+      :fortitude_rating,
+      :damage_penetration,
+      :damage_reflection,
+      :fire_resistance,
+      :water_resistance,
+      :earth_resistance,
+      :air_resistance
     ],
     default_preloads: []
 
@@ -33,33 +36,26 @@ defmodule GEMS.Engine.Schema.Creature do
     field :description, :string
     field :image, :string
 
-    # STR (Fire)
-    field :physical_resistance, :integer, virtual: true
-    field :maximum_health, :integer, virtual: true
-    field :health_regeneration, :integer, virtual: true
-    field :physical_damage, :integer, virtual: true
-    field :physical_power, :integer, virtual: true
+    field :maximum_health, :integer
+    field :maximum_energy, :integer
+    field :health_regeneration, :integer
+    field :energy_regeneration, :integer
+    field :physical_armor, :integer
+    field :magical_armor, :integer
+    field :attack_speed, :integer
+    field :accuracy_rating, :integer
+    field :evasion_rating, :integer
+    field :critical_rating, :integer
+    field :recovery_rating, :integer
+    field :fortitude_rating, :integer
+    field :damage_penetration, :integer
+    field :damage_reflection, :integer
 
-    # DEX (Air)
-    field :evasion_rating, :integer, virtual: true
-    field :attack_speed, :integer, virtual: true
-    field :critical_rating, :integer, virtual: true
-    field :accuracy_rating, :integer, virtual: true
-    field :critical_power, :integer, virtual: true
-
-    # INT (Water)
-    field :magical_resistance, :integer, virtual: true
-    field :maximum_energy, :integer, virtual: true
-    field :energy_regeneration, :integer, virtual: true
-    field :magical_damage, :integer, virtual: true
-    field :magical_power, :integer, virtual: true
-
-    # WIS (Earth)
-    field :recovery_rating, :integer, virtual: true
-    field :fortitude_rating, :integer, virtual: true
-    field :critical_resistance, :integer, virtual: true
-    field :damage_penetration, :integer, virtual: true
-    field :damage_reflection, :integer, virtual: true
+    # Resistances
+    field :fire_resistance, :integer
+    field :water_resistance, :integer
+    field :earth_resistance, :integer
+    field :air_resistance, :integer
 
     belongs_to :type, GEMS.Engine.Schema.CreatureType
 

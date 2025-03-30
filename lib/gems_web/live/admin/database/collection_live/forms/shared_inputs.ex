@@ -100,21 +100,96 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
     ~H"""
     <Forms.fieldset legend="Stats">
       <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-        <Forms.field_input type="number" field={@form[:physical_resistance]} label="Armor Rating" />
-        <Forms.field_input type="number" field={@form[:evasion_rating]} label="Evasion Rating" />
-        <Forms.field_input type="number" field={@form[:magical_resistance]} label="Magic Resist" />
-        <Forms.field_input type="number" field={@form[:maximum_health]} label="Max Health" />
-        <Forms.field_input type="number" field={@form[:attack_speed]} label="Attack Speed" />
-        <Forms.field_input type="number" field={@form[:maximum_energy]} label="Max Mana" />
-        <Forms.field_input type="number" field={@form[:health_regeneration]} label="Health Regen" />
-        <Forms.field_input type="number" field={@form[:critical_rating]} label="Critical Rating" />
-        <Forms.field_input type="number" field={@form[:physical_damage]} label="Physical Damage" />
-        <Forms.field_input type="number" field={@form[:accuracy_rating]} label="Accuracy Rating" />
-        <Forms.field_input type="number" field={@form[:energy_regeneration]} label="Mana Regen" />
-        <Forms.field_input type="number" field={@form[:magical_damage]} label="Magical Damage" />
-        <Forms.field_input type="number" field={@form[:physical_power]} label="Weapon Power" />
-        <Forms.field_input type="number" field={@form[:critical_power]} label="Critical Power" />
-        <Forms.field_input type="number" field={@form[:magical_power]} label="Skill Power" />
+        <Forms.field_input
+          type="number"
+          field={@form[:maximum_health_bonus]}
+          label="Max Health Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:maximum_energy_bonus]}
+          label="Max Energy Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:health_regeneration_bonus]}
+          label="Health Regen Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:energy_regeneration_bonus]}
+          label="Energy Regen Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:physical_armor_bonus]}
+          label="Physical Armor Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:magical_armor_bonus]}
+          label="Magical Armor Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:attack_speed_bonus]}
+          label="Attack Speed Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:accuracy_rating_bonus]}
+          label="Accuracy Rating Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:evasion_rating_bonus]}
+          label="Evasion Rating Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:critical_rating_bonus]}
+          label="Critical Rating Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:recovery_rating_bonus]}
+          label="Recovery Rating Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:fortitude_rating_bonus]}
+          label="Fortitude Rating Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:damage_penetration_bonus]}
+          label="Damage Penetration Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:damage_reflection_bonus]}
+          label="Damage Reflection Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:fire_resistance_bonus]}
+          label="Fire Resistance Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:water_resistance_bonus]}
+          label="Water Resistance Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:earth_resistance_bonus]}
+          label="Earth Resistance Bonus"
+        />
+        <Forms.field_input
+          type="number"
+          field={@form[:air_resistance_bonus]}
+          label="Air Resistance Bonus"
+        />
       </div>
     </Forms.fieldset>
     """

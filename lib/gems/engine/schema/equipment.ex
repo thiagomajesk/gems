@@ -12,26 +12,28 @@ defmodule GEMS.Engine.Schema.Equipment do
       :description,
       :image,
       :price,
-      :physical_resistance,
-      :maximum_health,
-      :health_regeneration,
-      :physical_damage,
-      :physical_power,
-      :evasion_rating,
-      :attack_speed,
-      :critical_rating,
-      :accuracy_rating,
-      :critical_power,
-      :magical_resistance,
-      :maximum_energy,
-      :energy_regeneration,
-      :magical_damage,
-      :magical_power
+      :maximum_health_bonus,
+      :maximum_energy_bonus,
+      :health_regeneration_bonus,
+      :energy_regeneration_bonus,
+      :physical_armor_bonus,
+      :magical_armor_bonus,
+      :attack_speed_bonus,
+      :accuracy_rating_bonus,
+      :evasion_rating_bonus,
+      :critical_rating_bonus,
+      :recovery_rating_bonus,
+      :fortitude_rating_bonus,
+      :damage_penetration_bonus,
+      :damage_reflection_bonus,
+      :fire_resistance_bonus,
+      :water_resistance_bonus,
+      :earth_resistance_bonus,
+      :air_resistance_bonus
     ],
     default_preloads: []
 
   @tiers GEMS.Engine.Constants.tiers()
-  @affinities GEMS.Engine.Constants.attributes()
   @slots GEMS.Engine.Constants.slots()
 
   schema "equipments" do
@@ -43,42 +45,26 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
 
-    # TODO: Affinity will increase the stats of the equipment based on the attribute
-    # (souls-like equipment affinity mixed with combat triangle calculations)
-    field :affinity, Ecto.Enum, values: @affinities
+    field :maximum_health_bonus, :float, virtual: true
+    field :maximum_energy_bonus, :float, virtual: true
+    field :health_regeneration_bonus, :float, virtual: true
+    field :energy_regeneration_bonus, :float, virtual: true
+    field :physical_armor_bonus, :float, virtual: true
+    field :magical_armor_bonus, :float, virtual: true
+    field :attack_speed_bonus, :float, virtual: true
+    field :accuracy_rating_bonus, :float, virtual: true
+    field :evasion_rating_bonus, :float, virtual: true
+    field :critical_rating_bonus, :float, virtual: true
+    field :recovery_rating_bonus, :float, virtual: true
+    field :fortitude_rating_bonus, :float, virtual: true
+    field :damage_penetration_bonus, :float, virtual: true
+    field :damage_reflection_bonus, :float, virtual: true
 
-    field :physical_resistance_bonus, :float
-    field :maximum_health_bonus, :float
-    field :health_regeneration_bonus, :float
-    field :physical_damage_bonus, :float
-    field :physical_power_bonus, :float
-
-    field :evasion_rating_bonus, :float
-    field :attack_speed_bonus, :float
-    field :critical_rating_bonus, :float
-    field :accuracy_rating_bonus, :float
-    field :critical_power_bonus, :float
-
-    field :magical_resistance_bonus, :float
-    field :maximum_energy_bonus, :float
-    field :energy_regeneration_bonus, :float
-    field :magical_damage_bonus, :float
-    field :magical_power_bonus, :float
-
-    field :recovery_rating_bonus, :float
-    field :fortitude_rating_bonus, :float
-    field :critical_resistance_bonus, :float
-    field :damage_penetration_bonus, :float
-    field :damage_reflection_bonus, :float
-
-    field  :fire_damage_bonus, :float
-    field  :fire_resistance_bonus, :float
-    field  :water_damage_bonus, :float
-    field  :water_resistance_bonus, :float
-    field  :earth_damage_bonus, :float
-    field  :earth_resistance_bonus, :float
-    field  :air_damage_bonus, :float
-    field  :air_resistance_bonus, :float
+    # Resistances
+    field :fire_resistance_bonus, :float, virtual: true
+    field :water_resistance_bonus, :float, virtual: true
+    field :earth_resistance_bonus, :float, virtual: true
+    field :air_resistance_bonus, :float, virtual: true
 
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
 

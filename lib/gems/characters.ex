@@ -174,27 +174,7 @@ defmodule GEMS.Characters do
   end
 
   defp hydrate_virtuals(character) do
+    # Calculate all the character virtual stats
     character
-    |> Map.put(:strength, calculate_strength(character))
-    |> Map.put(:dexterity, calculate_dexterity(character))
-    |> Map.put(:intelligence, calculate_intelligence(character))
-  end
-
-  defp calculate_strength(character) do
-    %{class: %{strength_curve: curve}} = character
-    # TODO: Incorporate character level when available
-    GEMS.Progression.value_for(curve, 1)
-  end
-
-  defp calculate_dexterity(character) do
-    %{class: %{dexterity_curve: curve}} = character
-    # TODO: Incorporate character level available
-    GEMS.Progression.value_for(curve, 1)
-  end
-
-  defp calculate_intelligence(character) do
-    %{class: %{intelligence_curve: curve}} = character
-    # TODO: Incorporate character level available
-    GEMS.Progression.value_for(curve, 1)
   end
 end
