@@ -13,8 +13,7 @@ defmodule GEMS.Engine.Schema.Skill do
       :hit_type,
       :affinity,
       :success_rate,
-      :repeats,
-      :messages
+      :repeats
     ],
     default_preloads: []
 
@@ -26,7 +25,6 @@ defmodule GEMS.Engine.Schema.Skill do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :messages, :map, default: %{}
     field :health_cost, :integer, default: 0
     field :energy_cost, :integer, default: 0
 

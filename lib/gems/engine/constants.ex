@@ -61,53 +61,22 @@ defmodule GEMS.Engine.Constants do
       :certain
     ]
 
-  def roles,
+  def charges,
     do: [
-      :tank,
-      :damage,
-      :healer,
-      :controller
+      :heated,
+      :soaked,
+      :muddy,
+      :breezy
     ]
-
-  # Elemental charges (applied by skills):
-  # Fire -> Warm (Aquecido)
-  # Water -> Wet (Molhado)
-  # Earth -> Muddy (Enlameado)
-  # Air -> Breezy (Arejado)
-
-  # States
-  # Burning (applied using Warm charges)
-  # Frozen (applied using Wet charges)
-  # Poisoned (applied using Muddy charges)
-  # Stunned (applied using Breezy charges)
-  # Silenced (neutral)
-  # Bleeding (neutral)
-  # Blighted (neutral)
-
-  # Elemental triggers
-  # Flame (chance to apply additional fire damage)
-  # Rain (chance to apply additional water damage)
-  # Rock (chance to apply additional earth damage)
-  # Lightning (chance to apply additional air damage)
-
-  # Fire (STR) -> TANK
-  # Water (INT) -> MAGE
-  # Air (DEX) -> DPS
-  # Earth (WIS) -> CONTROLER/SUPPORT
 
   def states,
     do: [
-      :oiled,
-      :warm,
       :burning,
-      :wet,
-      :chilled,
       :frozen,
-      :muddy,
-      :rooted,
       :poisoned,
-      :ventilated,
+      :stunned,
       :silenced,
-      :stunned
+      :bleeding,
+      :blighted
     ]
 end

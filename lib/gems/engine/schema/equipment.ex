@@ -72,15 +72,12 @@ defmodule GEMS.Engine.Schema.Equipment do
 
     many_to_many :materials, GEMS.Engine.Schema.Item,
       join_through: GEMS.Engine.Schema.EquipmentMaterial
-
-    many_to_many :skills, GEMS.Engine.Schema.Skill, join_through: "equipments_skills"
   end
 
   def build_changeset(equipment, attrs, opts) do
     changeset = super(equipment, attrs, opts)
 
     changeset
-    |> cast_assoc(:skills, sort_param: :skills_sort, drop_param: :skills_drop)
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

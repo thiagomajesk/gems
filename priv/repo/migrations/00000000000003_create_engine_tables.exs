@@ -10,7 +10,6 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :text, null: true
-      add :messages, :map, null: true
       add :icon, :map, null: true
 
       add :type_id, references(:skill_types), null: false
@@ -114,20 +113,20 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :code, :string, null: false
       add :description, :text, null: true
       add :image, :string, null: true
+
       add :type_id, references(:item_types), null: false
       add :tier, :string, null: false
       add :price, :integer, null: true
 
+      add :repeats, :integer, null: false, default: 1
       add :target_side, :string, null: true
       add :target_filter, :string, null: true
       add :target_number, :integer, null: false, default: 1
       add :random_targets, :integer, null: false, default: 0
+      add :success_rate, :float, default: 1.0
 
       add :hit_type, :string, null: true
-      add :success_rate, :float, default: 1.0
-      add :repeats, :integer, null: false, default: 1
-
-      add :messages, :map, null: true
+      add :effects, :map, null: true
     end
 
     create unique_index(:items, :code)
