@@ -5,6 +5,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
     ~H"""
     <div class="flex flex-col">
       <span>Status: {@battle.status}</span>
+      <span>Type: {@battle.type}</span>
       <span>Turns: {length(@battle.turns)}</span>
       <section class="flex flex-col items-center">
         <header>Actors</header>

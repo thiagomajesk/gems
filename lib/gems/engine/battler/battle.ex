@@ -25,9 +25,9 @@ defmodule GEMS.Engine.Battler.Battle do
     embeds_many :turns, GEMS.Engine.Battler.Turn
   end
 
-  def new(actors, opts \\ []) do
+  def new(type, actors, opts \\ []) do
     max_turns = Keyword.get(opts, :max_turns, @max_turns)
-    %Battle{status: :running, actors: actors, max_turns: max_turns}
+    %Battle{status: :running, type: type, actors: actors, max_turns: max_turns}
   end
 
   def charge_actors(%Battle{} = battle) do
