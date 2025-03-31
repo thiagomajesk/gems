@@ -122,14 +122,14 @@ defmodule GEMSWeb.Game.CharacterLive do
       <dl class="card bg-base-300 p-4 divide-y divide-dotted divide-base-content/20">
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
-            <UI.Icons.game name="heart-beats" class="text-red-500" />
+            <UI.Icons.game name="heart-beats" class="text-rose-500" />
             <span>Health</span>
           </dt>
           <dd>{@character.maximum_health}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
-            <UI.Icons.game name="bolt-drop" class="text-orange-500" />
+            <UI.Icons.game name="bolt-drop" class="text-cyan-500" />
             <span>Energy</span>
           </dt>
           <dd>{@character.maximum_energy}</dd>
@@ -137,14 +137,14 @@ defmodule GEMSWeb.Game.CharacterLive do
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="heart-plus" />
-            <span>Health Regen.</span>
+            <span>Health Regeneration</span>
           </dt>
           <dd>{@character.health_regeneration}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="droplets" />
-            <span>Energy Regen.</span>
+            <span>Energy Regeneration</span>
           </dt>
           <dd>{@character.energy_regeneration}</dd>
         </div>
