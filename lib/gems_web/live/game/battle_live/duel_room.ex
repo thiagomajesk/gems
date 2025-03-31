@@ -30,7 +30,10 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
           </div>
         </div>
       </section>
-      <div :for={turn <- @battle.turns} class="flex flex-col bg-base-300 rounded-box p-2">
+      <div
+        :for={turn <- Enum.reverse(@battle.turns)}
+        class="flex flex-col bg-base-300 rounded-box p-2 my-1"
+      >
         <span>Number: {turn.number}</span>
         <span>{turn.leader.id} used...</span>
         <span>Action: {inspect(turn.action)}</span>

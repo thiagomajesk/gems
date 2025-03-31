@@ -34,6 +34,7 @@ defmodule GEMS.Battles do
       earth_resistance: character.earth_resistance,
       air_resistance: character.air_resistance
     }
+    |> dbg()
   end
 
   defp to_actor(%Creature{} = creature, party) do

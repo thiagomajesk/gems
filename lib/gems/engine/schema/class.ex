@@ -2,6 +2,22 @@ defmodule GEMS.Engine.Schema.Class do
   use GEMS.Database.Schema,
     preset: :collection,
     required_fields: [:name, :code],
+    optional_fields: [
+      :base_maximum_health,
+      :base_maximum_energy,
+      :base_health_regeneration,
+      :base_energy_regeneration,
+      :base_physical_armor,
+      :base_magical_armor,
+      :base_attack_speed,
+      :base_accuracy_rating,
+      :base_evasion_rating,
+      :base_critical_rating,
+      :base_recovery_rating,
+      :base_fortitude_rating,
+      :base_damage_penetration,
+      :base_damage_reflection
+    ],
     optional_fields: [:description],
     default_preloads: []
 

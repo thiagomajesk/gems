@@ -162,6 +162,8 @@ defmodule GEMS.Characters do
   end
 
   defp load_character(character) do
+    IO.inspect(character, label: "Loading character")
+
     character
     |> Repo.preload([:faction, :avatar, class: :talents])
     |> hydrate_character_virtuals()
