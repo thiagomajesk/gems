@@ -12,8 +12,9 @@ defmodule GEMSWeb.Game.CharacterLive do
       />
       <div class="flex flex-col md:flex-row gap-4">
         <div class="w-full md:w-1/3 flex flex-col space-y-4">
-          <.info_section character={@selected_character} />
           <.bio_section character={@selected_character} />
+          <.info_section character={@selected_character} />
+          <.stats_section character={@selected_character} />
           <.guild_section :if={@guild} guild={@guild} />
         </div>
         <div class="w-full md:w-2/3 flex flex-col space-y-4">
@@ -60,67 +61,183 @@ defmodule GEMSWeb.Game.CharacterLive do
     <UI.Panels.section title="Info">
       <dl class="card bg-base-300 p-4 divide-y divide-dotted divide-base-content/20">
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="character" class="text-indigo-500" />
             <span>Name</span>
           </dt>
           <dd>{@character.name}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="winged-shield" class="text-orange-500" />
             <span>Class</span>
           </dt>
           <dd>{@character.class.name}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
-            <UI.Icons.game name="heart-beats" class="text-red-500" />
-            <span>Health</span>
-          </dt>
-          <dd>1000</dd>
-        </div>
-        <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
-            <UI.Icons.game name="bolt-drop" class="text-blue-500" />
-            <span>Mana</span>
-          </dt>
-          <dd>1000</dd>
-        </div>
-        <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="up-card" class="text-yellow-500" />
             <span>Level</span>
           </dt>
           <dd>{@character.level}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="chart" class="text-green-500" />
             <span>Experience</span>
           </dt>
           <dd>{@character.experience}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="run" class="text-amber-500" />
             <span>Stamina</span>
           </dt>
           <dd>{@character.stamina}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="striped-sun" class="text-cyan-500" />
             <span>Souls</span>
           </dt>
           <dd>{@character.souls}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="trophy" class="text-purple-500" />
             <span>Fame</span>
           </dt>
           <dd>{@character.fame}</dd>
+        </div>
+      </dl>
+    </UI.Panels.section>
+    """
+  end
+
+  attr :character, :any, required: true
+
+  defp stats_section(assigns) do
+    ~H"""
+    <UI.Panels.section title="Stats">
+      <dl class="card bg-base-300 p-4 divide-y divide-dotted divide-base-content/20">
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="heart-beats" class="text-red-500" />
+            <span>Health</span>
+          </dt>
+          <dd>{@character.maximum_health}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="bolt-drop" class="text-orange-500" />
+            <span>Energy</span>
+          </dt>
+          <dd>{@character.maximum_energy}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="heart-plus" />
+            <span>Health Regen.</span>
+          </dt>
+          <dd>{@character.health_regeneration}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="droplets" />
+            <span>Energy Regen.</span>
+          </dt>
+          <dd>{@character.energy_regeneration}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="checked-shield" />
+            <span>Physical Armor</span>
+          </dt>
+          <dd>{@character.physical_armor}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="magic-shield" />
+            <span>Magical Armor</span>
+          </dt>
+          <dd>{@character.magical_armor}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="bullseye" />
+            <span>Accuracy Rating</span>
+          </dt>
+          <dd>{@character.accuracy_rating}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="dodging" />
+            <span>Evasion Rating</span>
+          </dt>
+          <dd>{@character.evasion_rating}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="target-dummy" />
+            <span>Critical Rating</span>
+          </dt>
+          <dd>{@character.critical_rating}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="healing-shield" />
+            <span>Recovery Rating</span>
+          </dt>
+          <dd>{@character.recovery_rating}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="strong" />
+            <span>Fortitude Rating</span>
+          </dt>
+          <dd>{@character.fortitude_rating}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="sun-spear" />
+            <span>Damage Penetration</span>
+          </dt>
+          <dd>{@character.damage_penetration}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="broken-shield" />
+            <span>Damage Reflection</span>
+          </dt>
+          <dd>{@character.damage_reflection}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="armor-upgrade" class="text-red-400" />
+            <span>Fire resistance</span>
+          </dt>
+          <dd>{@character.fire_resistance || "---"}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="armor-upgrade" class="text-blue-400" />
+            <span>Water resistance</span>
+          </dt>
+          <dd>{@character.water_resistance || "---"}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="armor-upgrade" class="text-green-400" />
+            <span>Earth resistance</span>
+          </dt>
+          <dd>{@character.earth_resistance || "---"}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="armor-upgrade" class="text-purple-400" />
+            <span>Air resistance</span>
+          </dt>
+          <dd>{@character.air_resistance || "---"}</dd>
         </div>
       </dl>
     </UI.Panels.section>

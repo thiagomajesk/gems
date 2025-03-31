@@ -38,6 +38,21 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :text, null: true
+
+      add :base_maximum_health, :integer, null: false, default: 0
+      add :base_maximum_energy, :integer, null: false, default: 0
+      add :base_health_regeneration, :integer, null: false, default: 0
+      add :base_energy_regeneration, :integer, null: false, default: 0
+      add :base_physical_armor, :integer, null: false, default: 0
+      add :base_magical_armor, :integer, null: false, default: 0
+      add :base_attack_speed, :integer, null: false, default: 0
+      add :base_accuracy_rating, :integer, null: false, default: 0
+      add :base_evasion_rating, :integer, null: false, default: 0
+      add :base_critical_rating, :integer, null: false, default: 0
+      add :base_recovery_rating, :integer, null: false, default: 0
+      add :base_fortitude_rating, :integer, null: false, default: 0
+      add :base_damage_penetration, :integer, null: false, default: 0
+      add :base_damage_reflection, :integer, null: false, default: 0
     end
 
     create unique_index(:classes, :name)

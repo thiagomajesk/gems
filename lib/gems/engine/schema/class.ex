@@ -9,12 +9,30 @@ defmodule GEMS.Engine.Schema.Class do
     field :name, :string
     field :code, :string
     field :description, :string
+
+    field :base_maximum_health, :integer
+    field :base_maximum_energy, :integer
+    field :base_health_regeneration, :integer
+    field :base_energy_regeneration, :integer
+    field :base_physical_armor, :integer
+    field :base_magical_armor, :integer
+    field :base_attack_speed, :integer
+    field :base_accuracy_rating, :integer
+    field :base_evasion_rating, :integer
+    field :base_critical_rating, :integer
+    field :base_recovery_rating, :integer
+    field :base_fortitude_rating, :integer
+    field :base_damage_penetration, :integer
+    field :base_damage_reflection, :integer
+
+    has_many :talents, GEMS.Engine.Schema.Talent
   end
 
   def build_changeset(avatar, attrs, opts) do
     changeset = super(avatar, attrs, opts)
 
     changeset
+    |> cast_assoc(:talents)
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

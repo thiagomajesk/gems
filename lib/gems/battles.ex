@@ -12,7 +12,27 @@ defmodule GEMS.Battles do
   defp to_actor(%Character{} = character, party) do
     %Actor{
       id: character.id,
-      party: party
+      party: party,
+      health: character.maximum_health,
+      energy: character.maximum_energy,
+      maximum_health: character.maximum_health,
+      maximum_energy: character.maximum_energy,
+      health_regeneration: character.health_regeneration,
+      energy_regeneration: character.energy_regeneration,
+      physical_armor: character.physical_armor,
+      magical_armor: character.magical_armor,
+      attack_speed: character.attack_speed,
+      accuracy_rating: character.accuracy_rating,
+      evasion_rating: character.evasion_rating,
+      critical_rating: character.critical_rating,
+      recovery_rating: character.recovery_rating,
+      fortitude_rating: character.fortitude_rating,
+      damage_penetration: character.damage_penetration,
+      damage_reflection: character.damage_reflection,
+      fire_resistance: character.fire_resistance,
+      water_resistance: character.water_resistance,
+      earth_resistance: character.earth_resistance,
+      air_resistance: character.air_resistance
     }
   end
 
@@ -20,6 +40,8 @@ defmodule GEMS.Battles do
     %Actor{
       id: creature.id,
       party: party,
+      health: creature.maximum_health,
+      energy: creature.maximum_energy,
       maximum_health: creature.maximum_health,
       maximum_energy: creature.maximum_energy,
       health_regeneration: creature.health_regeneration,
@@ -37,8 +59,8 @@ defmodule GEMS.Battles do
       fire_resistance: creature.fire_resistance,
       water_resistance: creature.water_resistance,
       earth_resistance: creature.earth_resistance,
-      air_resistance: creature.air_resistance,
-      action_patterns: Enum.map(creature.action_patterns, &cast_action_pattern/1)
+      air_resistance: creature.air_resistance
+      # action_patterns: Enum.map(creature.action_patterns, &cast_action_pattern/1)
     }
   end
 

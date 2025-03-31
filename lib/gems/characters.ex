@@ -13,12 +13,6 @@ defmodule GEMS.Characters do
   alias GEMS.Accounts.Schema.User
   alias GEMS.World.Schema.Character
 
-  @default_preloads [
-    :class,
-    :faction,
-    :avatar
-  ]
-
   @doc """
   Returns the list of characters.
   """
@@ -26,7 +20,7 @@ defmodule GEMS.Characters do
     Repo.all(
       from c in Character,
         where: c.user_id == ^user_id,
-        preload: ^@default_preloads
+        preload: [:faction, :class, :avatar]
     )
   end
 
@@ -169,12 +163,32 @@ defmodule GEMS.Characters do
 
   defp load_character(character) do
     character
-    |> Repo.preload(@default_preloads)
-    |> hydrate_virtuals()
+    |> Repo.preload([:faction, :avatar, class: :talents])
+    |> hydrate_character_virtuals()
   end
 
-  defp hydrate_virtuals(character) do
-    # Calculate all the character virtual stats
+  defp hydrate_character_virtuals(character) do
     character
+    |> merge_base_class_stats()
+  end
+
+  defp merge_base_class_stats(character) do
+    %{
+      character
+      | maximum_health: character.class.base_maximum_health,
+        maximum_energy: character.class.base_maximum_energy,
+        health_regeneration: character.class.base_health_regeneration,
+        energy_regeneration: character.class.base_energy_regeneration,
+        physical_armor: character.class.base_physical_armor,
+        magical_armor: character.class.base_magical_armor,
+        attack_speed: character.class.base_attack_speed,
+        accuracy_rating: character.class.base_accuracy_rating,
+        evasion_rating: character.class.base_evasion_rating,
+        critical_rating: character.class.base_critical_rating,
+        recovery_rating: character.class.base_recovery_rating,
+        fortitude_rating: character.class.base_fortitude_rating,
+        damage_penetration: character.class.base_damage_penetration,
+        damage_reflection: character.class.base_damage_reflection
+    }
   end
 end

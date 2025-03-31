@@ -1,7 +1,6 @@
 defmodule GEMS.BattleManager do
   use GenServer
 
-  # alias GEMS.World.Schema.Character
   alias GEMS.Engine.Battler.Battle
 
   # @topic_prefix "battles"
@@ -59,11 +58,11 @@ defmodule GEMS.BattleManager do
     {:reply, Map.get(state.battle_lookup, identifier), state}
   end
 
-  @impl true
-  def handle_cast({:stop_battle, character, battle}, state) do
-    send(self(), {:stop_battle, character, battle})
-    {:noreply, state}
-  end
+  # @impl true
+  # def handle_cast({:stop_battle, character, battle}, state) do
+  #   send(self(), {:stop_battle, character, battle})
+  #   {:noreply, state}
+  # end
 
   # defp build_topic(character) do
   #   %{id: id, zone_id: zone_id} = character
