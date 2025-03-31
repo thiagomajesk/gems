@@ -12,6 +12,7 @@ defmodule GEMS.Battles do
   defp to_actor(%Character{} = character, party) do
     %Actor{
       id: character.id,
+      name: character.name,
       party: party,
       health: character.maximum_health,
       energy: character.maximum_energy,
@@ -40,6 +41,7 @@ defmodule GEMS.Battles do
   defp to_actor(%Creature{} = creature, party) do
     %Actor{
       id: creature.id,
+      name: creature.name,
       party: party,
       health: creature.maximum_health,
       energy: creature.maximum_energy,

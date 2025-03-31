@@ -7,6 +7,7 @@ defmodule GEMS.Engine.Battler.Actor do
   @states GEMS.Engine.Constants.states()
 
   embedded_schema do
+    field :name, :string
     field :party, Ecto.Enum, values: @parties
     field :health, :integer, default: 0
     field :energy, :integer, default: 0
