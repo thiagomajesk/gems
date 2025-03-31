@@ -3,8 +3,38 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col items-center justify-center">
-      {inspect(@battle)}
+    <div class="flex flex-col">
+      <span>Status: {@battle.status}</span>
+      <span>Turns: {length(@battle.turns)}</span>
+      <section class="flex flex-col items-center">
+        <header>Actors</header>
+        <div class="grid grid-cols-2 gap-4 my-4 w-full">
+          <div :for={actor <- @battle.actors}>
+            <div class="flex flex-col bg-base-300 rounded-box p-2">
+              <span class="font-medium">{actor.id} / {actor.party}</span>
+              <div class="flex flex-col gap-1">
+                <progress
+                  class="progress text-rose-500"
+                  value={actor.health}
+                  max={actor.maximum_health}
+                >
+                </progress>
+                <progress
+                  class="progress text-cyan-500"
+                  value={actor.energy}
+                  max={actor.maximum_energy}
+                >
+                </progress>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div :for={turn <- @battle.turns} class="flex flex-col bg-base-300 rounded-box p-2">
+        <span>Number: {turn.number}</span>
+        <span>{turn.leader.id} used...</span>
+        <span>Action: {inspect(turn.action)}</span>
+      </div>
     </div>
     """
   end

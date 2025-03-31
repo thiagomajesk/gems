@@ -28,7 +28,7 @@ defmodule GEMS.Engine.Schema.Creature do
       :earth_resistance,
       :air_resistance
     ],
-    default_preloads: []
+    default_preloads: [:action_patterns]
 
   schema "creatures" do
     field :name, :string
