@@ -24,7 +24,8 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
                   class="progress text-cyan-500"
                   value={actor.energy}
                   max={actor.maximum_energy}
-                >:base_maximum_health, :base_maximum_energy
+                >
+                  :base_maximum_health, :base_maximum_energy 
                 </progress>
               </div>
             </div>

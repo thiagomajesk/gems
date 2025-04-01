@@ -1,4 +1,4 @@
-defmodule GEMS.Engine.TurnTest do
+defmodule GEMS.Engine.Battler.TurnTest do
   use ExUnit.Case, async: true, parameterize: [%{type: :item}, %{type: :skill}]
 
   alias GEMS.Engine.Battler.Turn
