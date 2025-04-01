@@ -6,7 +6,9 @@ defmodule GEMS.Battles do
   alias GEMS.Engine.Battler.Battle
 
   def create_duel(%Character{} = character, %Creature{} = creature) do
-    Battle.new(:duel, [to_actor(creature, :alpha), to_actor(character, :bravo)])
+    creature_actor = to_actor(creature, :alpha)
+    character_actor = to_actor(character, :bravo)
+    Battle.new([creature_actor, character_actor], type: :duel)
   end
 
   defp to_actor(%Character{} = character, party) do
