@@ -15,16 +15,8 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :type_id, references(:skill_types), null: false
       add :health_cost, :integer, null: false
       add :energy_cost, :integer, null: false
-
-      add :repeats, :integer, null: false
-      add :target_side, :string, null: true
-      add :target_filter, :string, null: true
-      add :target_number, :integer, null: false
-      add :random_targets, :integer, null: false
-      add :success_rate, :float, null: false
-
-      add :hit_type, :string, null: false
       add :affinity, :string, null: false
+
       add :effects, :map, null: true
     end
 

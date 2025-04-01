@@ -25,7 +25,7 @@ defmodule GEMS.Engine.Schema.Item do
 
   @tiers GEMS.Engine.Constants.tiers()
 
-  @hit_types GEMS.Engine.Constants.hit_types()
+  @hit_types GEMS.Engine.Constants.damage_types()
   @target_sides GEMS.Engine.Constants.target_sides()
 
   schema "items" do

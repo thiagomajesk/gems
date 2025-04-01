@@ -54,7 +54,7 @@ defmodule GEMS.Engine.Constants do
       :anyone
     ]
 
-  def hit_types,
+  def damage_types,
     do: [
       :physical,
       :magical,
@@ -78,5 +78,11 @@ defmodule GEMS.Engine.Constants do
       :silenced,
       :bleeding,
       :blighted
+    ]
+
+  def effect_types_mappings,
+    do: [
+      health_damage: GEMS.Database.Effects.HealthDamage,
+      apply_status: GEMS.Database.Effects.ApplyStatus
     ]
 end
