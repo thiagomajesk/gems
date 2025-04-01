@@ -1,7 +1,7 @@
 defmodule GEMS.Engine.Schema.ActionPattern do
   use GEMS.Database.Schema, preset: :default
 
-  @kinds [:skill, :item]
+  @types [:skill, :item]
 
   @conditions [
     :always,
@@ -32,7 +32,7 @@ defmodule GEMS.Engine.Schema.ActionPattern do
   ]
 
   schema "action_patterns" do
-    field :kind, Ecto.Enum, values: @kinds
+    field :type, Ecto.Enum, values: @types
     field :condition, Ecto.Enum, values: @conditions
     field :priority, :integer
 

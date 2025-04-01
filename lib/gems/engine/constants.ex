@@ -80,6 +80,14 @@ defmodule GEMS.Engine.Constants do
       :blighted
     ]
 
+  def buffs, do: []
+
+  def debuffs,
+    do: [
+
+
+    ]
+
   def effect_types_mappings,
     do: [
       health_damage: GEMS.Database.Effects.HealthDamage,

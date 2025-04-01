@@ -1,9 +1,13 @@
 defmodule GEMS.Engine.Battler.TurnTest do
   use ExUnit.Case, async: true, parameterize: [%{type: :item}, %{type: :skill}]
 
+  alias GEMS.Database.Effects.HealthDamage
   alias GEMS.Engine.Battler.Turn
   alias GEMS.Engine.Battler.Actor
   alias GEMS.Engine.Battler.Action
+  alias GEMS.Engine.Schema.Item
+  alias GEMS.Engine.Schema.Skill
+  alias GEMS.Engine.Schema.ActionPattern
 
   describe "choose_action/1" do
     test "no action when no valid action patterns" do
@@ -99,10 +103,10 @@ defmodule GEMS.Engine.Battler.TurnTest do
   end
 
   defp build_action_pattern(:item, attrs),
-    do: Map.merge(attrs, %{type: :item, item: build_dummy_item()})
+    do: Map.merge(attrs, %ActionPattern{type: :item, item: build_dummy_item()})
 
   defp build_action_pattern(:skill, attrs),
-    do: Map.merge(attrs, %{type: :skill, skill: build_dummy_skill()})
+    do: Map.merge(attrs, %ActionPattern{type: :skill, skill: build_dummy_skill()})
 
   defp build_action(%{type: :item} = action_pattern, targets),
     do: %Action{type: :item, item: action_pattern.item, targets: targets}
@@ -111,8 +115,8 @@ defmodule GEMS.Engine.Battler.TurnTest do
     do: %Action{type: :skill, skill: action_pattern.skill, targets: targets}
 
   defp build_dummy_item,
-    do: %{id: 1, name: "Potion", target_side: :self, target_number: 1, random_targets: 0}
+    do: %Item{id: 1, name: "Potion", effects: []}
 
   defp build_dummy_skill,
-    do: %{id: 1, name: "Heal", target_side: :self, target_number: 1, random_targets: 0}
+    do: %Skill{id: 1, name: "Heal", effects: []}
 end
