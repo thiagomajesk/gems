@@ -19,12 +19,8 @@ defmodule GEMS.Database.Dynamic do
   @impl true
   def cast(nil, _), do: {:ok, nil}
 
-  def cast(data, %{types: types}) when is_struct(data) do
-    Enum.find_value(types, fn {_type, module} ->
-      if module == data.__struct__,
-        do: {:ok, to_embed(module, Map.from_struct(data))},
-        else: {:error, message: "Invalid type: #{inspect(data)}"}
-    end)
+  def cast(data, %{types: types} = opts) when is_struct(data) do
+    with {:ok, data} <- infer_type(data, types), do: cast(data, opts)
   end
 
   def cast(data, %{types: types}) when is_map(data) do
@@ -49,12 +45,27 @@ defmodule GEMS.Database.Dynamic do
   @impl true
   def dump(nil, _, _), do: {:ok, nil}
 
-  def dump(data, dumper, opts) when is_struct(data),
-    do: dump(Map.from_struct(data), dumper, opts)
+  def dump(data, dumper, %{types: types} = opts) when is_struct(data) do
+    with {:ok, data} <- infer_type(data, types), do: dump(data, dumper, opts)
+  end
 
-  def dump(data, _dumper, _) when is_map(data), do: raise("Not implemented")
+  def dump(data, _dumper, _) when is_map(data) do
+    case Map.new(data, &cast_key/1) do
+      %{"type" => _type} = data -> {:ok, data}
+      other -> {:error, message: "Missing type on: \n #{inspect(other)}"}
+    end
+  end
 
   def dump(_, _, _), do: :error
+
+  defp infer_type(data, types) do
+    default = {:error, message: "Could not infer type for: #{inspect(data)}"}
+
+    Enum.find_value(types, default, fn {type, module} ->
+      if module == data.__struct__,
+        do: {:ok, Map.put(Map.from_struct(data), "type", type)}
+    end)
+  end
 
   defp cast_key({key, value}) when is_atom(key), do: {Atom.to_string(key), value}
   defp cast_key({key, value}) when is_binary(key), do: {key, value}

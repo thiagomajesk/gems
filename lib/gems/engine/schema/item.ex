@@ -12,12 +12,8 @@ defmodule GEMS.Engine.Schema.Item do
       :image,
       :price,
       :target_side,
-      :target_filter,
       :target_number,
-      :random_targets,
-      :hit_type,
-      :success_rate,
-      :repeats
+      :random_targets
     ],
     default_preloads: [
       :item_ingredients
@@ -36,12 +32,9 @@ defmodule GEMS.Engine.Schema.Item do
     field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
 
-    field :repeats, :integer
     field :target_side, Ecto.Enum, values: @target_sides
-    field :target_filter, Ecto.Enum, values: [:alive, :dead]
-    field :target_number, :integer
-    field :random_targets, :integer
-    field :success_rate, :float
+    field :target_number, :integer, default: 1
+    field :random_targets, :integer, default: 0
 
     field :hit_type, Ecto.Enum, values: @hit_types
 

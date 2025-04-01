@@ -16,6 +16,9 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :health_cost, :integer, null: false
       add :energy_cost, :integer, null: false
       add :affinity, :string, null: false
+      add :target_side, :string, null: false
+      add :target_number, :integer, null: false
+      add :random_targets, :integer, null: false
 
       add :effects, :map, null: true
     end
@@ -125,12 +128,9 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :tier, :string, null: false
       add :price, :integer, null: true
 
-      add :repeats, :integer, null: false, default: 1
       add :target_side, :string, null: true
-      add :target_filter, :string, null: true
-      add :target_number, :integer, null: false, default: 1
-      add :random_targets, :integer, null: false, default: 0
-      add :success_rate, :float, default: 1.0
+      add :target_number, :integer, null: true
+      add :random_targets, :integer, null: true
 
       add :hit_type, :string, null: true
       add :effects, :map, null: true
@@ -201,7 +201,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     ################################################################################
 
     create table(:action_patterns) do
-      add :kind, :string, null: false
+      add :type, :string, null: false
       add :condition, :string, null: false
       add :priority, :integer, null: false
       add :chance, :float, null: true
@@ -217,8 +217,8 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     end
 
     create constraint(:action_patterns, :action_pattern_kind_matches,
-             check: "(kind = 'item' AND item_id IS NOT NULL)
-             OR (kind = 'skill' AND skill_id IS NOT NULL)"
+             check: "(type = 'item' AND item_id IS NOT NULL)
+             OR (type = 'skill' AND skill_id IS NOT NULL)"
            )
 
     ################################################################################

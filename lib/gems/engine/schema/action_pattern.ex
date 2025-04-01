@@ -16,7 +16,7 @@ defmodule GEMS.Engine.Schema.ActionPattern do
 
   @states GEMS.Engine.Constants.states()
 
-  @required_fields [:kind, :priority, :condition]
+  @required_fields [:type, :priority, :condition]
 
   @optional_fields [
     :chance,

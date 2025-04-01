@@ -1,19 +1,20 @@
 defmodule GEMS.Engine.Schema.Skill do
   use GEMS.Database.Schema,
     preset: :collection,
-    required_fields: [:name, :code, :type_id],
+    required_fields: [:name, :code, :type_id, :target_side],
     optional_fields: [
       :description,
       :health_cost,
       :energy_cost,
       :affinity,
+      :target_number,
+      :random_targets,
       :effects
     ],
     default_preloads: []
 
   @affinities GEMS.Engine.Constants.elements()
-  # @hit_types GEMS.Engine.Constants.hit_types()
-  # @target_sides GEMS.Engine.Constants.target_sides()
+  @target_sides GEMS.Engine.Constants.target_sides()
 
   schema "skills" do
     field :name, :string
@@ -22,6 +23,9 @@ defmodule GEMS.Engine.Schema.Skill do
     field :health_cost, :integer, default: 0
     field :energy_cost, :integer, default: 0
     field :affinity, Ecto.Enum, values: @affinities
+    field :target_side, Ecto.Enum, values: @target_sides
+    field :target_number, :integer, default: 1
+    field :random_targets, :integer, default: 0
 
     field :effects, {:array, GEMS.Database.Dynamic},
       types: GEMS.Engine.Constants.effect_types_mappings(),

@@ -54,6 +54,14 @@ defmodule GEMS.Engine.Constants do
       :anyone
     ]
 
+  def target_scopes,
+    do: [
+      :target,
+      :performer,
+      :target_group,
+      :performer_group
+    ]
+
   def damage_types,
     do: [
       :physical,
@@ -83,10 +91,7 @@ defmodule GEMS.Engine.Constants do
   def buffs, do: []
 
   def debuffs,
-    do: [
-
-
-    ]
+    do: []
 
   def effect_types_mappings,
     do: [

@@ -3,16 +3,17 @@ defmodule GEMS.Database.Effects.HealthDamage do
 
   import Ecto.Changeset
 
-  @required [:damage_amount, :target_filter, :damage_type, :target_side]
-  @optional [:target_number]
+  @damage_types GEMS.Engine.Constants.damage_types()
+  @target_scopes GEMS.Engine.Constants.target_scopes()
+
+  @required [:target_scope, :damage_type, :damage_amount]
+  @optional []
 
   @primary_key false
   embedded_schema do
+    field :target_scope, Ecto.Enum, values: @target_scopes
+    field :damage_type, Ecto.Enum, values: @damage_types
     field :damage_amount, :integer
-    field :target_number, :integer, default: 1
-    field :target_filter, Ecto.Enum, values: [:alive, :dead]
-    field :damage_type, Ecto.Enum, values: GEMS.Engine.Constants.damage_types()
-    field :target_side, Ecto.Enum, values: GEMS.Engine.Constants.target_sides()
   end
 
   def changeset(effect, params) do
