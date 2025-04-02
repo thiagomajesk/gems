@@ -1,17 +1,16 @@
 defmodule GEMS.Engine.Battler.Event do
   use Ecto.Schema
 
-  alias __MODULE__
-  alias GEMS.Engine.Battler.Actor
+  @effect_types_mapping GEMS.Engine.Constants.effect_types_mappings()
 
   embedded_schema do
     field :description, :string
 
-    field :effects, {:array, GEMS.Database.Dynamic},
-      types: GEMS.Engine.Constants.effect_types_mappings(),
-      default: []
+    field :effect, GEMS.Database.Dynamic, types: @effect_types_mapping
 
     embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
+
+    embeds_many :target, GEMS.Engine.Battler.Actor
   end
 
   # def commit_effects(%Event{} = event) do

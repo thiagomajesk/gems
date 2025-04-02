@@ -19,9 +19,9 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :chance,
     :start_turn,
     :every_turn,
-    :min_health,
+    :minimum_health,
     :maximum_health,
-    :min_energy,
+    :minimum_energy,
     :maximum_energy,
     :state,
     :skill_id
@@ -34,9 +34,9 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     field :chance, :float
     field :start_turn, :integer
     field :every_turn, :integer
-    field :min_health, :integer
+    field :minimum_health, :integer
     field :maximum_health, :integer
-    field :min_energy, :integer
+    field :minimum_energy, :integer
     field :maximum_energy, :integer
     field :state, Ecto.Enum, values: @states
 

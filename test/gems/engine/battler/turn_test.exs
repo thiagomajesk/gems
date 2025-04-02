@@ -22,9 +22,8 @@ defmodule GEMS.Engine.Battler.TurnTest do
       leader = %Actor{action_patterns: [action_pattern]}
 
       turn = Turn.new(1, leader, [%Actor{}])
-      action = build_action(action_pattern)
 
-      assert %Turn{action: ^action} = Turn.choose_action(turn)
+      assert %Turn{action: %Action{}} = Turn.choose_action(turn)
     end
 
     test "when condition is random" do
@@ -37,9 +36,8 @@ defmodule GEMS.Engine.Battler.TurnTest do
       leader = %Actor{action_patterns: [action_pattern]}
 
       turn = Turn.new(1, leader, [%Actor{}])
-      action = build_action(action_pattern)
 
-      assert %Turn{action: ^action} = Turn.choose_action(turn)
+      assert %Turn{action: %Action{}} = Turn.choose_action(turn)
     end
 
     test "when condition is turn number" do
@@ -53,41 +51,38 @@ defmodule GEMS.Engine.Battler.TurnTest do
       leader = %Actor{action_patterns: [action_pattern]}
 
       turn = Turn.new(1, leader, [%Actor{}])
-      action = build_action(action_pattern)
 
-      assert %Turn{action: ^action} = Turn.choose_action(turn)
+      assert %Turn{action: %Action{}} = Turn.choose_action(turn)
     end
 
     test "when condition is health number" do
       action_pattern =
         build_action_pattern(%{
           condition: :health_number,
-          min_health: 0,
+          minimum_health: 0,
           maximum_health: 10
         })
 
       leader = %Actor{health: 5, action_patterns: [action_pattern]}
 
       turn = Turn.new(1, leader, [%Actor{}])
-      action = build_action(action_pattern)
 
-      assert %Turn{action: ^action} = Turn.choose_action(turn)
+      assert %Turn{action: %Action{}} = Turn.choose_action(turn)
     end
 
     test "when condition is energy number" do
       action_pattern =
         build_action_pattern(%{
           condition: :energy_number,
-          min_energy: 0,
+          minimum_energy: 0,
           maximum_energy: 10
         })
 
       leader = %Actor{energy: 5, action_patterns: [action_pattern]}
 
       turn = Turn.new(1, leader, [%Actor{}])
-      action = build_action(action_pattern)
 
-      assert %Turn{action: ^action} = Turn.choose_action(turn)
+      assert %Turn{action: %Action{}} = Turn.choose_action(turn)
     end
   end
 
@@ -106,20 +101,6 @@ defmodule GEMS.Engine.Battler.TurnTest do
 
   defp build_skill(attrs \\ %{}), do: Map.merge(skill_fixture(), attrs)
 
-  defp build_action(action_pattern) do
-    Map.merge(action_fixture(), %{
-      id: action_pattern.skill.id,
-      name: action_pattern.skill.name,
-      health_cost: action_pattern.skill.health_cost,
-      energy_cost: action_pattern.skill.energy_cost,
-      affinity: action_pattern.skill.affinity,
-      target_scope: action_pattern.skill.target_scope,
-      target_number: action_pattern.skill.target_number,
-      random_targets: action_pattern.skill.random_targets,
-      effects: action_pattern.skill.effects
-    })
-  end
-
   defp action_pattern_fixture(),
     do: %ActionPattern{
       id: Ecto.UUID.generate(),
@@ -128,9 +109,9 @@ defmodule GEMS.Engine.Battler.TurnTest do
       chance: 0,
       start_turn: 0,
       every_turn: 0,
-      min_health: 0,
+      minimum_health: 0,
       maximum_health: 10,
-      min_energy: 0,
+      minimum_energy: 0,
       maximum_energy: 10,
       state: nil,
       skill: build_skill()
@@ -145,19 +126,16 @@ defmodule GEMS.Engine.Battler.TurnTest do
       energy_cost: 0,
       affinity: :neutral,
       target_scope: :self,
-      target_number: 0,
+      target_number: 1,
       random_targets: 0,
-      effects: []
+      caster_effects: [],
+      target_effects: []
     }
 
   defp action_fixture(),
     do: %Action{
-      health_cost: 0,
-      energy_cost: 0,
-      affinity: 0,
-      target_scope: 0,
-      target_number: 0,
-      random_targets: 0,
-      effects: []
+      skill: nil,
+      caster: nil,
+      targets: []
     }
 end

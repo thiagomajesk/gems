@@ -200,9 +200,9 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :chance, :float, null: true
       add :start_turn, :integer, null: true
       add :every_turn, :integer, null: true
-      add :min_health, :integer, null: true
+      add :minimum_health, :integer, null: true
       add :maximum_health, :integer, null: true
-      add :min_energy, :integer, null: true
+      add :minimum_energy, :integer, null: true
       add :maximum_energy, :integer, null: true
       add :state, :string, null: true
       add :skill_id, references(:skills), null: true
