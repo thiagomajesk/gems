@@ -58,8 +58,8 @@ defmodule GEMS.Engine.Constants do
     do: [
       :target,
       :performer,
-      :target_group,
-      :performer_group
+      :target_party,
+      :performer_party
     ]
 
   def damage_types,

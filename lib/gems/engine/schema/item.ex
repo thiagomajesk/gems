@@ -10,19 +10,13 @@ defmodule GEMS.Engine.Schema.Item do
     optional_fields: [
       :description,
       :image,
-      :price,
-      :target_side,
-      :target_number,
-      :random_targets
+      :price
     ],
     default_preloads: [
       :item_ingredients
     ]
 
   @tiers GEMS.Engine.Constants.tiers()
-
-  @hit_types GEMS.Engine.Constants.damage_types()
-  @target_sides GEMS.Engine.Constants.target_sides()
 
   schema "items" do
     field :name, :string
@@ -31,14 +25,6 @@ defmodule GEMS.Engine.Schema.Item do
     field :image, :string
     field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
-
-    field :target_side, Ecto.Enum, values: @target_sides
-    field :target_number, :integer, default: 1
-    field :random_targets, :integer, default: 0
-
-    field :hit_type, Ecto.Enum, values: @hit_types
-
-    field :effects, {:array, :map}, default: []
 
     belongs_to :type, GEMS.Engine.Schema.ItemType
 

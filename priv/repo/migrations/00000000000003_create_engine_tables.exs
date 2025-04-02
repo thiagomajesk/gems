@@ -127,13 +127,6 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :type_id, references(:item_types), null: false
       add :tier, :string, null: false
       add :price, :integer, null: true
-
-      add :target_side, :string, null: true
-      add :target_number, :integer, null: true
-      add :random_targets, :integer, null: true
-
-      add :hit_type, :string, null: true
-      add :effects, :map, null: true
     end
 
     create unique_index(:items, :code)
@@ -198,10 +191,9 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
 
     ################################################################################
     # Action Patterns
-    ################################################################################
+    ################################################################################ s
 
     create table(:action_patterns) do
-      add :type, :string, null: false
       add :condition, :string, null: false
       add :priority, :integer, null: false
       add :chance, :float, null: true
@@ -212,14 +204,8 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :min_energy, :integer, null: true
       add :maximum_energy, :integer, null: true
       add :state, :string, null: true
-      add :item_id, references(:items), null: true
       add :skill_id, references(:skills), null: true
     end
-
-    create constraint(:action_patterns, :action_pattern_kind_matches,
-             check: "(type = 'item' AND item_id IS NOT NULL)
-             OR (type = 'skill' AND skill_id IS NOT NULL)"
-           )
 
     ################################################################################
     # Creatures Action Patterns

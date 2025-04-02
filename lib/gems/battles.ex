@@ -1,5 +1,4 @@
 defmodule GEMS.Battles do
-  alias GEMS.Engine.Schema.ActionPattern
   alias GEMS.World.Schema.Character
   alias GEMS.Engine.Schema.Creature
   alias GEMS.Engine.Battler.Actor
@@ -69,7 +68,7 @@ defmodule GEMS.Battles do
     }
   end
 
-  defp cast_action_pattern(%ActionPattern{} = _action_pattern) do
-    %{}
-  end
+  # defp cast_action_pattern(%ActionPattern{} = _action_pattern) do
+  #   %{}
+  # end
 end

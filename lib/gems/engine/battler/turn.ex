@@ -25,22 +25,14 @@ defmodule GEMS.Engine.Battler.Turn do
     |> Enum.sort_by(& &1.priority)
     |> Enum.reduce_while(turn, fn action_pattern, turn ->
       if action_pattern_matches?(action_pattern, turn),
-        do: {:halt, update_action(turn, action_pattern)},
+        do: {:halt, put_action(turn, action_pattern)},
         else: {:cont, turn}
     end)
   end
 
   def perform_action(%Turn{action: nil} = turn), do: turn
 
-  def perform_action(%Turn{action: action} = turn) do
-    events = Action.events_for(action)
-    Map.put(turn, :events, events)
-
-    # TODO: Apply events effects to actors
-    # Enum.reduce(events, turn, fn effect, turn ->
-
-    # end)
-  end
+  def perform_action(%Turn{action: _action} = turn), do: turn
 
   defp action_pattern_matches?(action_pattern, turn),
     do:
@@ -71,91 +63,34 @@ defmodule GEMS.Engine.Battler.Turn do
   defp action_pattern_matches_condition?(%{condition: :always}, _turn),
     do: true
 
-  defp list_valid_targets(%{type: :skill} = action_pattern, turn) do
+  defp list_valid_targets(action_pattern, turn) do
     case action_pattern.skill do
       %{target_side: :self} -> [turn.leader]
-      %{target_side: :ally, target_filter: :alive} -> list_live_allies(turn)
-      %{target_side: :ally, target_filter: :dead} -> list_dead_allies(turn)
-      %{target_side: :enemy, target_filter: :alive} -> list_live_enemies(turn)
-      %{target_side: :enemy, target_filter: :dead} -> list_dead_enemies(turn)
-      %{target_side: :anyone, target_filter: :alive} -> list_live_targets(turn)
-      %{target_side: :anyone, target_filter: :dead} -> list_dead_targets(turn)
+      %{target_side: :anyone} -> turn.actors
+      %{target_side: :ally} -> Enum.filter(turn.actors, &Actor.ally?(turn.leader, &1))
+      %{target_side: :enemy} -> Enum.filter(turn.actors, &Actor.enemy?(turn.leader, &1))
     end
   end
 
-  defp list_valid_targets(%{type: :item} = action_pattern, turn) do
-    case action_pattern.item do
-      %{target_side: :self} -> [turn.leader]
-      %{target_side: :ally, target_filter: :alive} -> list_live_allies(turn)
-      %{target_side: :ally, target_filter: :dead} -> list_dead_allies(turn)
-      %{target_side: :enemy, target_filter: :alive} -> list_live_enemies(turn)
-      %{target_side: :enemy, target_filter: :dead} -> list_dead_enemies(turn)
-      %{target_side: :anyone, target_filter: :alive} -> list_live_targets(turn)
-      %{target_side: :anyone, target_filter: :dead} -> list_dead_targets(turn)
-    end
-  end
-
-  defp list_live_allies(turn) do
-    turn.actors
-    |> list_live_targets()
-    |> Enum.filter(&Actor.ally?(&1, turn.leader))
-  end
-
-  defp list_live_enemies(turn) do
-    turn.actors
-    |> list_live_targets()
-    |> Enum.filter(&Actor.enemy?(&1, turn.leader))
-  end
-
-  defp list_dead_allies(turn) do
-    turn.actors
-    |> list_dead_targets()
-    |> Enum.filter(&Actor.ally?(&1, turn.leader))
-  end
-
-  defp list_dead_enemies(turn) do
-    turn.actors
-    |> list_dead_targets()
-    |> Enum.filter(&Actor.enemy?(&1, turn.leader))
-  end
-
-  defp list_live_targets(turn) do
-    Enum.filter(turn.actors, &Actor.alive?/1)
-  end
-
-  defp list_dead_targets(turn) do
-    Enum.filter(turn.actors, &Actor.dead?/1)
-  end
-
-  defp update_action(turn, %{type: :skill} = action_pattern) do
-    valid_targets = list_valid_targets(action_pattern, turn)
-    %{skill: %{target_number: target_number, random_targets: random_targets}} = action_pattern
-
+  defp put_action(turn, action_pattern) do
     Map.put(turn, :action, %Action{
-      type: :skill,
-      skill: action_pattern.skill,
-      targets: pick_targets(valid_targets, {target_number, random_targets})
+      health_cost: action_pattern.skill.health_cost,
+      energy_cost: action_pattern.skill.energy_cost,
+      affinity: action_pattern.skill.affinity,
+      target_side: action_pattern.skill.target_side,
+      target_number: action_pattern.skill.target_number,
+      random_targets: action_pattern.skill.random_targets,
+      effects: action_pattern.skill.effects
     })
   end
 
-  defp update_action(turn, %{type: :item} = action_pattern) do
-    valid_targets = list_valid_targets(action_pattern, turn)
-    %{item: %{target_number: target_number, random_targets: random_targets}} = action_pattern
+  # defp pick_targets(actors, {target_number, random_targets}) do
+  #   sorted_actors = Enum.sort_by(actors, & &1.aggro, :desc)
+  #   targets = Enum.take(sorted_actors, target_number)
 
-    Map.put(turn, :action, %Action{
-      type: :item,
-      item: action_pattern.item,
-      targets: pick_targets(valid_targets, {target_number, random_targets})
-    })
-  end
+  #   remaining_actors = actors -- targets
+  #   random_targets = Enum.take_random(remaining_actors, random_targets)
 
-  defp pick_targets(actors, {target_number, random_targets}) do
-    sorted_actors = Enum.sort_by(actors, & &1.aggro, :desc)
-    targets = Enum.take(sorted_actors, target_number)
-
-    remaining_actors = actors -- targets
-    random_targets = Enum.take_random(remaining_actors, random_targets)
-
-    Enum.concat(targets, random_targets)
-  end
+  #   Enum.concat(targets, random_targets)
+  # end
 end
