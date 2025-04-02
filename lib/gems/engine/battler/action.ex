@@ -9,6 +9,7 @@ defmodule GEMS.Engine.Battler.Action do
   @target_sides GEMS.Engine.Constants.target_sides()
 
   embedded_schema do
+    field :name, :string
     field :health_cost, :integer
     field :energy_cost, :integer
     field :affinity, Ecto.Enum, values: @affinities

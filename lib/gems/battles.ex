@@ -36,10 +36,11 @@ defmodule GEMS.Battles do
       earth_resistance: character.earth_resistance,
       air_resistance: character.air_resistance
     }
-    |> dbg()
   end
 
   defp to_actor(%Creature{} = creature, party) do
+    creature = GEMS.Engine.Schema.Creature.preload(creature)
+
     %Actor{
       id: creature.id,
       name: creature.name,
@@ -63,12 +64,8 @@ defmodule GEMS.Battles do
       fire_resistance: creature.fire_resistance,
       water_resistance: creature.water_resistance,
       earth_resistance: creature.earth_resistance,
-      air_resistance: creature.air_resistance
-      # action_patterns: Enum.map(creature.action_patterns, &cast_action_pattern/1)
+      air_resistance: creature.air_resistance,
+      action_patterns: creature.action_patterns
     }
   end
-
-  # defp cast_action_pattern(%ActionPattern{} = _action_pattern) do
-  #   %{}
-  # end
 end

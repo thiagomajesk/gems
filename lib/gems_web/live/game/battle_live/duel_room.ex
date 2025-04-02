@@ -25,7 +25,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
                   value={actor.energy}
                   max={actor.maximum_energy}
                 >
-                  :base_maximum_health, :base_maximum_energy 
+                  :base_maximum_health, :base_maximum_energy
                 </progress>
               </div>
             </div>
@@ -38,7 +38,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
       >
         <span>Number: {turn.number}</span>
         <span>{turn.leader.name} used...</span>
-        <span>Action: {inspect(turn.action)}</span>
+        <span>Action: {get_in(turn.action.name)}</span>
       </div>
     </div>
     """

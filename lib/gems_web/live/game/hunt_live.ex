@@ -40,8 +40,7 @@ defmodule GEMSWeb.Game.HuntLive do
     hunt_lookup = socket.assigns.hunt_lookup
     hunt = Map.fetch!(hunt_lookup, hunt_id)
 
-    creature = GEMS.Engine.Schema.Creature.preload(hunt.creature)
-    battle = GEMS.Battles.create_duel(character, creature)
+    battle = GEMS.Battles.create_duel(character, hunt.creature)
 
     {:ok, identifier} = GEMS.BattleManager.create_battle(battle)
 

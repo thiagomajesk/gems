@@ -32,7 +32,10 @@ defmodule GEMS.Engine.Battler.Turn do
 
   def perform_action(%Turn{action: nil} = turn), do: turn
 
-  def perform_action(%Turn{action: _action} = turn), do: turn
+  def perform_action(%Turn{action: action} = turn) do
+    dbg(action)
+    turn
+  end
 
   defp action_pattern_matches?(action_pattern, turn),
     do:
@@ -74,6 +77,8 @@ defmodule GEMS.Engine.Battler.Turn do
 
   defp put_action(turn, action_pattern) do
     Map.put(turn, :action, %Action{
+      id: action_pattern.skill.id,
+      name: action_pattern.skill.name,
       health_cost: action_pattern.skill.health_cost,
       energy_cost: action_pattern.skill.energy_cost,
       affinity: action_pattern.skill.affinity,
