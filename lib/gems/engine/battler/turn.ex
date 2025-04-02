@@ -72,8 +72,6 @@ defmodule GEMS.Engine.Battler.Turn do
     do: true
 
   defp list_valid_targets(%{type: :skill} = action_pattern, turn) do
-    dbg(action_pattern)
-
     case action_pattern.skill do
       %{target_side: :self} -> [turn.leader]
       %{target_side: :ally, target_filter: :alive} -> list_live_allies(turn)
@@ -86,8 +84,6 @@ defmodule GEMS.Engine.Battler.Turn do
   end
 
   defp list_valid_targets(%{type: :item} = action_pattern, turn) do
-    dbg(action_pattern)
-
     case action_pattern.item do
       %{target_side: :self} -> [turn.leader]
       %{target_side: :ally, target_filter: :alive} -> list_live_allies(turn)

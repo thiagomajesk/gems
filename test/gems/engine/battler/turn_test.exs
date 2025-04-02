@@ -103,10 +103,10 @@ defmodule GEMS.Engine.Battler.TurnTest do
   end
 
   defp build_action_pattern(:item, attrs),
-    do: Map.merge(attrs, %ActionPattern{type: :item, item: build_dummy_item()})
+    do: Map.merge(%ActionPattern{type: :item, item: build_dummy_item()}, attrs)
 
   defp build_action_pattern(:skill, attrs),
-    do: Map.merge(attrs, %ActionPattern{type: :skill, skill: build_dummy_skill()})
+    do: Map.merge(%ActionPattern{type: :skill, skill: build_dummy_skill()}, attrs)
 
   defp build_action(%{type: :item} = action_pattern, targets),
     do: %Action{type: :item, item: action_pattern.item, targets: targets}
@@ -115,8 +115,8 @@ defmodule GEMS.Engine.Battler.TurnTest do
     do: %Action{type: :skill, skill: action_pattern.skill, targets: targets}
 
   defp build_dummy_item,
-    do: %Item{id: 1, name: "Potion", effects: []}
+    do: %Item{id: 1, name: "Potion", target_side: :self, effects: []}
 
   defp build_dummy_skill,
-    do: %Skill{id: 1, name: "Heal", effects: []}
+    do: %Skill{id: 1, name: "Heal", target_side: :self, effects: []}
 end
