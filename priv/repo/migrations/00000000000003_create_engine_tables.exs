@@ -16,11 +16,12 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :health_cost, :integer, null: false
       add :energy_cost, :integer, null: false
       add :affinity, :string, null: false
-      add :target_side, :string, null: false
+      add :target_scope, :string, null: false
       add :target_number, :integer, null: false
       add :random_targets, :integer, null: false
 
-      add :effects, :map, null: true
+      add :caster_effects, :map, null: true
+      add :target_effects, :map, null: true
     end
 
     create unique_index(:skills, :code)

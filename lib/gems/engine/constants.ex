@@ -46,20 +46,12 @@ defmodule GEMS.Engine.Constants do
       :neutral
     ]
 
-  def target_sides,
+  def target_scopes,
     do: [
       :self,
       :ally,
       :enemy,
       :anyone
-    ]
-
-  def target_scopes,
-    do: [
-      :target,
-      :performer,
-      :target_party,
-      :performer_party
     ]
 
   def damage_types,

@@ -55,9 +55,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
               <div class="grid grid-cols-2 gap-4">
                 <Forms.field_input
                   type="select"
-                  field={f[:target_side]}
+                  field={f[:target_scope]}
                   label="Target Side"
-                  options={@target_side_options}
+                  options={@target_scope_options}
                 />
 
                 <Forms.field_input
@@ -85,7 +85,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
      assign(socket,
        skill_types_options: skill_types_options,
        hit_type_options: hit_type_options(),
-       target_side_options: target_side_options(),
+       target_scope_options: target_scope_options(),
        target_filter_options: target_filter_options()
      )}
   end
@@ -96,9 +96,9 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 
-  defp target_side_options() do
+  defp target_scope_options() do
     GEMS.Engine.Schema.Skill
-    |> Ecto.Enum.mappings(:target_side)
+    |> Ecto.Enum.mappings(:target_scope)
     |> Enum.map(fn {k, v} -> {Recase.to_title(v), k} end)
   end
 

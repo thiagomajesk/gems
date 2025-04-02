@@ -4,14 +4,14 @@ defmodule GEMS.Database.Effects.HealthDamage do
   import Ecto.Changeset
 
   @damage_types GEMS.Engine.Constants.damage_types()
-  @target_scopes GEMS.Engine.Constants.target_scopes()
+  @elements GEMS.Engine.Constants.elements()
 
-  @required [:target_scope, :damage_type, :damage_amount]
-  @optional []
+  @required [:damage_type, :damage_amount]
+  @optional [:element]
 
   @primary_key false
   embedded_schema do
-    field :target_scope, Ecto.Enum, values: @target_scopes
+    field :element, Ecto.Enum, values: @elements, default: :neutral
     field :damage_type, Ecto.Enum, values: @damage_types
     field :damage_amount, :integer
   end

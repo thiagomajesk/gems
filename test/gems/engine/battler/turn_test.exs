@@ -108,10 +108,12 @@ defmodule GEMS.Engine.Battler.TurnTest do
 
   defp build_action(action_pattern) do
     Map.merge(action_fixture(), %{
+      id: action_pattern.skill.id,
+      name: action_pattern.skill.name,
       health_cost: action_pattern.skill.health_cost,
       energy_cost: action_pattern.skill.energy_cost,
       affinity: action_pattern.skill.affinity,
-      target_side: action_pattern.skill.target_side,
+      target_scope: action_pattern.skill.target_scope,
       target_number: action_pattern.skill.target_number,
       random_targets: action_pattern.skill.random_targets,
       effects: action_pattern.skill.effects
@@ -142,7 +144,7 @@ defmodule GEMS.Engine.Battler.TurnTest do
       health_cost: 0,
       energy_cost: 0,
       affinity: :neutral,
-      target_side: :self,
+      target_scope: :self,
       target_number: 0,
       random_targets: 0,
       effects: []
@@ -153,7 +155,7 @@ defmodule GEMS.Engine.Battler.TurnTest do
       health_cost: 0,
       energy_cost: 0,
       affinity: 0,
-      target_side: 0,
+      target_scope: 0,
       target_number: 0,
       random_targets: 0,
       effects: []

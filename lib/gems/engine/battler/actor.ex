@@ -49,20 +49,4 @@ defmodule GEMS.Engine.Battler.Actor do
   def self?(%Actor{id: id1}, %Actor{id: id2}), do: id1 == id2
   def ally?(%Actor{party: p1}, %Actor{party: p2}), do: p1 == p2
   def enemy?(%Actor{party: p1}, %Actor{party: p2}), do: p1 != p2
-
-  def commit_effect(%Actor{} = actor, _effect) do
-    actor
-  end
-
-  def revert_effect(%Actor{} = actor, _effect) do
-    actor
-  end
-
-  def commit_state(%Actor{} = actor, _state) do
-    actor
-  end
-
-  def revert_state(%Actor{} = actor, _state) do
-    actor
-  end
 end

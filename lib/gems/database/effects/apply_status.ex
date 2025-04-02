@@ -3,14 +3,12 @@ defmodule GEMS.Database.Effects.ApplyStatus do
 
   import Ecto.Changeset
 
-  @target_scopes GEMS.Engine.Constants.target_scopes()
-
-  @required [:target_scope]
+  @required [:status]
   @optional [:chance, :stacks]
 
   @primary_key false
   embedded_schema do
-    field :target_scope, Ecto.Enum, values: @target_scopes
+    field :status, Ecto.Enum, values: [:poisoned]
     field :chance, :float, default: 1.0
     field :stacks, :integer, default: 1
   end
