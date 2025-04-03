@@ -36,14 +36,10 @@ defmodule GEMS.Engine.Battler.Turn do
   def perform_action(%Turn{action: nil} = turn), do: turn
 
   def perform_action(%Turn{action: action} = turn) do
-    dbg(action)
-
     caster_events = Action.events_for_caster(action)
     target_events = Action.events_for_target(action)
 
     events = Enum.concat(caster_events, target_events)
-
-    dbg(events)
 
     Enum.reduce(events, turn, fn event, turn ->
       Map.update!(turn, :events, &[event | &1])
@@ -52,6 +48,12 @@ defmodule GEMS.Engine.Battler.Turn do
 
   def process_events(%Turn{events: []} = turn), do: turn
   def process_events(%Turn{events: _events} = turn), do: turn
+
+  defp action_pattern_matches?(%{condition: :always}, _turn),
+    do: true
+
+  defp action_pattern_matches?(%{condition: :random} = action_pattern, _turn),
+    do: action_pattern.chance >= :rand.uniform()
 
   defp action_pattern_matches?(%{condition: :turn_number} = action_pattern, turn),
     do:
@@ -67,12 +69,6 @@ defmodule GEMS.Engine.Battler.Turn do
     do:
       action_pattern.minimum_energy <= turn.leader.energy and
         action_pattern.maximum_energy >= turn.leader.energy
-
-  defp action_pattern_matches?(%{condition: :random} = action_pattern, _turn),
-    do: action_pattern.chance >= :rand.uniform()
-
-  defp action_pattern_matches?(%{condition: :always}, _turn),
-    do: true
 
   defp list_valid_targets(%{skill: %{target_scope: :self}}, turn),
     do: [turn.leader]

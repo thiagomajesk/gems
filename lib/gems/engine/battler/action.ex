@@ -24,34 +24,27 @@ defmodule GEMS.Engine.Battler.Action do
   end
 
   def events_for_caster(%Action{} = action) do
-    Enum.map(action.caster_effects, fn effect ->
-      Event.new(:caster, action.caster, effect)
-    end)
+    effects = filter_effects(action.caster_effects)
+    events_for(:caster, effects, [action.caster])
   end
 
   def events_for_target(%Action{} = action) do
-    Enum.flat_map(action.targets, fn target ->
-      Enum.map(action.target_effects, fn effect ->
-        Event.new(:target, target, effect)
-      end)
+    effects = filter_effects(action.target_effects)
+    events_for(:target, effects, action.targets)
+  end
+
+  defp filter_effects(effects) do
+    Enum.filter(effects, fn
+      %{chance: chance} -> chance >= :rand.uniform()
+      _event -> true
     end)
   end
 
-  # def events_for(%Action{type: :skill} = action) do
-  #   Enum.map(action.targets, fn target ->
-  #     %Event{
-  #       target: target,
-  #       effects: action.skill.effects
-  #     }
-  #   end)
-  # end
-
-  # def events_for(%Action{type: :item} = action) do
-  #   Enum.map(action.targets, fn target ->
-  #     %Event{
-  #       target: target,
-  #       effects: action.item.effects
-  #     }
-  #   end)
-  # end
+  defp events_for(origin, effects, targets) do
+    Enum.flat_map(targets, fn target ->
+      Enum.map(effects, fn effect ->
+        Event.new(origin, target, effect)
+      end)
+    end)
+  end
 end
