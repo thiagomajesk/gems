@@ -3,13 +3,13 @@ defmodule GEMS.Database.Effects.ActionCost do
 
   import Ecto.Changeset
 
-  @required [:type, :cost]
+  @required [:health_cost, :energy_cost]
   @optional []
 
   @primary_key false
   embedded_schema do
-    field :type, Ecto.Enum, values: [:health, :energy]
-    field :amount, :integer
+    field :health_cost, :integer
+    field :energy_cost, :integer
   end
 
   def changeset(effect, params) do

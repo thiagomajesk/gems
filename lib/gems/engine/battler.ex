@@ -36,8 +36,8 @@ defmodule GEMS.Engine.Battler do
     turn.events
     |> Enum.reverse()
     |> Enum.reduce(battle, fn event, battle ->
-      updated = Event.apply_effect(event)
-      Battle.replace_actor(battle, updated)
+      changed = Event.commit_effect(event)
+      Battle.replace_actor(battle, changed)
     end)
   end
 

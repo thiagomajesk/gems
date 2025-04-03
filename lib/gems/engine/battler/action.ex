@@ -26,16 +26,23 @@ defmodule GEMS.Engine.Battler.Action do
   end
 
   def events_for(%Action{} = action) do
-    caster_events = events_for_caster(action)
-    target_events = events_for_target(action)
-    Enum.concat(caster_events, target_events)
+    Enum.concat([
+      events_for_action(action),
+      events_for_caster(action),
+      events_for_target(action)
+    ])
   end
 
-  # defp events_for_action(action) do
-  #   # GEMS.Database.Effects.ActionCost
-  #   effects = []
-  #   map_events(:action, effects, [action.caster])
-  # end
+  defp events_for_action(action) do
+    effects = [
+      %GEMS.Database.Effects.ActionCost{
+        health_cost: action.health_cost,
+        energy_cost: action.energy_cost
+      }
+    ]
+
+    map_events(:action, effects, [action.caster])
+  end
 
   defp events_for_caster(action) do
     effects = filter_effects(action.caster_effects)

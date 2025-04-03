@@ -38,12 +38,14 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
         <span>{turn.leader.name} used...</span>
         <span>Action: {get_in(turn.action.name)}</span>
         <ul class="bg-base-100 divider-y space-y-2">
-          <li :for={event <- turn.events} class="flex flex-col">
+          <li :for={event <- Enum.reverse(turn.events)} class="flex flex-col">
             <span>{event.icon}</span>
             <span>{event.origin}</span>
             <span>{event.timestamp}</span>
             <span>{inspect(event.effect)}</span>
             <span>{event.target.name}</span>
+            Health: {event.target.health} |
+            Energy: {event.target.energy}
           </li>
         </ul>
       </div>
