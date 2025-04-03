@@ -3,6 +3,7 @@ defmodule GEMS.Engine.Battler.Event do
 
   alias __MODULE__
   alias GEMS.Database.Effects.ActionCost
+  alias GEMS.Database.Effects.HealthDamage
 
   @origins [:system, :action, :caster, :target]
   @effect_types_mapping GEMS.Engine.Constants.effect_types_mappings()
@@ -36,6 +37,10 @@ defmodule GEMS.Engine.Battler.Event do
     event.target
     |> Map.update!(:health, &(&1 - effect.health_cost))
     |> Map.update!(:energy, &(&1 - effect.energy_cost))
+  end
+
+  def commit_effect(%Event{effect: %HealthDamage{} = effect} = event) do
+    Map.update!(event.target, :health, &(&1 - effect.damage_amount))
   end
 
   def commit_effect(%Event{} = event), do: event.target
