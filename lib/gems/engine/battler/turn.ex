@@ -34,7 +34,24 @@ defmodule GEMS.Engine.Battler.Turn do
   end
 
   def perform_action(%Turn{action: nil} = turn), do: turn
-  def perform_action(%Turn{} = turn), do: turn
+
+  def perform_action(%Turn{action: action} = turn) do
+    dbg(action)
+
+    caster_events = Action.events_for_caster(action)
+    target_events = Action.events_for_target(action)
+
+    events = Enum.concat(caster_events, target_events)
+
+    dbg(events)
+
+    Enum.reduce(events, turn, fn event, turn ->
+      Map.update!(turn, :events, &[event | &1])
+    end)
+  end
+
+  def process_events(%Turn{events: []} = turn), do: turn
+  def process_events(%Turn{events: _events} = turn), do: turn
 
   defp action_pattern_matches?(%{condition: :turn_number} = action_pattern, turn),
     do:
@@ -69,24 +86,27 @@ defmodule GEMS.Engine.Battler.Turn do
   defp list_valid_targets(%{skill: %{target_scope: :enemy}}, turn),
     do: Enum.filter(turn.actors, &Actor.enemy?(&1, turn.leader))
 
-  defp build_action(action_pattern, turn) do
+  defp build_action(%{skill: skill} = action_pattern, turn) do
     valid_targets = list_valid_targets(action_pattern, turn)
-    selected_targets = pick_targets(valid_targets, action_pattern.skill)
+    selected_targets = select_targets(valid_targets, skill)
 
     %Action{
+      name: skill.name,
+      affinity: skill.affinity,
       caster: turn.leader,
-      skill: action_pattern.skill,
-      targets: selected_targets
+      targets: selected_targets,
+      caster_effects: skill.caster_effects,
+      target_effects: skill.target_effects
     }
   end
 
-  defp pick_targets(actors, skill) do
-    sorted_actors = Enum.sort_by(actors, & &1.aggro, :desc)
-    targets = Enum.take(sorted_actors, skill.target_number)
+  defp select_targets(actors, skill) do
+    sorted = Enum.sort_by(actors, & &1.aggro, :desc)
+    fixed_targets = Enum.take(sorted, skill.target_number)
 
-    remaining_actors = actors -- targets
-    random_targets = Enum.take_random(remaining_actors, skill.random_targets)
+    remaining = actors -- fixed_targets
+    random_targets = Enum.take_random(remaining, skill.random_targets)
 
-    Enum.concat(targets, random_targets)
+    Enum.concat(fixed_targets, random_targets)
   end
 end

@@ -36,6 +36,7 @@ defmodule GEMS.Engine.Battler do
     |> build_turn()
     |> Turn.choose_action()
     |> Turn.perform_action()
+    |> Turn.process_events()
   end
 
   defp build_turn(battle) do

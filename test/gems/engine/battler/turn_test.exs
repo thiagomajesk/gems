@@ -131,11 +131,4 @@ defmodule GEMS.Engine.Battler.TurnTest do
       caster_effects: [],
       target_effects: []
     }
-
-  defp action_fixture(),
-    do: %Action{
-      skill: nil,
-      caster: nil,
-      targets: []
-    }
 end

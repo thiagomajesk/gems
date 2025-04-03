@@ -24,9 +24,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
                   class="progress text-cyan-500"
                   value={actor.energy}
                   max={actor.maximum_energy}
-                >
-                  :base_maximum_health, :base_maximum_energy
-                </progress>
+                />
               </div>
             </div>
           </div>
@@ -39,6 +37,15 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
         <span>Number: {turn.number}</span>
         <span>{turn.leader.name} used...</span>
         <span>Action: {get_in(turn.action.name)}</span>
+        <ul class="bg-base-100 divider-y space-y-2">
+          <li :for={event <- turn.events} class="flex flex-col">
+            <span>{event.icon}</span>
+            <span>{event.origin}</span>
+            <span>{event.timestamp}</span>
+            <span>{inspect(event.effect)}</span>
+            <span>{event.target.name}</span>
+          </li>
+        </ul>
       </div>
     </div>
     """

@@ -16,7 +16,7 @@ defmodule GEMS.Engine.Schema.Skill do
 
   @affinities GEMS.Engine.Constants.elements()
   @target_scopes GEMS.Engine.Constants.target_scopes()
-  @effect_types GEMS.Engine.Constants.effect_types_mappings()
+  @effect_types_mappings GEMS.Engine.Constants.effect_types_mappings()
 
   schema "skills" do
     field :name, :string
@@ -30,11 +30,11 @@ defmodule GEMS.Engine.Schema.Skill do
     field :random_targets, :integer, default: 0
 
     field :caster_effects, {:array, GEMS.Database.Dynamic},
-      types: @effect_types,
+      types: @effect_types_mappings,
       default: []
 
     field :target_effects, {:array, GEMS.Database.Dynamic},
-      types: @effect_types,
+      types: @effect_types_mappings,
       default: []
 
     embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
