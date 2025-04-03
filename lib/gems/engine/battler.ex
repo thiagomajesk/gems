@@ -2,6 +2,7 @@ defmodule GEMS.Engine.Battler do
   alias GEMS.Engine.Battler.Battle
   alias GEMS.Engine.Battler.Actor
   alias GEMS.Engine.Battler.Turn
+  alias GEMS.Engine.Battler.Event
 
   def run(%Battle{status: :finished} = battle),
     do: battle
@@ -24,19 +25,20 @@ defmodule GEMS.Engine.Battler do
   end
 
   defp combat_phase(battle) do
-    turn = process_turn(battle)
+    turn = build_turn(battle)
 
-    turn.updated
-    |> Enum.reduce(battle, &Battle.replace_actor(&2, &1))
+    battle
+    |> process_turn(turn)
     |> Map.update!(:turns, &[turn | &1])
   end
 
-  defp process_turn(battle) do
-    battle
-    |> build_turn()
-    |> Turn.choose_action()
-    |> Turn.perform_action()
-    |> Turn.process_events()
+  defp process_turn(battle, turn) do
+    turn.events
+    |> Enum.reverse()
+    |> Enum.reduce(battle, fn event, battle ->
+      updated = Event.apply_effect(event)
+      Battle.replace_actor(battle, updated)
+    end)
   end
 
   defp build_turn(battle) do
@@ -45,7 +47,10 @@ defmodule GEMS.Engine.Battler do
     leader = Battle.find_leader(battle)
     actors = Enum.reject(battle.actors, &Actor.self?(&1, leader))
 
-    Turn.new(number, leader, actors)
+    number
+    |> Turn.new(leader, actors)
+    |> Turn.choose_action()
+    |> Turn.generate_events()
   end
 
   defp cleanup_phase(battle) do

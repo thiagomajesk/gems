@@ -2,8 +2,8 @@ defmodule GEMS.Engine.Battler.Turn do
   use Ecto.Schema
 
   alias __MODULE__
-  alias GEMS.Engine.Battler.Action
   alias GEMS.Engine.Battler.Actor
+  alias GEMS.Engine.Battler.Action
 
   embedded_schema do
     field :summary, :map, default: %{}
@@ -26,28 +26,28 @@ defmodule GEMS.Engine.Battler.Turn do
     |> Enum.reduce_while(turn, fn action_pattern, turn ->
       action = build_action(action_pattern, turn)
 
-      if Enum.any?(action.targets) and
+      if action_can_be_performed?(action) and
            action_pattern_matches?(action_pattern, turn),
          do: {:halt, %{turn | action: action}},
          else: {:cont, turn}
     end)
   end
 
-  def perform_action(%Turn{action: nil} = turn), do: turn
+  def generate_events(%Turn{action: nil} = turn), do: turn
 
-  def perform_action(%Turn{action: action} = turn) do
-    caster_events = Action.events_for_caster(action)
-    target_events = Action.events_for_target(action)
-
-    events = Enum.concat(caster_events, target_events)
+  def generate_events(%Turn{action: action} = turn) do
+    events = Action.events_for(action)
 
     Enum.reduce(events, turn, fn event, turn ->
       Map.update!(turn, :events, &[event | &1])
     end)
   end
 
-  def process_events(%Turn{events: []} = turn), do: turn
-  def process_events(%Turn{events: _events} = turn), do: turn
+  defp action_can_be_performed?(action) do
+    Enum.any?(action.targets) and
+      action.caster.health >= action.health_cost and
+      action.caster.energy >= action.energy_cost
+  end
 
   defp action_pattern_matches?(%{condition: :always}, _turn),
     do: true
@@ -91,6 +91,8 @@ defmodule GEMS.Engine.Battler.Turn do
       affinity: skill.affinity,
       caster: turn.leader,
       targets: selected_targets,
+      health_cost: skill.health_cost,
+      energy_cost: skill.energy_cost,
       caster_effects: skill.caster_effects,
       target_effects: skill.target_effects
     }

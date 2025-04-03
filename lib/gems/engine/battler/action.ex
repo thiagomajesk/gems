@@ -10,6 +10,8 @@ defmodule GEMS.Engine.Battler.Action do
   embedded_schema do
     field :name, :string
     field :affinity, Ecto.Enum, values: @affinities
+    field :health_cost, :integer
+    field :energy_cost, :integer
 
     field :caster_effects, {:array, GEMS.Database.Dynamic},
       types: @effect_types_mappings,
@@ -23,14 +25,26 @@ defmodule GEMS.Engine.Battler.Action do
     embeds_many :targets, GEMS.Engine.Battler.Actor
   end
 
-  def events_for_caster(%Action{} = action) do
-    effects = filter_effects(action.caster_effects)
-    events_for(:caster, effects, [action.caster])
+  def events_for(%Action{} = action) do
+    caster_events = events_for_caster(action)
+    target_events = events_for_target(action)
+    Enum.concat(caster_events, target_events)
   end
 
-  def events_for_target(%Action{} = action) do
+  # defp events_for_action(action) do
+  #   # GEMS.Database.Effects.ActionCost
+  #   effects = []
+  #   map_events(:action, effects, [action.caster])
+  # end
+
+  defp events_for_caster(action) do
+    effects = filter_effects(action.caster_effects)
+    map_events(:caster, effects, [action.caster])
+  end
+
+  defp events_for_target(action) do
     effects = filter_effects(action.target_effects)
-    events_for(:target, effects, action.targets)
+    map_events(:target, effects, action.targets)
   end
 
   defp filter_effects(effects) do
@@ -40,7 +54,7 @@ defmodule GEMS.Engine.Battler.Action do
     end)
   end
 
-  defp events_for(origin, effects, targets) do
+  defp map_events(origin, effects, targets) do
     Enum.flat_map(targets, fn target ->
       Enum.map(effects, fn effect ->
         Event.new(origin, target, effect)
