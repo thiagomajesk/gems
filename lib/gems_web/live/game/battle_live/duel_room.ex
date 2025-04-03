@@ -43,9 +43,8 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
             <span>{event.origin}</span>
             <span>{event.timestamp}</span>
             <span>{inspect(event.effect)}</span>
-            <span>{event.target.name}</span>
-            Health: {event.target.health} |
-            Energy: {event.target.energy}
+            <span>From: {event.source.name}</span>
+            <span>To: {event.target.name}</span>
           </li>
         </ul>
       </div>

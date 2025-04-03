@@ -41,17 +41,17 @@ defmodule GEMS.Engine.Battler.Action do
       }
     ]
 
-    map_events(:action, effects, [action.caster])
+    map_events(:action, effects, {action.caster, [action.caster]})
   end
 
   defp events_for_caster(action) do
     effects = filter_effects(action.caster_effects)
-    map_events(:caster, effects, [action.caster])
+    map_events(:caster, effects, {action.caster, [action.caster]})
   end
 
   defp events_for_target(action) do
     effects = filter_effects(action.target_effects)
-    map_events(:target, effects, action.targets)
+    map_events(:target, effects, {action.caster, action.targets})
   end
 
   defp filter_effects(effects) do
@@ -61,10 +61,10 @@ defmodule GEMS.Engine.Battler.Action do
     end)
   end
 
-  defp map_events(origin, effects, targets) do
+  defp map_events(origin, effects, {source, targets}) do
     Enum.flat_map(targets, fn target ->
       Enum.map(effects, fn effect ->
-        Event.new(origin, target, effect)
+        Event.new(origin, source, target, effect)
       end)
     end)
   end

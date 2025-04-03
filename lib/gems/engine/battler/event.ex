@@ -15,12 +15,15 @@ defmodule GEMS.Engine.Battler.Event do
     field :effect, GEMS.Database.Dynamic, types: @effect_types_mapping
 
     embeds_one :icon, GEMS.Database.GameIcon
+
+    embeds_one :source, GEMS.Engine.Battler.Actor
     embeds_one :target, GEMS.Engine.Battler.Actor
   end
 
-  def new(origin, target, effect) do
+  def new(origin, source, target, effect) do
     %Event{
       origin: origin,
+      source: source,
       target: target,
       effect: effect,
       icon: get_icon(effect),
