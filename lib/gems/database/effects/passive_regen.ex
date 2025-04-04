@@ -1,4 +1,4 @@
-defmodule GEMS.Database.Effects.ActionCost do
+defmodule GEMS.Database.Effects.PassiveRegen do
   use Ecto.Schema
 
   import Ecto.Changeset

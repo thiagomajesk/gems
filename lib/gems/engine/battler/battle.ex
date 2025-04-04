@@ -58,12 +58,14 @@ defmodule GEMS.Engine.Battler.Battle do
 
   def remove_states(%Battle{} = battle), do: battle
 
-  def replace_actor(%Battle{} = battle, %Actor{} = actor) do
-    Map.update!(battle, :actors, fn actors ->
-      Enum.map(actors, fn existing ->
-        if Actor.self?(existing, actor),
-          do: actor,
-          else: existing
+  def replace_actors(%Battle{} = battle, actors) do
+    Enum.reduce(actors, battle, fn actor, battle ->
+      Map.update!(battle, :actors, fn actors ->
+        Enum.map(actors, fn existing ->
+          if Actor.self?(existing, actor),
+            do: actor,
+            else: existing
+        end)
       end)
     end)
   end

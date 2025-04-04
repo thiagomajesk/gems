@@ -2,49 +2,36 @@ defmodule GEMS.Engine.Battler.Event do
   use Ecto.Schema
 
   alias __MODULE__
-  alias GEMS.Database.Effects.ActionCost
-  alias GEMS.Database.Effects.HealthDamage
+  alias GEMS.Engine.Battler.Effect
 
-  @origins [:system, :action, :caster, :target]
   @effect_types_mapping GEMS.Engine.Constants.effect_types_mappings()
 
+  @primary_key false
   embedded_schema do
-    field :origin, Ecto.Enum, values: @origins
-    field :description, :string
     field :timestamp, :utc_datetime_usec
 
-    field :effect, GEMS.Database.Dynamic, types: @effect_types_mapping
-
-    embeds_one :icon, GEMS.Database.GameIcon
+    field :effects, {:array, GEMS.Database.Dynamic}, types: @effect_types_mapping
 
     embeds_one :source, GEMS.Engine.Battler.Actor
     embeds_one :target, GEMS.Engine.Battler.Actor
   end
 
-  def new(origin, source, target, effect) do
+  def new(source, target, effects) do
     %Event{
-      origin: origin,
       source: source,
       target: target,
-      effect: effect,
-      icon: get_icon(effect),
-      description: describe(effect),
+      effects: effects,
       timestamp: DateTime.utc_now()
     }
   end
 
-  def commit_effect(%Event{effect: %ActionCost{} = effect} = event) do
-    event.target
-    |> Map.update!(:health, &(&1 - effect.health_cost))
-    |> Map.update!(:energy, &(&1 - effect.energy_cost))
+  def apply_effects(%Event{} = event) do
+    event.effects
+    |> Enum.reverse()
+    |> Enum.reduce(event, fn effect, event ->
+      Map.update!(event, :target, fn target ->
+        Effect.apply_effect(effect, target)
+      end)
+    end)
   end
-
-  def commit_effect(%Event{effect: %HealthDamage{} = effect} = event) do
-    Map.update!(event.target, :health, &(&1 - effect.damage_amount))
-  end
-
-  def commit_effect(%Event{} = event), do: event.target
-
-  defp get_icon(_effect), do: nil
-  defp describe(_effect), do: nil
 end

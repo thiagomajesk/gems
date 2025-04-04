@@ -4,6 +4,7 @@ defmodule GEMS.Engine.Battler.Turn do
   alias __MODULE__
   alias GEMS.Engine.Battler.Actor
   alias GEMS.Engine.Battler.Action
+  alias GEMS.Engine.Battler.Event
 
   embedded_schema do
     field :summary, :map, default: %{}
@@ -26,27 +27,42 @@ defmodule GEMS.Engine.Battler.Turn do
     |> Enum.reduce_while(turn, fn action_pattern, turn ->
       action = build_action(action_pattern, turn)
 
-      if action_can_be_performed?(action) and
+      if action_can_be_performed?(action, turn) and
            action_pattern_matches?(action_pattern, turn),
          do: {:halt, %{turn | action: action}},
          else: {:cont, turn}
     end)
   end
 
-  def generate_events(%Turn{action: nil} = turn), do: turn
+  def create_events(%Turn{action: nil} = turn), do: turn
 
-  def generate_events(%Turn{action: action} = turn) do
-    events = Action.events_for(action)
+  def create_events(%Turn{} = turn) do
+    dbg(turn.action)
+    caster_events = events_for(turn.action.caster_effects, turn.leader, [turn.leader])
+    target_events = events_for(turn.action.target_effects, turn.leader, turn.action.targets)
 
-    Enum.reduce(events, turn, fn event, turn ->
-      Map.update!(turn, :events, &[event | &1])
-    end)
+    %{turn | events: Enum.concat(caster_events, target_events)}
   end
 
-  defp action_can_be_performed?(action) do
+  def process_events(%Turn{events: []} = turn), do: turn
+
+  def process_events(%Turn{} = turn) do
+    events =
+      turn.events
+      |> Enum.reverse()
+      |> Enum.map(&Event.apply_effects/1)
+
+    updated = Enum.map(events, & &1.target)
+
+    turn
+    |> Map.put(:events, events)
+    |> Map.put(:updated, updated)
+  end
+
+  defp action_can_be_performed?(action, turn) do
     Enum.any?(action.targets) and
-      action.caster.health >= action.health_cost and
-      action.caster.energy >= action.energy_cost
+      turn.leader.health >= action.health_cost and
+      turn.leader.energy >= action.energy_cost
   end
 
   defp action_pattern_matches?(%{condition: :always}, _turn),
@@ -89,7 +105,6 @@ defmodule GEMS.Engine.Battler.Turn do
     %Action{
       name: skill.name,
       affinity: skill.affinity,
-      caster: turn.leader,
       targets: selected_targets,
       health_cost: skill.health_cost,
       energy_cost: skill.energy_cost,
@@ -106,5 +121,21 @@ defmodule GEMS.Engine.Battler.Turn do
     random_targets = Enum.take_random(remaining, skill.random_targets)
 
     Enum.concat(fixed_targets, random_targets)
+  end
+
+  defp events_for([], _source, _targets), do: []
+
+  defp events_for(effects, source, targets) do
+    Enum.map(targets, fn target ->
+      effects = filter_effects(effects)
+      Event.new(source, target, effects)
+    end)
+  end
+
+  defp filter_effects(effects) do
+    Enum.filter(effects, fn
+      %{chance: chance} -> chance >= :rand.uniform()
+      _event -> true
+    end)
   end
 end
