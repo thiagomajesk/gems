@@ -37,7 +37,6 @@ defmodule GEMS.Engine.Battler.Turn do
   def create_events(%Turn{action: nil} = turn), do: turn
 
   def create_events(%Turn{} = turn) do
-    dbg(turn.action)
     caster_events = events_for(turn.action.caster_effects, turn.leader, [turn.leader])
     target_events = events_for(turn.action.target_effects, turn.leader, turn.action.targets)
 

@@ -87,7 +87,11 @@ defmodule GEMS.Engine.Constants do
 
   def effect_types_mappings,
     do: [
+      action_cost: GEMS.Database.Effects.ActionCost,
+      apply_status: GEMS.Database.Effects.ApplyStatus,
+      health_drain: GEMS.Database.Effects.HealthDrain,
       health_damage: GEMS.Database.Effects.HealthDamage,
-      apply_status: GEMS.Database.Effects.ApplyStatus
+      passive_regen: GEMS.Database.Effects.PassiveRegen,
+      health_regen: GEMS.Database.Effects.HealthRegen
     ]
 end

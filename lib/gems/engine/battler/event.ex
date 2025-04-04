@@ -29,9 +29,10 @@ defmodule GEMS.Engine.Battler.Event do
     event.effects
     |> Enum.reverse()
     |> Enum.reduce(event, fn effect, event ->
-      Map.update!(event, :target, fn target ->
-        Effect.apply_effect(effect, target)
-      end)
+      case Effect.apply_effect(effect, event.source, event.target) do
+        target when is_struct(target) -> %{event | target: target}
+        {source, target} -> %{event | source: source, target: target}
+      end
     end)
   end
 end
