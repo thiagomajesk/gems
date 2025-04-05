@@ -9,6 +9,7 @@ defmodule GEMS.Engine.Battler.Turn do
   embedded_schema do
     field :number, :integer, default: 0
 
+    embeds_one :leader, GEMS.Engine.Battler.Actor
     embeds_one :actors, GEMS.Engine.Battler.Actor
     embeds_one :action, GEMS.Engine.Battler.Action
 
@@ -16,26 +17,35 @@ defmodule GEMS.Engine.Battler.Turn do
   end
 
   def new(number, actors) do
-    # The turn leader (active unit) will always be the first actor
-    actors = Enum.sort_by(actors, &{&1.charge, :rand.uniform()})
-    %Turn{number: number, actors: actors, events: []}
+    # Sort the actors by charge to determine who's acting this turn (leader).
+    # We only store store the leader snapshot in the turn struct to consume its current state.
+    # We should NEVER rely on the leader to determine the current actor's state when applying transformations.
+    [leader | others] =
+      actors
+      |> Enum.reject(&Actor.dead?/1)
+      |> Enum.sort_by(&{&1.charge, :rand.uniform()})
+
+    %Turn{
+      number: number,
+      leader: leader,
+      actors: [leader | others],
+      events: []
+    }
   end
 
   @doc """
   Chooses the action to be executed this turn.
   """
   def choose_action(%Turn{} = turn) do
-    [caster | others] = turn.actors
-
-    caster.action_patterns
+    turn.leader.action_patterns
     |> Enum.sort_by(& &1.priority)
     |> Enum.reduce_while(turn, fn action_pattern, turn ->
-      valid_targets = filter_targets(action_pattern, caster, others)
+      valid_targets = filter_targets(action_pattern, turn)
       final_targets = acquire_targets(action_pattern, valid_targets)
 
       action = build_action(action_pattern, final_targets)
 
-      if action_can_be_casted?(action, caster) and
+      if action_can_be_casted?(action, turn.leader) and
            action_pattern_matches?(action_pattern, turn),
          do: {:halt, %{turn | action: action}},
          else: {:cont, turn}
@@ -87,17 +97,17 @@ defmodule GEMS.Engine.Battler.Turn do
     Enum.concat(fixed_targets, random_targets)
   end
 
-  defp filter_targets(%{skill: %{target_scope: :self}}, caster, _others),
-    do: [caster]
+  defp filter_targets(%{skill: %{target_scope: :self}}, turn),
+    do: [turn.leader]
 
-  defp filter_targets(%{skill: %{target_scope: :anyone}}, _caster, others),
-    do: others
+  defp filter_targets(%{skill: %{target_scope: :anyone}}, turn),
+    do: turn.actors
 
-  defp filter_targets(%{skill: %{target_scope: :ally}}, caster, others),
-    do: Enum.filter(others, &Actor.ally?(&1, caster))
+  defp filter_targets(%{skill: %{target_scope: :ally}}, turn),
+    do: Enum.filter(turn.actors, &Actor.ally?(&1, turn.leader))
 
-  defp filter_targets(%{skill: %{target_scope: :enemy}}, caster, others),
-    do: Enum.filter(others, &Actor.enemy?(&1, caster))
+  defp filter_targets(%{skill: %{target_scope: :enemy}}, turn),
+    do: Enum.filter(turn.actors, &Actor.enemy?(&1, turn.leader))
 
   defp action_can_be_casted?(action, caster) do
     Enum.any?(action.target_ids) and
