@@ -26,9 +26,9 @@ defmodule GEMS.Engine.Battler.Effect do
     field :chance, :float, default: 1.0
     field :target, Ecto.Enum, values: @targets
 
-    field :on_hit, {:array, GEMS.Database.Dynamic}, types: @effect_types_mappings
-    field :on_miss, {:array, GEMS.Database.Dynamic}, types: @effect_types_mappings
-    field :on_crit, {:array, GEMS.Database.Dynamic}, types: @effect_types_mappings
+    field :on_hit, GEMS.Database.Dynamic, types: @effect_types_mappings
+    field :on_miss, GEMS.Database.Dynamic, types: @effect_types_mappings
+    field :on_crit, GEMS.Database.Dynamic, types: @effect_types_mappings
   end
 
   def changeset(effect, attrs) do

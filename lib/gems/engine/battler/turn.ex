@@ -140,11 +140,15 @@ defmodule GEMS.Engine.Battler.Turn do
       action_pattern.maximum_energy >= caster.energy
   end
 
+  defp process_caster_effects(turn, []), do: turn
+
   defp process_caster_effects(turn, effects) do
     [caster | _others] = turn.actors
 
     process_effects(turn, caster, [caster], effects)
   end
+
+  defp process_target_effects(turn, []), do: turn
 
   defp process_target_effects(turn, effects) do
     [caster | _others] = turn.actors
