@@ -20,8 +20,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :target_number, :integer, null: false
       add :random_targets, :integer, null: false
 
-      add :source_effects, :map, null: true
-      add :target_effects, :map, null: true
+      add :effects, :map, null: true
     end
 
     create unique_index(:skills, :code)

@@ -1,10 +1,41 @@
 defmodule GEMS.Engine.Battler.Effect do
+  use Ecto.Schema
+
+  import Ecto.Changeset
+
   alias GEMS.Database.Effects.HealthRegen
   alias GEMS.Database.Effects.HealthDrain
   alias GEMS.Database.Effects.ApplyStatus
   alias GEMS.Database.Effects.ActionCost
   alias GEMS.Database.Effects.HealthDamage
   alias GEMS.Database.Effects.PassiveRegen
+
+  @targets [
+    :caster,
+    :target,
+    :caster_group_inclusive,
+    :caster_group_exclusive,
+    :target_group_inclusive,
+    :target_group_exclusive
+  ]
+
+  @effect_types_mappings GEMS.Engine.Constants.effect_types_mappings()
+
+  @primary_key false
+  embedded_schema do
+    field :chance, :float, default: 1.0
+    field :target, Ecto.Enum, values: @targets
+
+    field :on_hit, {:array, GEMS.Database.Dynamic}, types: @effect_types_mappings
+    field :on_miss, {:array, GEMS.Database.Dynamic}, types: @effect_types_mappings
+    field :on_crit, {:array, GEMS.Database.Dynamic}, types: @effect_types_mappings
+  end
+
+  def changeset(effect, attrs) do
+    effect
+    |> cast(attrs, [:chance, :target, :on_hit, :on_miss, :on_crit])
+    |> validate_required([:chance, :target])
+  end
 
   def apply_effect(%ActionCost{} = effect, _source, target) do
     target

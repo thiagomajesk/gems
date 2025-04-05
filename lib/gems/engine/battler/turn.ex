@@ -7,111 +7,76 @@ defmodule GEMS.Engine.Battler.Turn do
   alias GEMS.Engine.Battler.Event
 
   embedded_schema do
-    field :summary, :map, default: %{}
     field :number, :integer, default: 0
 
-    embeds_one :leader, GEMS.Engine.Battler.Actor
     embeds_one :actors, GEMS.Engine.Battler.Actor
     embeds_one :action, GEMS.Engine.Battler.Action
 
     embeds_many :events, GEMS.Engine.Battler.Event
   end
 
-  def new(number, leader, actors) do
-    %Turn{number: number, leader: leader, actors: actors}
+  def new(number, actors) do
+    # The turn leader (active unit) will always be the first actor
+    actors = Enum.sort_by(actors, &{&1.charge, :rand.uniform()})
+    %Turn{number: number, actors: actors, events: []}
   end
 
   @doc """
-  Picks the turn action based on actors participating on the turn.
-  The next actor in line (source) is chosen based on the charge gauge.
-  Then the action is chosen based on the existing source's action patterns.
+  Chooses the action to be executed this turn.
   """
-  def choose_action(%Turn{actors: []} = turn), do: turn
-
   def choose_action(%Turn{} = turn) do
-    turn.leader.action_patterns
+    [caster | others] = turn.actors
+
+    caster.action_patterns
     |> Enum.sort_by(& &1.priority)
     |> Enum.reduce_while(turn, fn action_pattern, turn ->
-      filtered_targets = filter_targets(action_pattern, turn.leader, turn.actors)
-      selected_targets = select_targets(action_pattern, filtered_targets)
-      action = build_action(action_pattern, turn.leader, selected_targets)
+      valid_targets = filter_targets(action_pattern, caster, others)
+      final_targets = acquire_targets(action_pattern, valid_targets)
 
-      if action_pattern_matches?(action_pattern, turn.leader, turn) and
-           action_can_be_performed?(action),
+      action = build_action(action_pattern, final_targets)
+
+      if action_can_be_casted?(action, caster) and
+           action_pattern_matches?(action_pattern, turn),
          do: {:halt, %{turn | action: action}},
          else: {:cont, turn}
     end)
   end
 
   @doc """
-  Processes the turn action by creating the respective events
-  from the source and applying the effects to the respective targets.
+  Processes the turn action by creating the respective events.
   """
   def process_action(%Turn{action: nil} = turn), do: turn
 
   def process_action(%Turn{} = turn) do
+    %{action: %{effects: effects}} = turn
+    effects = Enum.group_by(effects, & &1.target)
+
+    # We want to process the available events step by step
+    # and retrieve the target information directly from the turn.
+    # This way, the turn can always provide the current actor state.
+
     turn
-    |> process_source_effects()
-    |> process_target_effects()
+    |> process_caster_effects(Map.get(effects, :caster, []))
+    |> process_target_effects(Map.get(effects, :target, []))
   end
 
-  defp process_source_effects(turn) do
-    process_effects(
-      turn,
-      [turn.action.source],
-      turn.action.source_effects
-    )
-  end
+  defp build_action(%{skill: skill}, targets) do
+    # The target information should be limited to ids so we can
+    # avoid the woes of caching the actor state inside the action.
+    # When processing the action, we'll source the actual actor from the turn.
+    target_ids = Enum.map(targets, & &1.id)
 
-  defp process_target_effects(turn) do
-    process_effects(
-      turn,
-      turn.action.targets,
-      turn.action.target_effects
-    )
-  end
-
-  defp process_effects(turn, targets, effects) do
-    Enum.reduce(targets, turn, fn target, turn ->
-      event =
-        turn.action.source
-        |> Event.new(target, effects)
-        |> Event.apply_effects()
-
-      turn
-      |> Map.update!(:events, &[event | &1])
-      # Action source and Action targets are outdated (desynched)
-      |> put_in([:action, :source], event.source)
-      |> replace_actors([event.source, event.target])
-    end)
-  end
-
-  defp build_action(%{skill: skill}, source, targets) do
     %Action{
       name: skill.name,
+      effects: skill.effects,
+      target_ids: target_ids,
       affinity: skill.affinity,
-      source: source,
-      targets: targets,
       health_cost: skill.health_cost,
-      energy_cost: skill.energy_cost,
-      source_effects: skill.source_effects,
-      target_effects: skill.target_effects
+      energy_cost: skill.energy_cost
     }
   end
 
-  defp filter_targets(%{skill: %{target_scope: :self}}, source, actors),
-    do: Enum.filter(actors, &Actor.self?(&1, source))
-
-  defp filter_targets(%{skill: %{target_scope: :anyone}}, source, actors),
-    do: Enum.reject(actors, &Actor.self?(&1, source))
-
-  defp filter_targets(%{skill: %{target_scope: :ally}}, source, actors),
-    do: Enum.filter(actors, &Actor.ally?(&1, source))
-
-  defp filter_targets(%{skill: %{target_scope: :enemy}}, source, actors),
-    do: Enum.filter(actors, &Actor.enemy?(&1, source))
-
-  defp select_targets(%{skill: skill}, actors) do
+  defp acquire_targets(%{skill: skill}, actors) do
     sorted = Enum.sort_by(actors, & &1.aggro, :desc)
     fixed_targets = Enum.take(sorted, skill.target_number)
 
@@ -121,31 +86,75 @@ defmodule GEMS.Engine.Battler.Turn do
     Enum.concat(fixed_targets, random_targets)
   end
 
-  defp action_pattern_matches?(%{condition: :always}, _source, _turn),
+  defp filter_targets(%{skill: %{target_scope: :self}}, caster, _others),
+    do: [caster]
+
+  defp filter_targets(%{skill: %{target_scope: :anyone}}, _caster, others),
+    do: others
+
+  defp filter_targets(%{skill: %{target_scope: :ally}}, caster, others),
+    do: Enum.filter(others, &Actor.ally?(&1, caster))
+
+  defp filter_targets(%{skill: %{target_scope: :enemy}}, caster, others),
+    do: Enum.filter(others, &Actor.enemy?(&1, caster))
+
+  defp action_can_be_casted?(action, caster) do
+    Enum.any?(action.target_ids) and
+      caster.health >= action.health_cost and
+      caster.energy >= action.energy_cost
+  end
+
+  defp action_pattern_matches?(%{condition: :always}, _turn),
     do: true
 
-  defp action_pattern_matches?(%{condition: :random} = action_pattern, _source, _turn),
+  defp action_pattern_matches?(%{condition: :random} = action_pattern, _turn),
     do: action_pattern.chance >= :rand.uniform()
 
-  defp action_pattern_matches?(%{condition: :turn_number} = action_pattern, _source, turn) do
+  defp action_pattern_matches?(%{condition: :turn_number} = action_pattern, turn) do
     turn.number >= action_pattern.start_turn and
       rem(turn.number - action_pattern.start_turn, action_pattern.every_turn) == 0
   end
 
-  defp action_pattern_matches?(%{condition: :health_number} = action_pattern, source, _turn) do
-    action_pattern.minimum_health <= source.health and
-      action_pattern.maximum_health >= source.health
+  defp action_pattern_matches?(%{condition: :health_number} = action_pattern, turn) do
+    [caster | _others] = turn.actors
+
+    action_pattern.minimum_health <= caster.health and
+      action_pattern.maximum_health >= caster.health
   end
 
-  defp action_pattern_matches?(%{condition: :energy_number} = action_pattern, source, _turn) do
-    action_pattern.minimum_energy <= source.energy and
-      action_pattern.maximum_energy >= source.energy
+  defp action_pattern_matches?(%{condition: :energy_number} = action_pattern, turn) do
+    [caster | _others] = turn.actors
+
+    action_pattern.minimum_energy <= caster.energy and
+      action_pattern.maximum_energy >= caster.energy
   end
 
-  defp action_can_be_performed?(action) do
-    Enum.any?(action.targets) and
-      action.source.health >= action.health_cost and
-      action.source.energy >= action.energy_cost
+  defp process_caster_effects(turn, effects) do
+    [caster | _others] = turn.actors
+
+    process_effects(turn, caster, [caster], effects)
+  end
+
+  defp process_target_effects(turn, effects) do
+    [caster | _others] = turn.actors
+
+    %{action: %{target_ids: target_ids}} = turn
+    targets = Enum.filter(turn.actors, &(&1.id in target_ids))
+
+    process_effects(turn, caster, targets, effects)
+  end
+
+  defp process_effects(turn, caster, targets, effects) do
+    Enum.reduce(targets, turn, fn target, turn ->
+      event =
+        caster
+        |> Event.new(target, effects)
+        |> Event.apply_effects()
+
+      turn
+      |> Map.update!(:events, &[event | &1])
+      |> replace_actors([event.source, event.target])
+    end)
   end
 
   defp replace_actors(turn, actors) do

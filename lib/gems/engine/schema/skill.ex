@@ -8,15 +8,12 @@ defmodule GEMS.Engine.Schema.Skill do
       :energy_cost,
       :affinity,
       :target_number,
-      :random_targets,
-      :source_effects,
-      :target_effects
+      :random_targets
     ],
     default_preloads: []
 
   @affinities GEMS.Engine.Constants.elements()
   @target_scopes GEMS.Engine.Constants.target_scopes()
-  @effect_types_mappings GEMS.Engine.Constants.effect_types_mappings()
 
   schema "skills" do
     field :name, :string
@@ -29,17 +26,10 @@ defmodule GEMS.Engine.Schema.Skill do
     field :target_number, :integer, default: 1
     field :random_targets, :integer, default: 0
 
-    field :source_effects, {:array, GEMS.Database.Dynamic},
-      types: @effect_types_mappings,
-      default: []
-
-    field :target_effects, {:array, GEMS.Database.Dynamic},
-      types: @effect_types_mappings,
-      default: []
+    belongs_to :type, GEMS.Engine.Schema.SkillType
 
     embeds_one :icon, GEMS.Database.GameIcon, on_replace: :delete
-
-    belongs_to :type, GEMS.Engine.Schema.SkillType
+    embeds_many :effects, GEMS.Engine.Battler.Effect, on_replace: :delete
   end
 
   def build_changeset(skill, attrs, opts) do
@@ -47,6 +37,7 @@ defmodule GEMS.Engine.Schema.Skill do
 
     changeset
     |> cast_embed(:icon)
+    |> cast_embed(:effects)
     |> unique_constraint(:name)
     |> unique_constraint(:code)
   end

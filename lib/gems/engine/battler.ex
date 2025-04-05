@@ -32,14 +32,8 @@ defmodule GEMS.Engine.Battler do
   defp build_turn(battle) do
     number = length(battle.turns) + 1
 
-    # The turn leader represents the active unit for the turn...
-    # We want the leader in the turn exclusively for rendering purposes.
-    # This allows us to know the state of the leader before any updates happen.
-    # The leader should also be processed as part of the turn like the other actors.
-    leader = Battle.find_leader(battle)
-
     number
-    |> Turn.new(leader, battle.actors)
+    |> Turn.new(battle.actors)
     |> Turn.choose_action()
     |> Turn.process_action()
   end

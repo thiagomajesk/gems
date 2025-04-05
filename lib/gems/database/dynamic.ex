@@ -58,6 +58,9 @@ defmodule GEMS.Database.Dynamic do
 
   def dump(_, _, _), do: :error
 
+  @impl true
+  def embed_as(_, _), do: :dump
+
   defp infer_type(data, types) do
     default = {:error, message: "Could not infer type for: #{inspect(data)}"}
 

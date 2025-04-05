@@ -9,6 +9,7 @@ defmodule GEMS.Engine.Battler.Actor do
   embedded_schema do
     field :name, :string
     field :party, Ecto.Enum, values: @parties
+
     field :health, :integer, default: 0
     field :energy, :integer, default: 0
     field :aggro, :integer, default: 0

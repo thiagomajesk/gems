@@ -4,16 +4,14 @@ defmodule GEMS.Engine.Battler.Event do
   alias __MODULE__
   alias GEMS.Engine.Battler.Effect
 
-  @effect_types_mapping GEMS.Engine.Constants.effect_types_mappings()
-
   @primary_key false
   embedded_schema do
     field :timestamp, :utc_datetime_usec
 
-    field :effects, {:array, GEMS.Database.Dynamic}, types: @effect_types_mapping
-
     embeds_one :source, GEMS.Engine.Battler.Actor
     embeds_one :target, GEMS.Engine.Battler.Actor
+
+    embeds_many :effects, GEMS.Engine.Battler.Effect
   end
 
   def new(source, target, effects) do

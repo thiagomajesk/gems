@@ -4,12 +4,11 @@ defmodule GEMS.Database.Effects.ApplyStatus do
   import Ecto.Changeset
 
   @required [:status]
-  @optional [:chance, :stacks]
+  @optional [:stacks]
 
   @primary_key false
   embedded_schema do
     field :status, Ecto.Enum, values: [:poisoned]
-    field :chance, :float, default: 1.0
     field :stacks, :integer, default: 1
   end
 
