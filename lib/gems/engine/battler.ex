@@ -18,36 +18,34 @@ defmodule GEMS.Engine.Battler do
   end
 
   defp upkeep_phase(battle) do
-    battle
-    |> Battle.charge_actors()
-    |> Battle.apply_states()
+    Battle.charge_actors(battle)
   end
 
   defp combat_phase(battle) do
     turn = build_turn(battle)
 
     battle
-    |> Battle.replace_actors(turn.updated)
+    |> Battle.replace_actors(turn.actors)
     |> Map.update!(:turns, &[turn | &1])
   end
 
   defp build_turn(battle) do
     number = length(battle.turns) + 1
 
+    # The turn leader represents the active unit for the turn...
+    # We want the leader in the turn exclusively for rendering purposes.
+    # This allows us to know the state of the leader before any updates happen.
+    # The leader should also be processed as part of the turn like the other actors.
     leader = Battle.find_leader(battle)
-    actors = Enum.reject(battle.actors, &Actor.self?(&1, leader))
 
     number
-    |> Turn.new(leader, actors)
+    |> Turn.new(leader, battle.actors)
     |> Turn.choose_action()
-    |> Turn.create_events()
-    |> Turn.process_events()
+    |> Turn.process_action()
   end
 
   defp cleanup_phase(battle) do
-    battle
-    |> Battle.remove_states()
-    |> Battle.decrease_aggro()
+    Battle.decrease_aggro(battle)
   end
 
   defp checks_phase(battle) do

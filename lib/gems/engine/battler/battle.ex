@@ -54,9 +54,11 @@ defmodule GEMS.Engine.Battler.Battle do
     end)
   end
 
-  def apply_states(%Battle{} = battle), do: battle
-
-  def remove_states(%Battle{} = battle), do: battle
+  def find_leader(%Battle{} = battle) do
+    battle.actors
+    |> Enum.filter(&Actor.alive?/1)
+    |> Enum.max_by(&{&1.charge, :rand.uniform()})
+  end
 
   def replace_actors(%Battle{} = battle, actors) do
     Enum.reduce(actors, battle, fn actor, battle ->
@@ -68,12 +70,6 @@ defmodule GEMS.Engine.Battler.Battle do
         end)
       end)
     end)
-  end
-
-  def find_leader(%Battle{} = battle) do
-    battle.actors
-    |> Enum.reject(&Actor.dead?/1)
-    |> Enum.max_by(&{&1.charge, :rand.uniform()})
   end
 
   defp relative_speed(actor, total_speed) do

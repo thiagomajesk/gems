@@ -9,7 +9,7 @@ defmodule GEMS.Engine.Schema.Skill do
       :affinity,
       :target_number,
       :random_targets,
-      :caster_effects,
+      :source_effects,
       :target_effects
     ],
     default_preloads: []
@@ -29,7 +29,7 @@ defmodule GEMS.Engine.Schema.Skill do
     field :target_number, :integer, default: 1
     field :random_targets, :integer, default: 0
 
-    field :caster_effects, {:array, GEMS.Database.Dynamic},
+    field :source_effects, {:array, GEMS.Database.Dynamic},
       types: @effect_types_mappings,
       default: []
 

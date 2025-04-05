@@ -128,7 +128,7 @@ defmodule GEMS.Engine.Battler.TurnTest do
       target_scope: :self,
       target_number: 1,
       random_targets: 0,
-      caster_effects: [],
+      source_effects: [],
       target_effects: []
     }
 end

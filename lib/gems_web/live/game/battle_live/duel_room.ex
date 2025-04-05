@@ -41,7 +41,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
           </li>
         </ul>
         <div class="grid grid-cols-2 gap-4 mt-4">
-          <.actor_card :for={actor <- turn.updated} actor={actor} />
+          <.actor_card :for={actor <- turn.actors} actor={actor} />
         </div>
       </div>
     </div>

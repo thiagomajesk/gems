@@ -20,7 +20,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :target_number, :integer, null: false
       add :random_targets, :integer, null: false
 
-      add :caster_effects, :map, null: true
+      add :source_effects, :map, null: true
       add :target_effects, :map, null: true
     end
 
