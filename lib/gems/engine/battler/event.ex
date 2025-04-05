@@ -26,6 +26,7 @@ defmodule GEMS.Engine.Battler.Event do
   def apply_effects(%Event{} = event) do
     event.effects
     |> Enum.reverse()
+    |> Enum.filter(&(&1.chance >= :rand.uniform()))
     |> Enum.reduce(event, fn effect, event ->
       case Effect.apply_effect(effect, event.source, event.target) do
         target when is_struct(target) -> %{event | target: target}

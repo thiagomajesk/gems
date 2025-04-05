@@ -71,6 +71,7 @@ defmodule GEMS.Engine.Battler.Turn do
       effects: skill.effects,
       target_ids: target_ids,
       affinity: skill.affinity,
+      critical?: Enum.random([true, false]),
       health_cost: skill.health_cost,
       energy_cost: skill.energy_cost
     }

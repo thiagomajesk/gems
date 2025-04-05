@@ -8,7 +8,8 @@ defmodule GEMS.Engine.Schema.Skill do
       :energy_cost,
       :affinity,
       :target_number,
-      :random_targets
+      :random_targets,
+      :critical_hits
     ],
     default_preloads: []
 
@@ -25,6 +26,7 @@ defmodule GEMS.Engine.Schema.Skill do
     field :target_scope, Ecto.Enum, values: @target_scopes
     field :target_number, :integer, default: 1
     field :random_targets, :integer, default: 0
+    field :critical_hits, :boolean, default: false
 
     belongs_to :type, GEMS.Engine.Schema.SkillType
 

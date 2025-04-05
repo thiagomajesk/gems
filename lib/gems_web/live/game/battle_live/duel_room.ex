@@ -19,7 +19,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
       >
         <span>Number: {turn.number}</span>
         <span>
-          <strong>{turn.leader.name}</strong> used <strong>{get_in(turn.action.name)}</strong>
+          <strong>{hd(turn.actors).name}</strong> used <strong>{get_in(turn.action.name)}</strong>
         </span>
         <ul class="flex flex-col gap-2">
           <li

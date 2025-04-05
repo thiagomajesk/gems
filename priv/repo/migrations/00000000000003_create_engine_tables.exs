@@ -19,6 +19,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :target_scope, :string, null: false
       add :target_number, :integer, null: false
       add :random_targets, :integer, null: false
+      add :critical_hits, :boolean, null: false
 
       add :effects, :map, null: true
     end

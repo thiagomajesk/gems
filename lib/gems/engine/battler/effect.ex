@@ -63,6 +63,13 @@ defmodule GEMS.Engine.Battler.Effect do
     {source, target}
   end
 
+  # TODO: REMOVE
+  def apply_effect(_effect, source, target) do
+    source = Map.update!(source, :health, &(&1 + 5))
+    target = Map.update!(target, :health, &(&1 - 5))
+    {source, target}
+  end
+
   def apply_effect(%ApplyStatus{} = _effect, _source, target), do: target
 
   def apply_effect(other_effect, _source, _target),

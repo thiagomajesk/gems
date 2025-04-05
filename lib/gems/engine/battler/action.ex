@@ -2,7 +2,6 @@ defmodule GEMS.Engine.Battler.Action do
   use Ecto.Schema
 
   @affinities GEMS.Engine.Constants.elements()
-  @target_scopes GEMS.Engine.Constants.target_scopes()
 
   embedded_schema do
     field :name, :string
@@ -10,6 +9,7 @@ defmodule GEMS.Engine.Battler.Action do
     field :health_cost, :integer
     field :energy_cost, :integer
 
+    field :critical?, :boolean, default: false
     field :target_ids, {:array, Ecto.UUID}, default: []
 
     embeds_many :effects, GEMS.Engine.Battler.Effect
