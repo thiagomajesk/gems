@@ -8,15 +8,15 @@ defmodule GEMS.Engine.Battler.Event do
   embedded_schema do
     field :timestamp, :utc_datetime_usec
 
-    embeds_one :source, GEMS.Engine.Battler.Actor
+    embeds_one :caster, GEMS.Engine.Battler.Actor
     embeds_one :target, GEMS.Engine.Battler.Actor
 
     embeds_many :effects, GEMS.Engine.Battler.Effect
   end
 
-  def new(source, target, effects) do
+  def new(caster, target, effects) do
     %Event{
-      source: source,
+      caster: caster,
       target: target,
       effects: effects,
       timestamp: DateTime.utc_now()
@@ -28,9 +28,10 @@ defmodule GEMS.Engine.Battler.Event do
     |> Enum.reverse()
     |> Enum.filter(&(&1.chance >= :rand.uniform()))
     |> Enum.reduce(event, fn effect, event ->
-      case Effect.apply_effect(effect, event.source, event.target) do
+      # TODO: Handle the different effects (on_hit, on_miss, on_crit)
+      case Effect.apply_effect(effect.on_hit, event.caster, event.target) do
         target when is_struct(target) -> %{event | target: target}
-        {source, target} -> %{event | source: source, target: target}
+        {caster, target} -> %{event | caster: caster, target: target}
       end
     end)
   end

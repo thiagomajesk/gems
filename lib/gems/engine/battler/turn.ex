@@ -19,7 +19,7 @@ defmodule GEMS.Engine.Battler.Turn do
   def new(number, actors) do
     # Sort the actors by charge to determine who's acting this turn (leader).
     # We only store store the leader snapshot in the turn struct to consume its current state.
-    # We should NEVER rely on the leader to determine the current actor's state when applying transformations.
+    # We should NEVER rely on the leader to determine the current actor's state when applying effects.
     [leader | others] =
       actors
       |> Enum.reject(&Actor.dead?/1)
@@ -45,7 +45,7 @@ defmodule GEMS.Engine.Battler.Turn do
 
       action = build_action(action_pattern, final_targets)
 
-      if action_can_be_casted?(action, turn.leader) and
+      if action_can_be_executed?(action, turn.leader) and
            action_pattern_matches?(action_pattern, turn),
          do: {:halt, %{turn | action: action}},
          else: {:cont, turn}
@@ -109,7 +109,7 @@ defmodule GEMS.Engine.Battler.Turn do
   defp filter_targets(%{skill: %{target_scope: :enemy}}, turn),
     do: Enum.filter(turn.actors, &Actor.enemy?(&1, turn.leader))
 
-  defp action_can_be_casted?(action, caster) do
+  defp action_can_be_executed?(action, caster) do
     Enum.any?(action.target_ids) and
       caster.health >= action.health_cost and
       caster.energy >= action.energy_cost
@@ -127,23 +127,19 @@ defmodule GEMS.Engine.Battler.Turn do
   end
 
   defp action_pattern_matches?(%{condition: :health_number} = action_pattern, turn) do
-    [caster | _others] = turn.actors
-
-    action_pattern.minimum_health <= caster.health and
-      action_pattern.maximum_health >= caster.health
+    action_pattern.minimum_health <= turn.leader.health and
+      action_pattern.maximum_health >= turn.leader.health
   end
 
   defp action_pattern_matches?(%{condition: :energy_number} = action_pattern, turn) do
-    [caster | _others] = turn.actors
-
-    action_pattern.minimum_energy <= caster.energy and
-      action_pattern.maximum_energy >= caster.energy
+    action_pattern.minimum_energy <= turn.leader.energy and
+      action_pattern.maximum_energy >= turn.leader.energy
   end
 
   defp process_caster_effects(turn, []), do: turn
 
   defp process_caster_effects(turn, effects) do
-    [caster | _others] = turn.actors
+    caster = find_caster(turn)
 
     process_effects(turn, caster, [caster], effects)
   end
@@ -151,7 +147,7 @@ defmodule GEMS.Engine.Battler.Turn do
   defp process_target_effects(turn, []), do: turn
 
   defp process_target_effects(turn, effects) do
-    [caster | _others] = turn.actors
+    caster = find_caster(turn)
 
     %{action: %{target_ids: target_ids}} = turn
     targets = Enum.filter(turn.actors, &(&1.id in target_ids))
@@ -168,8 +164,15 @@ defmodule GEMS.Engine.Battler.Turn do
 
       turn
       |> Map.update!(:events, &[event | &1])
-      |> replace_actors([event.source, event.target])
+      |> replace_actors([event.caster, event.target])
     end)
+  end
+
+  defp find_caster(turn) do
+    # Find the updated version of the leader from the turn.
+    # Even though the leader is usually the first actor in the list, it's
+    # safer to rely on the actor's id to find the correct one (just in case).
+    Enum.find(turn.actors, &Actor.self?(&1, turn.leader))
   end
 
   defp replace_actors(turn, actors) do

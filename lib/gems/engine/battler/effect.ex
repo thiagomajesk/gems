@@ -37,41 +37,34 @@ defmodule GEMS.Engine.Battler.Effect do
     |> validate_required([:chance, :target])
   end
 
-  def apply_effect(%ActionCost{} = effect, _source, target) do
+  def apply_effect(%ActionCost{} = effect, _caster, target) do
     target
     |> Map.update!(:health, &(&1 - effect.health))
     |> Map.update!(:energy, &(&1 - effect.energy))
   end
 
-  def apply_effect(%PassiveRegen{} = effect, _source, target) do
+  def apply_effect(%PassiveRegen{} = effect, _caster, target) do
     target
     |> Map.update!(:health, &(&1 + effect.health))
     |> Map.update!(:energy, &(&1 + effect.energy))
   end
 
-  def apply_effect(%HealthDamage{} = effect, _source, target) do
+  def apply_effect(%HealthDamage{} = effect, _caster, target) do
     Map.update!(target, :health, &(&1 - effect.damage_amount))
   end
 
-  def apply_effect(%HealthRegen{} = effect, _source, target) do
+  def apply_effect(%HealthRegen{} = effect, _caster, target) do
     Map.update!(target, :health, &(&1 + effect.amount))
   end
 
-  def apply_effect(%HealthDrain{} = effect, source, target) do
-    source = Map.update!(source, :health, &(&1 + effect.amount))
+  def apply_effect(%HealthDrain{} = effect, caster, target) do
+    caster = Map.update!(caster, :health, &(&1 + effect.amount))
     target = Map.update!(target, :health, &(&1 - effect.amount))
-    {source, target}
+    {caster, target}
   end
 
-  # TODO: REMOVE
-  def apply_effect(_effect, source, target) do
-    source = Map.update!(source, :health, &(&1 + 5))
-    target = Map.update!(target, :health, &(&1 - 5))
-    {source, target}
-  end
+  def apply_effect(%ApplyStatus{} = _effect, _caster, target), do: target
 
-  def apply_effect(%ApplyStatus{} = _effect, _source, target), do: target
-
-  def apply_effect(other_effect, _source, _target),
+  def apply_effect(other_effect, _caster, _target),
     do: raise("Unknown effect type: #{inspect(other_effect)}")
 end

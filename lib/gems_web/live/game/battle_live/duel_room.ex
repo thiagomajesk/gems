@@ -19,7 +19,10 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
       >
         <span>Number: {turn.number}</span>
         <span>
-          <strong>{turn.leader.name}</strong> used <strong>{get_in(turn.action.name)}</strong>
+          <strong>
+            {turn.leader.name} (Health: {turn.leader.health} \ Energy: {turn.leader.energy})
+          </strong>
+          used <strong>{get_in(turn.action.name)}</strong>
         </span>
         <ul class="flex flex-col gap-2">
           <li
@@ -28,7 +31,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
           >
             <span>
               <span class="font-medium text-blue-200">
-                {event.source.name} (Health: {event.source.health} \ Energy: {event.source.energy})
+                {event.caster.name} (Health: {event.caster.health} \ Energy: {event.caster.energy})
               </span>
               did something to
               <span class="font-medium text-red-200">
