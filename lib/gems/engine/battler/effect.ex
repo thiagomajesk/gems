@@ -3,6 +3,7 @@ defmodule GEMS.Engine.Battler.Effect do
 
   import Ecto.Changeset
 
+  alias GEMS.Engine.Battler.Actor
   alias GEMS.Database.Effects.HealthRegen
   alias GEMS.Database.Effects.HealthDrain
   alias GEMS.Database.Effects.ApplyStatus
@@ -45,24 +46,25 @@ defmodule GEMS.Engine.Battler.Effect do
 
   def apply_effect(%PassiveRegen{} = effect, _caster, target) do
     target
-    |> Map.update!(:health, &(&1 + effect.health))
-    |> Map.update!(:energy, &(&1 + effect.energy))
+    |> Actor.change_health(effect.health)
+    |> Actor.change_energy(effect.energy)
   end
 
   def apply_effect(%HealthDamage{} = effect, _caster, target) do
     %{damage_max: max, damage_min: min} = effect
     damage = :rand.uniform(max - min + 1) + min - 1
-    Map.update!(target, :health, &(&1 - damage))
+    Actor.change_health(target, -damage)
   end
 
   def apply_effect(%HealthRegen{} = effect, _caster, target) do
-    Map.update!(target, :health, &(&1 + effect.amount))
+    Actor.change_health(target, effect.amount)
   end
 
   def apply_effect(%HealthDrain{} = effect, caster, target) do
-    caster = Map.update!(caster, :health, &(&1 + effect.amount))
-    target = Map.update!(target, :health, &(&1 - effect.amount))
-    {caster, target}
+    {
+      Actor.change_health(caster, effect.amount),
+      Actor.change_health(target, -effect.amount)
+    }
   end
 
   def apply_effect(%ApplyStatus{} = _effect, _caster, target), do: target

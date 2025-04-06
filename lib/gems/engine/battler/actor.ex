@@ -51,6 +51,24 @@ defmodule GEMS.Engine.Battler.Actor do
   def ally?(%Actor{party: p1}, %Actor{party: p2}), do: p1 == p2
   def enemy?(%Actor{party: p1}, %Actor{party: p2}), do: p1 != p2
 
+  def change_health(%Actor{} = actor, amount) do
+    Map.update!(actor, :health, fn health ->
+      max(0, min(max_health(actor), health + amount))
+    end)
+  end
+
+  def change_energy(%Actor{} = actor, amount) do
+    Map.update!(actor, :energy, fn energy ->
+      max(0, min(max_energy(actor), energy + amount))
+    end)
+  end
+
+  # TODO: Get max health including possible buffs
+  def max_health(%Actor{maximum_health: max}), do: max
+
+  # TODO: Get max energy including possible buffs
+  def max_energy(%Actor{maximum_energy: max}), do: max
+
   @doc """
   Replaces the actors in the list with the updated actors.
   Takes the list (or lookup table) of actors to be replaced.
