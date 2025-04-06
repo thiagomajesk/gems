@@ -25,8 +25,10 @@ defmodule GEMS.Engine.Battler do
     turn = build_turn(battle)
 
     battle
-    |> Battle.replace_actors(turn.actors)
     |> Map.update!(:turns, &[turn | &1])
+    |> Map.update!(:actors, fn actors ->
+      Actor.replace_with(actors, turn.actors)
+    end)
   end
 
   defp build_turn(battle) do

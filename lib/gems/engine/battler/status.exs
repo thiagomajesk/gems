@@ -48,7 +48,7 @@ defmodule GEMS.Engine.Battler.Status do
   - Serenity: Recovers a small amount of Health each turn.
   - Galvanised: Makes the actor immune to all attacks for a short duration.
   - Warded: Greatly reduces elemental damage (Fire, Earth, Water, Air) taken.
-  - Adrenaline: Grants a significant offensive advantage for a limited time, but imposes a penalty afterward (e.g. reduced defense).
+  - Adrenaline: (Berserk) Grants a significant offensive advantage for a limited time, but imposes a penalty afterward (e.g. reduced defense).
   - Inspired: Temporarily reduces skill costs (Health, stamina, etc.) for the actor's abilities.
   """
 end

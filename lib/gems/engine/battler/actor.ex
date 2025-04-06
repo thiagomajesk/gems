@@ -50,4 +50,23 @@ defmodule GEMS.Engine.Battler.Actor do
   def self?(%Actor{id: id1}, %Actor{id: id2}), do: id1 == id2
   def ally?(%Actor{party: p1}, %Actor{party: p2}), do: p1 == p2
   def enemy?(%Actor{party: p1}, %Actor{party: p2}), do: p1 != p2
+
+  @doc """
+  Replaces the actors in the list with the updated actors.
+  Takes the list (or lookup table) of actors to be replaced.
+  """
+  def replace_with([], _updates), do: []
+  def replace_with(actors, []), do: actors
+  def replace_with(actors, updates) when updates == %{}, do: actors
+
+  def replace_with(actors, updates) when is_list(updates) do
+    replace_with(actors, Map.new(updates, &{&1.id, &1}))
+  end
+
+  def replace_with([actor | others], updates) when is_map(updates) do
+    case Map.pop(updates, actor.id) do
+      {nil, updates} -> [actor | replace_with(others, updates)]
+      {updated, updates} -> [updated | replace_with(others, updates)]
+    end
+  end
 end

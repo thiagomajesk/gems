@@ -10,7 +10,7 @@ defmodule GEMS.Engine.Battler.Action do
     field :energy_cost, :integer
 
     field :critical?, :boolean, default: false
-    field :target_ids, {:array, Ecto.UUID}, default: []
+    field :target_ids, {:array, Ecto.UUID}, virtual: true, default: []
 
     embeds_many :effects, GEMS.Engine.Battler.Effect
   end

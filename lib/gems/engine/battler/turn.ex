@@ -9,9 +9,16 @@ defmodule GEMS.Engine.Battler.Turn do
   embedded_schema do
     field :number, :integer, default: 0
 
-    embeds_one :leader, GEMS.Engine.Battler.Actor
     embeds_one :actors, GEMS.Engine.Battler.Actor
     embeds_one :action, GEMS.Engine.Battler.Action
+
+    embeds_one :leader, Leader do
+      field :name, :string
+      field :health, :integer
+      field :energy, :integer
+      field :charge, :integer
+      field :aggro, :integer
+    end
 
     embeds_many :events, GEMS.Engine.Battler.Event
   end
@@ -20,15 +27,15 @@ defmodule GEMS.Engine.Battler.Turn do
     # Sort the actors by charge to determine who's acting this turn (leader).
     # We only store store the leader snapshot in the turn struct to consume its current state.
     # We should NEVER rely on the leader to determine the current actor's state when applying effects.
-    [leader | others] =
+    [actor | others] =
       actors
       |> Enum.reject(&Actor.dead?/1)
       |> Enum.sort_by(&{&1.charge, :rand.uniform()})
 
     %Turn{
       number: number,
-      leader: leader,
-      actors: [leader | others],
+      leader: build_leader(actor),
+      actors: [actor | others],
       events: []
     }
   end
@@ -37,11 +44,13 @@ defmodule GEMS.Engine.Battler.Turn do
   Chooses the action to be executed this turn.
   """
   def choose_action(%Turn{} = turn) do
-    turn.leader.action_patterns
+    leader = fetch_leader(turn)
+
+    leader.action_patterns
     |> Enum.sort_by(& &1.priority)
     |> Enum.reduce_while(turn, fn action_pattern, turn ->
-      valid_targets = filter_targets(action_pattern, turn)
-      final_targets = acquire_targets(action_pattern, valid_targets)
+      valid_targets = filter_targets(action_pattern, leader, turn)
+      final_targets = select_targets(action_pattern, valid_targets)
 
       action = build_action(action_pattern, final_targets)
 
@@ -70,6 +79,17 @@ defmodule GEMS.Engine.Battler.Turn do
     |> process_target_effects(Map.get(effects, :target, []))
   end
 
+  defp build_leader(actor) do
+    %Turn.Leader{
+      id: actor.id,
+      name: actor.name,
+      health: actor.health,
+      energy: actor.energy,
+      charge: actor.charge,
+      aggro: actor.aggro
+    }
+  end
+
   defp build_action(%{skill: skill}, targets) do
     # The target information should be limited to ids so we can
     # avoid the woes of caching the actor state inside the action.
@@ -87,7 +107,7 @@ defmodule GEMS.Engine.Battler.Turn do
     }
   end
 
-  defp acquire_targets(%{skill: skill}, actors) do
+  defp select_targets(%{skill: skill}, actors) do
     sorted = Enum.sort_by(actors, & &1.aggro, :desc)
     fixed_targets = Enum.take(sorted, skill.target_number)
 
@@ -97,17 +117,17 @@ defmodule GEMS.Engine.Battler.Turn do
     Enum.concat(fixed_targets, random_targets)
   end
 
-  defp filter_targets(%{skill: %{target_scope: :self}}, turn),
-    do: [turn.leader]
+  defp filter_targets(%{skill: %{target_scope: :self}}, caster, _turn),
+    do: [caster]
 
-  defp filter_targets(%{skill: %{target_scope: :anyone}}, turn),
+  defp filter_targets(%{skill: %{target_scope: :anyone}}, _caster, turn),
     do: turn.actors
 
-  defp filter_targets(%{skill: %{target_scope: :ally}}, turn),
-    do: Enum.filter(turn.actors, &Actor.ally?(&1, turn.leader))
+  defp filter_targets(%{skill: %{target_scope: :ally}}, caster, turn),
+    do: Enum.filter(turn.actors, &Actor.ally?(&1, caster))
 
-  defp filter_targets(%{skill: %{target_scope: :enemy}}, turn),
-    do: Enum.filter(turn.actors, &Actor.enemy?(&1, turn.leader))
+  defp filter_targets(%{skill: %{target_scope: :enemy}}, caster, turn),
+    do: Enum.filter(turn.actors, &Actor.enemy?(&1, caster))
 
   defp action_can_be_executed?(action, caster) do
     Enum.any?(action.target_ids) and
@@ -139,7 +159,7 @@ defmodule GEMS.Engine.Battler.Turn do
   defp process_caster_effects(turn, []), do: turn
 
   defp process_caster_effects(turn, effects) do
-    caster = find_caster(turn)
+    caster = fetch_leader(turn)
 
     process_effects(turn, caster, [caster], effects)
   end
@@ -147,10 +167,8 @@ defmodule GEMS.Engine.Battler.Turn do
   defp process_target_effects(turn, []), do: turn
 
   defp process_target_effects(turn, effects) do
-    caster = find_caster(turn)
-
-    %{action: %{target_ids: target_ids}} = turn
-    targets = Enum.filter(turn.actors, &(&1.id in target_ids))
+    caster = fetch_leader(turn)
+    targets = fetch_targets(turn)
 
     process_effects(turn, caster, targets, effects)
   end
@@ -164,26 +182,17 @@ defmodule GEMS.Engine.Battler.Turn do
 
       turn
       |> Map.update!(:events, &[event | &1])
-      |> replace_actors([event.caster, event.target])
-    end)
-  end
-
-  defp find_caster(turn) do
-    # Find the updated version of the leader from the turn.
-    # Even though the leader is usually the first actor in the list, it's
-    # safer to rely on the actor's id to find the correct one (just in case).
-    Enum.find(turn.actors, &Actor.self?(&1, turn.leader))
-  end
-
-  defp replace_actors(turn, actors) do
-    Enum.reduce(actors, turn, fn actor, turn ->
-      Map.update!(turn, :actors, fn actors ->
-        Enum.map(actors, fn existing ->
-          if Actor.self?(existing, actor),
-            do: actor,
-            else: existing
-        end)
+      |> Map.update!(:actors, fn actors ->
+        updated = [event.caster, event.target]
+        Actor.replace_with(actors, updated)
       end)
     end)
   end
+
+  # Find the updated version of the leader from the turn.
+  # Even though the leader is usually the first actor in the list, it's
+  # safer to rely on the actor's id to find the correct one (just in case).
+  defp fetch_leader(turn), do: Enum.find(turn.actors, &(&1.id == turn.leader.id))
+  defp fetch_targets(turn), do: fetch_actors(turn, turn.action.target_ids)
+  defp fetch_actors(turn, ids), do: Enum.filter(turn.actors, &(&1.id in ids))
 end
