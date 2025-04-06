@@ -9,7 +9,6 @@ defmodule GEMS.Engine.Battler.Action do
     field :health_cost, :integer
     field :energy_cost, :integer
 
-    field :critical?, :boolean, default: false
     field :target_ids, {:array, Ecto.UUID}, virtual: true, default: []
 
     embeds_many :effects, GEMS.Engine.Battler.Effect

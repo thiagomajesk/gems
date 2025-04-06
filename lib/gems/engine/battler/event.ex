@@ -3,6 +3,7 @@ defmodule GEMS.Engine.Battler.Event do
 
   alias __MODULE__
   alias GEMS.Engine.Battler.Effect
+  alias GEMS.Engine.Battler.Snapshot
 
   @primary_key false
   embedded_schema do
@@ -10,6 +11,9 @@ defmodule GEMS.Engine.Battler.Event do
 
     embeds_one :caster, GEMS.Engine.Battler.Actor
     embeds_one :target, GEMS.Engine.Battler.Actor
+
+    embeds_one :caster_snapshot, GEMS.Engine.Battler.Snapshot
+    embeds_one :target_snapshot, GEMS.Engine.Battler.Snapshot
 
     embeds_many :effects, GEMS.Engine.Battler.Effect
   end
@@ -19,6 +23,8 @@ defmodule GEMS.Engine.Battler.Event do
       caster: caster,
       target: target,
       effects: effects,
+      caster_snapshot: Snapshot.new(caster),
+      target_snapshot: Snapshot.new(target),
       timestamp: DateTime.utc_now()
     }
   end

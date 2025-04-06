@@ -5,20 +5,14 @@ defmodule GEMS.Engine.Battler.Turn do
   alias GEMS.Engine.Battler.Actor
   alias GEMS.Engine.Battler.Action
   alias GEMS.Engine.Battler.Event
+  alias GEMS.Engine.Battler.Snapshot
 
   embedded_schema do
     field :number, :integer, default: 0
 
+    embeds_one :leader, Snapshot
     embeds_one :actors, GEMS.Engine.Battler.Actor
     embeds_one :action, GEMS.Engine.Battler.Action
-
-    embeds_one :leader, Leader do
-      field :name, :string
-      field :health, :integer
-      field :energy, :integer
-      field :charge, :integer
-      field :aggro, :integer
-    end
 
     embeds_many :events, GEMS.Engine.Battler.Event
   end
@@ -34,7 +28,7 @@ defmodule GEMS.Engine.Battler.Turn do
 
     %Turn{
       number: number,
-      leader: build_leader(actor),
+      leader: Snapshot.new(actor),
       actors: [actor | others],
       events: []
     }
@@ -79,17 +73,6 @@ defmodule GEMS.Engine.Battler.Turn do
     |> process_target_effects(Map.get(effects, :target, []))
   end
 
-  defp build_leader(actor) do
-    %Turn.Leader{
-      id: actor.id,
-      name: actor.name,
-      health: actor.health,
-      energy: actor.energy,
-      charge: actor.charge,
-      aggro: actor.aggro
-    }
-  end
-
   defp build_action(%{skill: skill}, targets) do
     # The target information should be limited to ids so we can
     # avoid the woes of caching the actor state inside the action.
@@ -101,7 +84,6 @@ defmodule GEMS.Engine.Battler.Turn do
       effects: skill.effects,
       target_ids: target_ids,
       affinity: skill.affinity,
-      critical?: Enum.random([true, false]),
       health_cost: skill.health_cost,
       energy_cost: skill.energy_cost
     }

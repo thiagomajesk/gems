@@ -50,7 +50,9 @@ defmodule GEMS.Engine.Battler.Effect do
   end
 
   def apply_effect(%HealthDamage{} = effect, _caster, target) do
-    Map.update!(target, :health, &(&1 - effect.damage_amount))
+    %{damage_max: max, damage_min: min} = effect
+    damage = :rand.uniform(max - min + 1) + min - 1
+    Map.update!(target, :health, &(&1 - damage))
   end
 
   def apply_effect(%HealthRegen{} = effect, _caster, target) do
