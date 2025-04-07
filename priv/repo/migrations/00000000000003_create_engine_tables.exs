@@ -35,20 +35,26 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :code, :string, null: false
       add :description, :text, null: true
 
-      add :base_maximum_health, :integer, null: false, default: 0
-      add :base_maximum_energy, :integer, null: false, default: 0
-      add :base_health_regeneration, :integer, null: false, default: 0
-      add :base_energy_regeneration, :integer, null: false, default: 0
-      add :base_physical_armor, :integer, null: false, default: 0
-      add :base_magical_armor, :integer, null: false, default: 0
-      add :base_attack_speed, :integer, null: false, default: 0
-      add :base_accuracy_rating, :integer, null: false, default: 0
-      add :base_evasion_rating, :integer, null: false, default: 0
-      add :base_critical_rating, :integer, null: false, default: 0
-      add :base_recovery_rating, :integer, null: false, default: 0
-      add :base_fortitude_rating, :integer, null: false, default: 0
-      add :base_damage_penetration, :integer, null: false, default: 0
-      add :base_damage_reflection, :integer, null: false, default: 0
+      add :base_damage, :integer, null: false
+      add :base_accuracy, :float, null: false
+      add :base_evasion, :float, null: false
+      add :base_fortitude, :float, null: false
+      add :base_recovery, :float, null: false
+      add :base_maximum_health, :integer, null: false
+      add :base_maximum_energy, :integer, null: false
+      add :base_physical_armor, :integer, null: false
+      add :base_magical_armor, :integer, null: false
+      add :base_attack_speed, :integer, null: false
+      add :base_critical_chance, :float, null: false
+      add :base_critical_multiplier, :float, null: false
+      add :base_damage_penetration, :integer, null: false
+      add :base_damage_reflection, :integer, null: false
+      add :base_health_regeneration, :float, null: false
+      add :base_energy_regeneration, :float, null: false
+      add :base_fire_resistance, :float, null: false
+      add :base_water_resistance, :float, null: false
+      add :base_earth_resistance, :float, null: false
+      add :base_air_resistance, :float, null: false
     end
 
     create unique_index(:classes, :name)
@@ -65,20 +71,26 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
 
       add :class_id, references(:classes), null: false
 
-      add :maximum_health_bonus, :float, null: false, default: 0
-      add :maximum_energy_bonus, :float, null: false, default: 0
-      add :health_regeneration_bonus, :float, null: false, default: 0
-      add :energy_regeneration_bonus, :float, null: false, default: 0
-      add :physical_armor_bonus, :float, null: false, default: 0
-      add :magical_armor_bonus, :float, null: false, default: 0
-      add :attack_speed_bonus, :float, null: false, default: 0
-      add :accuracy_rating_bonus, :float, null: false, default: 0
-      add :evasion_rating_bonus, :float, null: false, default: 0
-      add :critical_rating_bonus, :float, null: false, default: 0
-      add :recovery_rating_bonus, :float, null: false, default: 0
-      add :fortitude_rating_bonus, :float, null: false, default: 0
-      add :damage_penetration_bonus, :float, null: false, default: 0
-      add :damage_reflection_bonus, :float, null: false, default: 0
+      add :damage_bonus, :integer, null: false
+      add :accuracy_bonus, :float, null: false
+      add :evasion_bonus, :float, null: false
+      add :fortitude_bonus, :float, null: false
+      add :recovery_bonus, :float, null: false
+      add :maximum_health_bonus, :integer, null: false
+      add :maximum_energy_bonus, :integer, null: false
+      add :physical_armor_bonus, :integer, null: false
+      add :magical_armor_bonus, :integer, null: false
+      add :attack_speed_bonus, :integer, null: false
+      add :critical_chance_bonus, :float, null: false
+      add :critical_multiplier_bonus, :float, null: false
+      add :damage_penetration_bonus, :integer, null: false
+      add :damage_reflection_bonus, :integer, null: false
+      add :health_regeneration_bonus, :float, null: false
+      add :energy_regeneration_bonus, :float, null: false
+      add :fire_resistance_bonus, :float, null: false
+      add :water_resistance_bonus, :float, null: false
+      add :earth_resistance_bonus, :float, null: false
+      add :air_resistance_bonus, :float, null: false
     end
 
     ################################################################################
@@ -92,25 +104,26 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :image, :string, null: true
       add :type_id, references(:creature_types), null: false
 
-      add :maximum_health, :integer, null: false, default: 0
-      add :maximum_energy, :integer, null: false, default: 0
-      add :health_regeneration, :integer, null: false, default: 0
-      add :energy_regeneration, :integer, null: false, default: 0
-      add :physical_armor, :integer, null: false, default: 0
-      add :magical_armor, :integer, null: false, default: 0
-      add :attack_speed, :integer, null: false, default: 0
-      add :accuracy_rating, :integer, null: false, default: 0
-      add :evasion_rating, :integer, null: false, default: 0
-      add :critical_rating, :integer, null: false, default: 0
-      add :recovery_rating, :integer, null: false, default: 0
-      add :fortitude_rating, :integer, null: false, default: 0
-      add :damage_penetration, :integer, null: false, default: 0
-      add :damage_reflection, :integer, null: false, default: 0
-
-      add :fire_resistance, :integer, null: false, default: 0
-      add :water_resistance, :integer, null: false, default: 0
-      add :earth_resistance, :integer, null: false, default: 0
-      add :air_resistance, :integer, null: false, default: 0
+      add :damage, :integer, null: false
+      add :accuracy, :float, null: false
+      add :evasion, :float, null: false
+      add :fortitude, :float, null: false
+      add :recovery, :float, null: false
+      add :maximum_health, :integer, null: false
+      add :maximum_energy, :integer, null: false
+      add :physical_armor, :integer, null: false
+      add :magical_armor, :integer, null: false
+      add :attack_speed, :integer, null: false
+      add :critical_chance, :float, null: false
+      add :critical_multiplier, :float, null: false
+      add :damage_penetration, :integer, null: false
+      add :damage_reflection, :integer, null: false
+      add :health_regeneration, :float, null: false
+      add :energy_regeneration, :float, null: false
+      add :fire_resistance, :float, null: false
+      add :water_resistance, :float, null: false
+      add :earth_resistance, :float, null: false
+      add :air_resistance, :float, null: false
     end
 
     create unique_index(:creatures, :code)
@@ -157,25 +170,26 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :price, :integer, null: true
       add :affinity, :string, null: true
 
-      add :maximum_health_bonus, :float, null: false, default: 0
-      add :maximum_energy_bonus, :float, null: false, default: 0
-      add :health_regeneration_bonus, :float, null: false, default: 0
-      add :energy_regeneration_bonus, :float, null: false, default: 0
-      add :physical_armor_bonus, :float, null: false, default: 0
-      add :magical_armor_bonus, :float, null: false, default: 0
-      add :attack_speed_bonus, :float, null: false, default: 0
-      add :accuracy_rating_bonus, :float, null: false, default: 0
-      add :evasion_rating_bonus, :float, null: false, default: 0
-      add :critical_rating_bonus, :float, null: false, default: 0
-      add :recovery_rating_bonus, :float, null: false, default: 0
-      add :fortitude_rating_bonus, :float, null: false, default: 0
-      add :damage_penetration_bonus, :float, null: false, default: 0
-      add :damage_reflection_bonus, :float, null: false, default: 0
-
-      add :fire_resistance_bonus, :float, null: false, default: 0
-      add :water_resistance_bonus, :float, null: false, default: 0
-      add :earth_resistance_bonus, :float, null: false, default: 0
-      add :air_resistance_bonus, :float, null: false, default: 0
+      add :damage_bonus, :integer, null: false
+      add :accuracy_bonus, :float, null: false
+      add :evasion_bonus, :float, null: false
+      add :fortitude_bonus, :float, null: false
+      add :recovery_bonus, :float, null: false
+      add :maximum_health_bonus, :integer, null: false
+      add :maximum_energy_bonus, :integer, null: false
+      add :physical_armor_bonus, :integer, null: false
+      add :magical_armor_bonus, :integer, null: false
+      add :attack_speed_bonus, :integer, null: false
+      add :critical_chance_bonus, :float, null: false
+      add :critical_multiplier_bonus, :float, null: false
+      add :damage_penetration_bonus, :integer, null: false
+      add :damage_reflection_bonus, :integer, null: false
+      add :health_regeneration_bonus, :float, null: false
+      add :energy_regeneration_bonus, :float, null: false
+      add :fire_resistance_bonus, :float, null: false
+      add :water_resistance_bonus, :float, null: false
+      add :earth_resistance_bonus, :float, null: false
+      add :air_resistance_bonus, :float, null: false
     end
 
     create unique_index(:equipments, :code)

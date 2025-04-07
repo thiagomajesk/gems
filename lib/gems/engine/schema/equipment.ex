@@ -12,20 +12,22 @@ defmodule GEMS.Engine.Schema.Equipment do
       :description,
       :image,
       :price,
+      :damage_bonus,
+      :accuracy_bonus,
+      :evasion_bonus,
+      :fortitude_bonus,
+      :recovery_bonus,
       :maximum_health_bonus,
       :maximum_energy_bonus,
-      :health_regeneration_bonus,
-      :energy_regeneration_bonus,
       :physical_armor_bonus,
       :magical_armor_bonus,
       :attack_speed_bonus,
-      :accuracy_rating_bonus,
-      :evasion_rating_bonus,
-      :critical_rating_bonus,
-      :recovery_rating_bonus,
-      :fortitude_rating_bonus,
+      :critical_chance_bonus,
+      :critical_multiplier_bonus,
       :damage_penetration_bonus,
       :damage_reflection_bonus,
+      :health_regeneration_bonus,
+      :energy_regeneration_bonus,
       :fire_resistance_bonus,
       :water_resistance_bonus,
       :earth_resistance_bonus,
@@ -45,26 +47,26 @@ defmodule GEMS.Engine.Schema.Equipment do
     field :tier, Ecto.Enum, values: @tiers
     field :price, :integer
 
-    field :maximum_health_bonus, :float, virtual: true
-    field :maximum_energy_bonus, :float, virtual: true
-    field :health_regeneration_bonus, :float, virtual: true
-    field :energy_regeneration_bonus, :float, virtual: true
-    field :physical_armor_bonus, :float, virtual: true
-    field :magical_armor_bonus, :float, virtual: true
-    field :attack_speed_bonus, :float, virtual: true
-    field :accuracy_rating_bonus, :float, virtual: true
-    field :evasion_rating_bonus, :float, virtual: true
-    field :critical_rating_bonus, :float, virtual: true
-    field :recovery_rating_bonus, :float, virtual: true
-    field :fortitude_rating_bonus, :float, virtual: true
-    field :damage_penetration_bonus, :float, virtual: true
-    field :damage_reflection_bonus, :float, virtual: true
-
-    # Resistances
-    field :fire_resistance_bonus, :float, virtual: true
-    field :water_resistance_bonus, :float, virtual: true
-    field :earth_resistance_bonus, :float, virtual: true
-    field :air_resistance_bonus, :float, virtual: true
+    field :damage_bonus, :integer
+    field :accuracy_bonus, :float
+    field :evasion_bonus, :float
+    field :fortitude_bonus, :float
+    field :recovery_bonus, :float
+    field :maximum_health_bonus, :integer
+    field :maximum_energy_bonus, :integer
+    field :physical_armor_bonus, :integer
+    field :magical_armor_bonus, :integer
+    field :attack_speed_bonus, :integer
+    field :critical_chance_bonus, :float
+    field :critical_multiplier_bonus, :float
+    field :damage_penetration_bonus, :integer
+    field :damage_reflection_bonus, :integer
+    field :health_regeneration_bonus, :float
+    field :energy_regeneration_bonus, :float
+    field :fire_resistance_bonus, :float
+    field :water_resistance_bonus, :float
+    field :earth_resistance_bonus, :float
+    field :air_resistance_bonus, :float
 
     belongs_to :type, GEMS.Engine.Schema.EquipmentType
 

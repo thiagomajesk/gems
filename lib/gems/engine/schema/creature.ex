@@ -9,20 +9,22 @@ defmodule GEMS.Engine.Schema.Creature do
     optional_fields: [
       :description,
       :image,
+      :damage,
+      :accuracy,
+      :evasion,
+      :fortitude,
+      :recovery,
       :maximum_health,
       :maximum_energy,
-      :health_regeneration,
-      :energy_regeneration,
       :physical_armor,
       :magical_armor,
       :attack_speed,
-      :accuracy_rating,
-      :evasion_rating,
-      :critical_rating,
-      :recovery_rating,
-      :fortitude_rating,
+      :critical_chance,
+      :critical_multiplier,
       :damage_penetration,
       :damage_reflection,
+      :health_regeneration,
+      :energy_regeneration,
       :fire_resistance,
       :water_resistance,
       :earth_resistance,
@@ -36,26 +38,26 @@ defmodule GEMS.Engine.Schema.Creature do
     field :description, :string
     field :image, :string
 
+    field :damage, :integer
+    field :accuracy, :float
+    field :evasion, :float
+    field :fortitude, :float
+    field :recovery, :float
     field :maximum_health, :integer
     field :maximum_energy, :integer
-    field :health_regeneration, :integer
-    field :energy_regeneration, :integer
     field :physical_armor, :integer
     field :magical_armor, :integer
     field :attack_speed, :integer
-    field :accuracy_rating, :integer
-    field :evasion_rating, :integer
-    field :critical_rating, :integer
-    field :recovery_rating, :integer
-    field :fortitude_rating, :integer
+    field :critical_chance, :float
+    field :critical_multiplier, :float
     field :damage_penetration, :integer
     field :damage_reflection, :integer
-
-    # Resistances
-    field :fire_resistance, :integer
-    field :water_resistance, :integer
-    field :earth_resistance, :integer
-    field :air_resistance, :integer
+    field :health_regeneration, :float
+    field :energy_regeneration, :float
+    field :fire_resistance, :float
+    field :water_resistance, :float
+    field :earth_resistance, :float
+    field :air_resistance, :float
 
     belongs_to :type, GEMS.Engine.Schema.CreatureType
 

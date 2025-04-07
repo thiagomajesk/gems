@@ -22,26 +22,26 @@ defmodule GEMS.World.Schema.Character do
     field :stamina, :integer
     field :fame, :integer
 
+    field :damage, :integer, virtual: true
+    field :accuracy, :float, virtual: true
+    field :evasion, :float, virtual: true
+    field :fortitude, :float, virtual: true
+    field :recovery, :float, virtual: true
     field :maximum_health, :integer, virtual: true
     field :maximum_energy, :integer, virtual: true
-    field :health_regeneration, :integer, virtual: true
-    field :energy_regeneration, :integer, virtual: true
     field :physical_armor, :integer, virtual: true
     field :magical_armor, :integer, virtual: true
     field :attack_speed, :integer, virtual: true
-    field :accuracy_rating, :integer, virtual: true
-    field :evasion_rating, :integer, virtual: true
-    field :critical_rating, :integer, virtual: true
-    field :recovery_rating, :integer, virtual: true
-    field :fortitude_rating, :integer, virtual: true
+    field :critical_chance, :float, virtual: true
+    field :critical_multiplier, :float, virtual: true
     field :damage_penetration, :integer, virtual: true
     field :damage_reflection, :integer, virtual: true
-
-    # Resistances
-    field :fire_resistance, :integer, virtual: true
-    field :water_resistance, :integer, virtual: true
-    field :earth_resistance, :integer, virtual: true
-    field :air_resistance, :integer, virtual: true
+    field :health_regeneration, :float, virtual: true
+    field :energy_regeneration, :float, virtual: true
+    field :fire_resistance, :float, virtual: true
+    field :water_resistance, :float, virtual: true
+    field :earth_resistance, :float, virtual: true
+    field :air_resistance, :float, virtual: true
 
     belongs_to :class, GEMS.Engine.Schema.Class
     belongs_to :faction, GEMS.World.Schema.Faction

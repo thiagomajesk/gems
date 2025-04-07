@@ -15,28 +15,28 @@ defmodule GEMS.Engine.Battler.Actor do
     field :aggro, :integer, default: 0
     field :charge, :integer, default: 0
 
-    field :states, {:array, Ecto.Enum}, values: @states, virtual: true
+    field :states, {:array, Ecto.Enum}, values: @states
 
-    field :maximum_health, :integer, virtual: true, default: 0
-    field :maximum_energy, :integer, virtual: true, default: 0
-    field :health_regeneration, :integer, virtual: true, default: 0
-    field :energy_regeneration, :integer, virtual: true, default: 0
-    field :physical_armor, :integer, virtual: true, default: 0
-    field :magical_armor, :integer, virtual: true, default: 0
-    field :attack_speed, :integer, virtual: true, default: 0
-    field :accuracy_rating, :integer, virtual: true, default: 0
-    field :evasion_rating, :integer, virtual: true, default: 0
-    field :critical_rating, :integer, virtual: true, default: 0
-    field :recovery_rating, :integer, virtual: true, default: 0
-    field :fortitude_rating, :integer, virtual: true, default: 0
-    field :damage_penetration, :integer, virtual: true, default: 0
-    field :damage_reflection, :integer, virtual: true, default: 0
-
-    # Resistances
-    field :fire_resistance, :integer, virtual: true, default: 0
-    field :water_resistance, :integer, virtual: true, default: 0
-    field :earth_resistance, :integer, virtual: true, default: 0
-    field :air_resistance, :integer, virtual: true, default: 0
+    field :damage, :integer
+    field :accuracy, :float
+    field :evasion, :float
+    field :fortitude, :float
+    field :recovery, :float
+    field :maximum_health, :integer
+    field :maximum_energy, :integer
+    field :physical_armor, :integer
+    field :magical_armor, :integer
+    field :attack_speed, :integer
+    field :critical_chance, :float
+    field :critical_multiplier, :float
+    field :damage_penetration, :integer
+    field :damage_reflection, :integer
+    field :health_regeneration, :float
+    field :energy_regeneration, :float
+    field :fire_resistance, :float
+    field :water_resistance, :float
+    field :earth_resistance, :float
+    field :air_resistance, :float
 
     # Current effects
     field :buffs, {:array, :map}, default: []
@@ -53,21 +53,21 @@ defmodule GEMS.Engine.Battler.Actor do
 
   def change_health(%Actor{} = actor, amount) do
     Map.update!(actor, :health, fn health ->
-      max(0, min(max_health(actor), health + amount))
+      max(0, min(maximum_health(actor), health + amount))
     end)
   end
 
   def change_energy(%Actor{} = actor, amount) do
     Map.update!(actor, :energy, fn energy ->
-      max(0, min(max_energy(actor), energy + amount))
+      max(0, min(maximum_energy(actor), energy + amount))
     end)
   end
 
   # TODO: Get max health including possible buffs
-  def max_health(%Actor{maximum_health: max}), do: max
+  def maximum_health(%Actor{maximum_health: max}), do: max
 
   # TODO: Get max energy including possible buffs
-  def max_energy(%Actor{maximum_energy: max}), do: max
+  def maximum_energy(%Actor{maximum_energy: max}), do: max
 
   @doc """
   Replaces the actors in the list with the updated actors.
