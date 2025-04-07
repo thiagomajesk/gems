@@ -1,14 +1,19 @@
-defmodule GEMS.Database.Effects.ApplyStatus do
+defmodule GEMS.Database.Effects.StatChange do
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  @required [:status]
+  @required [:stat, :change, :assessment]
   @optional [:duration]
+
+  @stats GEMS.Engine.Constants.statistics()
+  @assessments [:positive, :negative]
 
   @primary_key false
   embedded_schema do
-    field :status, Ecto.Enum, values: [:poisoned]
+    field :stat, Ecto.Enum, values: @stats
+    field :change, :float
+    field :assessment, Ecto.Enum, values: @assessments
     field :duration, :integer, default: 1
   end
 

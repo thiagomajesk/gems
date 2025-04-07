@@ -209,7 +209,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
     ################################################################################ s
 
     create table(:action_patterns) do
-      add :condition, :string, null: false
+      add :trigger, :string, null: false
       add :priority, :integer, null: false
       add :chance, :float, null: true
       add :start_turn, :integer, null: true
@@ -218,7 +218,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :maximum_health, :integer, null: true
       add :minimum_energy, :integer, null: true
       add :maximum_energy, :integer, null: true
-      add :state, :string, null: true
+      add :condition, :string, null: true
       add :skill_id, references(:skills), null: true
     end
 

@@ -59,7 +59,8 @@ defmodule GEMS.MixProject do
       {:timex, "~> 3.7"},
       {:sizeable, "~> 1.0"},
       {:nvir, "~> 0.10"},
-      {:sparkline_svg, "~> 0.5.0"}
+      {:sparkline_svg, "~> 0.5.0"},
+      {:ex_machina, "~> 2.8.0", only: :test}
     ]
   end
 

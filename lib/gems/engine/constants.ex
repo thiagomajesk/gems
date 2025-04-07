@@ -10,6 +10,39 @@ defmodule GEMS.Engine.Constants do
   def max_stamina(level) when level >= 100, do: @min_stamina * 0.5
   def max_stamina(_level), do: @min_stamina
 
+  def parties,
+    do: [
+      :alpha,
+      :bravo,
+      :charlie,
+      :delta
+    ]
+
+  def statistics,
+    do: [
+      :damage,
+      :accuracy,
+      :evasion,
+      :fortitude,
+      :recovery,
+      :maximum_health,
+      :maximum_energy,
+      :physical_armor,
+      :magical_armor,
+      :attack_speed,
+      :critical_chance,
+      :critical_multiplier,
+      :damage_penetration,
+      :damage_reflection,
+      :health_regeneration,
+      :energy_regeneration,
+      :fire_resistance,
+      :water_resistance,
+      :earth_resistance,
+      :air_resistance
+    ]
+
+  # TODO: Remove tiers and use rarities instead
   def tiers,
     do: [
       :t0,
@@ -61,29 +94,29 @@ defmodule GEMS.Engine.Constants do
       :certain
     ]
 
-  def charges,
-    do: [
-      :heated,
-      :soaked,
-      :muddy,
-      :breezy
-    ]
-
-  def states,
+  def conditions,
     do: [
       :burning,
-      :frozen,
       :poisoned,
-      :stunned,
-      :silenced,
+      :frozen,
+      :shocked,
       :bleeding,
-      :blighted
+      :stunned,
+      :marked,
+      :blighted,
+      :silenced
     ]
 
-  def buffs, do: []
-
-  def debuffs,
-    do: []
+  def triggers,
+    do: [
+      :always,
+      :random,
+      :turn_number,
+      :health_number,
+      :energy_number,
+      :condition_absence,
+      :condition_presence
+    ]
 
   def effect_types_mappings,
     do: [

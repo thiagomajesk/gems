@@ -1,20 +1,6 @@
 defmodule GEMS.Engine.Schema.ActionPattern do
   use GEMS.Database.Schema, preset: :default
 
-  @conditions [
-    :always,
-    :random,
-    :turn_number,
-    :health_number,
-    :energy_number,
-    :state_presence,
-    :state_absence
-  ]
-
-  @states GEMS.Engine.Constants.states()
-
-  @required_fields [:priority, :condition]
-
   @optional_fields [
     :chance,
     :start_turn,
@@ -23,13 +9,18 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :maximum_health,
     :minimum_energy,
     :maximum_energy,
-    :state,
+    :condition,
     :skill_id
   ]
 
+  @required_fields [:priority, :trigger]
+
+  @triggers GEMS.Engine.Constants.triggers()
+  @conditions GEMS.Engine.Constants.conditions()
+
   schema "action_patterns" do
     field :priority, :integer
-    field :condition, Ecto.Enum, values: @conditions
+    field :trigger, Ecto.Enum, values: @triggers
 
     field :chance, :float
     field :start_turn, :integer
@@ -38,7 +29,7 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     field :maximum_health, :integer
     field :minimum_energy, :integer
     field :maximum_energy, :integer
-    field :state, Ecto.Enum, values: @states
+    field :condition, Ecto.Enum, values: @conditions
 
     belongs_to :skill, GEMS.Engine.Schema.Skill
   end

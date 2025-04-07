@@ -6,7 +6,8 @@ defmodule GEMS.Engine.Battler.Effect do
   alias GEMS.Engine.Battler.Actor
   alias GEMS.Database.Effects.HealthRegen
   alias GEMS.Database.Effects.HealthDrain
-  alias GEMS.Database.Effects.ApplyStatus
+  alias GEMS.Database.Effects.ApplyCondition
+  alias GEMS.Database.Effects.StatChange
   alias GEMS.Database.Effects.ActionCost
   alias GEMS.Database.Effects.HealthDamage
   alias GEMS.Database.Effects.PassiveRegen
@@ -67,7 +68,8 @@ defmodule GEMS.Engine.Battler.Effect do
     }
   end
 
-  def apply_effect(%ApplyStatus{} = _effect, _caster, target), do: target
+  def apply_effect(%ApplyCondition{} = _effect, _caster, target), do: target
+  def apply_effect(%StatChange{} = _effect, _caster, target), do: target
 
   def apply_effect(other_effect, _caster, _target),
     do: raise("Unknown effect type: #{inspect(other_effect)}")

@@ -24,7 +24,7 @@ defmodule GEMS.Engine.Battler.Turn do
     [actor | others] =
       actors
       |> Enum.reject(&Actor.dead?/1)
-      |> Enum.sort_by(&{&1.charge, :rand.uniform()})
+      |> Enum.sort_by(&{&1.charge, :rand.uniform()}, :desc)
 
     %Turn{
       number: number,
@@ -117,23 +117,23 @@ defmodule GEMS.Engine.Battler.Turn do
       caster.energy >= action.energy_cost
   end
 
-  defp action_pattern_matches?(%{condition: :always}, _turn),
+  defp action_pattern_matches?(%{trigger: :always}, _turn),
     do: true
 
-  defp action_pattern_matches?(%{condition: :random} = action_pattern, _turn),
+  defp action_pattern_matches?(%{trigger: :random} = action_pattern, _turn),
     do: action_pattern.chance >= :rand.uniform()
 
-  defp action_pattern_matches?(%{condition: :turn_number} = action_pattern, turn) do
+  defp action_pattern_matches?(%{trigger: :turn_number} = action_pattern, turn) do
     turn.number >= action_pattern.start_turn and
       rem(turn.number - action_pattern.start_turn, action_pattern.every_turn) == 0
   end
 
-  defp action_pattern_matches?(%{condition: :health_number} = action_pattern, turn) do
+  defp action_pattern_matches?(%{trigger: :health_number} = action_pattern, turn) do
     action_pattern.minimum_health <= turn.leader.health and
       action_pattern.maximum_health >= turn.leader.health
   end
 
-  defp action_pattern_matches?(%{condition: :energy_number} = action_pattern, turn) do
+  defp action_pattern_matches?(%{trigger: :energy_number} = action_pattern, turn) do
     action_pattern.minimum_energy <= turn.leader.energy and
       action_pattern.maximum_energy >= turn.leader.energy
   end

@@ -3,19 +3,18 @@ defmodule GEMS.Engine.Battler.Actor do
 
   alias __MODULE__
 
-  @parties [:alpha, :bravo, :charlie, :delta]
-  @states GEMS.Engine.Constants.states()
+  @parties GEMS.Engine.Constants.parties()
 
   embedded_schema do
     field :name, :string
     field :party, Ecto.Enum, values: @parties
 
-    field :health, :integer, default: 0
-    field :energy, :integer, default: 0
-    field :aggro, :integer, default: 0
-    field :charge, :integer, default: 0
+    field :health, :integer
+    field :energy, :integer
+    field :aggro, :integer
+    field :charge, :integer
 
-    field :states, {:array, Ecto.Enum}, values: @states
+    field :status, {:array, :map}, default: []
 
     field :damage, :integer
     field :accuracy, :float
