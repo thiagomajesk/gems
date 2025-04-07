@@ -11,8 +11,8 @@ defmodule GEMS.Engine.Battler.Actor do
 
     field :health, :integer
     field :energy, :integer
-    field :aggro, :integer
-    field :charge, :integer
+    field :aggro, :integer, default: 0
+    field :charge, :integer, default: 0
 
     field :status, {:array, :map}, default: []
 

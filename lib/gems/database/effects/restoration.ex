@@ -1,4 +1,4 @@
-defmodule GEMS.Database.Effects.PassiveRegen do
+defmodule GEMS.Database.Effects.Restoration do
   use Ecto.Schema
 
   import Ecto.Changeset

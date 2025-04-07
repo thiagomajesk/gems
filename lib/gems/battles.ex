@@ -68,7 +68,8 @@ defmodule GEMS.Battles do
       fire_resistance: creature.fire_resistance,
       water_resistance: creature.water_resistance,
       earth_resistance: creature.earth_resistance,
-      air_resistance: creature.air_resistance
+      air_resistance: creature.air_resistance,
+      action_patterns: creature.action_patterns
     }
   end
 end

@@ -38,17 +38,17 @@ defmodule GEMS.Engine.Battler.Turn do
   Chooses the action to be executed this turn.
   """
   def choose_action(%Turn{} = turn) do
-    leader = fetch_leader(turn)
+    caster = fetch_leader(turn)
 
-    leader.action_patterns
+    caster.action_patterns
     |> Enum.sort_by(& &1.priority)
     |> Enum.reduce_while(turn, fn action_pattern, turn ->
-      valid_targets = filter_targets(action_pattern, leader, turn)
+      valid_targets = filter_targets(action_pattern, caster, turn)
       final_targets = select_targets(action_pattern, valid_targets)
 
       action = build_action(action_pattern, final_targets)
 
-      if action_can_be_executed?(action, turn.leader) and
+      if action_can_be_executed?(action, caster) and
            action_pattern_matches?(action_pattern, turn),
          do: {:halt, %{turn | action: action}},
          else: {:cont, turn}
@@ -69,6 +69,7 @@ defmodule GEMS.Engine.Battler.Turn do
     # This way, the turn can always provide the current actor state.
 
     turn
+    |> deplete_caster_resources()
     |> process_caster_effects(Map.get(effects, :caster, []))
     |> process_target_effects(Map.get(effects, :target, []))
   end
@@ -136,6 +137,18 @@ defmodule GEMS.Engine.Battler.Turn do
   defp action_pattern_matches?(%{trigger: :energy_number} = action_pattern, turn) do
     action_pattern.minimum_energy <= turn.leader.energy and
       action_pattern.maximum_energy >= turn.leader.energy
+  end
+
+  defp deplete_caster_resources(turn) do
+    Map.update!(turn, :actors, fn actors ->
+      caster =
+        turn
+        |> fetch_leader()
+        |> Actor.change_health(-turn.action.health_cost)
+        |> Actor.change_energy(-turn.action.energy_cost)
+
+      Actor.replace_with(actors, [caster])
+    end)
   end
 
   defp process_caster_effects(turn, []), do: turn

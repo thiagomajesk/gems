@@ -3,17 +3,16 @@ defmodule GEMS.Database.Effects.StatChange do
 
   import Ecto.Changeset
 
-  @required [:stat, :change, :assessment]
+  @required [:stat, :value, :assessment]
   @optional [:duration]
 
   @stats GEMS.Engine.Constants.statistics()
-  @assessments [:positive, :negative]
 
   @primary_key false
   embedded_schema do
     field :stat, Ecto.Enum, values: @stats
-    field :change, :float
-    field :assessment, Ecto.Enum, values: @assessments
+    field :value, :float
+    field :assessment, Ecto.Enum, values: [:buff, :debuff]
     field :duration, :integer, default: 1
   end
 

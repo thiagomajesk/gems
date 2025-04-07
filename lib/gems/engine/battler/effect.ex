@@ -10,7 +10,7 @@ defmodule GEMS.Engine.Battler.Effect do
   alias GEMS.Database.Effects.StatChange
   alias GEMS.Database.Effects.ActionCost
   alias GEMS.Database.Effects.HealthDamage
-  alias GEMS.Database.Effects.PassiveRegen
+  alias GEMS.Database.Effects.Restoration
 
   @targets [
     :caster,
@@ -45,7 +45,7 @@ defmodule GEMS.Engine.Battler.Effect do
     |> Map.update!(:energy, &(&1 - effect.energy))
   end
 
-  def apply_effect(%PassiveRegen{} = effect, _caster, target) do
+  def apply_effect(%Restoration{} = effect, _caster, target) do
     target
     |> Actor.change_health(effect.health)
     |> Actor.change_energy(effect.energy)
