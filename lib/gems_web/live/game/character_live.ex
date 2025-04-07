@@ -123,121 +123,142 @@ defmodule GEMSWeb.Game.CharacterLive do
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="heart-beats" class="text-rose-500" />
-            <span>Health</span>
+            <span>Maximum Health</span>
           </dt>
-          <dd>{@character.maximum_health}</dd>
+          <dd>{format_stat(@character.maximum_health)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="bolt-drop" class="text-cyan-500" />
-            <span>Energy</span>
+            <span>Maximum Energy</span>
           </dt>
-          <dd>{@character.maximum_energy}</dd>
+          <dd>{format_stat(@character.maximum_energy)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="heart-plus" />
             <span>Health Regeneration</span>
           </dt>
-          <dd>{@character.health_regeneration}</dd>
+          <dd>{format_stat(@character.health_regeneration)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="droplets" />
             <span>Energy Regeneration</span>
           </dt>
-          <dd>{@character.energy_regeneration}</dd>
+          <dd>{format_stat(@character.energy_regeneration)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="broadsword" />
+            <span>Damage</span>
+          </dt>
+          <dd>{format_stat(@character.damage)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="checked-shield" />
             <span>Physical Armor</span>
           </dt>
-          <dd>{@character.physical_armor}</dd>
+          <dd>{format_stat(@character.physical_armor)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="magic-shield" />
             <span>Magical Armor</span>
           </dt>
-          <dd>{@character.magical_armor}</dd>
+          <dd>{format_stat(@character.magical_armor)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="bullseye" />
-            <span>Accuracy Rating</span>
+            <span>Accuracy</span>
           </dt>
-          <dd>{@character.accuracy_rating}</dd>
+          <dd>{format_stat(@character.accuracy)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="dodging" />
-            <span>Evasion Rating</span>
+            <span>Evasion</span>
           </dt>
-          <dd>{@character.evasion_rating}</dd>
+          <dd>{format_stat(@character.evasion)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="target-dummy" />
-            <span>Critical Rating</span>
+            <span>Critical Chance</span>
           </dt>
-          <dd>{@character.critical_rating}</dd>
+          <dd>{format_stat(@character.critical_chance)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="swords-power" />
+            <span>Critical Multiplier</span>
+          </dt>
+          <dd>{format_stat(@character.critical_multiplier)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="healing-shield" />
-            <span>Recovery Rating</span>
+            <span>Recovery</span>
           </dt>
-          <dd>{@character.recovery_rating}</dd>
+          <dd>{format_stat(@character.recovery)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="strong" />
-            <span>Fortitude Rating</span>
+            <span>Fortitude</span>
           </dt>
-          <dd>{@character.fortitude_rating}</dd>
+          <dd>{format_stat(@character.fortitude)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="stopwatch" />
+            <span>Attack Speed</span>
+          </dt>
+          <dd>{format_stat(@character.attack_speed)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="sun-spear" />
             <span>Damage Penetration</span>
           </dt>
-          <dd>{@character.damage_penetration}</dd>
+          <dd>{format_stat(@character.damage_penetration)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="broken-shield" />
             <span>Damage Reflection</span>
           </dt>
-          <dd>{@character.damage_reflection}</dd>
+          <dd>{format_stat(@character.damage_reflection)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="armor-upgrade" class="text-red-400" />
             <span>Fire resistance</span>
           </dt>
-          <dd>{@character.fire_resistance || "---"}</dd>
+          <dd>{format_stat(@character.fire_resistance)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="armor-upgrade" class="text-blue-400" />
             <span>Water resistance</span>
           </dt>
-          <dd>{@character.water_resistance || "---"}</dd>
+          <dd>{format_stat(@character.water_resistance)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="armor-upgrade" class="text-green-400" />
             <span>Earth resistance</span>
           </dt>
-          <dd>{@character.earth_resistance || "---"}</dd>
+          <dd>{format_stat(@character.earth_resistance)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="armor-upgrade" class="text-purple-400" />
             <span>Air resistance</span>
           </dt>
-          <dd>{@character.air_resistance || "---"}</dd>
+          <dd>{format_stat(@character.air_resistance)}</dd>
         </div>
       </dl>
     </UI.Panels.section>
@@ -406,4 +427,11 @@ defmodule GEMSWeb.Game.CharacterLive do
     </div>
     """
   end
+
+  defp format_stat(nil), do: "---"
+
+  defp format_stat(value) when is_float(value),
+    do: "#{trunc(value * 100)}%"
+
+  defp format_stat(value), do: "#{value}"
 end

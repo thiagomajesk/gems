@@ -4,26 +4,26 @@ defmodule GEMS.Engine.Schema.Talent do
     required_fields: [:name, :code, :class_id],
     optional_fields: [
       :description,
-      :damage_bonus,
-      :accuracy_bonus,
-      :evasion_bonus,
-      :fortitude_bonus,
-      :recovery_bonus,
-      :maximum_health_bonus,
-      :maximum_energy_bonus,
-      :physical_armor_bonus,
-      :magical_armor_bonus,
-      :attack_speed_bonus,
-      :critical_chance_bonus,
-      :critical_multiplier_bonus,
-      :damage_penetration_bonus,
-      :damage_reflection_bonus,
-      :health_regeneration_bonus,
-      :energy_regeneration_bonus,
-      :fire_resistance_bonus,
-      :water_resistance_bonus,
-      :earth_resistance_bonus,
-      :air_resistance_bonus
+      :damage,
+      :accuracy,
+      :evasion,
+      :fortitude,
+      :recovery,
+      :maximum_health,
+      :maximum_energy,
+      :physical_armor,
+      :magical_armor,
+      :attack_speed,
+      :critical_chance,
+      :critical_multiplier,
+      :damage_penetration,
+      :damage_reflection,
+      :health_regeneration,
+      :energy_regeneration,
+      :fire_resistance,
+      :water_resistance,
+      :earth_resistance,
+      :air_resistance
     ],
     default_preloads: []
 
@@ -34,26 +34,26 @@ defmodule GEMS.Engine.Schema.Talent do
 
     belongs_to :class, GEMS.Engine.Schema.Class
 
-    field :damage_bonus, :integer
-    field :accuracy_bonus, :float
-    field :evasion_bonus, :float
-    field :fortitude_bonus, :float
-    field :recovery_bonus, :float
-    field :maximum_health_bonus, :integer
-    field :maximum_energy_bonus, :integer
-    field :physical_armor_bonus, :integer
-    field :magical_armor_bonus, :integer
-    field :attack_speed_bonus, :integer
-    field :critical_chance_bonus, :float
-    field :critical_multiplier_bonus, :float
-    field :damage_penetration_bonus, :integer
-    field :damage_reflection_bonus, :integer
-    field :health_regeneration_bonus, :float
-    field :energy_regeneration_bonus, :float
-    field :fire_resistance_bonus, :float
-    field :water_resistance_bonus, :float
-    field :earth_resistance_bonus, :float
-    field :air_resistance_bonus, :float
+    field :damage, :integer
+    field :accuracy, :float
+    field :evasion, :float
+    field :fortitude, :float
+    field :recovery, :float
+    field :maximum_health, :integer
+    field :maximum_energy, :integer
+    field :physical_armor, :integer
+    field :magical_armor, :integer
+    field :attack_speed, :integer
+    field :critical_chance, :float
+    field :critical_multiplier, :float
+    field :damage_penetration, :integer
+    field :damage_reflection, :integer
+    field :health_regeneration, :float
+    field :energy_regeneration, :float
+    field :fire_resistance, :float
+    field :water_resistance, :float
+    field :earth_resistance, :float
+    field :air_resistance, :float
   end
 
   def build_changeset(avatar, attrs, opts) do

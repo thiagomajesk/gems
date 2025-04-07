@@ -175,22 +175,22 @@ defmodule GEMS.Characters do
   defp merge_base_class_stats(character) do
     %{
       character
-      | damage: character.class.base_damage,
-        accuracy: character.class.base_accuracy,
-        evasion: character.class.base_evasion,
-        fortitude: character.class.base_fortitude,
-        recovery: character.class.base_recovery,
-        maximum_health: character.class.base_maximum_health,
-        maximum_energy: character.class.base_maximum_energy,
-        physical_armor: character.class.base_physical_armor,
-        magical_armor: character.class.base_magical_armor,
-        attack_speed: character.class.base_attack_speed,
-        critical_chance: character.class.base_critical_chance,
-        critical_multiplier: character.class.base_critical_multiplier,
-        damage_penetration: character.class.base_damage_penetration,
-        damage_reflection: character.class.base_damage_reflection,
-        health_regeneration: character.class.base_health_regeneration,
-        energy_regeneration: character.class.base_energy_regeneration
+      | damage: character.class.damage,
+        accuracy: character.class.accuracy,
+        evasion: character.class.evasion,
+        fortitude: character.class.fortitude,
+        recovery: character.class.recovery,
+        maximum_health: character.class.maximum_health,
+        maximum_energy: character.class.maximum_energy,
+        physical_armor: character.class.physical_armor,
+        magical_armor: character.class.magical_armor,
+        attack_speed: character.class.attack_speed,
+        critical_chance: character.class.critical_chance,
+        critical_multiplier: character.class.critical_multiplier,
+        damage_penetration: character.class.damage_penetration,
+        damage_reflection: character.class.damage_reflection,
+        health_regeneration: character.class.health_regeneration,
+        energy_regeneration: character.class.energy_regeneration
     }
   end
 end
