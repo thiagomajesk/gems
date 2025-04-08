@@ -1,13 +1,14 @@
-defmodule GEMS.Database.Effects.HealthDrain do
+defmodule GEMS.Database.Effects.ResourceDrain do
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  @required [:amount]
+  @required [:resource, :amount]
   @optional []
 
   @primary_key false
   embedded_schema do
+    field :resource, Ecto.Enum, values: [:health, :energy]
     field :amount, :integer
   end
 

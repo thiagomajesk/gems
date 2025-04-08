@@ -7,12 +7,12 @@ defmodule GEMS.Engine.Battler.Event do
   alias GEMS.Engine.Battler.Combat
   alias GEMS.Engine.Battler.Effect
   alias GEMS.Engine.Battler.Snapshot
-  alias GEMS.Database.Effects.HealthRegen
-  alias GEMS.Database.Effects.HealthDrain
+  alias GEMS.Database.Effects.ResourceRegen
+  alias GEMS.Database.Effects.ResourceDrain
   alias GEMS.Database.Effects.ApplyCondition
   alias GEMS.Database.Effects.StatChange
-  alias GEMS.Database.Effects.HealthDamageFlat
-  alias GEMS.Database.Effects.HealthDamageRate
+  alias GEMS.Database.Effects.DamageFlat
+  alias GEMS.Database.Effects.DamageRate
   alias GEMS.Database.Effects.Restoration
 
   @primary_key false
@@ -86,7 +86,7 @@ defmodule GEMS.Engine.Battler.Event do
     end)
   end
 
-  def apply_effect(event, %HealthDamageFlat{} = effect) do
+  def apply_effect(event, %DamageFlat{} = effect) do
     %{damage_max: max, damage_min: min} = effect
 
     damage = :rand.uniform(max - min + 1) + min - 1
@@ -97,7 +97,7 @@ defmodule GEMS.Engine.Battler.Event do
     |> Map.update!(:target, &Actor.change_health(&1, -damage))
   end
 
-  def apply_effect(event, %HealthDamageRate{} = effect) do
+  def apply_effect(event, %DamageRate{} = effect) do
     damage = round(event.caster.damage * effect.percentage)
     log = Log.health_damage(:target, damage)
 
@@ -106,7 +106,7 @@ defmodule GEMS.Engine.Battler.Event do
     |> Map.update!(:target, &Actor.change_health(&1, -damage))
   end
 
-  def apply_effect(event, %HealthRegen{} = effect) do
+  def apply_effect(event, %ResourceRegen{resource: :health} = effect) do
     log = Log.health_regen(:target, effect.amount)
 
     event
@@ -114,7 +114,15 @@ defmodule GEMS.Engine.Battler.Event do
     |> Map.update!(:target, &Actor.change_health(&1, effect.amount))
   end
 
-  def apply_effect(event, %HealthDrain{} = effect) do
+  def apply_effect(event, %ResourceRegen{resource: :energy} = effect) do
+    log = Log.energy_regen(:target, effect.amount)
+
+    event
+    |> Map.update!(:logs, &[log | &1])
+    |> Map.update!(:target, &Actor.change_energy(&1, effect.amount))
+  end
+
+  def apply_effect(event, %ResourceDrain{resource: :health} = effect) do
     %{amount: amount} = effect
     caster_log = Log.health_regen(:caster, health: amount)
     target_log = Log.health_drain(:target, health: -amount)
@@ -124,6 +132,18 @@ defmodule GEMS.Engine.Battler.Event do
     |> Map.update!(:logs, &[target_log | &1])
     |> Map.update!(:caster, &Actor.change_health(&1, amount))
     |> Map.update!(:target, &Actor.change_health(&1, -amount))
+  end
+
+  def apply_effect(event, %ResourceDrain{resource: :energy} = effect) do
+    %{amount: amount} = effect
+    caster_log = Log.health_regen(:caster, energy: amount)
+    target_log = Log.energy_drain(:target, energy: -amount)
+
+    event
+    |> Map.update!(:logs, &[caster_log | &1])
+    |> Map.update!(:logs, &[target_log | &1])
+    |> Map.update!(:caster, &Actor.change_energy(&1, amount))
+    |> Map.update!(:target, &Actor.change_energy(&1, -amount))
   end
 
   def apply_effect(event, %ApplyCondition{} = effect) do

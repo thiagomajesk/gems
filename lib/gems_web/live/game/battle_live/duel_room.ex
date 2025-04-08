@@ -41,7 +41,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
             </span>
             <div class="flex justify-between">
               <div class="flex items-center gap-2">
-                {inspect(event.logs)}
+                <.log_badge :for={log <- event.logs} log={log} />
               </div>
             </div>
           </li>
@@ -95,49 +95,113 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
     """
   end
 
-  attr :status_effect, :any, required: true
+  attr :log, :any, required: true
 
-  defp status_effect_badge(assigns) do
-    assigns =
-      assign_new(assigns, :icon_classes, fn
-        %{status_effect: %{type: :burning}} ->
-          %{name: "small-fire", class: "text-red-500"}
-
-        %{status_effect: %{type: :poisoned}} ->
-          %{name: "drop", class: "text-green-500"}
-
-        %{status_effect: %{type: :frozen}} ->
-          %{name: "snowflake", class: "text-blue-500"}
-
-        %{status_effect: %{type: :shocked}} ->
-          %{name: "thunder", class: "text-yellow-500"}
-
-        %{status_effect: %{type: :bleeding}} ->
-          %{name: "blood", class: "text-red-500"}
-
-        %{status_effect: %{type: :stunned}} ->
-          %{name: "start-swirl", class: "text-yellow-500"}
-
-        %{status_effect: %{type: :marked}} ->
-          %{name: "targeted", class: "text-red-500"}
-
-        %{status_effect: %{type: :blighted}} ->
-          %{name: "blood", class: "text-yellow-500"}
-
-        %{status_effect: %{type: :silenced}} ->
-          %{name: "silenced", class: "text-yellow-500"}
-
-        %{status_effect: %{type: :buff}} ->
-          %{name: "upgrade", class: "text-green-500"}
-
-        %{status_effect: %{type: :debuff}} ->
-          %{name: "upgrade", rotate: 180, class: "text-red-500"}
-      end)
+  defp log_badge(assigns) do
+    assigns = assign(assigns, extract_log_attrs(assigns.log))
 
     ~H"""
-    <div class="badge" title={inspect(@status_effect)}>
-      <UI.Icons.game {@icon_classes} />
-    </div>
+    <span class={["badge badge-soft", @badge_style]} title={inspect(@log)}>
+      <UI.Icons.page name={@icon} />
+      <small>{@display_value}</small>
+    </span>
     """
   end
+
+  defp extract_log_attrs(%{type: :damage, metadata: %{"health" => health}}) do
+    %{
+      badge_style: "badge-error",
+      icon: "heart",
+      color: "text-rose-500",
+      display_value: "-#{health}"
+    }
+  end
+
+  defp extract_log_attrs(%{type: :damage, metadata: %{"energy" => energy}}) do
+    %{badge_style: "badge-error", icon: "bolt", display_value: energy}
+  end
+
+  defp extract_log_attrs(%{type: :buff, metadata: %{"value" => value, "stat" => stat}}),
+    do: %{
+      badge_style: "badge-success",
+      icon: "chevrons-up",
+      display_value: "+#{format_stat(value)} to #{stat}"
+    }
+
+  defp extract_log_attrs(%{type: :debuff, metadata: %{"value" => value, "stat" => stat}}),
+    do: %{
+      badge_style: "badge-warning",
+      icon: "chevrons-down",
+      display_value: "-#{format_stat(value)} to #{stat}"
+    }
+
+  defp extract_log_attrs(%{type: :burning, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-red-500!",
+      icon: "fire",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(%{type: :poisoned, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-green-500!",
+      icon: "droplet",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(%{type: :frozen, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-blue-500!",
+      icon: "snowflake",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(%{type: :shocked, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-yellow-500!",
+      icon: "zap",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(%{type: :bleeding, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-red-500!",
+      icon: "droplet",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(%{type: :stunned, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-yellow-500!",
+      icon: "sparkles",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(%{type: :marked, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-purple-500!",
+      icon: "crosshair",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(%{type: :blighted, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-yellow-500!",
+      icon: "droplet",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(%{type: :silenced, metadata: %{"duration" => duration}}),
+    do: %{
+      badge_style: "text-gray-500!",
+      icon: "volume-x",
+      display_value: "#{duration} turns"
+    }
+
+  defp extract_log_attrs(_), do: %{badge_style: nil, icon: nil, display_value: nil}
+
+  defp format_stat(value) when is_float(value),
+    do: "#{trunc(value * 100)}%"
+
+  defp format_stat(value), do: "#{value}"
 end

@@ -6,15 +6,15 @@ defmodule GEMS.Engine.Battler.Log do
   @conditions GEMS.Engine.Constants.conditions()
   @types @conditions ++ [:damage, :regen, :drain, :buff, :debuff]
 
+  @primary_key false
   embedded_schema do
     field :who, Ecto.Enum, values: [:target, :caster]
     field :type, Ecto.Enum, values: @types
     field :metadata, :map
   end
 
-  def new(who, type, metadata) do
-    metadata = Ecto.Type.dump(:map, metadata)
-    %Log{who: who, type: type, metadata: metadata}
+  def new(who, type, opts) do
+    %Log{who: who, type: type, metadata: cast_opts(opts)}
   end
 
   def health_damage(who, health), do: Log.new(who, :damage, health: health)
@@ -31,4 +31,11 @@ defmodule GEMS.Engine.Battler.Log do
 
   def change(who, assessment, stat, value, duration),
     do: Log.new(who, assessment, stat: stat, value: value, duration: duration)
+
+  defp cast_opts(opts) do
+    opts
+    |> Enum.into(%{})
+    |> Jason.encode!()
+    |> Jason.decode!()
+  end
 end
