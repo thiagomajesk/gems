@@ -13,8 +13,8 @@ defmodule GEMS.Engine.Battler.Effect do
   alias GEMS.Database.Effects.HealthDamage
   alias GEMS.Database.Effects.Restoration
 
-  @required_fields [:chance, :target, :on_hit, :on_miss, :on_crit, :on_dodge]
-  @optional_fields [:target]
+  @required_fields [:chance, :target]
+  @optional_fields [:on_hit, :on_miss, :on_crit, :on_dodge]
 
   @targets [
     :caster,
@@ -40,8 +40,8 @@ defmodule GEMS.Engine.Battler.Effect do
 
   def changeset(effect, attrs) do
     effect
-    |> cast(attrs, @required_fields)
-    |> validate_required(@required_fields ++ @optional_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 
   def fetch_effect(%Effect{} = effect, :hit), do: effect.on_hit
