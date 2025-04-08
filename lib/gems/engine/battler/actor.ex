@@ -2,7 +2,6 @@ defmodule GEMS.Engine.Battler.Actor do
   use Ecto.Schema
 
   alias __MODULE__
-  alias GEMS.Engine.Battler.StatusEffect
 
   @parties GEMS.Engine.Constants.parties()
 
@@ -36,9 +35,17 @@ defmodule GEMS.Engine.Battler.Actor do
     field :earth_resistance, :float
     field :air_resistance, :float
 
-    field :action_patterns, {:array, :map}, default: [], virtual: true
+    field :burning_charges, :integer, default: 0
+    field :poisoned_charges, :integer, default: 0
+    field :frozen_charges, :integer, default: 0
+    field :shocked_charges, :integer, default: 0
+    field :bleeding_charges, :integer, default: 0
+    field :stunned_charges, :integer, default: 0
+    field :marked_charges, :integer, default: 0
+    field :blighted_charges, :integer, default: 0
+    field :silenced_charges, :integer, default: 0
 
-    embeds_many :status_effects, StatusEffect
+    field :action_patterns, {:array, :map}, default: [], virtual: true
   end
 
   def dead?(%Actor{} = actor), do: not alive?(actor)
@@ -64,6 +71,14 @@ defmodule GEMS.Engine.Battler.Actor do
 
   # TODO: Get max energy including possible buffs
   def maximum_energy(%Actor{maximum_energy: max}), do: max
+
+  def apply_condition(%Actor{} = actor, condition, value) do
+    field = String.to_existing_atom("#{condition}_charges")
+
+    Map.update!(actor, field, fn charges ->
+      max(0, min(maximum_health(actor), charges + value))
+    end)
+  end
 
   @doc """
   Replaces the actors in the list with the updated actors.

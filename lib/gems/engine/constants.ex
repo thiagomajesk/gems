@@ -120,9 +120,8 @@ defmodule GEMS.Engine.Constants do
 
   def effect_types_mappings,
     do: [
-      action_cost: GEMS.Database.Effects.ActionCost,
       apply_condition: GEMS.Database.Effects.ApplyCondition,
-      health_damage: GEMS.Database.Effects.HealthDamage,
+      health_damage: GEMS.Database.Effects.HealthDamageFlat,
       health_drain: GEMS.Database.Effects.HealthDrain,
       health_regen: GEMS.Database.Effects.HealthRegen,
       restoration: GEMS.Database.Effects.Restoration,

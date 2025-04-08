@@ -4,15 +4,6 @@ defmodule GEMS.Engine.Battler.Effect do
   import Ecto.Changeset
 
   alias __MODULE__
-  alias GEMS.Engine.Battler.Actor
-  alias GEMS.Database.Effects.HealthRegen
-  alias GEMS.Database.Effects.HealthDrain
-  alias GEMS.Database.Effects.ApplyCondition
-  alias GEMS.Database.Effects.StatChange
-  alias GEMS.Database.Effects.ActionCost
-  alias GEMS.Database.Effects.HealthDamage
-  alias GEMS.Database.Effects.Restoration
-  alias GEMS.Engine.Battler.StatusEffect
 
   @required_fields [:chance, :target]
   @optional_fields [:on_hit, :on_miss, :on_crit, :on_dodge]
@@ -49,54 +40,4 @@ defmodule GEMS.Engine.Battler.Effect do
   def fetch_effect(%Effect{} = effect, :miss), do: effect.on_miss
   def fetch_effect(%Effect{} = effect, :crit), do: effect.on_crit
   def fetch_effect(%Effect{} = effect, :dodge), do: effect.on_dodge
-
-  def apply_effect(%ActionCost{} = effect, _caster, target) do
-    target
-    |> Map.update!(:health, &(&1 - effect.health))
-    |> Map.update!(:energy, &(&1 - effect.energy))
-  end
-
-  def apply_effect(%Restoration{} = effect, _caster, target) do
-    target
-    |> Actor.change_health(effect.health)
-    |> Actor.change_energy(effect.energy)
-  end
-
-  def apply_effect(%HealthDamage{} = effect, _caster, target) do
-    %{damage_max: max, damage_min: min} = effect
-    damage = :rand.uniform(max - min + 1) + min - 1
-    Actor.change_health(target, -damage)
-  end
-
-  def apply_effect(%HealthRegen{} = effect, _caster, target) do
-    Actor.change_health(target, effect.amount)
-  end
-
-  def apply_effect(%HealthDrain{} = effect, caster, target) do
-    {
-      Actor.change_health(caster, effect.amount),
-      Actor.change_health(target, -effect.amount)
-    }
-  end
-
-  def apply_effect(%ApplyCondition{} = effect, _caster, target) do
-    status_effect = StatusEffect.new(effect)
-
-    # TODO: Apply condition to the target -> Actor.apply_status_effect(status_effect)
-
-    target
-    |> Map.update!(:status_effects, &[status_effect | &1])
-  end
-
-  def apply_effect(%StatChange{} = effect, _caster, target) do
-    status_effect = StatusEffect.new(effect)
-
-    # TODO: Apply condition to the target -> Actor.apply_status_effect(status_effect)
-
-    target
-    |> Map.update!(:status_effects, &[status_effect | &1])
-  end
-
-  def apply_effect(other_effect, _caster, _target),
-    do: raise("Unknown effect type: #{inspect(other_effect)}")
 end

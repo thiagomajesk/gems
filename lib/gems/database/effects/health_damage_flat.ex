@@ -1,4 +1,4 @@
-defmodule GEMS.Database.Effects.HealthDamage do
+defmodule GEMS.Database.Effects.HealthDamageFlat do
   use Ecto.Schema
 
   import Ecto.Changeset

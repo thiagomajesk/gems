@@ -41,16 +41,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
             </span>
             <div class="flex justify-between">
               <div class="flex items-center gap-2">
-                <.effect_badge
-                  :for={effect <- GEMS.Engine.Battler.Event.outcome_effects(event)}
-                  effect={effect}
-                />
-              </div>
-              <div class="flex items-center gap-2">
-                <.status_effect_badge
-                  :for={status_effect <- event.target.status_effects}
-                  status_effect={status_effect}
-                />
+                {inspect(event.logs)}
               </div>
             </div>
           </li>
