@@ -35,11 +35,8 @@ defmodule GEMS.Engine.Battler.Event do
   end
 
   def outcome_effects(%{outcome: outcome} = event) do
-    # on_hit, on_crit, on_miss, on_dodge
-    field = String.to_existing_atom("on_#{outcome}")
-
     event.effects
-    |> Enum.map(&Map.get(&1, field))
+    |> Enum.map(&Effect.fetch_effect(&1, outcome))
     |> Enum.reject(&is_nil/1)
   end
 

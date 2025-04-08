@@ -3,6 +3,7 @@ defmodule GEMS.Engine.Battler.Effect do
 
   import Ecto.Changeset
 
+  alias __MODULE__
   alias GEMS.Engine.Battler.Actor
   alias GEMS.Database.Effects.HealthRegen
   alias GEMS.Database.Effects.HealthDrain
@@ -42,6 +43,11 @@ defmodule GEMS.Engine.Battler.Effect do
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields ++ @optional_fields)
   end
+
+  def fetch_effect(%Effect{} = effect, :hit), do: effect.on_hit
+  def fetch_effect(%Effect{} = effect, :miss), do: effect.on_miss
+  def fetch_effect(%Effect{} = effect, :crit), do: effect.on_crit
+  def fetch_effect(%Effect{} = effect, :dodge), do: effect.on_dodge
 
   def apply_effect(%ActionCost{} = effect, _caster, target) do
     target
