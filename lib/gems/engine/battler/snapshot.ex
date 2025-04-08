@@ -14,8 +14,6 @@ defmodule GEMS.Engine.Battler.Snapshot do
     field :energy, :integer
     field :aggro, :integer
     field :charge, :integer
-    field :maximum_health, :integer
-    field :maximum_energy, :integer
   end
 
   def new(%Actor{} = actor) do
@@ -25,9 +23,7 @@ defmodule GEMS.Engine.Battler.Snapshot do
       health: actor.health,
       energy: actor.energy,
       charge: actor.charge,
-      aggro: actor.aggro,
-      maximum_health: actor.maximum_health,
-      maximum_energy: actor.maximum_energy
+      aggro: actor.aggro
     }
   end
 end

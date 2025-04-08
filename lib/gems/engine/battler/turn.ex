@@ -61,17 +61,9 @@ defmodule GEMS.Engine.Battler.Turn do
   def process_action(%Turn{action: nil} = turn), do: turn
 
   def process_action(%Turn{} = turn) do
-    %{action: %{effects: effects}} = turn
-    effects = Enum.group_by(effects, & &1.target)
-
-    # We want to process the available events step by step
-    # and retrieve the target information directly from the turn.
-    # This way, the turn can always provide the current actor state.
-
     turn
-    |> deplete_caster_resources()
-    |> process_caster_effects(Map.get(effects, :caster, []))
-    |> process_target_effects(Map.get(effects, :target, []))
+    |> deplete_caster()
+    |> process_action_effects()
   end
 
   defp build_action(%{skill: skill}, targets) do
@@ -83,6 +75,7 @@ defmodule GEMS.Engine.Battler.Turn do
     %Action{
       name: skill.name,
       effects: skill.effects,
+      repeats: skill.repeats,
       target_ids: target_ids,
       affinity: skill.affinity,
       health_cost: skill.health_cost,
@@ -139,7 +132,7 @@ defmodule GEMS.Engine.Battler.Turn do
       action_pattern.maximum_energy >= turn.leader.energy
   end
 
-  defp deplete_caster_resources(turn) do
+  defp deplete_caster(turn) do
     Map.update!(turn, :actors, fn actors ->
       caster =
         turn
@@ -148,6 +141,23 @@ defmodule GEMS.Engine.Battler.Turn do
         |> Actor.change_energy(-turn.action.energy_cost)
 
       Actor.replace_with(actors, [caster])
+    end)
+  end
+
+  def process_action_effects(turn) do
+    # We want to process the available events step by step
+    # and retrieve the target information directly from the turn.
+    # This way, the turn can always provide the current actor state.
+    %{action: %{effects: effects, repeats: repeats}} = turn
+
+    effects
+    |> List.duplicate(repeats)
+    |> Enum.reduce(turn, fn effects, turn ->
+      lookup = Enum.group_by(effects, & &1.target)
+
+      turn
+      |> process_caster_effects(Map.get(lookup, :caster, []))
+      |> process_target_effects(Map.get(lookup, :target, []))
     end)
   end
 

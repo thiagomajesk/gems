@@ -6,6 +6,7 @@ defmodule GEMS.Engine.Battler.Action do
   embedded_schema do
     field :name, :string
     field :affinity, Ecto.Enum, values: @affinities
+    field :repeats, :integer
     field :health_cost, :integer
     field :energy_cost, :integer
 

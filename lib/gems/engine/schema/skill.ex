@@ -7,6 +7,7 @@ defmodule GEMS.Engine.Schema.Skill do
       :health_cost,
       :energy_cost,
       :affinity,
+      :repeats,
       :target_number,
       :random_targets,
       :critical_hits
@@ -23,6 +24,7 @@ defmodule GEMS.Engine.Schema.Skill do
     field :health_cost, :integer, default: 0
     field :energy_cost, :integer, default: 0
     field :affinity, Ecto.Enum, values: @affinities
+    field :repeats, :integer, default: 1
     field :target_scope, Ecto.Enum, values: @target_scopes
     field :target_number, :integer, default: 1
     field :random_targets, :integer, default: 0
