@@ -2,6 +2,7 @@ defmodule GEMS.Engine.Battler.Actor do
   use Ecto.Schema
 
   alias __MODULE__
+  alias GEMS.Engine.Battler.StatusEffect
 
   @parties GEMS.Engine.Constants.parties()
 
@@ -13,8 +14,6 @@ defmodule GEMS.Engine.Battler.Actor do
     field :energy, :integer
     field :aggro, :integer, default: 0
     field :charge, :integer, default: 0
-
-    field :status, {:array, :map}, default: []
 
     field :damage, :integer
     field :accuracy, :float
@@ -37,11 +36,9 @@ defmodule GEMS.Engine.Battler.Actor do
     field :earth_resistance, :float
     field :air_resistance, :float
 
-    # Current effects
-    field :buffs, {:array, :map}, default: []
-    field :debuffs, {:array, :map}, default: []
-
     field :action_patterns, {:array, :map}, default: [], virtual: true
+
+    embeds_many :status_effects, StatusEffect
   end
 
   def dead?(%Actor{} = actor), do: not alive?(actor)

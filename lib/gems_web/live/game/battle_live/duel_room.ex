@@ -39,11 +39,19 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
               </span>
               and it was a <strong class="text-cyan-200">{event.outcome}</strong>
             </span>
-            <div class="flex items-center gap-2">
-              <.effect_badge
-                :for={effect <- GEMS.Engine.Battler.Event.outcome_effects(event)}
-                effect={effect}
-              />
+            <div class="flex justify-between">
+              <div class="flex items-center gap-2">
+                <.effect_badge
+                  :for={effect <- GEMS.Engine.Battler.Event.outcome_effects(event)}
+                  effect={effect}
+                />
+              </div>
+              <div class="flex items-center gap-2">
+                <.status_effect_badge
+                  :for={status_effect <- event.target.status_effects}
+                  status_effect={status_effect}
+                />
+              </div>
             </div>
           </li>
         </ul>
@@ -92,6 +100,52 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
     ~H"""
     <div class="badge badge-primary" title={inspect(@effect)}>
       <UI.Icons.game name="shield" />
+    </div>
+    """
+  end
+
+  attr :status_effect, :any, required: true
+
+  defp status_effect_badge(assigns) do
+    assigns =
+      assign_new(assigns, :icon_classes, fn
+        %{status_effect: %{type: :burning}} ->
+          %{name: "small-fire", class: "text-red-500"}
+
+        %{status_effect: %{type: :poisoned}} ->
+          %{name: "drop", class: "text-green-500"}
+
+        %{status_effect: %{type: :frozen}} ->
+          %{name: "snowflake", class: "text-blue-500"}
+
+        %{status_effect: %{type: :shocked}} ->
+          %{name: "thunder", class: "text-yellow-500"}
+
+        %{status_effect: %{type: :bleeding}} ->
+          %{name: "blood", class: "text-red-500"}
+
+        %{status_effect: %{type: :stunned}} ->
+          %{name: "start-swirl", class: "text-yellow-500"}
+
+        %{status_effect: %{type: :marked}} ->
+          %{name: "targeted", class: "text-red-500"}
+
+        %{status_effect: %{type: :blighted}} ->
+          %{name: "blood", class: "text-yellow-500"}
+
+        %{status_effect: %{type: :silenced}} ->
+          %{name: "silenced", class: "text-yellow-500"}
+
+        %{status_effect: %{type: :buff}} ->
+          %{name: "upgrade", class: "text-green-500"}
+
+        %{status_effect: %{type: :debuff}} ->
+          %{name: "upgrade", rotate: 180, class: "text-red-500"}
+      end)
+
+    ~H"""
+    <div class="badge" title={inspect(@status_effect)}>
+      <UI.Icons.game {@icon_classes} />
     </div>
     """
   end

@@ -12,6 +12,7 @@ defmodule GEMS.Engine.Battler.Effect do
   alias GEMS.Database.Effects.ActionCost
   alias GEMS.Database.Effects.HealthDamage
   alias GEMS.Database.Effects.Restoration
+  alias GEMS.Engine.Battler.StatusEffect
 
   @required_fields [:chance, :target]
   @optional_fields [:on_hit, :on_miss, :on_crit, :on_dodge]
@@ -78,8 +79,23 @@ defmodule GEMS.Engine.Battler.Effect do
     }
   end
 
-  def apply_effect(%ApplyCondition{} = _effect, _caster, target), do: target
-  def apply_effect(%StatChange{} = _effect, _caster, target), do: target
+  def apply_effect(%ApplyCondition{} = effect, _caster, target) do
+    status_effect = StatusEffect.new(effect)
+
+    # TODO: Apply condition to the target -> Actor.apply_status_effect(status_effect)
+
+    target
+    |> Map.update!(:status_effects, &[status_effect | &1])
+  end
+
+  def apply_effect(%StatChange{} = effect, _caster, target) do
+    status_effect = StatusEffect.new(effect)
+
+    # TODO: Apply condition to the target -> Actor.apply_status_effect(status_effect)
+
+    target
+    |> Map.update!(:status_effects, &[status_effect | &1])
+  end
 
   def apply_effect(other_effect, _caster, _target),
     do: raise("Unknown effect type: #{inspect(other_effect)}")
