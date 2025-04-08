@@ -12,6 +12,9 @@ defmodule GEMS.Engine.Battler.Effect do
   alias GEMS.Database.Effects.HealthDamage
   alias GEMS.Database.Effects.Restoration
 
+  @required_fields [:chance, :target, :on_hit, :on_miss, :on_crit, :on_dodge]
+  @optional_fields [:target]
+
   @targets [
     :caster,
     :target,
@@ -31,12 +34,13 @@ defmodule GEMS.Engine.Battler.Effect do
     field :on_hit, GEMS.Database.Dynamic, types: @effect_types_mappings
     field :on_miss, GEMS.Database.Dynamic, types: @effect_types_mappings
     field :on_crit, GEMS.Database.Dynamic, types: @effect_types_mappings
+    field :on_dodge, GEMS.Database.Dynamic, types: @effect_types_mappings
   end
 
   def changeset(effect, attrs) do
     effect
-    |> cast(attrs, [:chance, :target, :on_hit, :on_miss, :on_crit])
-    |> validate_required([:chance, :target])
+    |> cast(attrs, @required_fields)
+    |> validate_required(@required_fields ++ @optional_fields)
   end
 
   def apply_effect(%ActionCost{} = effect, _caster, target) do

@@ -37,9 +37,13 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
               <span class="font-medium text-red-200">
                 {event.target.name} (Health: {event.target.health} \ Energy: {event.target.energy})
               </span>
+              and it was a <strong class="text-cyan-200">{event.outcome}</strong>
             </span>
             <div class="flex items-center gap-2">
-              <.effect_badge :for={effect <- event.effects} effect={effect} />
+              <.effect_badge
+                :for={effect <- GEMS.Engine.Battler.Event.outcome_effects(event)}
+                effect={effect}
+              />
             </div>
           </li>
         </ul>
