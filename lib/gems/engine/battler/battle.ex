@@ -46,14 +46,6 @@ defmodule GEMS.Engine.Battler.Battle do
     end)
   end
 
-  def decrease_aggro(%Battle{} = battle) do
-    Map.update!(battle, :actors, fn actors ->
-      Enum.map(actors, fn actor ->
-        Map.update!(actor, :aggro, &max(&1 - 1, 0))
-      end)
-    end)
-  end
-
   def find_leader(%Battle{} = battle) do
     battle.actors
     |> Enum.filter(&Actor.alive?/1)

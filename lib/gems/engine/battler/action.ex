@@ -7,8 +7,7 @@ defmodule GEMS.Engine.Battler.Action do
     field :name, :string
     field :affinity, Ecto.Enum, values: @affinities
     field :repeats, :integer
-    field :health_cost, :integer
-    field :energy_cost, :integer
+    field :action_cost, :integer
 
     field :target_ids, {:array, Ecto.UUID}, virtual: true, default: []
 

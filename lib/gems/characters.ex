@@ -181,16 +181,14 @@ defmodule GEMS.Characters do
         fortitude: character.class.fortitude,
         recovery: character.class.recovery,
         maximum_health: character.class.maximum_health,
-        maximum_energy: character.class.maximum_energy,
-        physical_armor: character.class.physical_armor,
-        magical_armor: character.class.magical_armor,
+        maximum_physical_armor: character.class.maximum_physical_armor,
+        maximum_magical_armor: character.class.maximum_magical_armor,
         attack_speed: character.class.attack_speed,
         critical_chance: character.class.critical_chance,
         critical_multiplier: character.class.critical_multiplier,
         damage_penetration: character.class.damage_penetration,
         damage_reflection: character.class.damage_reflection,
-        health_regeneration: character.class.health_regeneration,
-        energy_regeneration: character.class.energy_regeneration
+        health_regeneration: character.class.health_regeneration
     }
   end
 end

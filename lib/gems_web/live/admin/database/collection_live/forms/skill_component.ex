@@ -28,12 +28,8 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SkillComponent do
 
             <.live_component module={IconPickerComponent} id="-icon" field={f[:icon]} label="Icon" />
 
-            <div class="grid grid-cols-2 gap-6">
-              <Forms.field_input type="number" field={f[:health_cost]} label="Health Cost" />
-              <Forms.field_input type="number" field={f[:energy_cost]} label="Mana Cost" />
-            </div>
-
-            <div class="grid grid-cols-3 gap-6">
+            <div class="grid grid-cols-4 gap-6">
+              <Forms.field_input type="number" field={f[:action_cost]} label="Cost" />
               <Forms.field_input
                 type="select"
                 field={f[:hit_type]}

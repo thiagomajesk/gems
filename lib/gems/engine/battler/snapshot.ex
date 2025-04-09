@@ -10,20 +10,20 @@ defmodule GEMS.Engine.Battler.Snapshot do
 
   embedded_schema do
     field :name, :string
-    field :health, :integer
-    field :energy, :integer
     field :aggro, :integer
     field :charge, :integer
+    field :health, :integer
+    field :action_points, :integer
   end
 
   def new(%Actor{} = actor) do
     %Snapshot{
       id: actor.id,
       name: actor.name,
-      health: actor.health,
-      energy: actor.energy,
+      aggro: actor.aggro,
       charge: actor.charge,
-      aggro: actor.aggro
+      health: actor.health,
+      action_points: actor.action_points
     }
   end
 end

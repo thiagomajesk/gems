@@ -123,30 +123,16 @@ defmodule GEMSWeb.Game.CharacterLive do
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="heart-beats" class="text-rose-500" />
-            <span>Maximum Health</span>
+            <span>Health</span>
           </dt>
           <dd>{format_stat(@character.maximum_health)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
-            <UI.Icons.game name="bolt-drop" class="text-cyan-500" />
-            <span>Maximum Energy</span>
-          </dt>
-          <dd>{format_stat(@character.maximum_energy)}</dd>
-        </div>
-        <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center gap-2">
             <UI.Icons.game name="heart-plus" />
-            <span>Health Regeneration</span>
+            <span>Health Regen.</span>
           </dt>
           <dd>{format_stat(@character.health_regeneration)}</dd>
-        </div>
-        <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center gap-2">
-            <UI.Icons.game name="droplets" />
-            <span>Energy Regeneration</span>
-          </dt>
-          <dd>{format_stat(@character.energy_regeneration)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
@@ -160,14 +146,14 @@ defmodule GEMSWeb.Game.CharacterLive do
             <UI.Icons.game name="checked-shield" />
             <span>Physical Armor</span>
           </dt>
-          <dd>{format_stat(@character.physical_armor)}</dd>
+          <dd>{format_stat(@character.maximum_physical_armor)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">
             <UI.Icons.game name="magic-shield" />
             <span>Magical Armor</span>
           </dt>
-          <dd>{format_stat(@character.magical_armor)}</dd>
+          <dd>{format_stat(@character.maximum_magical_armor)}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
           <dt class="flex items-center gap-2">

@@ -21,15 +21,20 @@ defmodule GEMS.Engine.Battler.Turn do
     # Sort the actors by charge to determine who's acting this turn (leader).
     # We only store store the leader snapshot in the turn struct to consume its current state.
     # We should NEVER rely on the leader to determine the current actor's state when applying effects.
-    [actor | others] =
+    [leader | others] =
       actors
       |> Enum.reject(&Actor.dead?/1)
       |> Enum.sort_by(&{&1.charge, :rand.uniform()}, :desc)
 
+    # When starting a new turn, the leader will:
+    # - Gain an additional action point that can be used
+    # - Decrease aggro, tick buffs, debuffs and conditions
+    leader = Actor.upkeep(leader)
+
     %Turn{
       number: number,
-      leader: Snapshot.new(actor),
-      actors: [actor | others],
+      leader: Snapshot.new(leader),
+      actors: [leader | others],
       events: []
     }
   end
@@ -38,6 +43,7 @@ defmodule GEMS.Engine.Battler.Turn do
   Chooses the action to be executed this turn.
   """
   def choose_action(%Turn{} = turn) do
+    # Fetch the updated turn leader and start
     caster = fetch_leader(turn)
 
     caster.action_patterns
@@ -62,7 +68,7 @@ defmodule GEMS.Engine.Battler.Turn do
 
   def process_action(%Turn{} = turn) do
     turn
-    |> deplete_caster()
+    |> spend_action_points()
     |> process_action_effects()
   end
 
@@ -78,8 +84,7 @@ defmodule GEMS.Engine.Battler.Turn do
       repeats: skill.repeats,
       target_ids: target_ids,
       affinity: skill.affinity,
-      health_cost: skill.health_cost,
-      energy_cost: skill.energy_cost
+      action_cost: skill.action_cost
     }
   end
 
@@ -105,11 +110,8 @@ defmodule GEMS.Engine.Battler.Turn do
   defp filter_targets(%{skill: %{target_scope: :enemy}}, caster, turn),
     do: Enum.filter(turn.actors, &Actor.enemy?(&1, caster))
 
-  defp action_can_be_executed?(action, caster) do
-    Enum.any?(action.target_ids) and
-      caster.health >= action.health_cost and
-      caster.energy >= action.energy_cost
-  end
+  defp action_can_be_executed?(action, caster),
+    do: Enum.any?(action.target_ids) and caster.action_points >= action.action_cost
 
   defp action_pattern_matches?(%{trigger: :always}, _turn),
     do: true
@@ -117,30 +119,29 @@ defmodule GEMS.Engine.Battler.Turn do
   defp action_pattern_matches?(%{trigger: :random} = action_pattern, _turn),
     do: action_pattern.chance >= :rand.uniform()
 
-  defp action_pattern_matches?(%{trigger: :turn_number} = action_pattern, turn) do
+  defp action_pattern_matches?(%{trigger: :when_turn} = action_pattern, turn) do
     turn.number >= action_pattern.start_turn and
       rem(turn.number - action_pattern.start_turn, action_pattern.every_turn) == 0
   end
 
-  defp action_pattern_matches?(%{trigger: :health_number} = action_pattern, turn) do
+  defp action_pattern_matches?(%{trigger: :when_health} = action_pattern, turn) do
     action_pattern.minimum_health <= turn.leader.health and
       action_pattern.maximum_health >= turn.leader.health
   end
 
-  defp action_pattern_matches?(%{trigger: :energy_number} = action_pattern, turn) do
-    action_pattern.minimum_energy <= turn.leader.energy and
-      action_pattern.maximum_energy >= turn.leader.energy
+  defp action_pattern_matches?(%{trigger: :when_action_points} = action_pattern, turn) do
+    action_pattern.minimum_action_points <= turn.leader.action_points and
+      action_pattern.maximum_action_points >= turn.leader.action_points
   end
 
-  defp deplete_caster(turn) do
-    Map.update!(turn, :actors, fn actors ->
-      caster =
-        turn
-        |> fetch_leader()
-        |> Actor.change_health(-turn.action.health_cost)
-        |> Actor.change_energy(-turn.action.energy_cost)
+  defp spend_action_points(turn) do
+    leader = fetch_leader(turn)
 
-      Actor.replace_with(actors, [caster])
+    %{action: %{action_cost: cost}} = turn
+    leader = Actor.change_action_points(leader, -cost)
+
+    Map.update!(turn, :actors, fn actors ->
+      Actor.replace_with(actors, [leader])
     end)
   end
 

@@ -13,8 +13,7 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :icon, :map, null: true
 
       add :type_id, references(:skill_types), null: false
-      add :health_cost, :integer, null: false
-      add :energy_cost, :integer, null: false
+      add :action_cost, :integer, null: false
       add :affinity, :string, null: false
       add :repeats, :integer, null: false
       add :target_scope, :string, null: false
@@ -42,16 +41,14 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :fortitude, :float, null: false
       add :recovery, :float, null: false
       add :maximum_health, :integer, null: false
-      add :maximum_energy, :integer, null: false
-      add :physical_armor, :integer, null: false
-      add :magical_armor, :integer, null: false
+      add :maximum_physical_armor, :integer, null: false
+      add :maximum_magical_armor, :integer, null: false
       add :attack_speed, :integer, null: false
       add :critical_chance, :float, null: false
       add :critical_multiplier, :float, null: false
       add :damage_penetration, :integer, null: false
       add :damage_reflection, :integer, null: false
       add :health_regeneration, :float, null: false
-      add :energy_regeneration, :float, null: false
       add :fire_resistance, :float, null: false
       add :water_resistance, :float, null: false
       add :earth_resistance, :float, null: false
@@ -78,16 +75,14 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :fortitude, :float, null: false
       add :recovery, :float, null: false
       add :maximum_health, :integer, null: false
-      add :maximum_energy, :integer, null: false
-      add :physical_armor, :integer, null: false
-      add :magical_armor, :integer, null: false
+      add :maximum_physical_armor, :integer, null: false
+      add :maximum_magical_armor, :integer, null: false
       add :attack_speed, :integer, null: false
       add :critical_chance, :float, null: false
       add :critical_multiplier, :float, null: false
       add :damage_penetration, :integer, null: false
       add :damage_reflection, :integer, null: false
       add :health_regeneration, :float, null: false
-      add :energy_regeneration, :float, null: false
       add :fire_resistance, :float, null: false
       add :water_resistance, :float, null: false
       add :earth_resistance, :float, null: false
@@ -111,16 +106,14 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :fortitude, :float, null: false
       add :recovery, :float, null: false
       add :maximum_health, :integer, null: false
-      add :maximum_energy, :integer, null: false
-      add :physical_armor, :integer, null: false
-      add :magical_armor, :integer, null: false
+      add :maximum_physical_armor, :integer, null: false
+      add :maximum_magical_armor, :integer, null: false
       add :attack_speed, :integer, null: false
       add :critical_chance, :float, null: false
       add :critical_multiplier, :float, null: false
       add :damage_penetration, :integer, null: false
       add :damage_reflection, :integer, null: false
       add :health_regeneration, :float, null: false
-      add :energy_regeneration, :float, null: false
       add :fire_resistance, :float, null: false
       add :water_resistance, :float, null: false
       add :earth_resistance, :float, null: false
@@ -177,16 +170,14 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :fortitude, :float, null: false
       add :recovery, :float, null: false
       add :maximum_health, :integer, null: false
-      add :maximum_energy, :integer, null: false
-      add :physical_armor, :integer, null: false
-      add :magical_armor, :integer, null: false
+      add :maximum_physical_armor, :integer, null: false
+      add :maximum_magical_armor, :integer, null: false
       add :attack_speed, :integer, null: false
       add :critical_chance, :float, null: false
       add :critical_multiplier, :float, null: false
       add :damage_penetration, :integer, null: false
       add :damage_reflection, :integer, null: false
       add :health_regeneration, :float, null: false
-      add :energy_regeneration, :float, null: false
       add :fire_resistance, :float, null: false
       add :water_resistance, :float, null: false
       add :earth_resistance, :float, null: false
@@ -217,8 +208,8 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :every_turn, :integer, null: true
       add :minimum_health, :integer, null: true
       add :maximum_health, :integer, null: true
-      add :minimum_energy, :integer, null: true
-      add :maximum_energy, :integer, null: true
+      add :minimum_action_points, :integer, null: true
+      add :maximum_action_points, :integer, null: true
       add :condition, :string, null: true
       add :skill_id, references(:skills), null: true
     end

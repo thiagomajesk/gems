@@ -17,14 +17,9 @@ defmodule GEMS.Engine.Battler.Log do
     %Log{who: who, type: type, metadata: cast_opts(opts)}
   end
 
-  def health_damage(who, health), do: Log.new(who, :damage, health: health)
-  def energy_damage(who, energy), do: Log.new(who, :damage, energy: energy)
-
-  def health_regen(who, health), do: Log.new(who, :regen, health: health)
-  def energy_regen(who, energy), do: Log.new(who, :regen, energy: energy)
-
-  def health_drain(who, health), do: Log.new(who, :drain, health: health)
-  def energy_drain(who, energy), do: Log.new(who, :drain, energy: energy)
+  def damage(who, health), do: Log.new(who, :damage, health: health)
+  def regen(who, health), do: Log.new(who, :regen, health: health)
+  def drain(who, health), do: Log.new(who, :drain, health: health)
 
   def condition(who, condition, duration),
     do: Log.new(who, condition, duration: duration)

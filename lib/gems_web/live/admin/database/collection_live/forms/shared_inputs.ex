@@ -102,21 +102,19 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
       <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
         <Forms.field_input type="number" field={@form[:damage]} label="Damage" />
         <Forms.field_input type="number" field={@form[:maximum_health]} label="Max Health" />
-        <Forms.field_input type="number" field={@form[:maximum_energy]} label="Max Energy" />
         <Forms.field_input
           type="number"
           step="0.01"
           field={@form[:health_regeneration]}
           label="Health Regen"
         />
+
         <Forms.field_input
           type="number"
-          step="0.01"
-          field={@form[:energy_regeneration]}
-          label="Energy Regen"
+          field={@form[:maximum_physical_armor]}
+          label="Physical Armor"
         />
-        <Forms.field_input type="number" field={@form[:physical_armor]} label="Physical Armor" />
-        <Forms.field_input type="number" field={@form[:magical_armor]} label="Magical Armor" />
+        <Forms.field_input type="number" field={@form[:maximum_magical_armor]} label="Magical Armor" />
         <Forms.field_input type="number" field={@form[:attack_speed]} label="Attack Speed" />
         <Forms.field_input type="number" step="0.01" field={@form[:accuracy]} label="Accuracy" />
         <Forms.field_input type="number" step="0.01" field={@form[:evasion]} label="Evasion" />

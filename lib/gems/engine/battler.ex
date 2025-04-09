@@ -13,7 +13,6 @@ defmodule GEMS.Engine.Battler do
     battle
     |> upkeep_phase()
     |> combat_phase()
-    |> cleanup_phase()
     |> checks_phase()
   end
 
@@ -38,10 +37,6 @@ defmodule GEMS.Engine.Battler do
     |> Turn.new(battle.actors)
     |> Turn.choose_action()
     |> Turn.process_action()
-  end
-
-  defp cleanup_phase(battle) do
-    Battle.decrease_aggro(battle)
   end
 
   defp checks_phase(battle) do

@@ -28,16 +28,14 @@ defmodule GEMS.World.Schema.Character do
     field :fortitude, :float, virtual: true
     field :recovery, :float, virtual: true
     field :maximum_health, :integer, virtual: true
-    field :maximum_energy, :integer, virtual: true
-    field :physical_armor, :integer, virtual: true
-    field :magical_armor, :integer, virtual: true
+    field :maximum_physical_armor, :integer, virtual: true
+    field :maximum_magical_armor, :integer, virtual: true
     field :attack_speed, :integer, virtual: true
     field :critical_chance, :float, virtual: true
     field :critical_multiplier, :float, virtual: true
     field :damage_penetration, :integer, virtual: true
     field :damage_reflection, :integer, virtual: true
     field :health_regeneration, :float, virtual: true
-    field :energy_regeneration, :float, virtual: true
     field :fire_resistance, :float, virtual: true
     field :water_resistance, :float, virtual: true
     field :earth_resistance, :float, virtual: true

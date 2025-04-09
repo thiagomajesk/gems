@@ -3,47 +3,53 @@ defmodule GEMS.Engine.Battler.Actor do
 
   alias __MODULE__
 
+  @action_points_limit 10
+
   @parties GEMS.Engine.Constants.parties()
 
   embedded_schema do
     field :name, :string
     field :party, Ecto.Enum, values: @parties
-
-    field :health, :integer
-    field :energy, :integer
     field :aggro, :integer, default: 0
     field :charge, :integer, default: 0
+    field :action_points, :integer, default: @action_points_limit
+    field :maximum_action_points, :integer, default: @action_points_limit
+
+    field :health, :integer
+    field :physical_armor, :integer
+    field :magical_armor, :integer
+
+    field :maximum_health, :integer
+    field :maximum_physical_armor, :integer
+    field :maximum_magical_armor, :integer
 
     field :damage, :integer
     field :accuracy, :float
     field :evasion, :float
     field :fortitude, :float
     field :recovery, :float
-    field :maximum_health, :integer
-    field :maximum_energy, :integer
-    field :physical_armor, :integer
-    field :magical_armor, :integer
     field :attack_speed, :integer
     field :critical_chance, :float
     field :critical_multiplier, :float
     field :damage_penetration, :integer
     field :damage_reflection, :integer
     field :health_regeneration, :float
-    field :energy_regeneration, :float
     field :fire_resistance, :float
     field :water_resistance, :float
     field :earth_resistance, :float
     field :air_resistance, :float
 
-    field :burning_charges, :integer, default: 0
-    field :poisoned_charges, :integer, default: 0
-    field :frozen_charges, :integer, default: 0
-    field :shocked_charges, :integer, default: 0
-    field :bleeding_charges, :integer, default: 0
-    field :stunned_charges, :integer, default: 0
-    field :marked_charges, :integer, default: 0
-    field :blighted_charges, :integer, default: 0
-    field :silenced_charges, :integer, default: 0
+    field :burning_tokens, :integer, default: 0
+    field :poisoned_tokens, :integer, default: 0
+    field :frozen_tokens, :integer, default: 0
+    field :shocked_tokens, :integer, default: 0
+    field :bleeding_tokens, :integer, default: 0
+    field :stunned_tokens, :integer, default: 0
+    field :marked_tokens, :integer, default: 0
+    field :blighted_tokens, :integer, default: 0
+    field :silenced_tokens, :integer, default: 0
+    field :fortified_tokens, :integer, default: 0
+    field :vulnerable_tokens, :integer, default: 0
 
     field :action_patterns, {:array, :map}, default: [], virtual: true
   end
@@ -54,26 +60,38 @@ defmodule GEMS.Engine.Battler.Actor do
   def ally?(%Actor{party: p1}, %Actor{party: p2}), do: p1 == p2
   def enemy?(%Actor{party: p1}, %Actor{party: p2}), do: p1 != p2
 
+  def upkeep(%Actor{} = actor) do
+    actor
+    |> tick_buffs()
+    |> tick_debuffs()
+    |> change_aggro(-1)
+    |> tick_conditions()
+    |> change_action_points(1)
+  end
+
+  def change_aggro(%Actor{} = actor, amount) do
+    Map.update!(actor, :aggro, fn aggro ->
+      max(0, min(100, aggro + amount))
+    end)
+  end
+
   def change_health(%Actor{} = actor, amount) do
     Map.update!(actor, :health, fn health ->
       max(0, min(maximum_health(actor), health + amount))
     end)
   end
 
-  def change_energy(%Actor{} = actor, amount) do
-    Map.update!(actor, :energy, fn energy ->
-      max(0, min(maximum_energy(actor), energy + amount))
+  def change_action_points(%Actor{} = actor, amount) do
+    Map.update!(actor, :action_points, fn action_points ->
+      max(0, min(10, action_points + amount))
     end)
   end
 
   # TODO: Get max health including possible buffs
   def maximum_health(%Actor{maximum_health: max}), do: max
 
-  # TODO: Get max energy including possible buffs
-  def maximum_energy(%Actor{maximum_energy: max}), do: max
-
   def apply_condition(%Actor{} = actor, condition, value) do
-    field = String.to_existing_atom("#{condition}_charges")
+    field = String.to_existing_atom("#{condition}_tokens")
 
     Map.update!(actor, field, fn charges ->
       max(0, min(maximum_health(actor), charges + value))
@@ -97,5 +115,24 @@ defmodule GEMS.Engine.Battler.Actor do
       {nil, updates} -> [actor | replace_with(others, updates)]
       {updated, updates} -> [updated | replace_with(others, updates)]
     end
+  end
+
+  def tick_buffs(actor), do: actor
+  def tick_debuffs(actor), do: actor
+
+  def tick_conditions(actor) do
+    actor
+    |> Map.update!(:burning_tokens, &max(0, &1 - 1))
+    |> Map.update!(:poisoned_tokens, &max(0, &1 - 1))
+    |> Map.update!(:frozen_tokens, &max(0, &1 - 1))
+    |> Map.update!(:shocked_tokens, &max(0, &1 - 1))
+    |> Map.update!(:bleeding_tokens, &max(0, &1 - 1))
+    |> Map.update!(:stunned_tokens, &max(0, &1 - 1))
+    |> Map.update!(:marked_tokens, &max(0, &1 - 1))
+    |> Map.update!(:blighted_tokens, &max(0, &1 - 1))
+    |> Map.update!(:silenced_tokens, &max(0, &1 - 1))
+    |> Map.update!(:fortified_tokens, &max(0, &1 - 1))
+    |> Map.update!(:vulnerable_tokens, &max(0, &1 - 1))
+    |> Map.update!(:action_points, &max(0, &1 - 1))
   end
 end

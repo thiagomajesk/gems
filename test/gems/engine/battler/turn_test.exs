@@ -59,7 +59,7 @@ defmodule GEMS.Engine.Battler.TurnTest do
     test "when trigger is turn number" do
       action_pattern =
         build(:action_pattern, %{
-          trigger: :turn_number,
+          trigger: :when_turn,
           start_turn: 1,
           every_turn: 1
         })
@@ -77,7 +77,7 @@ defmodule GEMS.Engine.Battler.TurnTest do
     test "when trigger is health number" do
       action_pattern =
         build(:action_pattern, %{
-          trigger: :health_number,
+          trigger: :when_health,
           minimum_health: 0,
           maximum_health: 10
         })
@@ -93,17 +93,17 @@ defmodule GEMS.Engine.Battler.TurnTest do
       assert %Turn{action: %Action{}} = Turn.choose_action(turn)
     end
 
-    test "when trigger is energy number" do
+    test "when trigger is action points number" do
       action_pattern =
         build(:action_pattern, %{
-          trigger: :energy_number,
-          minimum_energy: 0,
-          maximum_energy: 10
+          trigger: :when_action_points,
+          minimum_action_points: 0,
+          maximum_action_points: 10
         })
 
       actor =
         build(:actor, %{
-          energy: 5,
+          action_points: 5,
           action_patterns: [action_pattern]
         })
 
@@ -119,7 +119,6 @@ defmodule GEMS.Engine.Battler.TurnTest do
 
       actor =
         build(:actor, %{
-          energy: 5,
           action_patterns: [action_pattern]
         })
 

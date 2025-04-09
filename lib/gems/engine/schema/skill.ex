@@ -3,9 +3,8 @@ defmodule GEMS.Engine.Schema.Skill do
     preset: :collection,
     required_fields: [:name, :code, :type_id, :target_scope],
     optional_fields: [
+      :action_cost,
       :description,
-      :health_cost,
-      :energy_cost,
       :affinity,
       :repeats,
       :target_number,
@@ -21,8 +20,7 @@ defmodule GEMS.Engine.Schema.Skill do
     field :name, :string
     field :code, :string
     field :description, :string
-    field :health_cost, :integer, default: 0
-    field :energy_cost, :integer, default: 0
+    field :action_cost, :integer, default: 0
     field :affinity, Ecto.Enum, values: @affinities
     field :repeats, :integer, default: 1
     field :target_scope, Ecto.Enum, values: @target_scopes

@@ -1,15 +1,14 @@
-defmodule GEMS.Database.Effects.Restoration do
+defmodule GEMS.Database.Effects.HealthRegen do
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  @required [:health, :energy]
+  @required [:amount]
   @optional []
 
   @primary_key false
   embedded_schema do
-    field :health, :integer
-    field :energy, :integer
+    field :amount, :integer
   end
 
   def changeset(effect, params) do

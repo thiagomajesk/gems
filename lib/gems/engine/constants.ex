@@ -26,16 +26,14 @@ defmodule GEMS.Engine.Constants do
       :fortitude,
       :recovery,
       :maximum_health,
-      :maximum_energy,
-      :physical_armor,
-      :magical_armor,
+      :maximum_physical_armor,
+      :maximum_magical_armor,
       :attack_speed,
       :critical_chance,
       :critical_multiplier,
       :damage_penetration,
       :damage_reflection,
       :health_regeneration,
-      :energy_regeneration,
       :fire_resistance,
       :water_resistance,
       :earth_resistance,
@@ -104,18 +102,20 @@ defmodule GEMS.Engine.Constants do
       :stunned,
       :marked,
       :blighted,
-      :silenced
+      :silenced,
+      :fortified,
+      :vulnerable
     ]
 
   def triggers,
     do: [
       :always,
       :random,
-      :turn_number,
-      :health_number,
-      :energy_number,
-      :condition_absence,
-      :condition_presence
+      :when_turn,
+      :when_health,
+      :when_action_points,
+      :when_condition_absent,
+      :when_condition_present
     ]
 
   def effect_types_mappings,
@@ -123,8 +123,8 @@ defmodule GEMS.Engine.Constants do
       apply_condition: GEMS.Database.Effects.ApplyCondition,
       damage_flat: GEMS.Database.Effects.DamageFlat,
       damage_rate: GEMS.Database.Effects.DamageRate,
-      resource_drain: GEMS.Database.Effects.ResourceDrain,
-      resource_regen: GEMS.Database.Effects.ResourceRegen,
+      resource_drain: GEMS.Database.Effects.HealthDrain,
+      resource_regen: GEMS.Database.Effects.HealthRegen,
       restoration: GEMS.Database.Effects.Restoration,
       stat_change: GEMS.Database.Effects.StatChange
     ]

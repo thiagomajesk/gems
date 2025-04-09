@@ -7,8 +7,8 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     :every_turn,
     :minimum_health,
     :maximum_health,
-    :minimum_energy,
-    :maximum_energy,
+    :minimum_action_points,
+    :maximum_action_points,
     :condition,
     :skill_id
   ]
@@ -27,8 +27,8 @@ defmodule GEMS.Engine.Schema.ActionPattern do
     field :every_turn, :integer
     field :minimum_health, :integer
     field :maximum_health, :integer
-    field :minimum_energy, :integer
-    field :maximum_energy, :integer
+    field :minimum_action_points, :integer
+    field :maximum_action_points, :integer
     field :condition, Ecto.Enum, values: @conditions
 
     belongs_to :skill, GEMS.Engine.Schema.Skill
