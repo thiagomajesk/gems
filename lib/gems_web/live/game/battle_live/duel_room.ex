@@ -40,7 +40,7 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
               and it was a <strong class="text-cyan-200">{event.outcome}</strong>
             </span>
             <div class="flex justify-between">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <.log_badge :for={log <- event.logs} log={log} />
               </div>
             </div>
@@ -137,63 +137,63 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
 
   defp extract_log_attrs(%{type: :burning, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-red-500!",
-      icon: "fire",
+      badge_style: "[--badge-color:var(--color-red-500)]",
+      icon: "flame",
       display_value: "#{duration} turns"
     }
 
   defp extract_log_attrs(%{type: :poisoned, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-green-500!",
+      badge_style: "[--badge-color:var(--color-emerald-500)]",
       icon: "droplet",
       display_value: "#{duration} turns"
     }
 
   defp extract_log_attrs(%{type: :frozen, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-blue-500!",
+      badge_style: "[--badge-color:var(--color-cyan-500)]",
       icon: "snowflake",
       display_value: "#{duration} turns"
     }
 
   defp extract_log_attrs(%{type: :shocked, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-yellow-500!",
+      badge_style: "[--badge-color:var(--color-purple-500)]",
       icon: "zap",
       display_value: "#{duration} turns"
     }
 
   defp extract_log_attrs(%{type: :bleeding, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-red-500!",
+      badge_style: "[--badge-color:var(--color-rose-500)]",
       icon: "droplet",
       display_value: "#{duration} turns"
     }
 
   defp extract_log_attrs(%{type: :stunned, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-yellow-500!",
+      badge_style: "[--badge-color:var(--color-blue-500)]",
       icon: "sparkles",
       display_value: "#{duration} turns"
     }
 
   defp extract_log_attrs(%{type: :marked, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-purple-500!",
+      badge_style: "[--badge-color:var(--color-orange-500)]",
       icon: "crosshair",
       display_value: "#{duration} turns"
     }
 
   defp extract_log_attrs(%{type: :blighted, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-yellow-500!",
+      badge_style: "[--badge-color:var(--color-amber-500)]",
       icon: "droplet",
       display_value: "#{duration} turns"
     }
 
   defp extract_log_attrs(%{type: :silenced, metadata: %{"duration" => duration}}),
     do: %{
-      badge_style: "text-gray-500!",
+      badge_style: "[--badge-color:var(--color-gray-500)]",
       icon: "volume-x",
       display_value: "#{duration} turns"
     }
