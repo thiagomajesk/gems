@@ -28,6 +28,8 @@ defmodule GEMS.Engine.Battler.Effect do
     field :on_miss, GEMS.Database.Dynamic, types: @effect_types_mappings
     field :on_crit, GEMS.Database.Dynamic, types: @effect_types_mappings
     field :on_dodge, GEMS.Database.Dynamic, types: @effect_types_mappings
+    field :on_token, GEMS.Database.Dynamic, types: @effect_types_mappings
+    field :on_action, GEMS.Database.Dynamic, types: @effect_types_mappings
   end
 
   def changeset(effect, attrs) do

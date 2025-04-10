@@ -4,7 +4,6 @@ defmodule GEMS.Engine.Battler.Event do
   alias __MODULE__
   alias GEMS.Engine.Battler.Log
   alias GEMS.Engine.Battler.Actor
-  alias GEMS.Engine.Battler.Combat
   alias GEMS.Engine.Battler.Effect
   alias GEMS.Engine.Battler.Snapshot
   alias GEMS.Database.Effects.HealthRegen
@@ -14,11 +13,20 @@ defmodule GEMS.Engine.Battler.Event do
   alias GEMS.Database.Effects.DamageFlat
   alias GEMS.Database.Effects.DamageRate
 
+  @triggers [
+    :hit,
+    :crit,
+    :miss,
+    :dodge,
+    :token,
+    :action
+  ]
+
   @primary_key false
   embedded_schema do
     field :timestamp, :utc_datetime_usec
     field :logs, {:array, :map}, default: []
-    field :outcome, Ecto.Enum, values: [:miss, :dodge, :crit, :hit]
+    field :trigger, Ecto.Enum, values: @triggers
 
     embeds_one :caster, GEMS.Engine.Battler.Actor
     embeds_one :target, GEMS.Engine.Battler.Actor
@@ -29,13 +37,11 @@ defmodule GEMS.Engine.Battler.Event do
     embeds_many :effects, GEMS.Engine.Battler.Effect
   end
 
-  def new(caster, target, effects) do
-    outcome = Combat.outcome(caster, target)
-
+  def new({caster, target}, trigger, effects) do
     %Event{
       caster: caster,
       target: target,
-      outcome: outcome,
+      trigger: trigger,
       effects: effects,
       caster_snapshot: Snapshot.new(caster),
       target_snapshot: Snapshot.new(target),
@@ -54,17 +60,20 @@ defmodule GEMS.Engine.Battler.Event do
     |> Enum.reverse()
     |> Enum.filter(&(&1.chance >= :rand.uniform()))
     |> Enum.reduce(event, fn
-      effect, %{outcome: :hit} = event ->
+      effect, %{trigger: :hit} = event ->
         apply_effect(event, effect.on_hit)
 
-      effect, %{outcome: :crit} = event ->
+      effect, %{trigger: :crit} = event ->
         apply_effect(event, effect.on_crit)
 
-      effect, %{outcome: :miss} = event ->
+      effect, %{trigger: :miss} = event ->
         apply_effect(event, effect.on_miss)
 
-      effect, %{outcome: :dodge} = event ->
+      effect, %{trigger: :dodge} = event ->
         apply_effect(event, effect.on_dodge)
+
+      effect, %{trigger: :action} = event ->
+        apply_effect(event, effect.on_action)
     end)
   end
 

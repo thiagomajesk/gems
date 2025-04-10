@@ -64,12 +64,18 @@ defmodule GEMS.Engine.Battler.Turn do
   @doc """
   Processes the turn action by creating the respective events.
   """
-  def process_action(%Turn{action: nil} = turn), do: turn
+  def process_action(%Turn{action: nil} = turn) do
+    turn
+    |> process_token_effects()
+    |> process_restoration_effects()
+  end
 
   def process_action(%Turn{} = turn) do
     turn
     |> spend_action_points()
+    |> process_token_effects()
     |> process_action_effects()
+    |> process_restoration_effects()
   end
 
   defp build_action(%{skill: skill}, targets) do
@@ -145,7 +151,29 @@ defmodule GEMS.Engine.Battler.Turn do
     end)
   end
 
-  def process_action_effects(turn) do
+  defp process_token_effects(turn) do
+    caster = fetch_leader(turn)
+
+    create_event(turn,
+      caster: caster,
+      target: caster,
+      effects: [],
+      trigger: :token
+    )
+  end
+
+  defp process_restoration_effects(turn) do
+    caster = fetch_leader(turn)
+
+    create_event(turn,
+      caster: caster,
+      target: caster,
+      effects: [],
+      trigger: :other
+    )
+  end
+
+  defp process_action_effects(turn) do
     # We want to process the available events step by step
     # and retrieve the target information directly from the turn.
     # This way, the turn can always provide the current actor state.
@@ -167,7 +195,12 @@ defmodule GEMS.Engine.Battler.Turn do
   defp process_caster_effects(turn, effects) do
     caster = fetch_leader(turn)
 
-    process_effects(turn, caster, [caster], effects)
+    create_event(turn,
+      caster: caster,
+      target: caster,
+      effects: effects,
+      trigger: :action
+    )
   end
 
   defp process_target_effects(turn, []), do: turn
@@ -176,22 +209,34 @@ defmodule GEMS.Engine.Battler.Turn do
     caster = fetch_leader(turn)
     targets = fetch_targets(turn)
 
-    process_effects(turn, caster, targets, effects)
+    Enum.reduce(targets, turn, fn target, turn ->
+      outcome = Action.outcome(caster, target)
+
+      create_event(turn,
+        caster: caster,
+        target: target,
+        effects: effects,
+        trigger: outcome
+      )
+    end)
   end
 
-  defp process_effects(turn, caster, targets, effects) do
-    Enum.reduce(targets, turn, fn target, turn ->
-      event =
-        caster
-        |> Event.new(target, effects)
-        |> Event.apply_effects()
+  defp create_event(turn, opts) do
+    caster = Keyword.fetch!(opts, :caster)
+    target = Keyword.fetch!(opts, :target)
+    effects = Keyword.fetch!(opts, :effects)
+    trigger = Keyword.fetch!(opts, :trigger)
 
-      turn
-      |> Map.update!(:events, &[event | &1])
-      |> Map.update!(:actors, fn actors ->
-        updated = [event.caster, event.target]
-        Actor.replace_with(actors, updated)
-      end)
+    event =
+      {caster, target}
+      |> Event.new(trigger, effects)
+      |> Event.apply_effects()
+
+    turn
+    |> Map.update!(:events, &[event | &1])
+    |> Map.update!(:actors, fn actors ->
+      updated = [event.caster, event.target]
+      Actor.replace_with(actors, updated)
     end)
   end
 

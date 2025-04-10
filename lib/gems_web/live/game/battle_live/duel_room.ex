@@ -36,12 +36,12 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
             class="flex flex-col space-y-2 bg-gradient-to-r from-base-100 to-transparent rounded-box p-2"
           >
             <div class="flex items-center justify-between">
-              <.outcome_icon outcome={event.outcome} />
+              <.event_trigger_icon trigger={event.trigger} />
             </div>
             <div class="flex items-center gap-2">
               <span class="font-medium text-blue-200">{event.caster.name}</span>
               attacked <span class="font-medium text-red-200">{event.target.name}</span>
-              and it was a <strong class="text-cyan-200">{event.outcome}</strong>
+              and it was a <strong class="text-cyan-200">{event.trigger}</strong>
             </div>
             <div :if={Enum.any?(event.logs)} class="flex items-center gap-2 flex-wrap mt-2">
               <.log_badge :for={log <- event.logs} log={log} />
@@ -200,22 +200,23 @@ defmodule GEMSWeb.Game.BattleLive.DuelRoom do
     """
   end
 
-  attr :outcome, :any, required: true
+  attr :trigger, :any, required: true
 
-  defp outcome_icon(assigns) do
+  defp event_trigger_icon(assigns) do
     assigns =
       assign_new(assigns, :icon_attrs, fn
-        %{outcome: :hit} -> %{name: "swords", class: "text-red-500"}
-        %{outcome: :dodge} -> %{name: "directions-run", class: "text-gray-500"}
-        %{outcome: :miss} -> %{name: "nearby-error", class: "text-gray-500"}
-        %{outcome: :crit} -> %{name: "explosion-outline", class: "text-yellow-500"}
+        %{trigger: :hit} -> %{name: "swords", class: "text-red-500"}
+        %{trigger: :dodge} -> %{name: "directions-run", class: "text-gray-500"}
+        %{trigger: :miss} -> %{name: "nearby-error", class: "text-gray-500"}
+        %{trigger: :crit} -> %{name: "explosion-outline", class: "text-yellow-500"}
+        %{trigger: _other} -> %{name: "question-mark", class: "text-gray-200"}
       end)
 
     ~H"""
     <span class="flex items-center text-lg gap-1">
       <UI.Icons.symbols {@icon_attrs} />
       <small class="font-semibold">
-        {Recase.to_constant(Atom.to_string(@outcome))}
+        {Recase.to_constant(Atom.to_string(@trigger))}
       </small>
     </span>
     """
