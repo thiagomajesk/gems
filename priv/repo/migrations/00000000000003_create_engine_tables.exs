@@ -3,19 +3,28 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
 
   def change do
     ################################################################################
-    # States
+    # Skills
     ################################################################################
 
-    create table(:states) do
+    create table(:skills) do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :text, null: true
       add :icon, :map, null: true
-      add :priority, :integer, default: 100
-      add :restriction, :string, null: true
+
+      add :type_id, references(:skill_types), null: false
+      add :action_cost, :integer, null: false
+      add :affinity, :string, null: false
+      add :repeats, :integer, null: false
+      add :target_scope, :string, null: false
+      add :target_number, :integer, null: false
+      add :random_targets, :integer, null: false
+      add :critical_hits, :boolean, null: false
+
+      add :effects, :map, null: true
     end
 
-    create unique_index(:states, :code)
+    create unique_index(:skills, :code)
 
     ################################################################################
     # Classes
@@ -25,48 +34,60 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :text, null: true
-      add :strength_curve, :map, null: false
-      add :dexterity_curve, :map, null: false
-      add :intelligence_curve, :map, null: false
+
+      add :damage, :integer, null: false
+      add :accuracy, :float, null: false
+      add :evasion, :float, null: false
+      add :fortitude, :float, null: false
+      add :recovery, :float, null: false
+      add :maximum_health, :integer, null: false
+      add :maximum_physical_armor, :integer, null: false
+      add :maximum_magical_armor, :integer, null: false
+      add :attack_speed, :integer, null: false
+      add :critical_chance, :float, null: false
+      add :critical_multiplier, :float, null: false
+      add :damage_penetration, :integer, null: false
+      add :damage_reflection, :integer, null: false
+      add :health_regeneration, :float, null: false
+      add :fire_resistance, :float, null: false
+      add :water_resistance, :float, null: false
+      add :earth_resistance, :float, null: false
+      add :air_resistance, :float, null: false
     end
 
     create unique_index(:classes, :name)
     create unique_index(:classes, :code)
 
     ################################################################################
-    # Abilities
+    # Talents
     ################################################################################
 
-    create table(:skills) do
+    create table(:talents) do
       add :name, :string, null: false
       add :code, :string, null: false
       add :description, :text, null: true
-      add :icon, :map, null: true
-      add :type_id, references(:skill_types), null: false
-      add :health_cost, :integer, null: false, default: 0
-      add :mana_cost, :integer, null: false, default: 0
 
-      add :target_side, :string, null: true
-      add :target_status, :string, null: true
-      add :target_number, :integer, null: false, default: 1
-      add :random_targets, :integer, null: false, default: 0
+      add :class_id, references(:classes), null: false
 
-      add :hit_type, :string, null: true
-      add :success_rate, :float, default: 1.0
-      add :repeats, :integer, null: false, default: 1
-
-      add :damage_type, :string, null: true
-
-      add :damage_element_id, references(:elements, on_delete: :nilify_all), null: true
-
-      add :damage_formula, :string, null: true
-      add :damage_variance, :float, null: true
-      add :critical_hits, :boolean, default: false
-
-      add :messages, :map, null: true
+      add :damage, :integer, null: false
+      add :accuracy, :float, null: false
+      add :evasion, :float, null: false
+      add :fortitude, :float, null: false
+      add :recovery, :float, null: false
+      add :maximum_health, :integer, null: false
+      add :maximum_physical_armor, :integer, null: false
+      add :maximum_magical_armor, :integer, null: false
+      add :attack_speed, :integer, null: false
+      add :critical_chance, :float, null: false
+      add :critical_multiplier, :float, null: false
+      add :damage_penetration, :integer, null: false
+      add :damage_reflection, :integer, null: false
+      add :health_regeneration, :float, null: false
+      add :fire_resistance, :float, null: false
+      add :water_resistance, :float, null: false
+      add :earth_resistance, :float, null: false
+      add :air_resistance, :float, null: false
     end
-
-    create unique_index(:skills, :code)
 
     ################################################################################
     # Creatures
@@ -79,47 +100,27 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :image, :string, null: true
       add :type_id, references(:creature_types), null: false
 
-      # STR
-      add :armor_rating, :integer, default: 0
-      add :max_health, :integer, default: 0
-      add :health_regen, :integer, default: 0
-      add :attack_damage, :integer, default: 0
-      add :weapon_power, :integer, default: 0
-
-      # DEX
-      add :evasion_rating, :integer, default: 0
-      add :attack_speed, :integer, default: 0
-      add :critical_rating, :integer, default: 0
-      add :accuracy_rating, :integer, default: 0
-      add :critical_power, :integer, default: 0
-
-      # INT
-      add :magic_resist, :integer, default: 0
-      add :max_mana, :integer, default: 0
-      add :mana_regen, :integer, default: 0
-      add :magic_damage, :integer, default: 0
-      add :skill_power, :integer, default: 0
+      add :damage, :integer, null: false
+      add :accuracy, :float, null: false
+      add :evasion, :float, null: false
+      add :fortitude, :float, null: false
+      add :recovery, :float, null: false
+      add :maximum_health, :integer, null: false
+      add :maximum_physical_armor, :integer, null: false
+      add :maximum_magical_armor, :integer, null: false
+      add :attack_speed, :integer, null: false
+      add :critical_chance, :float, null: false
+      add :critical_multiplier, :float, null: false
+      add :damage_penetration, :integer, null: false
+      add :damage_reflection, :integer, null: false
+      add :health_regeneration, :float, null: false
+      add :fire_resistance, :float, null: false
+      add :water_resistance, :float, null: false
+      add :earth_resistance, :float, null: false
+      add :air_resistance, :float, null: false
     end
 
     create unique_index(:creatures, :code)
-
-    ################################################################################
-    # Creature Action Patterns
-    ################################################################################
-
-    create table(:creature_action_patterns, primary_key: false) do
-      add :creature_id, references(:creatures), null: false
-      add :skill_id, references(:skills), null: false
-      add :priority, :integer, null: false, default: 0
-      add :condition, :string, null: false
-      add :min_turn, :integer, null: true
-      add :max_turn, :integer, null: true
-      add :min_health, :integer, null: true
-      add :max_health, :integer, null: true
-      add :min_mana, :integer, null: true
-      add :max_mana, :integer, null: true
-      add :state_id, references(:states), null: true
-    end
 
     ################################################################################
     # Items
@@ -130,28 +131,10 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :code, :string, null: false
       add :description, :text, null: true
       add :image, :string, null: true
+
       add :type_id, references(:item_types), null: false
       add :tier, :string, null: false
       add :price, :integer, null: true
-
-      add :target_side, :string, null: true
-      add :target_status, :string, null: true
-      add :target_number, :integer, null: false, default: 1
-      add :random_targets, :integer, null: false, default: 0
-
-      add :hit_type, :string, null: true
-      add :success_rate, :float, default: 1.0
-      add :repeats, :integer, null: false, default: 1
-
-      add :damage_type, :string, null: true
-
-      add :damage_element_id, references(:elements, on_delete: :nilify_all), null: true
-
-      add :damage_formula, :string, null: true
-      add :damage_variance, :float, null: true
-      add :critical_hits, :boolean, default: false
-
-      add :messages, :map, null: true
     end
 
     create unique_index(:items, :code)
@@ -179,27 +162,26 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :slot, :string, null: false
       add :tier, :string, null: false
       add :price, :integer, null: true
+      add :affinity, :string, null: true
 
-      # STR
-      add :armor_rating, :integer, default: 0
-      add :max_health, :integer, default: 0
-      add :health_regen, :integer, default: 0
-      add :attack_damage, :integer, default: 0
-      add :weapon_power, :integer, default: 0
-
-      # DEX
-      add :evasion_rating, :integer, default: 0
-      add :attack_speed, :integer, default: 0
-      add :critical_rating, :integer, default: 0
-      add :accuracy_rating, :integer, default: 0
-      add :critical_power, :integer, default: 0
-
-      # INT
-      add :magic_resist, :integer, default: 0
-      add :max_mana, :integer, default: 0
-      add :mana_regen, :integer, default: 0
-      add :magic_damage, :integer, default: 0
-      add :skill_power, :integer, default: 0
+      add :damage, :integer, null: false
+      add :accuracy, :float, null: false
+      add :evasion, :float, null: false
+      add :fortitude, :float, null: false
+      add :recovery, :float, null: false
+      add :maximum_health, :integer, null: false
+      add :maximum_physical_armor, :integer, null: false
+      add :maximum_magical_armor, :integer, null: false
+      add :attack_speed, :integer, null: false
+      add :critical_chance, :float, null: false
+      add :critical_multiplier, :float, null: false
+      add :damage_penetration, :integer, null: false
+      add :damage_reflection, :integer, null: false
+      add :health_regeneration, :float, null: false
+      add :fire_resistance, :float, null: false
+      add :water_resistance, :float, null: false
+      add :earth_resistance, :float, null: false
+      add :air_resistance, :float, null: false
     end
 
     create unique_index(:equipments, :code)
@@ -212,6 +194,33 @@ defmodule GEMS.Repo.Migrations.CreateStatesTable do
       add :equipment_id, references(:equipments), null: false, primary_key: true
       add :material_id, references(:items), null: false, primary_key: true
       add :amount, :integer, null: false, default: 1
+    end
+
+    ################################################################################
+    # Action Patterns
+    ################################################################################ s
+
+    create table(:action_patterns) do
+      add :trigger, :string, null: false
+      add :priority, :integer, null: false
+      add :chance, :float, null: true
+      add :start_turn, :integer, null: true
+      add :every_turn, :integer, null: true
+      add :minimum_health, :integer, null: true
+      add :maximum_health, :integer, null: true
+      add :minimum_action_points, :integer, null: true
+      add :maximum_action_points, :integer, null: true
+      add :condition, :string, null: true
+      add :skill_id, references(:skills), null: true
+    end
+
+    ################################################################################
+    # Creatures Action Patterns
+    ################################################################################
+
+    create table(:creatures_action_patterns, primary_key: false) do
+      add :creature_id, references(:creatures), null: false, primary_key: true
+      add :action_pattern_id, references(:action_patterns), null: false, primary_key: true
     end
   end
 end

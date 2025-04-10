@@ -25,8 +25,26 @@ defmodule GEMSWeb.Game.HuntLive do
   def mount(_params, _session, socket) do
     character = socket.assigns.selected_character
     hunts = GEMS.World.list_avaiable_hunts(character)
+    hunt_lookup = Map.new(hunts, &{&1.id, &1})
 
-    {:ok, assign(socket, :hunts, hunts)}
+    {:ok,
+     socket
+     |> assign(:hunts, hunts)
+     |> assign(:hunt_lookup, hunt_lookup)}
+  end
+
+  @impl true
+  def handle_event("start", %{"id" => hunt_id}, socket) do
+    character = socket.assigns.selected_character
+
+    hunt_lookup = socket.assigns.hunt_lookup
+    hunt = Map.fetch!(hunt_lookup, hunt_id)
+
+    battle = GEMS.Battles.create_duel(character, hunt.creature)
+
+    {:ok, identifier} = GEMS.BattleManager.create_battle(battle)
+
+    {:noreply, push_navigate(socket, to: ~p"/game/battles/duel/#{identifier}")}
   end
 
   attr :hunt, :any, required: true
@@ -41,7 +59,11 @@ defmodule GEMSWeb.Game.HuntLive do
         <div class="flex flex-col space-y-2 grow">
           <div class="flex items-center">
             <span class="font-semibold grow text-normal md:text-lg">{@hunt.creature.name}</span>
-            <button class="btn btn-neutral btn-sm md:btn-md grow max-w-32">
+            <button
+              phx-click="start"
+              phx-value-id={@hunt.id}
+              class="btn btn-neutral btn-sm md:btn-md grow max-w-32"
+            >
               <UI.Icons.page name="circle-play" class="text-[1.2em] text-success" />
               <span>Hunt</span>
             </button>

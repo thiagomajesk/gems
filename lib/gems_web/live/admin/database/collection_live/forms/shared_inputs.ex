@@ -100,21 +100,68 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs do
     ~H"""
     <Forms.fieldset legend="Stats">
       <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-        <Forms.field_input type="number" field={@form[:armor_rating]} label="Armor Rating" />
-        <Forms.field_input type="number" field={@form[:evasion_rating]} label="Evasion Rating" />
-        <Forms.field_input type="number" field={@form[:magic_resist]} label="Magic Resist" />
-        <Forms.field_input type="number" field={@form[:max_health]} label="Max Health" />
+        <Forms.field_input type="number" field={@form[:damage]} label="Damage" />
+        <Forms.field_input type="number" field={@form[:maximum_health]} label="Max Health" />
+        <Forms.field_input
+          type="number"
+          step="0.01"
+          field={@form[:health_regeneration]}
+          label="Health Regen"
+        />
+
+        <Forms.field_input
+          type="number"
+          field={@form[:maximum_physical_armor]}
+          label="Physical Armor"
+        />
+        <Forms.field_input type="number" field={@form[:maximum_magical_armor]} label="Magical Armor" />
         <Forms.field_input type="number" field={@form[:attack_speed]} label="Attack Speed" />
-        <Forms.field_input type="number" field={@form[:max_mana]} label="Max Mana" />
-        <Forms.field_input type="number" field={@form[:health_regen]} label="Health Regen" />
-        <Forms.field_input type="number" field={@form[:critical_rating]} label="Critical Rating" />
-        <Forms.field_input type="number" field={@form[:attack_damage]} label="Physical Damage" />
-        <Forms.field_input type="number" field={@form[:accuracy_rating]} label="Accuracy Rating" />
-        <Forms.field_input type="number" field={@form[:mana_regen]} label="Mana Regen" />
-        <Forms.field_input type="number" field={@form[:magic_damage]} label="Magical Damage" />
-        <Forms.field_input type="number" field={@form[:weapon_power]} label="Weapon Power" />
-        <Forms.field_input type="number" field={@form[:critical_power]} label="Critical Power" />
-        <Forms.field_input type="number" field={@form[:skill_power]} label="Skill Power" />
+        <Forms.field_input type="number" step="0.01" field={@form[:accuracy]} label="Accuracy" />
+        <Forms.field_input type="number" step="0.01" field={@form[:evasion]} label="Evasion" />
+        <Forms.field_input
+          type="number"
+          step="0.01"
+          field={@form[:critical_chance]}
+          label="Critical Chance"
+        />
+        <Forms.field_input
+          type="number"
+          step="0.01"
+          field={@form[:critical_multiplier]}
+          label="Critical Multiplier"
+        />
+        <Forms.field_input type="number" step="0.01" field={@form[:recovery]} label="Recovery" />
+        <Forms.field_input type="number" step="0.01" field={@form[:fortitude]} label="Fortitude" />
+        <Forms.field_input
+          type="number"
+          field={@form[:damage_penetration]}
+          label="Damage Penetration"
+        />
+        <Forms.field_input type="number" field={@form[:damage_reflection]} label="Damage Reflection" />
+        <Forms.field_input
+          type="number"
+          step="0.01"
+          field={@form[:fire_resistance]}
+          label="Fire Resistance"
+        />
+        <Forms.field_input
+          type="number"
+          step="0.01"
+          field={@form[:water_resistance]}
+          label="Water Resistance"
+        />
+        <Forms.field_input
+          type="number"
+          step="0.01"
+          field={@form[:earth_resistance]}
+          label="Earth Resistance"
+        />
+        <Forms.field_input
+          type="number"
+          step="0.01"
+          field={@form[:air_resistance]}
+          label="Air Resistance"
+        />
       </div>
     </Forms.fieldset>
     """

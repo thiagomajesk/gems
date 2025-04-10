@@ -21,7 +21,7 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.ProgressCurveComponent do
             </button>
           </header>
           <div class="grid grid-cols-5 gap-2">
-            <SharedInputs.input type="number" min="0" label="Base Value" field={f[:base_value]} />
+            <SharedInputs.input type="number" min="0" label="Base Value" field={f[:value]} />
             <SharedInputs.input type="number" min="0" label="Max Value" field={f[:max_value]} />
             <SharedInputs.input
               type="number"

@@ -10,7 +10,6 @@ defmodule GEMS.Insights do
   alias GEMS.Engine.Schema.CreatureType
   alias GEMS.Engine.Schema.Equipment
   alias GEMS.Engine.Schema.EquipmentType
-  alias GEMS.Engine.Schema.Element
   alias GEMS.Engine.Schema.Item
   alias GEMS.Engine.Schema.ItemType
   alias GEMS.Engine.Schema.State
@@ -49,10 +48,6 @@ defmodule GEMS.Insights do
 
   def count_equipment_types() do
     Repo.aggregate(EquipmentType, :count, :id)
-  end
-
-  def count_elements() do
-    Repo.aggregate(Element, :count, :id)
   end
 
   def count_items() do

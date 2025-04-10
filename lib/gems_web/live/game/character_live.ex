@@ -12,9 +12,9 @@ defmodule GEMSWeb.Game.CharacterLive do
       />
       <div class="flex flex-col md:flex-row gap-4">
         <div class="w-full md:w-1/3 flex flex-col space-y-4">
-          <.info_section character={@selected_character} />
-          <.attributes_section character={@selected_character} />
           <.bio_section character={@selected_character} />
+          <.info_section character={@selected_character} />
+          <.stats_section character={@selected_character} />
           <.guild_section :if={@guild} guild={@guild} />
         </div>
         <div class="w-full md:w-2/3 flex flex-col space-y-4">
@@ -61,67 +61,190 @@ defmodule GEMSWeb.Game.CharacterLive do
     <UI.Panels.section title="Info">
       <dl class="card bg-base-300 p-4 divide-y divide-dotted divide-base-content/20">
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="character" class="text-indigo-500" />
             <span>Name</span>
           </dt>
           <dd>{@character.name}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="winged-shield" class="text-orange-500" />
             <span>Class</span>
           </dt>
           <dd>{@character.class.name}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
-            <UI.Icons.game name="heart-beats" class="text-red-500" />
-            <span>Health</span>
-          </dt>
-          <dd>1000</dd>
-        </div>
-        <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
-            <UI.Icons.game name="bolt-drop" class="text-blue-500" />
-            <span>Mana</span>
-          </dt>
-          <dd>1000</dd>
-        </div>
-        <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="up-card" class="text-yellow-500" />
             <span>Level</span>
           </dt>
           <dd>{@character.level}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="chart" class="text-green-500" />
             <span>Experience</span>
           </dt>
           <dd>{@character.experience}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="run" class="text-amber-500" />
             <span>Stamina</span>
           </dt>
           <dd>{@character.stamina}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="striped-sun" class="text-cyan-500" />
             <span>Souls</span>
           </dt>
           <dd>{@character.souls}</dd>
         </div>
         <div class="flex items-center justify-between gap-2 py-1">
-          <dt class="flex items-center font-medium gap-2">
+          <dt class="flex items-center gap-2">
             <UI.Icons.game name="trophy" class="text-purple-500" />
             <span>Fame</span>
           </dt>
           <dd>{@character.fame}</dd>
+        </div>
+      </dl>
+    </UI.Panels.section>
+    """
+  end
+
+  attr :character, :any, required: true
+
+  defp stats_section(assigns) do
+    ~H"""
+    <UI.Panels.section title="Stats">
+      <dl class="card bg-base-300 p-4 divide-y divide-dotted divide-base-content/20">
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="heart-beats" class="text-rose-500" />
+            <span>Health</span>
+          </dt>
+          <dd>{format_stat(@character.maximum_health)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="heart-plus" />
+            <span>Health Regen.</span>
+          </dt>
+          <dd>{format_stat(@character.health_regeneration)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="broadsword" />
+            <span>Damage</span>
+          </dt>
+          <dd>{format_stat(@character.damage)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="checked-shield" />
+            <span>Physical Armor</span>
+          </dt>
+          <dd>{format_stat(@character.maximum_physical_armor)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="magic-shield" />
+            <span>Magical Armor</span>
+          </dt>
+          <dd>{format_stat(@character.maximum_magical_armor)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="bullseye" />
+            <span>Accuracy</span>
+          </dt>
+          <dd>{format_stat(@character.accuracy)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="dodging" />
+            <span>Evasion</span>
+          </dt>
+          <dd>{format_stat(@character.evasion)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="target-dummy" />
+            <span>Critical Chance</span>
+          </dt>
+          <dd>{format_stat(@character.critical_chance)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="swords-power" />
+            <span>Critical Multiplier</span>
+          </dt>
+          <dd>{format_stat(@character.critical_multiplier)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="healing-shield" />
+            <span>Recovery</span>
+          </dt>
+          <dd>{format_stat(@character.recovery)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="strong" />
+            <span>Fortitude</span>
+          </dt>
+          <dd>{format_stat(@character.fortitude)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="stopwatch" />
+            <span>Attack Speed</span>
+          </dt>
+          <dd>{format_stat(@character.attack_speed)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="sun-spear" />
+            <span>Damage Penetration</span>
+          </dt>
+          <dd>{format_stat(@character.damage_penetration)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="broken-shield" />
+            <span>Damage Reflection</span>
+          </dt>
+          <dd>{format_stat(@character.damage_reflection)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="armor-upgrade" class="text-red-400" />
+            <span>Fire resistance</span>
+          </dt>
+          <dd>{format_stat(@character.fire_resistance)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="armor-upgrade" class="text-blue-400" />
+            <span>Water resistance</span>
+          </dt>
+          <dd>{format_stat(@character.water_resistance)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="armor-upgrade" class="text-green-400" />
+            <span>Earth resistance</span>
+          </dt>
+          <dd>{format_stat(@character.earth_resistance)}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-2 py-1">
+          <dt class="flex items-center gap-2">
+            <UI.Icons.game name="armor-upgrade" class="text-purple-400" />
+            <span>Air resistance</span>
+          </dt>
+          <dd>{format_stat(@character.air_resistance)}</dd>
         </div>
       </dl>
     </UI.Panels.section>
@@ -154,45 +277,6 @@ defmodule GEMSWeb.Game.CharacterLive do
       <button :if={@text} class="btn btn-sm btn-neutral mt-4">
         <UI.Icons.page name="arrow-right" /> Read more
       </button>
-    </div>
-    """
-  end
-
-  attr :character, :any, required: true
-
-  defp attributes_section(assigns) do
-    ~H"""
-    <UI.Panels.section title="Attributes">
-      <div class="grid grid-cols-3 gap-2">
-        <.attribute_card name={:strength} value={@character.strength} />
-        <.attribute_card name={:dexterity} value={@character.dexterity} />
-        <.attribute_card name={:intelligence} value={@character.intelligence} />
-      </div>
-    </UI.Panels.section>
-    """
-  end
-
-  attr :name, :atom, required: true, values: [:strength, :dexterity, :intelligence]
-  attr :value, :integer, required: true
-
-  defp attribute_card(assigns) do
-    ~H"""
-    <div class={[
-      "rounded-box flex flex-col items-center justify-center h-24 gap-2 p-2 relative",
-      "bg-linear-to-br from-base-300",
-      attribute_gradient_stop(@name)
-    ]}>
-      <UI.Icons.game
-        name={attribute_icon(@name)}
-        size="unset"
-        class={["!size-full absolute inset-0", attribute_text_color(@name)]}
-      />
-      <span class="font-bold tabular-nums text-xl bg-base-300/50 backdrop-blur-xs px-2 py-1 rounded-box shadow-sm size-14 flex items-center justify-center">
-        {@value}
-      </span>
-      <small class="absolute bottom-2 right-2 font-semibold uppercase">
-        {attribute_label(@name)}
-      </small>
     </div>
     """
   end
@@ -330,19 +414,10 @@ defmodule GEMSWeb.Game.CharacterLive do
     """
   end
 
-  defp attribute_icon(:strength), do: "biceps"
-  defp attribute_icon(:dexterity), do: "sprint"
-  defp attribute_icon(:intelligence), do: "brain"
+  defp format_stat(nil), do: "---"
 
-  defp attribute_text_color(:strength), do: "text-rose-500"
-  defp attribute_text_color(:dexterity), do: "text-emerald-500"
-  defp attribute_text_color(:intelligence), do: "text-indigo-500"
+  defp format_stat(value) when is_float(value),
+    do: "#{trunc(value * 100)}%"
 
-  defp attribute_label(:strength), do: "STR"
-  defp attribute_label(:dexterity), do: "DEX"
-  defp attribute_label(:intelligence), do: "INT"
-
-  defp attribute_gradient_stop(:strength), do: "to-rose-500/10"
-  defp attribute_gradient_stop(:dexterity), do: "to-emerald-500/10"
-  defp attribute_gradient_stop(:intelligence), do: "to-indigo-500/10"
+  defp format_stat(value), do: "#{value}"
 end

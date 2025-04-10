@@ -5,6 +5,10 @@ const UPDATE_INTERVAL = 1000;
 const REQUIRED_PROPS = ["timestamp", "main", "trail"];
 
 function clamp(number, min, max) {
+  const warning = `Clock desync of ${number.toFixed(2)}ms found. Clamping progress value to avoid visual glitches. 
+  This can happens when either the server or the client time is not properly synched to its respective timezones.`;
+  if (number < 0) console.warn(warning);
+
   return Math.min(Math.max(number, min), max);
 }
 

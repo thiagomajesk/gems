@@ -2,7 +2,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.CreatureComponent do
   use GEMSWeb, :live_component
 
   alias UI.Admin.Forms
-  alias GEMSWeb.Admin.Database.CollectionLive.Forms.TraitsAssocInput
   alias GEMSWeb.Admin.Database.CollectionLive.Forms.SharedInputs
 
   def render(assigns) do
@@ -45,9 +44,6 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.CreatureComponent do
 
             <SharedInputs.stats_fieldset form={f} />
           </div>
-          <Forms.fieldset legend="Traits">
-            <TraitsAssocInput.inputs_for_assoc field={f[:traits]} />
-          </Forms.fieldset>
         </div>
       </Forms.base_form>
     </div>

@@ -22,30 +22,24 @@ defmodule GEMS.World.Schema.Character do
     field :stamina, :integer
     field :fame, :integer
 
-    field :strength, :integer, virtual: true
-    field :dexterity, :integer, virtual: true
-    field :intelligence, :integer, virtual: true
-
-    # STR
-    field :armor_rating, :integer, virtual: true
-    field :max_health, :integer, virtual: true
-    field :health_regen, :integer, virtual: true
-    field :attack_damage, :integer, virtual: true
-    field :weapon_power, :integer, virtual: true
-
-    # DEX
-    field :evasion_rating, :integer, virtual: true
+    field :damage, :integer, virtual: true
+    field :accuracy, :float, virtual: true
+    field :evasion, :float, virtual: true
+    field :fortitude, :float, virtual: true
+    field :recovery, :float, virtual: true
+    field :maximum_health, :integer, virtual: true
+    field :maximum_physical_armor, :integer, virtual: true
+    field :maximum_magical_armor, :integer, virtual: true
     field :attack_speed, :integer, virtual: true
-    field :critical_rating, :integer, virtual: true
-    field :accuracy_rating, :integer, virtual: true
-    field :critical_power, :integer, virtual: true
-
-    # INT
-    field :magic_resist, :integer, virtual: true
-    field :max_mana, :integer, virtual: true
-    field :mana_regen, :integer, virtual: true
-    field :magic_damage, :integer, virtual: true
-    field :skill_power, :integer, virtual: true
+    field :critical_chance, :float, virtual: true
+    field :critical_multiplier, :float, virtual: true
+    field :damage_penetration, :integer, virtual: true
+    field :damage_reflection, :integer, virtual: true
+    field :health_regeneration, :float, virtual: true
+    field :fire_resistance, :float, virtual: true
+    field :water_resistance, :float, virtual: true
+    field :earth_resistance, :float, virtual: true
+    field :air_resistance, :float, virtual: true
 
     belongs_to :class, GEMS.Engine.Schema.Class
     belongs_to :faction, GEMS.World.Schema.Faction
@@ -56,16 +50,13 @@ defmodule GEMS.World.Schema.Character do
     has_one :guild_membership, GEMS.World.Schema.GuildMembership
     has_one :guild, through: [:guild_membership, :guild]
 
-    has_many :character_professions, GEMS.World.Schema.CharacterProfession
-    has_many :character_items, GEMS.World.Schema.CharacterItem
+    has_many :character_professions, GEMS.World.Schema.CharacterProfession, on_replace: :delete
+    has_many :character_items, GEMS.World.Schema.CharacterItem, on_replace: :delete
 
     many_to_many :professions, GEMS.World.Schema.Profession,
-      join_through: "characters_professions",
-      on_replace: :delete
+      join_through: GEMS.World.Schema.CharacterProfession
 
-    many_to_many :items, GEMS.Engine.Schema.Item,
-      join_through: "characters_items",
-      on_replace: :delete
+    many_to_many :items, GEMS.Engine.Schema.Item, join_through: GEMS.World.Schema.CharacterItem
 
     timestamps()
   end

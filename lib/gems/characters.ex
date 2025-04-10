@@ -13,12 +13,6 @@ defmodule GEMS.Characters do
   alias GEMS.Accounts.Schema.User
   alias GEMS.World.Schema.Character
 
-  @default_preloads [
-    :class,
-    :faction,
-    :avatar
-  ]
-
   @doc """
   Returns the list of characters.
   """
@@ -26,7 +20,7 @@ defmodule GEMS.Characters do
     Repo.all(
       from c in Character,
         where: c.user_id == ^user_id,
-        preload: ^@default_preloads
+        preload: [:faction, :class, :avatar]
     )
   end
 
@@ -169,32 +163,32 @@ defmodule GEMS.Characters do
 
   defp load_character(character) do
     character
-    |> Repo.preload(@default_preloads)
-    |> hydrate_virtuals()
+    |> Repo.preload([:faction, :avatar, class: :talents])
+    |> hydrate_character_virtuals()
   end
 
-  defp hydrate_virtuals(character) do
+  defp hydrate_character_virtuals(character) do
     character
-    |> Map.put(:strength, calculate_strength(character))
-    |> Map.put(:dexterity, calculate_dexterity(character))
-    |> Map.put(:intelligence, calculate_intelligence(character))
+    |> merge_base_class_stats()
   end
 
-  defp calculate_strength(character) do
-    %{class: %{strength_curve: curve}} = character
-    # TODO: Incorporate character level when available
-    GEMS.Progression.value_for(curve, 1)
-  end
-
-  defp calculate_dexterity(character) do
-    %{class: %{dexterity_curve: curve}} = character
-    # TODO: Incorporate character level available
-    GEMS.Progression.value_for(curve, 1)
-  end
-
-  defp calculate_intelligence(character) do
-    %{class: %{intelligence_curve: curve}} = character
-    # TODO: Incorporate character level available
-    GEMS.Progression.value_for(curve, 1)
+  defp merge_base_class_stats(character) do
+    %{
+      character
+      | damage: character.class.damage,
+        accuracy: character.class.accuracy,
+        evasion: character.class.evasion,
+        fortitude: character.class.fortitude,
+        recovery: character.class.recovery,
+        maximum_health: character.class.maximum_health,
+        maximum_physical_armor: character.class.maximum_physical_armor,
+        maximum_magical_armor: character.class.maximum_magical_armor,
+        attack_speed: character.class.attack_speed,
+        critical_chance: character.class.critical_chance,
+        critical_multiplier: character.class.critical_multiplier,
+        damage_penetration: character.class.damage_penetration,
+        damage_reflection: character.class.damage_reflection,
+        health_regeneration: character.class.health_regeneration
+    }
   end
 end

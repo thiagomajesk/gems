@@ -2,19 +2,12 @@ defmodule GEMS.World.Schema.Biome do
   use GEMS.Database.Schema,
     preset: :collection,
     required_fields: [:name, :code],
-    optional_fields: [
-      :description,
-      :affinity_id,
-      :aversion_id
-    ]
+    optional_fields: [:description]
 
   schema "biomes" do
     field :name, :string
     field :code, :string
     field :description, :string
-
-    belongs_to :affinity, GEMS.Engine.Schema.Element
-    belongs_to :aversion, GEMS.Engine.Schema.Element
   end
 
   def build_changeset(biome, attrs, opts) do

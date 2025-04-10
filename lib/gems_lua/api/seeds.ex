@@ -6,12 +6,10 @@ defmodule GEMSLua.API.Seeds do
   alias GEMS.World.Schema.Biome
   alias GEMS.Engine.Schema.Creature
   alias GEMS.Engine.Schema.CreatureType
-  alias GEMS.Engine.Schema.Element
   alias GEMS.Engine.Schema.Equipment
   alias GEMS.Engine.Schema.EquipmentType
   alias GEMS.Engine.Schema.Item
   alias GEMS.Engine.Schema.ItemType
-  alias GEMS.Engine.Schema.State
   alias GEMS.World.Schema.Avatar
   alias GEMS.World.Schema.Blessing
   alias GEMS.World.Schema.Faction
@@ -30,7 +28,6 @@ defmodule GEMSLua.API.Seeds do
   deflua insert_blessings(table), do: insert_entities(Blessing, table)
   deflua insert_creature_types(table), do: insert_entities(CreatureType, table)
   deflua insert_creatures(table), do: insert_entities(Creature, table)
-  deflua insert_elements(table), do: insert_entities(Element, table)
   deflua insert_equipment_types(table), do: insert_entities(EquipmentType, table)
   deflua insert_equipments(table), do: insert_entities(Equipment, table)
   deflua insert_factions(table), do: insert_entities(Faction, table)
@@ -38,7 +35,6 @@ defmodule GEMSLua.API.Seeds do
   deflua insert_items(table), do: insert_entities(Item, table)
   deflua insert_classes(table), do: insert_entities(Class, table)
   deflua insert_professions(table), do: insert_entities(Profession, table)
-  deflua insert_states(table), do: insert_entities(State, table)
   deflua insert_zones(table), do: insert_entities(Zone, table)
 
   defp insert_entities(module, table) when is_list(table) do

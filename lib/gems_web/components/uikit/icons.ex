@@ -19,6 +19,15 @@ defmodule GEMSWeb.UIKIT.Icons do
   attr :name, :string, required: true
   attr :rest, :global, include: @global_attrs
 
+  def symbols(assigns) do
+    ~H"""
+    <.iconify icon={"material-symbols:#{@name}"} {@rest} />
+    """
+  end
+
+  attr :name, :string, required: true
+  attr :rest, :global, include: @global_attrs
+
   def game(assigns) do
     ~H"""
     <.iconify icon={"game-icons:#{@name}"} {@rest} />

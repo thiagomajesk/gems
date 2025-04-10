@@ -3,19 +3,6 @@ defmodule GEMS.Repo.Migrations.CreateSharedTypesTables do
 
   def change do
     ################################################################################
-    # Elements
-    ################################################################################
-
-    create table(:elements) do
-      add :name, :string, null: false
-      add :code, :string, null: false
-      add :description, :text, null: true
-    end
-
-    create unique_index(:elements, :name)
-    create unique_index(:elements, :code)
-
-    ################################################################################
     # Skill Types
     ################################################################################
 

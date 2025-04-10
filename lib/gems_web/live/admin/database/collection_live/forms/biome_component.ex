@@ -22,28 +22,12 @@ defmodule GEMSWeb.Admin.Database.CollectionLive.Forms.BiomeComponent do
           />
         </div>
         <Forms.field_input type="textarea" field={f[:description]} label="Description" />
-
-        <div class="grid grid-cols-2 gap-6">
-          <Forms.field_input
-            type="select"
-            field={f[:affinity_id]}
-            label="Affinity"
-            options={@elements_options}
-          />
-          <Forms.field_input
-            type="select"
-            field={f[:aversion_id]}
-            label="Aversion"
-            options={@elements_options}
-          />
-        </div>
       </Forms.base_form>
     </div>
     """
   end
 
   def mount(socket) do
-    elements_options = GEMS.Engine.Schema.Element.options()
-    {:ok, assign(socket, :elements_options, elements_options)}
+    {:ok, socket}
   end
 end

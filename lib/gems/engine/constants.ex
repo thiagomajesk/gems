@@ -10,25 +10,37 @@ defmodule GEMS.Engine.Constants do
   def max_stamina(level) when level >= 100, do: @min_stamina * 0.5
   def max_stamina(_level), do: @min_stamina
 
-  def stats,
+  def parties,
     do: [
-      :armor_rating,
-      :max_health,
-      :health_regen,
-      :attack_damage,
-      :weapon_power,
-      :evasion_rating,
-      :attack_speed,
-      :critical_rating,
-      :accuracy_rating,
-      :critical_power,
-      :magic_resist,
-      :max_mana,
-      :mana_regen,
-      :magic_damage,
-      :skill_power
+      :alpha,
+      :bravo,
+      :charlie,
+      :delta
     ]
 
+  def statistics,
+    do: [
+      :damage,
+      :accuracy,
+      :evasion,
+      :fortitude,
+      :recovery,
+      :maximum_health,
+      :maximum_physical_armor,
+      :maximum_magical_armor,
+      :attack_speed,
+      :critical_chance,
+      :critical_multiplier,
+      :damage_penetration,
+      :damage_reflection,
+      :health_regeneration,
+      :fire_resistance,
+      :water_resistance,
+      :earth_resistance,
+      :air_resistance
+    ]
+
+  # TODO: Remove tiers and use rarities instead
   def tiers,
     do: [
       :t0,
@@ -41,5 +53,79 @@ defmodule GEMS.Engine.Constants do
       :t7,
       :t8,
       :t9
+    ]
+
+  def slots,
+    do: [
+      :trinket,
+      :helmet,
+      :cape,
+      :main_hand,
+      :armor,
+      :off_hand,
+      :ring,
+      :boots,
+      :amulet
+    ]
+
+  def elements,
+    do: [
+      :air,
+      :earth,
+      :fire,
+      :water,
+      :neutral
+    ]
+
+  def target_scopes,
+    do: [
+      :self,
+      :ally,
+      :enemy,
+      :anyone
+    ]
+
+  def damage_types,
+    do: [
+      :physical,
+      :magical,
+      :certain
+    ]
+
+  def conditions,
+    do: [
+      :burning,
+      :poisoned,
+      :frozen,
+      :shocked,
+      :bleeding,
+      :stunned,
+      :marked,
+      :blighted,
+      :silenced,
+      :fortified,
+      :vulnerable
+    ]
+
+  def triggers,
+    do: [
+      :always,
+      :random,
+      :when_turn,
+      :when_health,
+      :when_action_points,
+      :when_condition_absent,
+      :when_condition_present
+    ]
+
+  def effect_types_mappings,
+    do: [
+      apply_condition: GEMS.Database.Effects.ApplyCondition,
+      damage_flat: GEMS.Database.Effects.DamageFlat,
+      damage_rate: GEMS.Database.Effects.DamageRate,
+      resource_drain: GEMS.Database.Effects.HealthDrain,
+      resource_regen: GEMS.Database.Effects.HealthRegen,
+      restoration: GEMS.Database.Effects.Restoration,
+      stat_change: GEMS.Database.Effects.StatChange
     ]
 end
